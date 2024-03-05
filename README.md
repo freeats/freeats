@@ -1,24 +1,109 @@
-# README
+# Toughbyte ATS
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Getting started
 
-Things you may want to cover:
+### Linux
 
-* Ruby version
+1. It's recommended to install [RVM](https://rvm.io/rvm/install). If you use rbenv, please
+   uninstall it and remove `~/.rbenv` to avoid dependencies conflicts.
 
-* System dependencies
+2. Clone the repo and `cd` to the directory:
 
-* Configuration
+   ```shell
+   $ git clone git@github.com:toughbyte/ats.git
+   $ cd ats
+   ```
 
-* Database creation
+3. Install the right Ruby version:
 
-* Database initialization
+   ```shell
+   $ grep "ruby \"" Gemfile
+   $ rvm install <version>
+   $ rvm --default use <version>
+   ```
 
-* How to run the test suite
+4. Install PostgreSQL using [this instruction](https://wiki.archlinux.org/index.php/PostgreSQL).
+   The process is similar for most of Linux distributions.
+   On Ubuntu, PostgreSQL can be installed by entering these commands:
 
-* Services (job queues, cache servers, search engines, etc.)
+   ```shell
+   $ sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+   $ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+   $ sudo apt-get update
+   $ sudo apt-get -y install postgresql
+   ```
 
-* Deployment instructions
+   On Ubuntu, additional steps might be required:
 
-* ...
+   - Open `/etc/postgresql/<version_number>/main/pg_hba.conf` and change `md5` to `trust` in the
+     last column for the following lines:
+
+     ```
+     host    all             all             127.0.0.1/32            trust
+     host    all             all             ::1/128                 trust
+     ```
+
+   - Restart the PostgreSQL service.
+
+5. Create a user and databases:
+
+   ```shell
+   $ sudo -u postgres psql < db/postgres/init.sql
+   ```
+
+6. Ruby dependencies:
+
+   ```shell
+   $ bin/bundle install
+   ```
+
+   On Ubuntu, 'bundle install' may result in an error stating a problem with pg gem.
+   To fix this issue enter the following command:
+
+   ```shell
+   $ sudo apt-get install libpq-dev
+   ```
+
+   After that, retry the bundle install again:
+
+   ```shell
+   $ bin/bundle install
+   ```
+
+7. Prepare the database:
+
+   ```shell
+   $ bin/rails db:migrate         # Update the DB and the schema
+   ```
+
+8. Prepare image-related libraries:
+
+    - Install ImageMagick.
+    - Check the format list:
+
+      ```shell
+      $ magick identify -list format
+      ```
+
+    - To check the format list in older verisons of ImageMagick (if 'magick' command produces an error) use:
+
+      ```shell
+      $ convert identify -list format
+      ```
+
+      If there's no JPEG in the list, install JPEG delegate using
+      [this instruction](https://unix.stackexchange.com/questions/500078/imagemagick-installing-jpeg-decode-delegate-with-existing-installation).
+
+9. Run tests to make sure everything is configured correctly:
+
+    ```shell
+    $ bin/spring rails test
+    ```
+
+10. Run Rails:
+
+    ```shell
+    $ bin/rails server
+    ```
+
+11. Open <http://localhost:3000>.
