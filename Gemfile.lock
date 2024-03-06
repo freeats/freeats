@@ -379,7 +379,6 @@ DEPENDENCIES
   capybara
   cssbundling-rails
   debug
-  importmap-rails
   jbuilder
   jsbundling-rails
   lookbook (~> 2.0.0)

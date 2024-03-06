@@ -7,7 +7,6 @@ ruby "3.3.0"
 gem "blazer"
 gem "bootsnap", require: false
 gem "cssbundling-rails"
-gem "importmap-rails"
 gem "jbuilder"
 gem "jsbundling-rails"
 gem "lookbook", "~> 2.0.0"

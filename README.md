@@ -102,14 +102,14 @@
 
 10. Run tests to make sure everything is configured correctly:
 
-   ```shell
-   $ bin/spring rails test
-   ```
+    ```shell
+    $ bin/spring rails test
+    ```
 
 11. Run Rails:
 
     ```shell
-    $ bin/rails server
+    $ bin/dev
     ```
 
 12. Open <http://localhost:3000>.
