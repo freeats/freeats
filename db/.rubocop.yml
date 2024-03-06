@@ -1,0 +1,72 @@
+inherit_from: ../.rubocop.yml
+
+Layout/LineLength:
+  Max: 143
+
+Style/GuardClause:
+  Enabled: false
+
+Rails/ApplicationRecord:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Style/MethodCallWithArgsParentheses:
+  Enabled: true
+  AllowedMethods:
+    - create_table
+    - create_view
+    - create_enum
+    - drop_table
+    - drop_view
+    - create_join_table
+    - drop_join_table
+    - rename_table
+    - replace_view
+    - change_table
+    - update_view
+    - add_column
+    - remove_column
+    - rename_column
+    - add_reference
+    - remove_reference
+    - add_foreign_key
+    - remove_foreign_key
+    - add_belongs_to
+    - remove_belongs_to
+    - belongs_to
+    - add_timestamps
+    - add_index
+    - remove_index
+    - rename_index
+    - index
+    - index_exists?
+    - foreign_key
+    - say_with_time
+    - execute
+    - rename
+    - column
+    - change_column
+    - change_column_null
+    - change_column_default
+    - change_column_comment
+    - integer
+    - datetime
+    - date
+    - timestamp
+    - timestamps
+    - string
+    - inet
+    - bigint
+    - decimal
+    - references
+    - text
+    - boolean
+    - jsonb
+    - float
+    - citext
+    - binary
+    - bytea
+    - enable_extension
+    - uuid

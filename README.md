@@ -51,9 +51,15 @@
    $ sudo -u postgres psql < db/postgres/init.sql
    ```
 
-6. Ruby dependencies:
+6. Install [NodeJS](https://nodejs.org/en/download/package-manager) and
+   [yarn](https://yarnpkg.com/en/docs/install).
+
+7. Install JavaScript and Ruby dependencies:
 
    ```shell
+   $ bin/yarn
+   $ bin/yarn build
+   $ bin/yarn build:css
    $ bin/bundle install
    ```
 
@@ -70,40 +76,40 @@
    $ bin/bundle install
    ```
 
-7. Prepare the database:
+8. Prepare the database:
 
    ```shell
    $ bin/rails db:migrate         # Update the DB and the schema
    ```
 
-8. Prepare image-related libraries:
+9. Prepare image-related libraries:
 
-    - Install ImageMagick.
-    - Check the format list:
+   - Install ImageMagick.
+   - Check the format list:
 
-      ```shell
-      $ magick identify -list format
-      ```
+     ```shell
+     $ magick identify -list format
+     ```
 
-    - To check the format list in older verisons of ImageMagick (if 'magick' command produces an error) use:
+   - To check the format list in older verisons of ImageMagick (if 'magick' command produces an error) use:
 
-      ```shell
-      $ convert identify -list format
-      ```
+     ```shell
+     $ convert identify -list format
+     ```
 
-      If there's no JPEG in the list, install JPEG delegate using
-      [this instruction](https://unix.stackexchange.com/questions/500078/imagemagick-installing-jpeg-decode-delegate-with-existing-installation).
+     If there's no JPEG in the list, install JPEG delegate using
+     [this instruction](https://unix.stackexchange.com/questions/500078/imagemagick-installing-jpeg-decode-delegate-with-existing-installation).
 
-9. Run tests to make sure everything is configured correctly:
+10. Run tests to make sure everything is configured correctly:
 
-    ```shell
-    $ bin/spring rails test
-    ```
+   ```shell
+   $ bin/spring rails test
+   ```
 
-10. Run Rails:
+11. Run Rails:
 
     ```shell
     $ bin/rails server
     ```
 
-11. Open <http://localhost:3000>.
+12. Open <http://localhost:3000>.

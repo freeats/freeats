@@ -1,0 +1,7 @@
+inherit_from: ../.rubocop.yml
+
+Layout/LineLength:
+  Max: 160
+
+Style/FormatStringToken:
+  Enabled: false

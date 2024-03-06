@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
+# rubocop:disable Style/ClassAndModuleChildren
 module ApplicationCable
   class ConnectionTest < ActionCable::Connection::TestCase
     # test "connects with cookies" do
@@ -11,3 +14,4 @@ module ApplicationCable
     # end
   end
 end
+# rubocop:enable Style/ClassAndModuleChildren

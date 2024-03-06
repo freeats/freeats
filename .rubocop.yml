@@ -1,0 +1,212 @@
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-minitest
+  - ./lib/rubocop/cop/minitest/literal_as_expected_argument.rb
+
+AllCops:
+  TargetRubyVersion: 3.3.0
+  DisplayCopNames: true
+  Exclude:
+    - "vendor/**/*"
+    - "bin/*"
+    - "node_modules/**/*"
+  NewCops: enable
+
+# Enabled cops suited for our needs.
+
+Layout/LineLength:
+  Max: 100
+Layout/MultilineAssignmentLayout:
+  Enabled: true
+  SupportedTypes: ["case", "class", "if", "kwbegin", "module"]
+Layout/ArgumentAlignment:
+  Enabled: true
+Layout/ClassStructure:
+  Enabled: true
+  ExpectedOrder:
+    - module_inclusion
+    - constants
+    - public_attribute_macros
+    - has_and_belongs_to_many_association
+    - has_many_association
+    - has_one_association
+    - belongs_to_association
+    - accepts_nested_attributes_for_association
+    - enums
+    - public_delegate
+    - macros
+    - validates_with_validation_validation
+    - validates_validation
+    - validate_validation
+    - scopes
+    - public_class_methods
+    - initializer
+    - public_methods
+    - protected_attribute_macros
+    - protected_methods
+    - private_attribute_macros
+    - private_delegate
+    - private_methods
+  Categories:
+    has_and_belongs_to_many_association:
+      - has_and_belongs_to_many
+    has_many_association:
+      - has_many
+    has_one_association:
+      - has_one
+    belongs_to_association:
+      - belongs_to
+    accepts_nested_attributes_for_association:
+      - accepts_nested_attributes_for
+    validates_validation:
+      - validates
+    validate_validation:
+      - validate
+    validates_with_validation:
+      - validates_with
+    module_inclusion:
+      - include
+      - prepend
+      - extend
+    enums:
+      - enum
+    scopes:
+      - default_scope
+      - scope
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+Style/ClassMethodsDefinitions:
+  Enabled: true
+Style/CollectionMethods:
+  Enabled: true
+  PreferredMethods:
+    detect: find
+    select: filter
+    find_all: filter
+    inject: reduce
+    member?: include?
+    collect: map
+    "collect!": map!
+Style/MethodCallWithArgsParentheses:
+  Enabled: true
+  AllowedMethods:
+    - render
+    - redirect_to
+    - redirect_back
+    - render_error
+    - render_turbo_stream
+    - head
+    - send_data
+    - send_file
+    - expires_in
+    - authorize!
+    - assert_equal
+    - assert_not_equal
+    - assert_difference
+    - assert_no_difference
+    - assert_includes
+    - assert_predicate
+    - stub
+    - expect
+    - visit
+    - sign_in
+    - sign_in_and_redirect
+    - set_flash_message!
+    - bypass_sign_in
+    - raise
+    - yield
+    - sleep
+    - safe_join
+    - error
+    - info
+    - debug
+    - warn
+    - define
+    - option
+    - param
+    - scope
+Style/Send:
+  Enabled: true
+Style/Lambda:
+  Enabled: false
+Style/UnlessLogicalOperators:
+  Enabled: true
+  EnforcedStyle: forbid_logical_operators
+
+Naming/MethodParameterName:
+  AllowedNames: [io, id, to, by, on, in, at, ip, db, cv, cc]
+Naming/VariableNumber:
+  AllowedIdentifiers: [render_401, render_404, render_422, render_500]
+
+Rails:
+  Enabled: true
+Rails/Delegate:
+  Enabled: false
+Rails/Pluck:
+  Enabled: false
+Rails/I18nLocaleTexts:
+  Enabled: false
+Minitest/LiteralAsExpectedArgument:
+  Enabled: true
+Style/MultilineBlockChain:
+  Enabled: false
+
+# Disabled metrics cops.
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/BlockNesting:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+# Disabled pending cops.
+
+Minitest/LiteralAsActualArgument:
+  Enabled: false
+Lint/RedundantSafeNavigation:
+  Enabled: false
+Rails/SquishedSQLHeredocs:
+  Enabled: false
+Layout/EmptyLineBetweenDefs:
+  Enabled: false
+Style/NegatedIfElseCondition:
+  Enabled: false
+Naming/InclusiveLanguage:
+  Enabled: false
+Lint/ElseLayout:
+  Enabled: false
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: false
+Style/DocumentationMethod:
+  RequireForNonPublicMethods: false
+Style/Documentation:
+  Enabled: false
+Rails/HasAndBelongsToMany:
+  Enabled: false
+Rails/LinkToBlank:
+  Enabled: false
