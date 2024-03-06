@@ -55,6 +55,10 @@ GEM
       globalid (>= 0.3.6)
     activemodel (7.1.3.2)
       activesupport (= 7.1.3.2)
+    activemodel-serializers-xml (1.0.2)
+      activemodel (> 5.x)
+      activesupport (> 5.x)
+      builder (~> 3.1)
     activerecord (7.1.3.2)
       activemodel (= 7.1.3.2)
       activesupport (= 7.1.3.2)
@@ -81,6 +85,12 @@ GEM
     base64 (0.2.0)
     bigdecimal (3.1.6)
     bindex (0.8.1)
+    blazer (3.0.3)
+      activerecord (>= 6.1)
+      chartkick (>= 5)
+      csv
+      railties (>= 6.1)
+      safely_block (>= 0.4)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -93,17 +103,26 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    chartkick (5.0.6)
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     crass (1.0.6)
+    css_parser (1.16.0)
+      addressable
+    cssbundling-rails (1.4.0)
+      railties (>= 6.0.0)
+    csv (3.2.8)
     date (3.3.4)
     debug (1.9.1)
       irb (~> 1.10)
       reline (>= 0.3.8)
     drb (2.2.1)
     erubi (1.12.0)
+    ffi (1.16.3)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    htmlbeautifier (1.4.3)
+    htmlentities (4.3.4)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
@@ -117,11 +136,37 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jsbundling-rails (1.3.0)
+      railties (>= 6.0.0)
     json (2.7.1)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     language_server-protocol (3.17.0.3)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
+    lookbook (2.0.5)
+      activemodel
+      css_parser
+      htmlbeautifier (~> 1.3)
+      htmlentities (~> 4.3.4)
+      marcel (~> 1.0)
+      railties (>= 5.0)
+      redcarpet (~> 3.5)
+      rouge (>= 3.26, < 5.0)
+      view_component (>= 2.0)
+      yard (~> 0.9.25)
+      zeitwerk (~> 2.5)
     mail (2.8.1)
       mini_mime (>= 0.1.1)
       net-imap
@@ -129,10 +174,17 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
+    method_source (1.0.0)
     mini_mime (1.1.5)
     minitest (5.22.2)
+    mission_control-jobs (0.1.1)
+      importmap-rails
+      rails (~> 7.1)
+      stimulus-rails
+      turbo-rails
     msgpack (1.7.2)
     mutex_m (0.2.0)
+    nested_form (0.3.2)
     net-imap (0.4.10)
       date
       net-protocol
@@ -160,6 +212,8 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.6)
+    pghero (3.4.1)
+      activerecord (>= 6)
     psych (5.1.2)
       stringio
     public_suffix (5.0.4)
@@ -195,6 +249,12 @@ GEM
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
       nokogiri (~> 1.14)
+    rails_admin (3.1.2)
+      activemodel-serializers-xml (>= 1.0)
+      kaminari (>= 0.14, < 2.0)
+      nested_form (~> 0.3)
+      rails (>= 6.0, < 8)
+      turbo-rails (~> 1.0)
     railties (7.1.3.2)
       actionpack (= 7.1.3.2)
       activesupport (= 7.1.3.2)
@@ -207,10 +267,12 @@ GEM
     rake (13.1.0)
     rdoc (6.6.2)
       psych (>= 4.0.0)
+    redcarpet (3.6.0)
     regexp_parser (2.9.0)
     reline (0.4.3)
       io-console (~> 0.5)
     rexml (3.2.6)
+    rouge (4.2.0)
     rubocop (1.61.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -237,6 +299,15 @@ GEM
       rubocop-ast (>= 1.31.1, < 2.0)
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
+    safely_block (0.4.0)
+    sassc (2.4.0)
+      ffi (~> 1.9)
+    sassc-rails (2.1.2)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     selenium-webdriver (4.18.1)
       base64 (~> 0.2)
       rexml (~> 3.2, >= 3.2.5)
@@ -245,9 +316,15 @@ GEM
     slim (5.2.1)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
+    slim-rails (3.6.3)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
+      slim (>= 3.0, < 6.0, != 5.0.0)
     slim_lint (0.26.0)
       rubocop (>= 1.0, < 2.0)
       slim (>= 3.0, < 6.0)
+    solid_queue (0.2.2)
+      rails (~> 7.1)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -262,13 +339,17 @@ GEM
     thor (1.3.1)
     tilt (2.3.0)
     timeout (0.4.1)
-    turbo-rails (2.0.4)
+    turbo-rails (1.5.0)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
+    view_component (3.11.0)
+      activesupport (>= 5.2.0, < 8.0)
+      concurrent-ruby (~> 1.0)
+      method_source (~> 1.0)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -281,6 +362,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    yard (0.9.36)
     zeitwerk (2.6.13)
 
 PLATFORMS
@@ -292,24 +374,35 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  blazer
   bootsnap
   capybara
+  cssbundling-rails
   debug
   importmap-rails
   jbuilder
+  jsbundling-rails
+  lookbook (~> 2.0.0)
+  mission_control-jobs
   pg (~> 1.1)
+  pghero
   puma (>= 5.0)
   rails (~> 7.1.0)
+  rails_admin (~> 3.0)
   rubocop
   rubocop-minitest
   rubocop-performance
   rubocop-rails
+  sassc-rails
   selenium-webdriver
+  slim-rails
   slim_lint
+  solid_queue
   sprockets-rails
   stimulus-rails
   turbo-rails
   tzinfo-data
+  view_component (~> 3.0)
   web-console
 
 RUBY VERSION
