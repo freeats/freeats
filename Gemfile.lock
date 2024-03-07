@@ -116,6 +116,8 @@ GEM
     debug (1.9.1)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    dockerfile-rails (1.6.6)
+      rails (>= 3.0.0)
     drb (2.2.1)
     dry-configurable (1.1.0)
       dry-core (~> 1.0, < 2)
@@ -411,6 +413,7 @@ DEPENDENCIES
   capybara
   cssbundling-rails
   debug
+  dockerfile-rails (>= 1.6)
   dry-initializer
   dry-logger
   dry-monads
