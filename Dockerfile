@@ -13,9 +13,8 @@ ENV BUNDLE_DEPLOYMENT="1" \
     BUNDLE_WITHOUT="development:test" \
     RAILS_ENV="production"
 
-# Update gems and bundler
-RUN gem update --system --no-document && \
-    gem install -N bundler
+# Install bundler
+RUN gem install -N bundler
 
 
 # Throw-away build stage to reduce size of final image
