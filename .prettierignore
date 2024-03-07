@@ -1,0 +1,15 @@
+.bundle
+coverage
+public/packs
+public/packs-test
+public/error-page-v2.css
+public/assets
+app/assets/builds
+test/fixtures/files
+tmp
+vendor
+config/database.yml
+
+*.js
+*.mjs
+*.rb

@@ -1,0 +1,14 @@
+/ Variables:
+/ - options
+
+- options.each do |option|
+  - candidate = option[:candidate]
+  option value=candidate.id label=candidate.name selected=option[:selected] disabled=option[:disabled]
+    .row.g-0
+      .col.ms-2
+        .row.g-0
+          .col-12.text-truncate
+            = candidate.name
+        .row.g-0
+          .col-12.text-truncate.aa-emails
+            = candidate.candidate_emails.first

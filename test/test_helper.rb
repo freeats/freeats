@@ -7,8 +7,7 @@ require "rails/test_help"
 # rubocop:disable Style/ClassAndModuleChildren
 module ActiveSupport
   class TestCase
-    # Run tests in parallel with specified workers
-    parallelize(workers: :number_of_processors)
+    parallelize if ENV["CI"].blank? # Disable parallelization for continuous integration.
 
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all

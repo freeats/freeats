@@ -1,0 +1,32 @@
+$fa-font-path: "/webfonts";
+@import "@fortawesome/fontawesome-pro/scss/fontawesome";
+@import "@fortawesome/fontawesome-pro/scss/light";
+@import "@fortawesome/fontawesome-pro/scss/solid";
+
+$font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
+
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  12px: $spacer * 0.75,
+  3: $spacer,
+  4: $spacer * 1.5,
+  2rem: $spacer * 2,
+  5: $spacer * 3,
+);
+
+$font-size-base: 1rem; // 16 px
+$font-sizes: (
+  1: $font-size-base * 2.5,
+  2: $font-size-base * 2,
+  3: $font-size-base * 1.75,
+  4: $font-size-base 1.5,
+  5: $font-size-base * 1.25,
+  18px: 18px,
+  6: $font-size-base,
+);
+
+$border-radius: 0.25rem;
+$border-radius-lg: 0.25rem;

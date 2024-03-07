@@ -1,0 +1,27 @@
+@import "bootstrap/scss/functions";
+
+// Redefining default Bootstrap theme colors.
+$blue: #1c6dd0;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+
+@import "bootstrap/scss/variables";
+
+// Other colors.
+$accordion-border-color: $gray-500;
+$border-color: $gray-500;
+$card-border-color: $gray-500;
+$dropdown-border-color: $gray-500;
+$list-group-border-color: $gray-500;
+$modal-content-border-color: $gray-500;
+$nav-tabs-border-color: $gray-500;
+$pagination-border-color: $gray-500;
+$popover-border-color: $gray-500;
+$toast-border-color: $gray-500;

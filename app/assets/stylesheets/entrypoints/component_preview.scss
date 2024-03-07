@@ -1,2 +1,23 @@
+// The order of imports is important.
+
+$font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
+
 // Bootstrap
+@import "../src/shared/variables";
+@import "../src/shared/colors";
 @import "bootstrap/scss/bootstrap";
+
+// Custom component styles
+@import "../src/shared/components";
+@import "../src/lookbook/scaffolds";
+
+body {
+  padding: 1rem;
+}
+
+@include media-breakpoint-up(md) {
+  .col-md-profile {
+    flex: 0 0 137px;
+    max-width: 137px;
+  }
+}

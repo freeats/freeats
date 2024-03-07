@@ -1,0 +1,390 @@
+// In order to override imported css file, all values should have !important flag.
+// So far I don't know how to import scss file, see
+// https://github.com/selectize/selectize.js/issues/1614.
+@import "selectize/dist/css/selectize.bootstrap5";
+
+// ButtonComponent styles
+.btn {
+  &-light {
+    --bs-btn-color: var(--bs-gray-900);
+  }
+
+  &-tiny {
+    --bs-btn-font-size: 12px;
+    --bs-btn-padding-x: 8px;
+    --bs-btn-padding-y: 4px;
+  }
+
+  &-small {
+    --bs-btn-font-size: 14px;
+    --bs-btn-padding-x: 9px;
+    --bs-btn-padding-y: 4.5px;
+  }
+
+  &-medium {
+    --bs-btn-font-size: 16px;
+    --bs-btn-padding-x: 14px;
+    --bs-btn-padding-y: 7px;
+  }
+
+  &-large {
+    --bs-btn-font-size: 18px;
+    --bs-btn-padding-x: 19px;
+    --bs-btn-padding-y: 9.5px;
+  }
+}
+
+// TextInputComponent styles
+.text-input-component {
+  &-default {
+    border-radius: 4px;
+    border-color: $gray-500;
+  }
+
+  &-default::placeholder {
+    color: $gray-600;
+  }
+
+  &-default:focus {
+    border-color: tint-color($blue, 50%);
+  }
+
+  &-disabled {
+    background-color: $gray-200;
+  }
+
+  &-disabled:focus {
+    background-color: $gray-200;
+  }
+
+  &-subscript {
+    color: $gray-600;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  &-tiny {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  &-small {
+    padding: 4.5px 9px;
+    font-size: 14px;
+  }
+
+  &-medium {
+    padding: 7px 14px;
+    font-size: 16px;
+  }
+
+  &-large {
+    padding: 9.5px 19px;
+    font-size: 18px;
+  }
+}
+
+// LabelComponent styles
+.label-component {
+  $sizes:
+    small 14px,
+    medium 16px,
+    large 18px;
+
+  @each $name, $size in $sizes {
+    &-#{$name} {
+      font-size: $size !important;
+      line-height: 1.5 !important;
+    }
+  }
+}
+
+// PrettyNumberComponent styles
+.pretty-number-component {
+  &:after {
+    content: "\00a0";
+  }
+}
+
+// SelectComponent styles
+.select-component {
+  --space_for_chevron: 10px;
+
+  // Bootstrap 5 does not support the `btn-group-xs` size.
+  // Used in case of a select component with the `dropdown_buttons` plugin for the `selectize` library.
+  .btn-group-xs button {
+    --bs-btn-font-size: 12px;
+    --bs-btn-padding-x: 8px;
+    --bs-btn-padding-y: 4px;
+  }
+
+  .selectize-input {
+    border-radius: 4px !important;
+    border-color: $gray-500;
+    vertical-align: middle; // Fix the height of the component.
+    cursor: text !important;
+
+    input::placeholder {
+      color: $gray-600;
+    }
+
+    &.focus {
+      border-color: tint-color($blue, 50%) !important;
+    }
+
+    &.locked {
+      background-color: $gray-200 !important;
+      opacity: 1 !important;
+    }
+
+    &.disabled {
+      cursor: default !important;
+
+      .item {
+        color: $gray-600 !important;
+      }
+    }
+
+    input {
+      @extend .text-truncate;
+      cursor: text !important;
+    }
+
+    .item {
+      color: $gray-900 !important;
+    }
+  }
+
+  .selectize-dropdown {
+    border-radius: 4px;
+    box-shadow: none !important;
+    color: $gray-900;
+    border-color: $gray-500;
+
+    .selected {
+      background-color: white;
+      color: $gray-900;
+
+      // not disabled options.
+      &[data-selectable] {
+        background-color: $blue-500;
+        color: white;
+      }
+    }
+
+    .option.active[data-selectable]:hover {
+      background-color: $gray-200;
+      color: $gray-900;
+    }
+
+    .selectize-dropdown-content {
+      max-height: 200px;
+    }
+  }
+
+  // Do not show the chevron icon when the loading icon is visible.
+  &.with-chevron > :not(.loading) > .selectize-input {
+    input,
+    .item {
+      max-width: calc(100% - var(--space_for_chevron)) !important;
+    }
+
+    &::before {
+      cursor: pointer;
+    }
+
+    &::after {
+      @extend .fa-light;
+
+      content: fa-content($fa-var-chevron-down) !important;
+      position: absolute;
+      margin-top: 0.25em;
+      right: var(--space_for_chevron);
+      color: $gray-900;
+    }
+  }
+
+  // Start of sizes.
+  &.tiny {
+    --font_size: 12px;
+
+    .selectize-input {
+      min-height: 28px !important;
+      padding: 4px 8px !important;
+      font-size: var(--font_size);
+
+      &:before {
+        height: var(--font_size);
+        width: var(--font_size);
+      }
+    }
+
+    &.with-chevron > :not(.loading) > .selectize-input {
+      padding: 4px calc(8px + var(--font_size) + var(--space_for_chevron)) 4px 8px !important;
+    }
+
+    .selectize-dropdown .option {
+      font-size: var(--font_size);
+    }
+
+    .selectize-dropdown-emptyoptionlabel {
+      height: 28px;
+    }
+  }
+
+  &.small {
+    --font_size: 14px;
+
+    .selectize-input {
+      min-height: 32px !important;
+      padding: 4.5px 9px !important;
+      font-size: var(--font_size);
+
+      &:before {
+        height: var(--font_size);
+        width: var(--font_size);
+      }
+    }
+
+    &.with-chevron > :not(.loading) > .selectize-input {
+      padding: 4.5px calc(9px + var(--font_size) + var(--space_for_chevron)) 4.5px 9px !important;
+    }
+
+    .selectize-dropdown .option {
+      font-size: var(--font_size);
+    }
+
+    .selectize-dropdown-emptyoptionlabel {
+      height: 32px;
+    }
+  }
+
+  &.medium {
+    --font_size: 16px;
+
+    .selectize-input {
+      min-height: 40px !important;
+      padding: 7px 14px !important;
+      font-size: var(--font_size);
+
+      &:before {
+        height: var(--font_size);
+        width: var(--font_size);
+      }
+    }
+
+    &.with-chevron > :not(.loading) > .selectize-input {
+      padding: 7px calc(14px + var(--font_size) + var(--space_for_chevron)) 7px 14px !important;
+    }
+
+    .selectize-dropdown .option {
+      font-size: var(--font_size);
+    }
+
+    .selectize-dropdown-emptyoptionlabel {
+      height: 40px;
+    }
+  }
+
+  &.large {
+    --font_size: 18px;
+
+    .selectize-input {
+      min-height: 48px !important;
+      padding: 9.5px 19px !important;
+      font-size: var(--font_size);
+
+      &:before {
+        height: var(--font_size);
+        width: var(--font_size);
+      }
+    }
+
+    &.with-chevron > :not(.loading) > .selectize-input {
+      padding: 9.5px calc(19px + var(--font_size) + var(--space_for_chevron)) 9.5px 19px !important;
+    }
+
+    .selectize-dropdown .option {
+      font-size: var(--font_size);
+    }
+
+    .selectize-dropdown-emptyoptionlabel {
+      height: 48px;
+    }
+  }
+  // End of sizes.
+
+  // Start of types.
+  &.single {
+    width: 100%;
+
+    .selectize-input {
+      // Do not replace the below block of styles with `text-truncate`
+      // because we explicitly need `overflow: clip`.
+      overflow: clip;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      .item {
+        vertical-align: top;
+        @extend .text-truncate;
+      }
+    }
+
+    .selectize-dropdown-emptyoptionlabel {
+      text-align: left;
+    }
+  }
+
+  &.multiple {
+    @extend .single;
+
+    .item {
+      padding: 0 !important;
+      margin: 0rem !important;
+
+      background-color: inherit !important;
+
+      &:not(:first-child):before {
+        content: ", ";
+      }
+    }
+
+    .selected:after {
+      @extend .fa-light;
+
+      content: fa-content($fa-var-check);
+      left: 100%;
+      position: sticky;
+    }
+  }
+
+  &.pill {
+    .selectize-input > div {
+      padding: 0.0625rem 0.75rem;
+    }
+
+    .item {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      background-color: $gray-200 !important;
+      margin-bottom: 0rem !important;
+      border-radius: 4px !important;
+
+      .remove {
+        border: none !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        margin-left: 0.1875rem;
+        margin-right: 0.4375rem;
+      }
+    }
+
+    .locked .item {
+      background-color: white !important;
+    }
+  }
+  // End of types.
+
+  // There are no custom styles for the html select component yet.
+}

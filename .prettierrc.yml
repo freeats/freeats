@@ -1,0 +1,6 @@
+printWidth: 100
+
+overrides:
+  - files: app/views/errors/*.html
+    options:
+      printWidth: 1000
