@@ -60,9 +60,9 @@ COPY --from=build /rails /rails
 # Run and own only the runtime files as a non-root user for security
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    chown -R 1000:1000 db log storage tmp \
-RUN echo $RAILS_MASTER_KEY
+    chown -R 1000:1000 db log storage tmp
 USER 1000:1000
+RUN echo $RAILS_MASTER_KEY
 
 # Deployment options
 ENV LD_PRELOAD="libjemalloc.so.2" \
