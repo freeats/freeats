@@ -12,7 +12,7 @@ ENV BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development:test" \
     RAILS_ENV="production" \
-    RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+    RAILS_MASTER_KEY="b31d2dcae2aaa98126132474a737195e"
 
 # Install bundler
 RUN gem install -N bundler
