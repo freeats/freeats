@@ -11,8 +11,7 @@ WORKDIR /rails
 ENV BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development:test" \
-    RAILS_ENV="production" \
-    RAILS_MASTER_KEY="b31d2dcae2aaa98126132474a737195e"
+    RAILS_ENV="production"
 
 # Install bundler
 RUN gem install -N bundler
