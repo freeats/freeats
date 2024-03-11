@@ -64,8 +64,7 @@ ENV LD_PRELOAD="libjemalloc.so.2" \
     MALLOC_CONF="dirty_decay_ms:1000,narenas:2,background_thread:true"
 
 # Entrypoint prepares the database.
-CMD ["echo", "$RAILS_MASTER_KEY"]
-#ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
