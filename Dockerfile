@@ -16,6 +16,9 @@ ENV BUNDLE_DEPLOYMENT="1" \
 # Install bundler
 RUN gem install -N bundler
 
+# Throw-away build stage to reduce size of final image
+FROM base as build
+
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential curl libpq-dev node-gyp pkg-config python-is-python3 git
