@@ -29,5 +29,6 @@
   "scripts": {
     "build": "node esbuild.config.mjs",
     "build:css": "sass ./app/assets/stylesheets ./app/assets/stylesheets/entrypoints:./app/assets/builds --embed-sources --load-path=node_modules"
-  }
+  },
+  "packageManager": "yarn@1.22.18"
 }
