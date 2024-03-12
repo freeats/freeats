@@ -1,0 +1,9 @@
+= form_with model: @candidate, url: ats_candidate_path do |form|
+  - if @candidate.avatar.attached?
+    = image_tag @candidate.avatar.variant(:medium)
+    = image_tag @candidate.avatar
+    = form.label :remove_avatar
+      = form.check_box :remove_avatar
+      = 'Remove avatar'
+  = form.file_field :avatar
+  = form.submit 'Save'

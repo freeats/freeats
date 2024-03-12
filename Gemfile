@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-ruby "3.3.0"
+ruby file: ".ruby-version"
 
 gem "blazer"
 gem "bootsnap", require: false
@@ -11,6 +11,7 @@ gem "dry-initializer"
 gem "dry-logger"
 gem "dry-monads"
 gem "dry-schema"
+gem "image_processing"
 gem "jbuilder"
 gem "jsbundling-rails"
 gem "lookbook", "~> 2.0.0"

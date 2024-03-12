@@ -82,23 +82,11 @@
    $ bin/rails db:migrate         # Update the DB and the schema
    ```
 
-9. Prepare image-related libraries:
-
-   - Install ImageMagick.
-   - Check the format list:
+9. Prepare image-related library, we used it for ActiveStorage image processing:
 
      ```shell
-     $ magick identify -list format
+     $ sudo apt install libvips
      ```
-
-   - To check the format list in older verisons of ImageMagick (if 'magick' command produces an error) use:
-
-     ```shell
-     $ convert identify -list format
-     ```
-
-     If there's no JPEG in the list, install JPEG delegate using
-     [this instruction](https://unix.stackexchange.com/questions/500078/imagemagick-installing-jpeg-decode-delegate-with-existing-installation).
 
 10. Run tests to make sure everything is configured correctly:
 
