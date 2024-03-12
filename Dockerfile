@@ -38,11 +38,18 @@ RUN bundle install && \
     bundle exec bootsnap precompile --gemfile && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
+# Install node modules
+COPY --link package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
 # Copy application code
 COPY --link . .
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
+
+# Precompiling assets for production
+RUN ./bin/rails assets:precompile
 
 # Final stage for app image
 FROM base
