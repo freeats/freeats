@@ -19,5 +19,3 @@ jobs:
         with:
           git_remote_url: 'ssh://dokku@52.31.190.223:22/ats'
           ssh_private_key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
-          before_script:
-            echo "${{ secrets.DOKKU_SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add -
