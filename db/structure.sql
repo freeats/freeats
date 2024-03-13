@@ -516,7 +516,9 @@ CREATE TABLE public.location_hierarchies (
     id bigint NOT NULL,
     parent_location_id bigint,
     location_id bigint NOT NULL,
-    path public.ltree NOT NULL
+    path public.ltree NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1654,6 +1656,7 @@ ALTER TABLE ONLY public.location_hierarchies
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240313122316'),
 ('20240312134726'),
 ('20240307081926'),
 ('20240307081337'),
