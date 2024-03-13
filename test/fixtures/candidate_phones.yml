@@ -1,0 +1,15 @@
+john_phone:
+  candidate: john
+  phone: +79801239890
+  type: personal
+  source: linkedin
+  status: current
+  list_index: 1
+
+jane_phone:
+  candidate: jane
+  phone: +79801231480
+  type: work
+  source: other
+  status: current
+  list_index: 1

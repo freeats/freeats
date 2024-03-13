@@ -1,7 +1,5 @@
 john:
-  id: 1
   full_name: John Doe
 
 jane:
-  id: 2
   full_name: Jane Doe

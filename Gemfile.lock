@@ -252,6 +252,7 @@ GEM
     pg (1.5.6)
     pghero (3.4.1)
       activerecord (>= 6)
+    phonelib (0.8.7)
     psych (5.1.2)
       stringio
     public_suffix (5.0.4)
@@ -431,6 +432,7 @@ DEPENDENCIES
   mission_control-jobs
   pg (~> 1.1)
   pghero
+  phonelib
   puma (>= 5.0)
   rails (~> 7.1.0)
   rails_admin (~> 3.0)

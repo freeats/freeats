@@ -38,6 +38,50 @@ COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
+-- Name: candidate_contact_source; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.candidate_contact_source AS ENUM (
+    'bitbucket',
+    'devto',
+    'djinni',
+    'github',
+    'habr',
+    'headhunter',
+    'hunter',
+    'indeed',
+    'kendo',
+    'linkedin',
+    'nymeria',
+    'salesql',
+    'genderize',
+    'toughbyte',
+    'other'
+);
+
+
+--
+-- Name: candidate_contact_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.candidate_contact_status AS ENUM (
+    'current',
+    'outdated',
+    'invalid'
+);
+
+
+--
+-- Name: candidate_contact_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.candidate_contact_type AS ENUM (
+    'personal',
+    'work'
+);
+
+
+--
 -- Name: location_type; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -436,6 +480,42 @@ CREATE SEQUENCE public.blazer_queries_id_seq
 --
 
 ALTER SEQUENCE public.blazer_queries_id_seq OWNED BY public.blazer_queries.id;
+
+
+--
+-- Name: candidate_phones; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.candidate_phones (
+    id bigint NOT NULL,
+    candidate_id bigint NOT NULL,
+    phone character varying NOT NULL,
+    list_index integer NOT NULL,
+    type public.candidate_contact_type NOT NULL,
+    source public.candidate_contact_source DEFAULT 'other'::public.candidate_contact_source NOT NULL,
+    status public.candidate_contact_status DEFAULT 'current'::public.candidate_contact_status NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: candidate_phones_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.candidate_phones_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: candidate_phones_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.candidate_phones_id_seq OWNED BY public.candidate_phones.id;
 
 
 --
@@ -952,6 +1032,13 @@ ALTER TABLE ONLY public.blazer_queries ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: candidate_phones id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_phones ALTER COLUMN id SET DEFAULT nextval('public.candidate_phones_id_seq'::regclass);
+
+
+--
 -- Name: candidates id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1112,6 +1199,14 @@ ALTER TABLE ONLY public.blazer_dashboards
 
 ALTER TABLE ONLY public.blazer_queries
     ADD CONSTRAINT blazer_queries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: candidate_phones candidate_phones_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_phones
+    ADD CONSTRAINT candidate_phones_pkey PRIMARY KEY (id);
 
 
 --
@@ -1308,6 +1403,20 @@ CREATE INDEX index_blazer_dashboards_on_creator_id ON public.blazer_dashboards U
 --
 
 CREATE INDEX index_blazer_queries_on_creator_id ON public.blazer_queries USING btree (creator_id);
+
+
+--
+-- Name: index_candidate_phones_on_candidate_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidate_phones_on_candidate_id ON public.candidate_phones USING btree (candidate_id);
+
+
+--
+-- Name: index_candidate_phones_on_phone_and_candidate_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_candidate_phones_on_phone_and_candidate_id ON public.candidate_phones USING btree (phone, candidate_id);
 
 
 --
@@ -1634,6 +1743,14 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 
 
 --
+-- Name: candidate_phones fk_rails_cfcc7aa34d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_phones
+    ADD CONSTRAINT fk_rails_cfcc7aa34d FOREIGN KEY (candidate_id) REFERENCES public.candidates(id);
+
+
+--
 -- Name: location_hierarchies fk_rails_d680d5b704; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1656,6 +1773,7 @@ ALTER TABLE ONLY public.location_hierarchies
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240313143106'),
 ('20240313122316'),
 ('20240312134726'),
 ('20240307081926'),
