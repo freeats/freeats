@@ -1,9 +1,10 @@
-name: 'deploy'
+name: "deploy"
 
 on:
-  push:
-    branches:
-      - master
+  workflow_run:
+    workflows: ["Build and test"]
+    branches: [master]
+    types: [completed]
 
 jobs:
   deploy:
@@ -17,6 +18,6 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
-          git_remote_url: 'ssh://dokku@ats.toughbyte.com:22/ats'
+          git_remote_url: "ssh://dokku@ats.toughbyte.com:22/ats"
           ssh_private_key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
           git_push_flags: --force

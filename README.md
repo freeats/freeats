@@ -84,9 +84,9 @@
 
 9. Prepare image-related library, we used it for ActiveStorage image processing:
 
-     ```shell
-     $ sudo apt install libvips
-     ```
+   ```shell
+   $ sudo apt install libvips
+   ```
 
 10. Run tests to make sure everything is configured correctly:
 
