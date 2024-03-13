@@ -9,6 +9,147 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: ltree; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS ltree WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION ltree; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION ltree IS 'data type for hierarchical tree-like structures';
+
+
+--
+-- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
+
+
+--
+-- Name: location_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.location_type AS ENUM (
+    'city',
+    'admin_region2',
+    'admin_region1',
+    'country',
+    'set'
+);
+
+
+--
+-- Name: array_deduplicate(anyarray); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.array_deduplicate(input_array anyarray) RETURNS anyarray
+    LANGUAGE plpgsql
+    AS $$
+  BEGIN
+    RETURN ARRAY(SELECT DISTINCT unnest(input_array));
+  END
+$$;
+
+
+--
+-- Name: f_unaccent(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.f_unaccent(text) RETURNS text
+    LANGUAGE sql IMMUTABLE
+    AS $_$
+      SELECT public.unaccent('public.unaccent', $1)
+  $_$;
+
+
+--
+-- Name: location_expand_sets(bigint[]); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.location_expand_sets(location_ids bigint[]) RETURNS bigint[]
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+  DECLARE
+    sets bigint[];
+  BEGIN
+    sets := (SELECT array_agg(id) FROM locations WHERE id = ANY(location_ids) AND type = 'set');
+
+    IF sets IS NULL THEN
+      RETURN location_ids;
+    END iF;
+
+    RETURN (
+      WITH result_ids AS (
+        WITH RECURSIVE lh(location_id) AS (
+          SELECT location_id
+          FROM location_hierarchies
+          WHERE parent_location_id = ANY(sets)
+          UNION
+          SELECT location_hierarchies.location_id
+          FROM location_hierarchies, lh
+          JOIN locations l ON l.id = lh.location_id
+          WHERE parent_location_id = lh.location_id
+          AND l.type = 'set'
+        )
+        SELECT lh.location_id FROM lh
+      )
+      SELECT array_agg(id)
+      FROM locations
+      WHERE id IN (SELECT location_id FROM result_ids)
+      AND type != 'set'
+    );
+  END;
+$$;
+
+
+--
+-- Name: location_name_to_label(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.location_name_to_label(location_name text) RETURNS text
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+  BEGIN
+    RETURN regexp_replace(f_unaccent(location_name), '[^A-Za-z0-9_]', '_', 'g');
+  END;
+$$;
+
+
+--
+-- Name: location_parents(bigint); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.location_parents(loc_id bigint) RETURNS bigint[]
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+  BEGIN
+    RETURN (
+      WITH location_path AS (
+          SELECT array_agg(path) as paths
+          FROM location_hierarchies
+          WHERE location_id = loc_id
+      )
+      SELECT array_deduplicate(array_agg(location_id))
+      FROM location_hierarchies
+      WHERE path @> ANY(SELECT paths from location_path)
+      AND location_id != loc_id
+    );
+  END;
+$$;
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -333,6 +474,117 @@ CREATE SEQUENCE public.candidates_id_seq
 --
 
 ALTER SEQUENCE public.candidates_id_seq OWNED BY public.candidates.id;
+
+
+--
+-- Name: location_aliases; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.location_aliases (
+    id bigint NOT NULL,
+    location_id bigint NOT NULL,
+    alias character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: location_aliases_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.location_aliases_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: location_aliases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.location_aliases_id_seq OWNED BY public.location_aliases.id;
+
+
+--
+-- Name: location_hierarchies; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.location_hierarchies (
+    id bigint NOT NULL,
+    parent_location_id bigint,
+    location_id bigint NOT NULL,
+    path public.ltree NOT NULL
+);
+
+
+--
+-- Name: location_hierarchies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.location_hierarchies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: location_hierarchies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.location_hierarchies_id_seq OWNED BY public.location_hierarchies.id;
+
+
+--
+-- Name: locations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.locations (
+    id bigint NOT NULL,
+    geoname_id integer,
+    type public.location_type NOT NULL,
+    name character varying NOT NULL,
+    ascii_name character varying NOT NULL,
+    slug character varying,
+    country_code character varying NOT NULL,
+    country_name character varying DEFAULT ''::character varying NOT NULL,
+    latitude numeric(10,7),
+    longitude numeric(10,7),
+    population integer DEFAULT 0 NOT NULL,
+    time_zone character varying DEFAULT ''::character varying NOT NULL,
+    linkedin_geourn integer,
+    geoname_feature_code character varying DEFAULT ''::character varying NOT NULL,
+    geoname_admin1_code character varying DEFAULT ''::character varying NOT NULL,
+    geoname_admin2_code character varying DEFAULT ''::character varying NOT NULL,
+    geoname_admin3_code character varying DEFAULT ''::character varying NOT NULL,
+    geoname_admin4_code character varying DEFAULT ''::character varying NOT NULL,
+    geoname_modification_date date,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: locations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.locations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: locations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.locations_id_seq OWNED BY public.locations.id;
 
 
 --
@@ -705,6 +957,27 @@ ALTER TABLE ONLY public.candidates ALTER COLUMN id SET DEFAULT nextval('public.c
 
 
 --
+-- Name: location_aliases id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.location_aliases ALTER COLUMN id SET DEFAULT nextval('public.location_aliases_id_seq'::regclass);
+
+
+--
+-- Name: location_hierarchies id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.location_hierarchies ALTER COLUMN id SET DEFAULT nextval('public.location_hierarchies_id_seq'::regclass);
+
+
+--
+-- Name: locations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.locations ALTER COLUMN id SET DEFAULT nextval('public.locations_id_seq'::regclass);
+
+
+--
 -- Name: solid_queue_blocked_executions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -845,6 +1118,30 @@ ALTER TABLE ONLY public.blazer_queries
 
 ALTER TABLE ONLY public.candidates
     ADD CONSTRAINT candidates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: location_aliases location_aliases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.location_aliases
+    ADD CONSTRAINT location_aliases_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: location_hierarchies location_hierarchies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.location_hierarchies
+    ADD CONSTRAINT location_hierarchies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: locations locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.locations
+    ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
 
 
 --
@@ -1026,6 +1323,97 @@ CREATE INDEX index_candidates_on_recruiter_id ON public.candidates USING btree (
 
 
 --
+-- Name: index_location_aliases_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_location_aliases_on_location_id ON public.location_aliases USING btree (location_id);
+
+
+--
+-- Name: index_location_aliases_on_location_id_and_alias; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_location_aliases_on_location_id_and_alias ON public.location_aliases USING btree (location_id, alias);
+
+
+--
+-- Name: index_location_hierarchies_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_location_hierarchies_on_location_id ON public.location_hierarchies USING btree (location_id);
+
+
+--
+-- Name: index_location_hierarchies_on_parent_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_location_hierarchies_on_parent_location_id ON public.location_hierarchies USING btree (parent_location_id);
+
+
+--
+-- Name: index_location_hierarchies_on_path; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_location_hierarchies_on_path ON public.location_hierarchies USING btree (path);
+
+
+--
+-- Name: index_locations_on_country_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_country_code ON public.locations USING btree (country_code);
+
+
+--
+-- Name: index_locations_on_geoname_admin1_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_geoname_admin1_code ON public.locations USING btree (geoname_admin1_code);
+
+
+--
+-- Name: index_locations_on_geoname_admin2_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_geoname_admin2_code ON public.locations USING btree (geoname_admin2_code);
+
+
+--
+-- Name: index_locations_on_geoname_admin3_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_geoname_admin3_code ON public.locations USING btree (geoname_admin3_code);
+
+
+--
+-- Name: index_locations_on_geoname_admin4_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_geoname_admin4_code ON public.locations USING btree (geoname_admin4_code);
+
+
+--
+-- Name: index_locations_on_geoname_feature_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_geoname_feature_code ON public.locations USING btree (geoname_feature_code);
+
+
+--
+-- Name: index_locations_on_geoname_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_locations_on_geoname_id ON public.locations USING btree (geoname_id);
+
+
+--
+-- Name: index_locations_on_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_type ON public.locations USING btree (type);
+
+
+--
 -- Name: index_solid_queue_blocked_executions_for_maintenance; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1180,6 +1568,14 @@ CREATE INDEX index_solid_queue_semaphores_on_key_and_value ON public.solid_queue
 
 
 --
+-- Name: location_aliases fk_rails_1d9daa974b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.location_aliases
+    ADD CONSTRAINT fk_rails_1d9daa974b FOREIGN KEY (location_id) REFERENCES public.locations(id);
+
+
+--
 -- Name: solid_queue_failed_executions fk_rails_39bbc7a631; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1236,12 +1632,29 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 
 
 --
+-- Name: location_hierarchies fk_rails_d680d5b704; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.location_hierarchies
+    ADD CONSTRAINT fk_rails_d680d5b704 FOREIGN KEY (location_id) REFERENCES public.locations(id);
+
+
+--
+-- Name: location_hierarchies fk_rails_eb4e848cce; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.location_hierarchies
+    ADD CONSTRAINT fk_rails_eb4e848cce FOREIGN KEY (parent_location_id) REFERENCES public.locations(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240312134726'),
 ('20240307081926'),
 ('20240307081337'),
 ('20240306075855'),

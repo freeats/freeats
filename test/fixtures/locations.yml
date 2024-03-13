@@ -1,0 +1,1046 @@
+###############################################################
+# Cities
+###############################################################
+
+valencia_city:
+  name: València
+  ascii_name: Valencia
+  type: city
+  country_code: "ES"
+  country_name: "Spain"
+  slug: valencia
+  geoname_id: 2509954
+
+ta_xbiex_city:
+  name: Ta’ Xbiex
+  ascii_name: Ta' Xbiex
+  type: city
+  country_code: "MT"
+  country_name: "Malta"
+  slug: ta-xbiex
+  geoname_id: 2562320
+
+hard_city:
+  name: Hard
+  ascii_name: Hard
+  type: city
+  country_code: "AT"
+  country_name: "Austria"
+  slug: hard
+  geoname_id: 2776874
+
+haridwar_city:
+  name: Haridwar
+  ascii_name: Haridwar
+  type: city
+  country_code: "IN"
+  country_name: "India"
+  slug: haridwar
+  geoname_id: 1270351
+
+amsterdam_city:
+  name: Amsterdam
+  ascii_name: Amsterdam
+  type: city
+  country_code: "NL"
+  country_name: "Netherlands"
+  slug: amsterdam
+  geoname_id: 2759794
+
+barcelona_city:
+  name: Barcelona
+  ascii_name: Barcelona
+  type: city
+  country_code: "ES"
+  country_name: "Spain"
+  slug: barcelona
+  geoname_id: 3128760
+
+berlin_city:
+  name: Berlin
+  ascii_name: Berlin
+  type: city
+  country_code: "DE"
+  country_name: "Germany"
+  slug: berlin
+  geoname_id: 2950159
+
+boston_city:
+  name: Boston
+  ascii_name: Boston
+  type: city
+  country_code: "US"
+  country_name: "United States"
+  slug: boston
+  geoname_id: 5109797
+
+budapest_city:
+  name: Budapest
+  ascii_name: Budapest
+  type: city
+  country_code: "HU"
+  country_name: "Hungary"
+  slug: budapest
+  geoname_id: 3054643
+
+copenhagen_city:
+  name: Copenhagen
+  ascii_name: Copenhagen
+  type: city
+  country_code: "DK"
+  country_name: "Denmark"
+  slug: copenhagen
+  geoname_id: 2618425
+
+del_mar_city:
+  name: Del Mar
+  ascii_name: Del Mar
+  type: city
+  country_code: "US"
+  country_name: "United States"
+  slug: del-mar
+  geoname_id: 5342353
+
+dublin_city:
+  name: Dublin
+  ascii_name: Dublin
+  type: city
+  country_code: "IE"
+  country_name: "Ireland"
+  slug: dublin
+  geoname_id: 2964574
+
+encinitas_city:
+  name: Encinitas
+  ascii_name: Encinitas
+  type: city
+  country_code: "US"
+  country_name: "United States"
+  slug: encinitas
+  geoname_id: 5346646
+
+espoo_city:
+  name: Espoo
+  ascii_name: Espoo
+  type: city
+  country_code: "FI"
+  country_name: "Finland"
+  slug: espoo
+  geoname_id: 660158
+
+helsinki_city:
+  name: Helsinki
+  ascii_name: Helsinki
+  type: city
+  country_code: "FI"
+  country_name: "Finland"
+  slug: helsinki
+  geoname_id: 658225
+
+kyiv_city:
+  name: Kyiv
+  ascii_name: Kyiv
+  type: city
+  country_code: "UA"
+  country_name: "Ukraine"
+  slug: kyiv
+  geoname_id: 703448
+
+koeln_city:
+  name: Köln
+  ascii_name: Koeln
+  type: city
+  country_code: "DE"
+  country_name: "Germany"
+  slug: koeln
+  geoname_id: 2886242
+
+london_city:
+  name: London
+  ascii_name: London
+  type: city
+  country_code: "GB"
+  country_name: "United Kingdom"
+  slug: london
+  geoname_id: 2643743
+
+madrid_city:
+  name: Madrid
+  ascii_name: Madrid
+  type: city
+  country_code: "ES"
+  country_name: "Spain"
+  slug: madrid
+  geoname_id: 3117735
+
+moscow_city:
+  name: Moscow
+  ascii_name: Moscow
+  type: city
+  country_code: "RU"
+  country_name: "Russia"
+  slug: moscow
+  geoname_id: 524901
+
+munich_city:
+  name: Munich
+  ascii_name: Munich
+  type: city
+  country_code: "DE"
+  country_name: "Germany"
+  slug: munich
+  geoname_id: 2867714
+
+new_york_city_city:
+  name: New York City
+  ascii_name: New York City
+  type: city
+  country_code: "US"
+  country_name: "United States"
+  slug: new-york-city
+  geoname_id: 5128581
+
+nizhniy_novgorod_city:
+  name: Nizhniy Novgorod
+  ascii_name: Nizhniy Novgorod
+  type: city
+  country_code: "RU"
+  country_name: "Russia"
+  slug: nizhniy-novgorod
+  geoname_id: 520555
+
+oslo_city:
+  name: Oslo
+  ascii_name: Oslo
+  type: city
+  country_code: "NO"
+  country_name: "Norway"
+  slug: oslo
+  geoname_id: 3143244
+
+oulu_city:
+  name: Oulu
+  ascii_name: Oulu
+  type: city
+  country_code: "FI"
+  country_name: "Finland"
+  slug: oulu
+  geoname_id: 643492
+
+prague_city:
+  name: Prague
+  ascii_name: Prague
+  type: city
+  country_code: "CZ"
+  country_name: "Czech Republic"
+  slug: prague
+  geoname_id: 3067696
+
+saint_petersburg_city:
+  name: Saint Petersburg
+  ascii_name: Saint Petersburg
+  type: city
+  country_code: "RU"
+  country_name: "Russia"
+  slug: saint-petersburg
+  geoname_id: 498817
+
+solana_beach_city:
+  name: Solana Beach
+  ascii_name: Solana Beach
+  type: city
+  country_code: "US"
+  country_name: "United States"
+  slug: solana-beach
+  geoname_id: 5396974
+
+stockholm_city:
+  name: Stockholm
+  ascii_name: Stockholm
+  type: city
+  country_code: "SE"
+  country_name: "Sweden"
+  slug: stockholm
+  geoname_id: 2673730
+
+tallinn_city:
+  name: Tallinn
+  ascii_name: Tallinn
+  type: city
+  country_code: "EE"
+  country_name: "Estonia"
+  slug: tallinn
+  geoname_id: 588409
+
+tampere_city:
+  name: Tampere
+  ascii_name: Tampere
+  type: city
+  country_code: "FI"
+  country_name: "Finland"
+  slug: tampere
+  geoname_id: 634963
+
+turku_city:
+  name: Turku
+  ascii_name: Turku
+  type: city
+  country_code: "FI"
+  country_name: "Finland"
+  slug: turku
+  geoname_id: 633679
+
+vantaa_city:
+  name: Vantaa
+  ascii_name: Vantaa
+  type: city
+  country_code: "FI"
+  country_name: "Finland"
+  slug: vantaa
+  geoname_id: 632453
+
+velikiy_novgorod_city:
+  name: Velikiy Novgorod
+  ascii_name: Velikiy Novgorod
+  type: city
+  country_code: "RU"
+  country_name: "Russia"
+  slug: velikiy-novgorod
+  geoname_id: 519336
+
+vienna_city:
+  name: Vienna
+  ascii_name: Vienna
+  type: city
+  country_code: "AT"
+  country_name: "Austria"
+  slug: vienna
+  geoname_id: 2761369
+
+wellsford_city:
+  name: Wellsford
+  ascii_name: Wellsford
+  type: city
+  country_code: "NZ"
+  country_name: "New Zealand"
+  slug: wellsford
+  geoname_id: 2179532
+
+###############################################################
+# Admin regions 2
+###############################################################
+
+auckland_admin_region2:
+  name: Auckland
+  ascii_name: Auckland
+  type: admin_region2
+  country_code: "NZ"
+  country_name: "New Zealand"
+  slug:
+  geoname_id: 2193732
+
+berlin_stadt_admin_region2:
+  name: Berlin, Stadt
+  ascii_name: Berlin, Stadt
+  type: admin_region2
+  country_code: "DE"
+  country_name: "Germany"
+  slug:
+  geoname_id: 6547383
+
+dublin_city_admin_region2:
+  name: Dublin City
+  ascii_name: Dublin City
+  type: admin_region2
+  country_code: "IE"
+  country_name: "Ireland"
+  slug:
+  geoname_id: 7778677
+
+erie_county_admin_region2:
+  name: Erie County
+  ascii_name: Erie County
+  type: admin_region2
+  country_code: "US"
+  country_name: "United States"
+  slug:
+  geoname_id: 5116642
+
+gemeente_amsterdam_admin_region2:
+  name: Gemeente Amsterdam
+  ascii_name: Gemeente Amsterdam
+  type: admin_region2
+  country_code: "NL"
+  country_name: "Netherlands"
+  slug:
+  geoname_id: 2759793
+
+greater_london_admin_region2:
+  name: Greater London
+  ascii_name: Greater London
+  type: admin_region2
+  country_code: "GB"
+  country_name: "United Kingdom"
+  slug:
+  geoname_id: 2648110
+
+helsinki_admin_region2:
+  name: Helsinki
+  ascii_name: Helsinki
+  type: admin_region2
+  country_code: "FI"
+  country_name: "Finland"
+  slug:
+  geoname_id: 9610677
+
+kobenhavn_admin_region2:
+  name: København
+  ascii_name: Kobenhavn
+  type: admin_region2
+  country_code: "DK"
+  country_name: "Denmark"
+  slug:
+  geoname_id: 2618424
+
+oslo_admin_region2:
+  name: Oslo
+  ascii_name: Oslo
+  type: admin_region2
+  country_code: "NO"
+  country_name: "Norway"
+  slug:
+  geoname_id: 6453366
+
+oulu_admin_region2:
+  name: Oulu
+  ascii_name: Oulu
+  type: admin_region2
+  country_code: "FI"
+  country_name: "Finland"
+  slug:
+  geoname_id: 9610672
+
+provincia_de_madrid_admin_region2:
+  name: Provincia de Madrid
+  ascii_name: Provincia de Madrid
+  type: admin_region2
+  country_code: "ES"
+  country_name: "Spain"
+  slug:
+  geoname_id: 6355233
+
+provincia_de_barcelona_admin_region2:
+  name: Província de Barcelona
+  ascii_name: Provincia de Barcelona
+  type: admin_region2
+  country_code: "ES"
+  country_name: "Spain"
+  slug:
+  geoname_id: 3128759
+
+provincia_de_valencia_admin_region2:
+  name: Província de València
+  ascii_name: Provincia de Valencia
+  type: admin_region2
+  country_code: "ES"
+  country_name: "Spain"
+  slug:
+  geoname_id: 2509951
+
+regierungsbezirk_koeln_admin_region2:
+  name: Regierungsbezirk Köln
+  ascii_name: Regierungsbezirk Koeln
+  type: admin_region2
+  country_code: "DE"
+  country_name: "Germany"
+  slug:
+  geoname_id: 2886241
+
+san_diego_county_admin_region2:
+  name: San Diego County
+  ascii_name: San Diego County
+  type: admin_region2
+  country_code: "US"
+  country_name: "United States"
+  slug:
+  geoname_id: 5391832
+
+stockholms_kommun_admin_region2:
+  name: Stockholms Kommun
+  ascii_name: Stockholms Kommun
+  type: admin_region2
+  country_code: "SE"
+  country_name: "Sweden"
+  slug:
+  geoname_id: 2673723
+
+tallinn_admin_region2:
+  name: Tallinn
+  ascii_name: Tallinn
+  type: admin_region2
+  country_code: "EE"
+  country_name: "Estonia"
+  slug:
+  geoname_id: 862995
+
+tampere_admin_region2:
+  name: Tampere
+  ascii_name: Tampere
+  type: admin_region2
+  country_code: "FI"
+  country_name: "Finland"
+  slug:
+  geoname_id: 9610686
+
+turku_admin_region2:
+  name: Turku
+  ascii_name: Turku
+  type: admin_region2
+  country_code: "FI"
+  country_name: "Finland"
+  slug:
+  geoname_id: 9610674
+
+upper_bavaria_admin_region2:
+  name: Upper Bavaria
+  ascii_name: Upper Bavaria
+  type: admin_region2
+  country_code: "DE"
+  country_name: "Germany"
+  slug:
+  geoname_id: 2861322
+
+wien_stadt_admin_region2:
+  name: Wien Stadt
+  ascii_name: Wien Stadt
+  type: admin_region2
+  country_code: "AT"
+  country_name: "Austria"
+  slug:
+  geoname_id: 2761333
+
+###############################################################
+# Admin regions 1
+###############################################################
+
+auckland_admin_region1:
+  name: Auckland
+  ascii_name: Auckland
+  type: admin_region1
+  country_code: "NZ"
+  country_name: "New Zealand"
+  slug:
+  geoname_id: 2193734
+
+bavaria_admin_region1:
+  name: Bavaria
+  ascii_name: Bavaria
+  type: admin_region1
+  country_code: "DE"
+  country_name: "Germany"
+  slug:
+  geoname_id: 2951839
+
+budapest_admin_region1:
+  name: Budapest
+  ascii_name: Budapest
+  type: admin_region1
+  country_code: "HU"
+  country_name: "Hungary"
+  slug:
+  geoname_id: 3054638
+
+california_admin_region1:
+  name: California
+  ascii_name: California
+  type: admin_region1
+  country_code: "US"
+  country_name: "United States"
+  slug:
+  geoname_id: 5332921
+
+catalunya_admin_region1:
+  name: Catalunya
+  ascii_name: Catalunya
+  type: admin_region1
+  country_code: "ES"
+  country_name: "Spain"
+  slug:
+  geoname_id: 3336901
+
+comunidad_de_madrid_admin_region1:
+  name: Comunidad de Madrid
+  ascii_name: Comunidad de Madrid
+  type: admin_region1
+  country_code: "ES"
+  country_name: "Spain"
+  slug:
+  geoname_id: 3117732
+
+comunidad_de_valencia_admin_region1:
+  name: Comunidad de València
+  ascii_name: Comunidad de Valencia
+  type: admin_region1
+  country_code: "ES"
+  country_name: "Spain"
+  slug:
+  geoname_id: 2593113
+
+england_admin_region1:
+  name: England
+  ascii_name: England
+  type: admin_region1
+  country_code: "GB"
+  country_name: "United Kingdom"
+  slug:
+  geoname_id: 6269131
+
+harjumaa_admin_region1:
+  name: Harjumaa
+  ascii_name: Harjumaa
+  type: admin_region1
+  country_code: "EE"
+  country_name: "Estonia"
+  slug:
+  geoname_id: 592170
+
+hlavni_mesto_praha_admin_region1:
+  name: Hlavní město Praha
+  ascii_name: Hlavni mesto Praha
+  type: admin_region1
+  country_code: "CZ"
+  country_name: "Czech Republic"
+  slug:
+  geoname_id: 3067695
+
+land_berlin_admin_region1:
+  name: Land Berlin
+  ascii_name: Land Berlin
+  type: admin_region1
+  country_code: "DE"
+  country_name: "Germany"
+  slug:
+  geoname_id: 2950157
+
+leinster_admin_region1:
+  name: Leinster
+  ascii_name: Leinster
+  type: admin_region1
+  country_code: "IE"
+  country_name: "Ireland"
+  slug:
+  geoname_id: 7521314
+
+moskva_admin_region1:
+  name: Moskva
+  ascii_name: Moskva
+  type: admin_region1
+  country_code: "RU"
+  country_name: "Russia"
+  slug:
+  geoname_id: 524894
+
+new_york_admin_region1:
+  name: New York
+  ascii_name: New York
+  type: admin_region1
+  country_code: "US"
+  country_name: "United States"
+  slug:
+  geoname_id: 5128638
+
+nizhny_novgorod_oblast_admin_region1:
+  name: Nizhny Novgorod Oblast
+  ascii_name: Nizhny Novgorod Oblast
+  type: admin_region1
+  country_code: "RU"
+  country_name: "Russia"
+  slug:
+  geoname_id: 559838
+
+nordrhein_westfalen_admin_region1:
+  name: Nordrhein-Westfalen
+  ascii_name: Nordrhein-Westfalen
+  type: admin_region1
+  country_code: "DE"
+  country_name: "Germany"
+  slug:
+  geoname_id: 2861876
+
+novgorod_oblast_admin_region1:
+  name: Novgorod Oblast
+  ascii_name: Novgorod Oblast
+  type: admin_region1
+  country_code: "RU"
+  country_name: "Russia"
+  slug:
+  geoname_id: 519324
+
+oslo_county_admin_region1:
+  name: Oslo County
+  ascii_name: Oslo County
+  type: admin_region1
+  country_code: "NO"
+  country_name: "Norway"
+  slug:
+  geoname_id: 3143242
+
+pirkanmaa_admin_region1:
+  name: Pirkanmaa
+  ascii_name: Pirkanmaa
+  type: admin_region1
+  country_code: "FI"
+  country_name: "Finland"
+  slug:
+  geoname_id: 830704
+
+pohjois_pohjanmaa_admin_region1:
+  name: Pohjois-Pohjanmaa
+  ascii_name: Pohjois-Pohjanmaa
+  type: admin_region1
+  country_code: "FI"
+  country_name: "Finland"
+  slug:
+  geoname_id: 830667
+
+provincie_noord_holland_admin_region1:
+  name: Provincie Noord-Holland
+  ascii_name: Provincie Noord-Holland
+  type: admin_region1
+  country_code: "NL"
+  country_name: "Netherlands"
+  slug:
+  geoname_id: 2749879
+
+region_hovedstaden_admin_region1:
+  name: Region Hovedstaden
+  ascii_name: Region Hovedstaden
+  type: admin_region1
+  country_code: "DK"
+  country_name: "Denmark"
+  slug:
+  geoname_id: 6418538
+
+sankt_peterburg_admin_region1:
+  name: Sankt-Peterburg
+  ascii_name: Sankt-Peterburg
+  type: admin_region1
+  country_code: "RU"
+  country_name: "Russia"
+  slug:
+  geoname_id: 536203
+
+stockholm_county_admin_region1:
+  name: Stockholm County
+  ascii_name: Stockholm County
+  type: admin_region1
+  country_code: "SE"
+  country_name: "Sweden"
+  slug:
+  geoname_id: 2673722
+
+uusimaa_admin_region1:
+  name: Uusimaa
+  ascii_name: Uusimaa
+  type: admin_region1
+  country_code: "FI"
+  country_name: "Finland"
+  slug:
+  geoname_id: 830709
+
+varsinais_suomi_admin_region1:
+  name: Varsinais-Suomi
+  ascii_name: Varsinais-Suomi
+  type: admin_region1
+  country_code: "FI"
+  country_name: "Finland"
+  slug:
+  geoname_id: 830708
+
+waikato_admin_region1:
+  name: Waikato
+  ascii_name: Waikato
+  type: admin_region1
+  country_code: "NZ"
+  country_name: "New Zealand"
+  slug:
+  geoname_id: 2180293
+
+wien_admin_region1:
+  name: Wien
+  ascii_name: Wien
+  type: admin_region1
+  country_code: "AT"
+  country_name: "Austria"
+  slug:
+  geoname_id: 2761367
+
+###############################################################
+# Countries
+###############################################################
+
+armenia_country:
+  name: Armenia
+  ascii_name: Armenia
+  type: country
+  country_code: "AM"
+  country_name: "Armenia"
+  slug: armenia
+  geoname_id: 174982
+
+malta_country:
+  name: Malta
+  ascii_name: Malta
+  type: country
+  country_code: "MT"
+  country_name: "Malta"
+  slug: malta
+  geoname_id: 2562770
+
+austria_country:
+  name: Austria
+  ascii_name: Austria
+  type: country
+  country_code: "AT"
+  country_name: "Austria"
+  slug: austria
+  geoname_id: 2782113
+
+czech_republic_country:
+  name: Czech Republic
+  ascii_name: Czech Republic
+  type: country
+  country_code: "CZ"
+  country_name: "Czech Republic"
+  slug: czech-republic
+  geoname_id: 3077311
+
+denmark_country:
+  name: Denmark
+  ascii_name: Denmark
+  type: country
+  country_code: "DK"
+  country_name: "Denmark"
+  slug: denmark
+  geoname_id: 2623032
+
+estonia_country:
+  name: Estonia
+  ascii_name: Estonia
+  type: country
+  country_code: "EE"
+  country_name: "Estonia"
+  slug: estonia
+  geoname_id: 453733
+
+finland_country:
+  name: Finland
+  ascii_name: Finland
+  type: country
+  country_code: "FI"
+  country_name: "Finland"
+  slug: finland
+  geoname_id: 660013
+
+germany_country:
+  name: Germany
+  ascii_name: Germany
+  type: country
+  country_code: "DE"
+  country_name: "Germany"
+  slug: germany
+  geoname_id: 2921044
+
+hungary_country:
+  name: Hungary
+  ascii_name: Hungary
+  type: country
+  country_code: "HU"
+  country_name: "Hungary"
+  slug: hungary
+  geoname_id: 719819
+
+ireland_country:
+  name: Ireland
+  ascii_name: Ireland
+  type: country
+  country_code: "IE"
+  country_name: "Ireland"
+  slug: ireland
+  geoname_id: 2963597
+
+netherlands_country:
+  name: Netherlands
+  ascii_name: Netherlands
+  type: country
+  country_code: "NL"
+  country_name: "Netherlands"
+  slug: netherlands
+  geoname_id: 2750405
+
+new_zealand_country:
+  name: New Zealand
+  ascii_name: New Zealand
+  type: country
+  country_code: "NZ"
+  country_name: "New Zealand"
+  slug: new-zealand
+  geoname_id: 2186224
+
+norway_country:
+  name: Norway
+  ascii_name: Norway
+  type: country
+  country_code: "NO"
+  country_name: "Norway"
+  slug: norway
+  geoname_id: 3144096
+
+russia_country:
+  name: Russia
+  ascii_name: Russia
+  type: country
+  country_code: "RU"
+  country_name: "Russia"
+  slug: russia
+  geoname_id: 2017370
+
+spain_country:
+  name: Spain
+  ascii_name: Spain
+  type: country
+  country_code: "ES"
+  country_name: "Spain"
+  slug: spain
+  geoname_id: 2510769
+
+sweden_country:
+  name: Sweden
+  ascii_name: Sweden
+  type: country
+  country_code: "SE"
+  country_name: "Sweden"
+  slug: sweden
+  geoname_id: 2661886
+
+ukraine_country:
+  name: Ukraine
+  ascii_name: Ukraine
+  type: country
+  country_code: "UA"
+  country_name: "Ukraine"
+  slug: ukraine
+  geoname_id: 690791
+
+united_kingdom_country:
+  name: United Kingdom
+  ascii_name: United Kingdom
+  type: country
+  country_code: "GB"
+  country_name: "United Kingdom"
+  slug: united-kingdom
+  geoname_id: 2635167
+
+united_states_country:
+  name: United States
+  ascii_name: United States
+  type: country
+  country_code: "US"
+  country_name: "United States"
+  slug: united-states
+  geoname_id: 6252001
+
+india_country:
+  name: India
+  ascii_name: India
+  type: country
+  country_code: "IN"
+  country_name: "India"
+  slug: india
+  geoname_id: 1269750
+  population: 1352617328
+
+###############################################################
+# Sets
+###############################################################
+
+eastern_europe_set:
+  name: Eastern Europe
+  ascii_name: Eastern Europe
+  type: set
+  country_code: ""
+  country_name: ""
+  slug:
+  geoname_id: null
+
+southern_europe_set:
+  name: Southern Europe
+  ascii_name: Southern Europe
+  type: set
+  country_code: ""
+  country_name: ""
+  slug:
+  geoname_id: null
+
+western_europe_set:
+  name: Western Europe
+  ascii_name: Western Europe
+  type: set
+  country_code: ""
+  country_name: ""
+  slug:
+  geoname_id: null
+
+baltics_set:
+  name: Baltics
+  ascii_name: Baltics
+  type: set
+  country_code: ""
+  country_name: ""
+  slug:
+  geoname_id: null
+
+western_balkans_set:
+  name: Western Balkans
+  ascii_name: Western Balkans
+  type: set
+  country_code: ""
+  country_name: ""
+  slug:
+  geoname_id: null
+
+south_caucasus_set:
+  name: South Caucasus
+  ascii_name: South Caucasus
+  type: set
+  country_code: ""
+  country_name: ""
+  slug:
+  geoname_id: null
+
+central_asia_set:
+  name: Central Asia
+  ascii_name: Central Asia
+  type: set
+  country_code: ""
+  country_name: ""
+  slug:
+  geoname_id: null
+
+nordics_set:
+  name: Nordics
+  ascii_name: Nordics
+  type: set
+  country_code: ""
+  country_name: ""
+  slug:
+  geoname_id: null
+
+europe_set:
+  name: Europe
+  ascii_name: Europe
+  type: set
+  country_code: ""
+  country_name: ""
+  slug:
+  geoname_id: null

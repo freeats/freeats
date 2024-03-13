@@ -1,0 +1,543 @@
+europe:
+  location: europe_set
+  path: Europe
+
+europe-western_europe:
+  location: western_europe_set
+  parent_location: europe_set
+  path: Europe.Western_Europe
+
+europe-eastern_europe:
+  location: eastern_europe_set
+  parent_location: europe_set
+  path: Europe.Eastern_Europe
+
+europe-southern_europe:
+  location: southern_europe_set
+  parent_location: europe_set
+  path: Europe.Southern_Europe
+
+europe-nordics:
+  location: nordics_set
+  parent_location: europe_set
+  path: Europe.Nordics
+
+europe-baltics:
+  location: baltics_set
+  parent_location: europe_set
+  path: Europe.Baltics
+
+south_caucasus:
+  location: south_caucasus_set
+  path: South_Caucasus
+
+europe-western_europe-austria-wien-wien_stadt-vienna:
+  location: vienna_city
+  parent_location: wien_stadt_admin_region2
+  path: Europe.Western_Europe.Austria.Wien.Wien_Stadt.Vienna
+
+europe-western_europe-austria-hard:
+  location: hard_city
+  parent_location: austria_country
+  path: Europe.Western_Europe.Austria.Hard
+
+europe-western_europe-austria-wien-wien_stadt:
+  location: wien_stadt_admin_region2
+  parent_location: wien_admin_region1
+  path: Europe.Western_Europe.Austria.Wien.Wien_Stadt
+
+europe-western_europe-austria-wien:
+  location: wien_admin_region1
+  parent_location: austria_country
+  path: Europe.Western_Europe.Austria.Wien
+
+europe-western_europe-austria:
+  location: austria_country
+  parent_location: western_europe_set
+  path: Europe.Western_Europe.Austria
+
+europe-western_europe-germany-bavaria-upper_bavaria-munich:
+  location: munich_city
+  parent_location: upper_bavaria_admin_region2
+  path: Europe.Western_Europe.Germany.Bavaria.Upper_Bavaria.Munich
+
+europe-western_europe-germany-nordrhein_westfalen-regierungsbezirk_koeln-koeln:
+  location: koeln_city
+  parent_location: regierungsbezirk_koeln_admin_region2
+  path: Europe.Western_Europe.Germany.Nordrhein_Westfalen.Regierungsbezirk_Koln.Koln
+
+europe-western_europe-germany-land_berlin-berlin_stadt-berlin:
+  location: berlin_city
+  parent_location: berlin_stadt_admin_region2
+  path: Europe.Western_Europe.Germany.Land_Berlin.Berlin__Stadt.Berlin
+
+europe-western_europe-germany-bavaria-upper_bavaria:
+  location: upper_bavaria_admin_region2
+  parent_location: bavaria_admin_region1
+  path: Europe.Western_Europe.Germany.Bavaria.Upper_Bavaria
+
+europe-western_europe-germany-nordrhein_westfalen-regierungsbezirk_koeln:
+  location: regierungsbezirk_koeln_admin_region2
+  parent_location: nordrhein_westfalen_admin_region1
+  path: Europe.Western_Europe.Germany.Nordrhein_Westfalen.Regierungsbezirk_Koln
+
+europe-western_europe-germany-land_berlin-berlin_stadt:
+  location: berlin_stadt_admin_region2
+  parent_location: land_berlin_admin_region1
+  path: Europe.Western_Europe.Germany.Land_Berlin.Berlin__Stadt
+
+europe-western_europe-germany-bavaria:
+  location: bavaria_admin_region1
+  parent_location: germany_country
+  path: Europe.Western_Europe.Germany.Bavaria
+
+europe-western_europe-germany-nordrhein_westfalen:
+  location: nordrhein_westfalen_admin_region1
+  parent_location: germany_country
+  path: Europe.Western_Europe.Germany.Nordrhein_Westfalen
+
+europe-western_europe-germany-land_berlin:
+  location: land_berlin_admin_region1
+  parent_location: germany_country
+  path: Europe.Western_Europe.Germany.Land_Berlin
+
+europe-western_europe-germany:
+  location: germany_country
+  parent_location: western_europe_set
+  path: Europe.Western_Europe.Germany
+
+europe-western_europe-netherlands-provincie_noord_holland-gemeente_amsterdam-amsterdam:
+  location: amsterdam_city
+  parent_location: gemeente_amsterdam_admin_region2
+  path: Europe.Western_Europe.Netherlands.Provincie_Noord_Holland.Gemeente_Amsterdam.Amsterdam
+
+europe-western_europe-netherlands-provincie_noord_holland-gemeente_amsterdam:
+  location: gemeente_amsterdam_admin_region2
+  parent_location: provincie_noord_holland_admin_region1
+  path: Europe.Western_Europe.Netherlands.Provincie_Noord_Holland.Gemeente_Amsterdam
+
+europe-western_europe-netherlands-provincie_noord_holland:
+  location: provincie_noord_holland_admin_region1
+  parent_location: netherlands_country
+  path: Europe.Western_Europe.Netherlands.Provincie_Noord_Holland
+
+europe-western_europe-netherlands:
+  location: netherlands_country
+  parent_location: western_europe_set
+  path: Europe.Western_Europe.Netherlands
+
+europe-western_europe-ireland-leinster-dublin_city-dublin:
+  location: dublin_city
+  parent_location: dublin_city_admin_region2
+  path: Europe.Western_Europe.Ireland.Leinster.Dublin_City.Dublin
+
+europe-western_europe-ireland-leinster-dublin_city:
+  location: dublin_city_admin_region2
+  parent_location: leinster_admin_region1
+  path: Europe.Western_Europe.Ireland.Leinster.Dublin_City
+
+europe-western_europe-ireland-leinster:
+  location: leinster_admin_region1
+  parent_location: ireland_country
+  path: Europe.Western_Europe.Ireland.Leinster
+
+europe-western_europe-ireland:
+  location: ireland_country
+  parent_location: western_europe_set
+  path: Europe.Western_Europe.Ireland
+
+europe-eastern_europe-czech_republic-hlavni_mesto_praha-prague:
+  location: prague_city
+  parent_location: hlavni_mesto_praha_admin_region1
+  path: Europe.Eastern_Europe.Czech_Republic.Hlavni_mesto_Praha.Prague
+
+europe-eastern_europe-czech_republic-hlavni_mesto_praha:
+  location: hlavni_mesto_praha_admin_region1
+  parent_location: czech_republic_country
+  path: Europe.Eastern_Europe.Czech_Republic.Hlavni_mesto_Praha
+
+europe-eastern_europe-czech_republic:
+  location: czech_republic_country
+  parent_location: eastern_europe_set
+  path: Europe.Eastern_Europe.Czech_Republic
+
+europe-eastern_europe-hungary-budapest-budapest:
+  location: budapest_city
+  parent_location: budapest_admin_region1
+  path: Europe.Eastern_Europe.Hungary.Budapest.Budapest
+
+europe-eastern_europe-hungary-budapest:
+  location: budapest_admin_region1
+  parent_location: hungary_country
+  path: Europe.Eastern_Europe.Hungary.Budapest
+
+europe-eastern_europe-hungary:
+  location: hungary_country
+  parent_location: eastern_europe_set
+  path: Europe.Eastern_Europe.Hungary
+
+europe-southern_europe-spain-comunidad_de_madrid-provincia_de_madrid-madrid:
+  location: madrid_city
+  parent_location: provincia_de_madrid_admin_region2
+  path: Europe.Southern_Europe.Spain.Comunidad_de_Madrid.Provincia_de_Madrid.Madrid
+
+europe-southern_europe-spain-catalunya-provincia_de_barcelona-barcelona:
+  location: barcelona_city
+  parent_location: provincia_de_barcelona_admin_region2
+  path: Europe.Southern_Europe.Spain.Catalunya.Provincia_de_Barcelona.Barcelona
+
+europe-southern_europe-spain-comunidad_de_valencia-provincia_de_valencia-valencia:
+  location: valencia_city
+  parent_location: provincia_de_valencia_admin_region2
+  path: Europe.Southern_Europe.Spain.Comunidad_de_Valencia.Provincia_de_Valencia.Valencia
+
+europe-southern_europe-spain-comunidad_de_madrid-provincia_de_madrid:
+  location: provincia_de_madrid_admin_region2
+  parent_location: comunidad_de_madrid_admin_region1
+  path: Europe.Southern_Europe.Spain.Comunidad_de_Madrid.Provincia_de_Madrid
+
+europe-southern_europe-spain-catalunya-provincia_de_barcelona:
+  location: provincia_de_barcelona_admin_region2
+  parent_location: catalunya_admin_region1
+  path: Europe.Southern_Europe.Spain.Catalunya.Provincia_de_Barcelona
+
+europe-southern_europe-spain-comunidad_de_valencia-provincia_de_valencia:
+  location: provincia_de_valencia_admin_region2
+  parent_location: comunidad_de_valencia_admin_region1
+  path: Europe.Southern_Europe.Spain.Comunidad_de_Valencia.Provincia_de_Valencia
+
+europe-southern_europe-spain-comunidad_de_madrid:
+  location: comunidad_de_madrid_admin_region1
+  parent_location: spain_country
+  path: Europe.Southern_Europe.Spain.Comunidad_de_Madrid
+
+europe-southern_europe-spain-catalunya:
+  location: catalunya_admin_region1
+  parent_location: spain_country
+  path: Europe.Southern_Europe.Spain.Catalunya
+
+europe-southern_europe-spain-comunidad_de_valencia:
+  location: comunidad_de_valencia_admin_region1
+  parent_location: spain_country
+  path: Europe.Southern_Europe.Spain.Comunidad_de_Valencia
+
+europe-southern_europe-spain:
+  location: spain_country
+  parent_location: southern_europe_set
+  path: Europe.Southern_Europe.Spain
+
+europe-southern_europe-malta:
+  location: malta_country
+  parent_location: southern_europe_set
+  path: Europe.Southern_Europe.Malta
+
+europe-southern_europe-malta-ta_xbiex:
+  location: ta_xbiex_city
+  parent_location: malta_country
+  path: Europe.Southern_Europe.Malta.Ta__Xbiex
+
+europe-nordics-denmark-region_hovedstaden-kobenhavn-copenhagen:
+  location: copenhagen_city
+  parent_location: kobenhavn_admin_region2
+  path: Europe.Nordics.Denmark.Region_Hovedstaden.Kobenhavn.Copenhagen
+
+europe-nordics-denmark-region_hovedstaden-kobenhavn:
+  location: kobenhavn_admin_region2
+  parent_location: region_hovedstaden_admin_region1
+  path: Europe.Nordics.Denmark.Region_Hovedstaden.Kobenhavn
+
+europe-nordics-denmark-region_hovedstaden:
+  location: region_hovedstaden_admin_region1
+  parent_location: denmark_country
+  path: Europe.Nordics.Denmark.Region_Hovedstaden
+
+europe-nordics-denmark:
+  location: denmark_country
+  parent_location: nordics_set
+  path: Europe.Nordics.Denmark
+
+europe-nordics-norway-oslo_county-oslo-oslo:
+  location: oslo_city
+  parent_location: oslo_admin_region2
+  path: Europe.Nordics.Norway.Oslo_County.Oslo.Oslo
+
+europe-nordics-norway-oslo_county-oslo:
+  location: oslo_admin_region2
+  parent_location: oslo_county_admin_region1
+  path: Europe.Nordics.Norway.Oslo_County.Oslo
+
+europe-nordics-norway-oslo_county:
+  location: oslo_county_admin_region1
+  parent_location: norway_country
+  path: Europe.Nordics.Norway.Oslo_County
+
+europe-nordics-norway:
+  location: norway_country
+  parent_location: nordics_set
+  path: Europe.Nordics.Norway
+
+europe-nordics-sweden-stockholm_county-stockholms_kommun-stockholm:
+  location: stockholm_city
+  parent_location: stockholms_kommun_admin_region2
+  path: Europe.Nordics.Sweden.Stockholm_County.Stockholms_Kommun.Stockholm
+
+europe-nordics-sweden-stockholm_county-stockholms_kommun:
+  location: stockholms_kommun_admin_region2
+  parent_location: stockholm_county_admin_region1
+  path: Europe.Nordics.Sweden.Stockholm_County.Stockholms_Kommun
+
+europe-nordics-sweden-stockholm_county:
+  location: stockholm_county_admin_region1
+  parent_location: sweden_country
+  path: Europe.Nordics.Sweden.Stockholm_County
+
+europe-nordics-sweden:
+  location: sweden_country
+  parent_location: nordics_set
+  path: Europe.Nordics.Sweden
+
+europe-nordics-finland-varsinais_suomi-turku-turku:
+  location: turku_city
+  parent_location: turku_admin_region2
+  path: Europe.Nordics.Finland.Varsinais_Suomi.Turku.Turku
+
+europe-nordics-finland-pirkanmaa-tampere-tampere:
+  location: tampere_city
+  parent_location: tampere_admin_region2
+  path: Europe.Nordics.Finland.Pirkanmaa.Tampere.Tampere
+
+europe-nordics-finland-uusimaa-helsinki-vantaa:
+  location: vantaa_city
+  parent_location: helsinki_admin_region2
+  path: Europe.Nordics.Finland.Uusimaa.Helsinki.Vantaa
+
+europe-nordics-finland-pohjois_pohjanmaa-oulu-oulu:
+  location: oulu_city
+  parent_location: oulu_admin_region2
+  path: Europe.Nordics.Finland.Pohjois_Pohjanmaa.Oulu.Oulu
+
+europe-nordics-finland-uusimaa-helsinki-helsinki:
+  location: helsinki_city
+  parent_location: helsinki_admin_region2
+  path: Europe.Nordics.Finland.Uusimaa.Helsinki.Helsinki
+
+europe-nordics-finland-uusimaa-helsinki-espoo:
+  location: espoo_city
+  parent_location: helsinki_admin_region2
+  path: Europe.Nordics.Finland.Uusimaa.Helsinki.Espoo
+
+europe-nordics-finland-varsinais_suomi-turku:
+  location: turku_admin_region2
+  parent_location: varsinais_suomi_admin_region1
+  path: Europe.Nordics.Finland.Varsinais_Suomi.Turku
+
+europe-nordics-finland-pirkanmaa-tampere:
+  location: tampere_admin_region2
+  parent_location: pirkanmaa_admin_region1
+  path: Europe.Nordics.Finland.Pirkanmaa.Tampere
+
+europe-nordics-finland-uusimaa-helsinki:
+  location: helsinki_admin_region2
+  parent_location: uusimaa_admin_region1
+  path: Europe.Nordics.Finland.Uusimaa.Helsinki
+
+europe-nordics-finland-pohjois_pohjanmaa-oulu:
+  location: oulu_admin_region2
+  parent_location: pohjois_pohjanmaa_admin_region1
+  path: Europe.Nordics.Finland.Pohjois_Pohjanmaa.Oulu
+
+europe-nordics-finland-varsinais_suomi:
+  location: varsinais_suomi_admin_region1
+  parent_location: finland_country
+  path: Europe.Nordics.Finland.Varsinais_Suomi
+
+europe-nordics-finland-pirkanmaa:
+  location: pirkanmaa_admin_region1
+  parent_location: finland_country
+  path: Europe.Nordics.Finland.Pirkanmaa
+
+europe-nordics-finland-uusimaa:
+  location: uusimaa_admin_region1
+  parent_location: finland_country
+  path: Europe.Nordics.Finland.Uusimaa
+
+europe-nordics-finland-pohjois_pohjanmaa:
+  location: pohjois_pohjanmaa_admin_region1
+  parent_location: finland_country
+  path: Europe.Nordics.Finland.Pohjois_Pohjanmaa
+
+europe.nordics-finland:
+  location: finland_country
+  parent_location: nordics_set
+  path: Europe.Nordics.Finland
+
+europe-baltics-estonia-harjumaa-tallinn-tallinn:
+  location: tallinn_city
+  parent_location: tallinn_admin_region2
+  path: Europe.Baltics.Estonia.Harjumaa.Tallinn.Tallinn
+
+europe-baltics-estonia-harjumaa-tallinn:
+  location: tallinn_admin_region2
+  parent_location: harjumaa_admin_region1
+  path: Europe.Baltics.Estonia.Harjumaa.Tallinn
+
+europe-baltics-estonia-harjumaa:
+  location: harjumaa_admin_region1
+  parent_location: estonia_country
+  path: Europe.Baltics.Estonia.Harjumaa
+
+europe-baltics-estonia:
+  location: estonia_country
+  parent_location: baltics_set
+  path: Europe.Baltics.Estonia
+
+russia-sankt_peterburg-saint_petersburg:
+  location: saint_petersburg_city
+  parent_location: sankt_peterburg_admin_region1
+  path: Russia.Sankt_Peterburg.Saint_Petersburg
+
+russia-moskva-moscow:
+  location: moscow_city
+  parent_location: moskva_admin_region1
+  path: Russia.Moskva.Moscow
+
+russia-sankt_peterburg:
+  location: sankt_peterburg_admin_region1
+  parent_location: russia_country
+  path: Russia.Sankt_Peterburg
+
+russia-moskva:
+  location: moskva_admin_region1
+  parent_location: russia_country
+  path: Russia.Moskva
+
+russia-novgorod_oblast-velikiy_novgorod:
+  location: velikiy_novgorod_city
+  parent_location: novgorod_oblast_admin_region1
+  path: Russia.Novgorod_Oblast.Velikiy_Novgorod
+
+russia-novgorod_oblast:
+  location: novgorod_oblast_admin_region1
+  parent_location: russia_country
+  path: Russia.Novgorod_Oblast
+
+russia-nizhny_novgorod_oblast-nizhniy_novgorod:
+  location: nizhniy_novgorod_city
+  parent_location: nizhny_novgorod_oblast_admin_region1
+  path: Russia.Nizhny_Novgorod_Oblast.Nizhniy_Novgorod
+
+russia-nizhny_novgorod_oblast:
+  location: nizhny_novgorod_oblast_admin_region1
+  parent_location: russia_country
+  path: Russia.Nizhny_Novgorod_Oblast
+
+russia:
+  location: russia_country
+  path: Russia
+
+south_caucasus-armenia:
+  location: armenia_country
+  parent_location: south_caucasus_set
+  path: South_Caucasus.Armenia
+
+united_kingdom-england-greater_london-london:
+  location: london_city
+  parent_location: greater_london_admin_region2
+  path: United_Kingdom.England.Greater_London.London
+
+united_kingdom-england-greater_london:
+  location: greater_london_admin_region2
+  parent_location: england_admin_region1
+  path: United_Kingdom.England.Greater_London
+
+united_kingdom-england:
+  location: england_admin_region1
+  parent_location: united_kingdom_country
+  path: United_Kingdom.England
+
+united_kingdom:
+  location: united_kingdom_country
+  path: United_Kingdom
+
+united_states-new_york-new_york_city:
+  location: new_york_city_city
+  parent_location: new_york_admin_region1
+  path: United_States.New_York.New_York_City
+
+united_states-california-san_diego_county-del_mar:
+  location: del_mar_city
+  parent_location: san_diego_county_admin_region2
+  path: United_States.California.San_Diego_County.Del_Mar
+
+united_states-california-san_diego_county-encinitas:
+  location: encinitas_city
+  parent_location: san_diego_county_admin_region2
+  path: United_States.California.San_Diego_County.Encinitas
+
+united_states-california-san_diego_county-solana_beach:
+  location: solana_beach_city
+  parent_location: san_diego_county_admin_region2
+  path: United_States.California.San_Diego_County.Solana_Beach
+
+united_states-new_york-erie_county-boston:
+  location: boston_city
+  parent_location: erie_county_admin_region2
+  path: United_States.New_York.Erie_County.Boston
+
+united_states-california-san_diego_county:
+  location: san_diego_county_admin_region2
+  parent_location: california_admin_region1
+  path: United_States.California.San_Diego_County
+
+united_states-new_york-erie_county:
+  location: erie_county_admin_region2
+  parent_location: new_york_admin_region1
+  path: United_States.New_York.Erie_County
+
+united_states-new_york:
+  location: new_york_admin_region1
+  parent_location: united_states_country
+  path: United_States.New_York
+
+united_states-california:
+  location: california_admin_region1
+  parent_location: united_states_country
+  path: United_States.California
+
+united_states:
+  location: united_states_country
+  path: United_States
+
+new_zealand-auckland-auckland-wellsford:
+  location: wellsford_city
+  parent_location: auckland_admin_region2
+  path: New_Zealand.Auckland.Auckland.Wellsford
+
+new_zealand-waikato-auckland-wellsford:
+  location: wellsford_city
+  parent_location: auckland_admin_region2
+  path: New_Zealand.Waikato.Auckland.Wellsford
+
+new_zealand-auckland-auckland:
+  location: auckland_admin_region2
+  parent_location: auckland_admin_region1
+  path: New_Zealand.Auckland.Auckland
+
+new_zealand-waikato-auckland:
+  location: auckland_admin_region2
+  parent_location: waikato_admin_region1
+  path: New_Zealand.Waikato.Auckland
+
+new_zealand-auckland:
+  location: auckland_admin_region1
+  parent_location: new_zealand_country
+  path: New_Zealand.Auckland
+
+new_zealand-waikato:
+  location: waikato_admin_region1
+  parent_location: new_zealand_country
+  path: New_Zealand.Waikato
+
+new_zealand:
+  location: new_zealand_country
+  path: New_Zealand

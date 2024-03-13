@@ -1,0 +1,1515 @@
+valencia_city_alias1:
+  location: valencia_city
+  alias: Valencia
+valencia_city_alias2:
+  location: valencia_city
+  alias: València
+provincia_de_valencia_admin_region2_alias1:
+  location: provincia_de_valencia_admin_region2
+  alias: Província de València
+provincia_de_valencia_admin_region2_alias2:
+  location: provincia_de_valencia_admin_region2
+  alias: Província de Valencia
+comunidad_de_valencia_admin_region1_alias1:
+  location: comunidad_de_valencia_admin_region1
+  alias: Comunidad de València
+comunidad_de_valencia_admin_region1_alias2:
+  location: comunidad_de_valencia_admin_region1
+  alias: Comunidad de Valencia
+amsterdam_city_alias1:
+  location: amsterdam_city
+  alias: Amsterdam
+amsterdam_city_alias2:
+  location: amsterdam_city
+  alias: AMS
+amsterdam_city_alias3:
+  location: amsterdam_city
+  alias: Aemstelredamme
+amsterdam_city_alias4:
+  location: amsterdam_city
+  alias: Aemsterdam
+amsterdam_city_alias5:
+  location: amsterdam_city
+  alias: Amestelledamme
+amsterdam_city_alias6:
+  location: amsterdam_city
+  alias: Amesterda
+barcelona_city_alias1:
+  location: barcelona_city
+  alias: Barcelona
+barcelona_city_alias2:
+  location: barcelona_city
+  alias: BCN
+barcelona_city_alias3:
+  location: barcelona_city
+  alias: Barcellona
+barcelona_city_alias4:
+  location: barcelona_city
+  alias: Barcellonn-a
+barcelona_city_alias5:
+  location: barcelona_city
+  alias: Barcelone
+berlin_city_alias1:
+  location: berlin_city
+  alias: Berlin
+berlin_city_alias2:
+  location: berlin_city
+  alias: BER
+berlin_city_alias3:
+  location: berlin_city
+  alias: Beirlin
+berlin_city_alias4:
+  location: berlin_city
+  alias: Beirlín
+berlin_city_alias5:
+  location: berlin_city
+  alias: Berleno
+berlin_city_alias6:
+  location: berlin_city
+  alias: Berlien
+boston_city_alias1:
+  location: boston_city
+  alias: Boston
+boston_city_alias2:
+  location: boston_city
+  alias: Бостон
+budapest_city_alias1:
+  location: budapest_city
+  alias: Budapest
+budapest_city_alias2:
+  location: budapest_city
+  alias: BUD
+budapest_city_alias3:
+  location: budapest_city
+  alias: Boedapes
+budapest_city_alias4:
+  location: budapest_city
+  alias: Boedapest
+budapest_city_alias5:
+  location: budapest_city
+  alias: Boudapes
+budapest_city_alias6:
+  location: budapest_city
+  alias: Boudapeste
+copenhagen_city_alias1:
+  location: copenhagen_city
+  alias: Copenhagen
+copenhagen_city_alias2:
+  location: copenhagen_city
+  alias: CPH
+copenhagen_city_alias3:
+  location: copenhagen_city
+  alias: Cobanhavan
+copenhagen_city_alias4:
+  location: copenhagen_city
+  alias: Copenaga
+copenhagen_city_alias5:
+  location: copenhagen_city
+  alias: Copenaghen
+copenhagen_city_alias6:
+  location: copenhagen_city
+  alias: Copenaguen
+del_mar_city_alias1:
+  location: del_mar_city
+  alias: Del Mar
+del_mar_city_alias2:
+  location: del_mar_city
+  alias: de er ma
+del_mar_city_alias3:
+  location: del_mar_city
+  alias: dela mara
+del_mar_city_alias4:
+  location: del_mar_city
+  alias: dl mar  kalyfrnya
+del_mar_city_alias5:
+  location: del_mar_city
+  alias: dyl mar
+dublin_city_alias1:
+  location: dublin_city
+  alias: Dublin
+dublin_city_alias2:
+  location: dublin_city
+  alias: Baile Atha Cliath
+dublin_city_alias3:
+  location: dublin_city
+  alias: Baile Átha Cliath
+dublin_city_alias4:
+  location: dublin_city
+  alias: Ciuda de Dublin
+dublin_city_alias5:
+  location: dublin_city
+  alias: Ciudá de Dublín
+dublin_city_alias6:
+  location: dublin_city
+  alias: DUB
+encinitas_city_alias1:
+  location: encinitas_city
+  alias: Encinitas
+encinitas_city_alias2:
+  location: encinitas_city
+  alias: Ehnsinitas
+encinitas_city_alias3:
+  location: encinitas_city
+  alias: Encenitos
+encinitas_city_alias4:
+  location: encinitas_city
+  alias: Encinitos
+encinitas_city_alias5:
+  location: encinitas_city
+  alias: Ensinitas
+espoo_city_alias1:
+  location: espoo_city
+  alias: Espoo
+espoo_city_alias2:
+  location: espoo_city
+  alias: Ehspoo
+espoo_city_alias3:
+  location: espoo_city
+  alias: Esbo
+espoo_city_alias4:
+  location: espoo_city
+  alias: Espo
+espoo_city_alias5:
+  location: espoo_city
+  alias: ai si bo
+helsinki_city_alias1:
+  location: helsinki_city
+  alias: Helsinki
+helsinki_city_alias2:
+  location: helsinki_city
+  alias: Elsin'ki
+helsinki_city_alias3:
+  location: helsinki_city
+  alias: Elsinki
+helsinki_city_alias4:
+  location: helsinki_city
+  alias: Elzinki
+helsinki_city_alias5:
+  location: helsinki_city
+  alias: Gel'sinki
+helsinki_city_alias6:
+  location: helsinki_city
+  alias: HEL
+koeln_city_alias1:
+  location: koeln_city
+  alias: Koeln
+koeln_city_alias2:
+  location: koeln_city
+  alias: Augusta Ubiorum
+koeln_city_alias3:
+  location: koeln_city
+  alias: CGN
+koeln_city_alias4:
+  location: koeln_city
+  alias: Cologna
+koeln_city_alias5:
+  location: koeln_city
+  alias: Cologne
+koeln_city_alias6:
+  location: koeln_city
+  alias: Colonha
+london_city_alias1:
+  location: london_city
+  alias: London
+london_city_alias2:
+  location: london_city
+  alias: ILondon
+london_city_alias3:
+  location: london_city
+  alias: LON
+london_city_alias4:
+  location: london_city
+  alias: Lakana
+london_city_alias5:
+  location: london_city
+  alias: Landan
+london_city_alias6:
+  location: london_city
+  alias: Landen
+madrid_city_alias1:
+  location: madrid_city
+  alias: Madrid
+madrid_city_alias2:
+  location: madrid_city
+  alias: La Villa y Corte de Madrid
+madrid_city_alias3:
+  location: madrid_city
+  alias: Los Madriles
+madrid_city_alias4:
+  location: madrid_city
+  alias: Lungsod ng Madrid
+madrid_city_alias5:
+  location: madrid_city
+  alias: MAD
+madrid_city_alias6:
+  location: madrid_city
+  alias: Ma-daik-li
+moscow_city_alias1:
+  location: moscow_city
+  alias: Moscow
+moscow_city_alias2:
+  location: moscow_city
+  alias: MOW
+moscow_city_alias3:
+  location: moscow_city
+  alias: Maeskuy
+moscow_city_alias4:
+  location: moscow_city
+  alias: Maskav
+moscow_city_alias5:
+  location: moscow_city
+  alias: Maskava
+moscow_city_alias6:
+  location: moscow_city
+  alias: Maskva
+munich_city_alias1:
+  location: munich_city
+  alias: Munich
+munich_city_alias2:
+  location: munich_city
+  alias: Lungsod ng Muenchen
+munich_city_alias3:
+  location: munich_city
+  alias: Lungsod ng München
+munich_city_alias4:
+  location: munich_city
+  alias: MUC
+munich_city_alias5:
+  location: munich_city
+  alias: Minca
+munich_city_alias6:
+  location: munich_city
+  alias: Minche
+new_york_city_city_alias1:
+  location: new_york_city_city
+  alias: New York City
+new_york_city_city_alias2:
+  location: new_york_city_city
+  alias: Aebura
+new_york_city_city_alias3:
+  location: new_york_city_city
+  alias: Bandar Raya New York
+new_york_city_city_alias4:
+  location: new_york_city_city
+  alias: Big Apple
+new_york_city_city_alias5:
+  location: new_york_city_city
+  alias: Cathair Nua-Eabhrac
+new_york_city_city_alias6:
+  location: new_york_city_city
+  alias: City of New York
+nizhniy_novgorod_city_alias1:
+  location: nizhniy_novgorod_city
+  alias: Gor'kij
+nizhniy_novgorod_city_alias2:
+  location: nizhniy_novgorod_city
+  alias: Nizhniy Novgorod
+nizhniy_novgorod_city_alias3:
+  location: nizhniy_novgorod_city
+  alias: Nizhny Novgorod
+nizhniy_novgorod_city_alias4:
+  location: nizhniy_novgorod_city
+  alias: Niznij Nowgorod
+oslo_city_alias1:
+  location: oslo_city
+  alias: Oslo
+oslo_city_alias2:
+  location: oslo_city
+  alias: Asloa
+oslo_city_alias3:
+  location: oslo_city
+  alias: Christiania
+oslo_city_alias4:
+  location: oslo_city
+  alias: Kristiania
+oslo_city_alias5:
+  location: oslo_city
+  alias: OSL
+oslo_city_alias6:
+  location: oslo_city
+  alias: Ohoro
+oulu_city_alias1:
+  location: oulu_city
+  alias: Oulu
+oulu_city_alias2:
+  location: oulu_city
+  alias: OUL
+oulu_city_alias3:
+  location: oulu_city
+  alias: Ooulou
+oulu_city_alias4:
+  location: oulu_city
+  alias: Oulo
+oulu_city_alias5:
+  location: oulu_city
+  alias: Oulu linn
+prague_city_alias1:
+  location: prague_city
+  alias: Prag
+prague_city_alias2:
+  location: prague_city
+  alias: Prague
+prague_city_alias3:
+  location: prague_city
+  alias: PRG
+prague_city_alias4:
+  location: prague_city
+  alias: Praag
+prague_city_alias5:
+  location: prague_city
+  alias: Praga
+prague_city_alias6:
+  location: prague_city
+  alias: Pragae
+saint_petersburg_city_alias1:
+  location: saint_petersburg_city
+  alias: Saint Petersburg
+saint_petersburg_city_alias2:
+  location: saint_petersburg_city
+  alias: Agia Petroupole
+saint_petersburg_city_alias3:
+  location: saint_petersburg_city
+  alias: Betuyrbukh
+saint_petersburg_city_alias4:
+  location: saint_petersburg_city
+  alias: Cankt-Peterburg
+saint_petersburg_city_alias5:
+  location: saint_petersburg_city
+  alias: LED
+saint_petersburg_city_alias6:
+  location: saint_petersburg_city
+  alias: Leningrad
+solana_beach_city_alias1:
+  location: solana_beach_city
+  alias: Solana Beach
+solana_beach_city_alias2:
+  location: solana_beach_city
+  alias: Solana Bich
+solana_beach_city_alias3:
+  location: solana_beach_city
+  alias: Solana Bijch
+solana_beach_city_alias4:
+  location: solana_beach_city
+  alias: solena bica
+solana_beach_city_alias5:
+  location: solana_beach_city
+  alias: sollanabichi
+solana_beach_city_alias6:
+  location: solana_beach_city
+  alias: suo la na hai tan
+stockholm_city_alias1:
+  location: stockholm_city
+  alias: Stockholm
+stockholm_city_alias2:
+  location: stockholm_city
+  alias: Estocolm
+stockholm_city_alias3:
+  location: stockholm_city
+  alias: Estocolme
+stockholm_city_alias4:
+  location: stockholm_city
+  alias: Estocolmo
+stockholm_city_alias5:
+  location: stockholm_city
+  alias: Estocolmu
+stockholm_city_alias6:
+  location: stockholm_city
+  alias: Estocòlme
+tallinn_city_alias1:
+  location: tallinn_city
+  alias: Tallinn
+tallinn_city_alias2:
+  location: tallinn_city
+  alias: Castrum Danorum
+tallinn_city_alias3:
+  location: tallinn_city
+  alias: Kallinn
+tallinn_city_alias4:
+  location: tallinn_city
+  alias: Kolyvan
+tallinn_city_alias5:
+  location: tallinn_city
+  alias: Lindanaes
+tallinn_city_alias6:
+  location: tallinn_city
+  alias: Lindanäs
+tampere_city_alias1:
+  location: tampere_city
+  alias: Tampere
+tampere_city_alias2:
+  location: tampere_city
+  alias: TMP
+tampere_city_alias3:
+  location: tampere_city
+  alias: Tammerfors
+tampere_city_alias4:
+  location: tampere_city
+  alias: Tammerforsia
+tampere_city_alias5:
+  location: tampere_city
+  alias: Tampereh
+turku_city_alias1:
+  location: turku_city
+  alias: Turku
+turku_city_alias2:
+  location: turku_city
+  alias: Abo
+turku_city_alias3:
+  location: turku_city
+  alias: Aboa
+turku_city_alias4:
+  location: turku_city
+  alias: TKU
+turku_city_alias5:
+  location: turku_city
+  alias: Tourkou
+turku_city_alias6:
+  location: turku_city
+  alias: Turcu
+vantaa_city_alias1:
+  location: vantaa_city
+  alias: Vantaa
+vantaa_city_alias2:
+  location: vantaa_city
+  alias: Vanda
+vantaa_city_alias3:
+  location: vantaa_city
+  alias: Vanta
+vantaa_city_alias4:
+  location: vantaa_city
+  alias: Vantania
+vantaa_city_alias5:
+  location: vantaa_city
+  alias: Vantā
+velikiy_novgorod_city_alias1:
+  location: velikiy_novgorod_city
+  alias: Naugard
+velikiy_novgorod_city_alias2:
+  location: velikiy_novgorod_city
+  alias: Novgorod
+velikiy_novgorod_city_alias3:
+  location: velikiy_novgorod_city
+  alias: Velikiy Novgorod
+velikiy_novgorod_city_alias4:
+  location: velikiy_novgorod_city
+  alias: Velikij Novgorod
+vienna_city_alias1:
+  location: vienna_city
+  alias: Vienna
+vienna_city_alias2:
+  location: vienna_city
+  alias: Bec
+vienna_city_alias3:
+  location: vienna_city
+  alias: Bech
+vienna_city_alias4:
+  location: vienna_city
+  alias: Becs
+vienna_city_alias5:
+  location: vienna_city
+  alias: Beç
+vienna_city_alias6:
+  location: vienna_city
+  alias: Beč
+wellsford_city_alias1:
+  location: wellsford_city
+  alias: Wellsford
+wellsford_city_alias2:
+  location: wellsford_city
+  alias: Welsford
+auckland_admin_region2_alias1:
+  location: auckland_admin_region2
+  alias: Auckland
+auckland_admin_region2_alias2:
+  location: auckland_admin_region2
+  alias: Aucland
+auckland_admin_region2_alias3:
+  location: auckland_admin_region2
+  alias: Aucopolis
+auckland_admin_region2_alias4:
+  location: auckland_admin_region2
+  alias: Awklanda
+auckland_admin_region2_alias5:
+  location: auckland_admin_region2
+  alias: Gorad Oklend
+auckland_admin_region2_alias6:
+  location: auckland_admin_region2
+  alias: Okland
+berlin_stadt_admin_region2_alias1:
+  location: berlin_stadt_admin_region2
+  alias: Berlin, Stadt
+dublin_city_admin_region2_alias1:
+  location: dublin_city_admin_region2
+  alias: Dublin City
+dublin_city_admin_region2_alias2:
+  location: dublin_city_admin_region2
+  alias: Baile Atha Cliath
+dublin_city_admin_region2_alias3:
+  location: dublin_city_admin_region2
+  alias: Baile Átha Cliath
+erie_county_admin_region2_alias1:
+  location: erie_county_admin_region2
+  alias: Erie County
+erie_county_admin_region2_alias2:
+  location: erie_county_admin_region2
+  alias: Comitatul Erie
+erie_county_admin_region2_alias3:
+  location: erie_county_admin_region2
+  alias: Comte d'Erie
+erie_county_admin_region2_alias4:
+  location: erie_county_admin_region2
+  alias: Comte dErie
+erie_county_admin_region2_alias5:
+  location: erie_county_admin_region2
+  alias: Comté d'Erie
+erie_county_admin_region2_alias6:
+  location: erie_county_admin_region2
+  alias: Comté dÉrié
+gemeente_amsterdam_admin_region2_alias1:
+  location: gemeente_amsterdam_admin_region2
+  alias: Gemeente Amsterdam
+gemeente_amsterdam_admin_region2_alias2:
+  location: gemeente_amsterdam_admin_region2
+  alias: Amsterdam
+greater_london_admin_region2_alias1:
+  location: greater_london_admin_region2
+  alias: Greater London
+greater_london_admin_region2_alias2:
+  location: greater_london_admin_region2
+  alias: Grand Londres
+greater_london_admin_region2_alias3:
+  location: greater_london_admin_region2
+  alias: Londra
+greater_london_admin_region2_alias4:
+  location: greater_london_admin_region2
+  alias: Londres
+greater_london_admin_region2_alias5:
+  location: greater_london_admin_region2
+  alias: Stor-London
+helsinki_admin_region2_alias1:
+  location: helsinki_admin_region2
+  alias: Helsinki
+helsinki_admin_region2_alias2:
+  location: helsinki_admin_region2
+  alias: Helsingfors
+helsinki_admin_region2_alias3:
+  location: helsinki_admin_region2
+  alias: Helsingin seutukunta
+kobenhavn_admin_region2_alias1:
+  location: kobenhavn_admin_region2
+  alias: Kobenhavn
+kobenhavn_admin_region2_alias2:
+  location: kobenhavn_admin_region2
+  alias: Copenhagen
+kobenhavn_admin_region2_alias3:
+  location: kobenhavn_admin_region2
+  alias: Copenhagen municipality
+kobenhavn_admin_region2_alias4:
+  location: kobenhavn_admin_region2
+  alias: Kobenhavn kommune
+kobenhavn_admin_region2_alias5:
+  location: kobenhavn_admin_region2
+  alias: Kobenhavns
+oslo_admin_region2_alias1:
+  location: oslo_admin_region2
+  alias: Oslo
+oslo_admin_region2_alias2:
+  location: oslo_admin_region2
+  alias: Oslo kommune
+oslo_admin_region2_alias3:
+  location: oslo_admin_region2
+  alias: Osló
+oulu_admin_region2_alias1:
+  location: oulu_admin_region2
+  alias: Oulu
+oulu_admin_region2_alias2:
+  location: oulu_admin_region2
+  alias: Oulun seutukunta
+oulu_admin_region2_alias3:
+  location: oulu_admin_region2
+  alias: Uleaborg
+oulu_admin_region2_alias4:
+  location: oulu_admin_region2
+  alias: Uleåborg
+provincia_de_madrid_admin_region2_alias1:
+  location: provincia_de_madrid_admin_region2
+  alias: Provincia de Madrid
+provincia_de_madrid_admin_region2_alias2:
+  location: provincia_de_madrid_admin_region2
+  alias: Community of Madrid
+provincia_de_madrid_admin_region2_alias3:
+  location: provincia_de_madrid_admin_region2
+  alias: Comunidad de Madrid
+provincia_de_madrid_admin_region2_alias4:
+  location: provincia_de_madrid_admin_region2
+  alias: Madrid
+provincia_de_madrid_admin_region2_alias5:
+  location: provincia_de_madrid_admin_region2
+  alias: Madril
+provincia_de_madrid_admin_region2_alias6:
+  location: provincia_de_madrid_admin_region2
+  alias: Province de Madrid
+provincia_de_barcelona_admin_region2_alias1:
+  location: provincia_de_barcelona_admin_region2
+  alias: Provincia de Barcelona
+provincia_de_barcelona_admin_region2_alias2:
+  location: provincia_de_barcelona_admin_region2
+  alias: Barcelona
+provincia_de_barcelona_admin_region2_alias3:
+  location: provincia_de_barcelona_admin_region2
+  alias: Bartzelona
+provincia_de_barcelona_admin_region2_alias4:
+  location: provincia_de_barcelona_admin_region2
+  alias: Barzelona
+provincia_de_barcelona_admin_region2_alias5:
+  location: provincia_de_barcelona_admin_region2
+  alias: Periferia tis Varkelonis
+provincia_de_barcelona_admin_region2_alias6:
+  location: provincia_de_barcelona_admin_region2
+  alias: Province de Barcelone
+regierungsbezirk_koeln_admin_region2_alias1:
+  location: regierungsbezirk_koeln_admin_region2
+  alias: Regierungsbezirk Koeln
+regierungsbezirk_koeln_admin_region2_alias2:
+  location: regierungsbezirk_koeln_admin_region2
+  alias: Cologne District
+regierungsbezirk_koeln_admin_region2_alias3:
+  location: regierungsbezirk_koeln_admin_region2
+  alias: District de Cologne
+regierungsbezirk_koeln_admin_region2_alias4:
+  location: regierungsbezirk_koeln_admin_region2
+  alias: Koeln
+regierungsbezirk_koeln_admin_region2_alias5:
+  location: regierungsbezirk_koeln_admin_region2
+  alias: Köln
+san_diego_county_admin_region2_alias1:
+  location: san_diego_county_admin_region2
+  alias: San Diego County
+san_diego_county_admin_region2_alias2:
+  location: san_diego_county_admin_region2
+  alias: Comitatul San Diego
+san_diego_county_admin_region2_alias3:
+  location: san_diego_county_admin_region2
+  alias: Comitatus Didacopolitanus
+san_diego_county_admin_region2_alias4:
+  location: san_diego_county_admin_region2
+  alias: Comtat de San Diego
+san_diego_county_admin_region2_alias5:
+  location: san_diego_county_admin_region2
+  alias: Comte de San Diego
+san_diego_county_admin_region2_alias6:
+  location: san_diego_county_admin_region2
+  alias: Comté de San Diego
+stockholms_kommun_admin_region2_alias1:
+  location: stockholms_kommun_admin_region2
+  alias: Stockholms Kommun
+stockholms_kommun_admin_region2_alias2:
+  location: stockholms_kommun_admin_region2
+  alias: Stockholm
+stockholms_kommun_admin_region2_alias3:
+  location: stockholms_kommun_admin_region2
+  alias: Stockholm Municipality
+stockholms_kommun_admin_region2_alias4:
+  location: stockholms_kommun_admin_region2
+  alias: Stockholm kommune
+stockholms_kommun_admin_region2_alias5:
+  location: stockholms_kommun_admin_region2
+  alias: Stockholms stad
+tallinn_admin_region2_alias1:
+  location: tallinn_admin_region2
+  alias: Tallinn
+tampere_admin_region2_alias1:
+  location: tampere_admin_region2
+  alias: Tampere
+tampere_admin_region2_alias2:
+  location: tampere_admin_region2
+  alias: Tammerfors
+tampere_admin_region2_alias3:
+  location: tampere_admin_region2
+  alias: Tampereen seutukunta
+turku_admin_region2_alias1:
+  location: turku_admin_region2
+  alias: Turku
+turku_admin_region2_alias2:
+  location: turku_admin_region2
+  alias: Abo
+turku_admin_region2_alias3:
+  location: turku_admin_region2
+  alias: Turun seutukunta
+turku_admin_region2_alias4:
+  location: turku_admin_region2
+  alias: Åbo
+upper_bavaria_admin_region2_alias1:
+  location: upper_bavaria_admin_region2
+  alias: Upper Bavaria
+upper_bavaria_admin_region2_alias2:
+  location: upper_bavaria_admin_region2
+  alias: Alta Baviera
+upper_bavaria_admin_region2_alias3:
+  location: upper_bavaria_admin_region2
+  alias: Haute-Baviere
+upper_bavaria_admin_region2_alias4:
+  location: upper_bavaria_admin_region2
+  alias: Haute-Bavière
+upper_bavaria_admin_region2_alias5:
+  location: upper_bavaria_admin_region2
+  alias: Oberbayern
+upper_bavaria_admin_region2_alias6:
+  location: upper_bavaria_admin_region2
+  alias: Ovre Bayern
+wien_stadt_admin_region2_alias1:
+  location: wien_stadt_admin_region2
+  alias: Wien Stadt
+wien_stadt_admin_region2_alias2:
+  location: wien_stadt_admin_region2
+  alias: Viena
+wien_stadt_admin_region2_alias3:
+  location: wien_stadt_admin_region2
+  alias: Vienna
+wien_stadt_admin_region2_alias4:
+  location: wien_stadt_admin_region2
+  alias: Wien
+auckland_admin_region1_alias1:
+  location: auckland_admin_region1
+  alias: Auckland
+auckland_admin_region1_alias2:
+  location: auckland_admin_region1
+  alias: Achelandia
+auckland_admin_region1_alias3:
+  location: auckland_admin_region1
+  alias: Auckland City
+auckland_admin_region1_alias4:
+  location: auckland_admin_region1
+  alias: Grad Oklend
+auckland_admin_region1_alias5:
+  location: auckland_admin_region1
+  alias: Okland
+bavaria_admin_region1_alias1:
+  location: bavaria_admin_region1
+  alias: Bavaria
+bavaria_admin_region1_alias2:
+  location: bavaria_admin_region1
+  alias: BY
+bavaria_admin_region1_alias3:
+  location: bavaria_admin_region1
+  alias: Baejaraland
+bavaria_admin_region1_alias4:
+  location: bavaria_admin_region1
+  alias: Baian
+bavaria_admin_region1_alias5:
+  location: bavaria_admin_region1
+  alias: Baiarn
+bavaria_admin_region1_alias6:
+  location: bavaria_admin_region1
+  alias: Baieri
+budapest_admin_region1_alias1:
+  location: budapest_admin_region1
+  alias: Budapest
+budapest_admin_region1_alias2:
+  location: budapest_admin_region1
+  alias: budapeseuteu
+budapest_admin_region1_alias3:
+  location: budapest_admin_region1
+  alias: 부다페스트
+california_admin_region1_alias1:
+  location: california_admin_region1
+  alias: California
+california_admin_region1_alias2:
+  location: california_admin_region1
+  alias: Akeehashiih Hahoodzo
+california_admin_region1_alias3:
+  location: california_admin_region1
+  alias: Akééháshį́į́h Hahoodzo
+california_admin_region1_alias4:
+  location: california_admin_region1
+  alias: Albion
+california_admin_region1_alias5:
+  location: california_admin_region1
+  alias: Alta California
+california_admin_region1_alias6:
+  location: california_admin_region1
+  alias: CA
+catalunya_admin_region1_alias1:
+  location: catalunya_admin_region1
+  alias: Catalunya
+catalunya_admin_region1_alias2:
+  location: catalunya_admin_region1
+  alias: Catalogna
+catalunya_admin_region1_alias3:
+  location: catalunya_admin_region1
+  alias: Catalogne
+catalunya_admin_region1_alias4:
+  location: catalunya_admin_region1
+  alias: Catalonha
+catalunya_admin_region1_alias5:
+  location: catalunya_admin_region1
+  alias: Catalonia
+catalunya_admin_region1_alias6:
+  location: catalunya_admin_region1
+  alias: Catalonie
+comunidad_de_madrid_admin_region1_alias1:
+  location: comunidad_de_madrid_admin_region1
+  alias: Comunidad de Madrid
+comunidad_de_madrid_admin_region1_alias2:
+  location: comunidad_de_madrid_admin_region1
+  alias: Autonome Gemeinschaft Madrid
+comunidad_de_madrid_admin_region1_alias3:
+  location: comunidad_de_madrid_admin_region1
+  alias: Autonome Region Madrid
+comunidad_de_madrid_admin_region1_alias4:
+  location: comunidad_de_madrid_admin_region1
+  alias: Autonomous Region of Madrid
+comunidad_de_madrid_admin_region1_alias5:
+  location: comunidad_de_madrid_admin_region1
+  alias: Communaute de Madrid
+comunidad_de_madrid_admin_region1_alias6:
+  location: comunidad_de_madrid_admin_region1
+  alias: Communauté de Madrid
+england_admin_region1_alias1:
+  location: england_admin_region1
+  alias: England
+england_admin_region1_alias2:
+  location: england_admin_region1
+  alias: "'Ingilani"
+england_admin_region1_alias3:
+  location: england_admin_region1
+  alias: AEnglound
+england_admin_region1_alias4:
+  location: england_admin_region1
+  alias: Anghiltera
+england_admin_region1_alias5:
+  location: england_admin_region1
+  alias: Anghiltèra
+england_admin_region1_alias6:
+  location: england_admin_region1
+  alias: Anglaterra
+harjumaa_admin_region1_alias1:
+  location: harjumaa_admin_region1
+  alias: Harjumaa
+harjumaa_admin_region1_alias2:
+  location: harjumaa_admin_region1
+  alias: Comitatul Harju
+harjumaa_admin_region1_alias3:
+  location: harjumaa_admin_region1
+  alias: Comtat de Harju
+harjumaa_admin_region1_alias4:
+  location: harjumaa_admin_region1
+  alias: Comte de Harju
+harjumaa_admin_region1_alias5:
+  location: harjumaa_admin_region1
+  alias: Comté de Harju
+harjumaa_admin_region1_alias6:
+  location: harjumaa_admin_region1
+  alias: Condado de Harju
+hlavni_mesto_praha_admin_region1_alias1:
+  location: hlavni_mesto_praha_admin_region1
+  alias: Hlavni mesto Praha
+hlavni_mesto_praha_admin_region1_alias2:
+  location: hlavni_mesto_praha_admin_region1
+  alias: Capital City of Prague
+hlavni_mesto_praha_admin_region1_alias3:
+  location: hlavni_mesto_praha_admin_region1
+  alias: City of Prague
+hlavni_mesto_praha_admin_region1_alias4:
+  location: hlavni_mesto_praha_admin_region1
+  alias: Hauptstadt Prag
+hlavni_mesto_praha_admin_region1_alias5:
+  location: hlavni_mesto_praha_admin_region1
+  alias: Hlavni Mesto Praha
+land_berlin_admin_region1_alias1:
+  location: land_berlin_admin_region1
+  alias: Land Berlin
+land_berlin_admin_region1_alias2:
+  location: land_berlin_admin_region1
+  alias: BE
+land_berlin_admin_region1_alias3:
+  location: land_berlin_admin_region1
+  alias: Baarliin
+land_berlin_admin_region1_alias4:
+  location: land_berlin_admin_region1
+  alias: Baelliin
+land_berlin_admin_region1_alias5:
+  location: land_berlin_admin_region1
+  alias: Balin
+land_berlin_admin_region1_alias6:
+  location: land_berlin_admin_region1
+  alias: Barlin
+leinster_admin_region1_alias1:
+  location: leinster_admin_region1
+  alias: Leinster
+leinster_admin_region1_alias2:
+  location: leinster_admin_region1
+  alias: Coigeamh Laighean
+leinster_admin_region1_alias3:
+  location: leinster_admin_region1
+  alias: Cuige Laighean
+leinster_admin_region1_alias4:
+  location: leinster_admin_region1
+  alias: Còigeamh Laighean
+leinster_admin_region1_alias5:
+  location: leinster_admin_region1
+  alias: Cúige Laighean
+leinster_admin_region1_alias6:
+  location: leinster_admin_region1
+  alias: Lagenia
+moskva_admin_region1_alias1:
+  location: moskva_admin_region1
+  alias: Moskva
+moskva_admin_region1_alias2:
+  location: moskva_admin_region1
+  alias: Maskva
+moskva_admin_region1_alias3:
+  location: moskva_admin_region1
+  alias: Moscou
+moskva_admin_region1_alias4:
+  location: moskva_admin_region1
+  alias: Moscow
+moskva_admin_region1_alias5:
+  location: moskva_admin_region1
+  alias: Moscu
+moskva_admin_region1_alias6:
+  location: moskva_admin_region1
+  alias: Moscú
+new_york_admin_region1_alias1:
+  location: new_york_admin_region1
+  alias: New York
+new_york_admin_region1_alias2:
+  location: new_york_admin_region1
+  alias: Cene Jork
+new_york_admin_region1_alias3:
+  location: new_york_admin_region1
+  alias: Delstaten New York
+new_york_admin_region1_alias4:
+  location: new_york_admin_region1
+  alias: Eabhraig Nuadh
+new_york_admin_region1_alias5:
+  location: new_york_admin_region1
+  alias: Efrog Newydd
+new_york_admin_region1_alias6:
+  location: new_york_admin_region1
+  alias: Empire State
+nizhny_novgorod_oblast_admin_region1_alias1:
+  location: nizhny_novgorod_oblast_admin_region1
+  alias: Gor'ki Oblast
+nizhny_novgorod_oblast_admin_region1_alias2:
+  location: nizhny_novgorod_oblast_admin_region1
+  alias: Nizhegorodskaya Oblast'
+nizhny_novgorod_oblast_admin_region1_alias3:
+  location: nizhny_novgorod_oblast_admin_region1
+  alias: Nizhny Novgorod Oblast
+nizhny_novgorod_oblast_admin_region1_alias4:
+  location: nizhny_novgorod_oblast_admin_region1
+  alias: Nizjegorodskaja oblast
+nordrhein_westfalen_admin_region1_alias1:
+  location: nordrhein_westfalen_admin_region1
+  alias: Nordrhein-Westfalen
+nordrhein_westfalen_admin_region1_alias2:
+  location: nordrhein_westfalen_admin_region1
+  alias: Kuzey Ren-Vestfalya
+nordrhein_westfalen_admin_region1_alias3:
+  location: nordrhein_westfalen_admin_region1
+  alias: Land Nordrhein-Westfalen
+nordrhein_westfalen_admin_region1_alias4:
+  location: nordrhein_westfalen_admin_region1
+  alias: NRW
+nordrhein_westfalen_admin_region1_alias5:
+  location: nordrhein_westfalen_admin_region1
+  alias: NW
+nordrhein_westfalen_admin_region1_alias6:
+  location: nordrhein_westfalen_admin_region1
+  alias: Noordrijn-Westfalen
+novgorod_oblast_admin_region1_alias1:
+  location: novgorod_oblast_admin_region1
+  alias: Novgorod Oblast
+novgorod_oblast_admin_region1_alias2:
+  location: novgorod_oblast_admin_region1
+  alias: Novgorod
+novgorod_oblast_admin_region1_alias3:
+  location: novgorod_oblast_admin_region1
+  alias: Nowgorod
+novgorod_oblast_admin_region1_alias4:
+  location: novgorod_oblast_admin_region1
+  alias: Novgorodskaja oblast
+oslo_county_admin_region1_alias1:
+  location: oslo_county_admin_region1
+  alias: Oslo County
+oslo_county_admin_region1_alias2:
+  location: oslo_county_admin_region1
+  alias: Oslo
+oslo_county_admin_region1_alias3:
+  location: oslo_county_admin_region1
+  alias: Oslo Fylke
+pirkanmaa_admin_region1_alias1:
+  location: pirkanmaa_admin_region1
+  alias: Pirkanmaa
+pirkanmaa_admin_region1_alias2:
+  location: pirkanmaa_admin_region1
+  alias: Birkaland
+pirkanmaa_admin_region1_alias3:
+  location: pirkanmaa_admin_region1
+  alias: Birkaria
+pirkanmaa_admin_region1_alias4:
+  location: pirkanmaa_admin_region1
+  alias: Landskapet Birkaland
+pirkanmaa_admin_region1_alias5:
+  location: pirkanmaa_admin_region1
+  alias: Pirkanma
+pohjois_pohjanmaa_admin_region1_alias1:
+  location: pohjois_pohjanmaa_admin_region1
+  alias: Pohjois-Pohjanmaa
+pohjois_pohjanmaa_admin_region1_alias2:
+  location: pohjois_pohjanmaa_admin_region1
+  alias: Davvi-Pohjanmaa eanangoddi
+pohjois_pohjanmaa_admin_region1_alias3:
+  location: pohjois_pohjanmaa_admin_region1
+  alias: Eszak-Pohjanmaa
+pohjois_pohjanmaa_admin_region1_alias4:
+  location: pohjois_pohjanmaa_admin_region1
+  alias: Ipar Ostrobotnia
+pohjois_pohjanmaa_admin_region1_alias5:
+  location: pohjois_pohjanmaa_admin_region1
+  alias: Landskapet Norra Osterbotten
+pohjois_pohjanmaa_admin_region1_alias6:
+  location: pohjois_pohjanmaa_admin_region1
+  alias: Landskapet Norra Österbotten
+provincie_noord_holland_admin_region1_alias1:
+  location: provincie_noord_holland_admin_region1
+  alias: Provincie Noord-Holland
+provincie_noord_holland_admin_region1_alias2:
+  location: provincie_noord_holland_admin_region1
+  alias: Holanda Septentrional
+provincie_noord_holland_admin_region1_alias3:
+  location: provincie_noord_holland_admin_region1
+  alias: Holanda do Norte
+provincie_noord_holland_admin_region1_alias4:
+  location: provincie_noord_holland_admin_region1
+  alias: Hollande-Septentrionale
+provincie_noord_holland_admin_region1_alias5:
+  location: provincie_noord_holland_admin_region1
+  alias: Noard-Hollan
+provincie_noord_holland_admin_region1_alias6:
+  location: provincie_noord_holland_admin_region1
+  alias: Noard-Hollân
+region_hovedstaden_admin_region1_alias1:
+  location: region_hovedstaden_admin_region1
+  alias: Region Hovedstaden
+region_hovedstaden_admin_region1_alias2:
+  location: region_hovedstaden_admin_region1
+  alias: Capital Region
+region_hovedstaden_admin_region1_alias3:
+  location: region_hovedstaden_admin_region1
+  alias: Hauptstadtregion
+region_hovedstaden_admin_region1_alias4:
+  location: region_hovedstaden_admin_region1
+  alias: Hovedstaden
+region_hovedstaden_admin_region1_alias5:
+  location: region_hovedstaden_admin_region1
+  alias: Huvudstadsregionen
+sankt_peterburg_admin_region1_alias1:
+  location: sankt_peterburg_admin_region1
+  alias: Sankt-Peterburg
+sankt_peterburg_admin_region1_alias2:
+  location: sankt_peterburg_admin_region1
+  alias: Cathair Pheadair
+sankt_peterburg_admin_region1_alias3:
+  location: sankt_peterburg_admin_region1
+  alias: Gorod-Geroy Leningrad
+sankt_peterburg_admin_region1_alias4:
+  location: sankt_peterburg_admin_region1
+  alias: Leningrad
+sankt_peterburg_admin_region1_alias5:
+  location: sankt_peterburg_admin_region1
+  alias: Léningrad
+sankt_peterburg_admin_region1_alias6:
+  location: sankt_peterburg_admin_region1
+  alias: Peterburi
+stockholm_county_admin_region1_alias1:
+  location: stockholm_county_admin_region1
+  alias: Stockholm County
+stockholm_county_admin_region1_alias2:
+  location: stockholm_county_admin_region1
+  alias: Comte de Stockholm
+stockholm_county_admin_region1_alias3:
+  location: stockholm_county_admin_region1
+  alias: Comté de Stockholm
+stockholm_county_admin_region1_alias4:
+  location: stockholm_county_admin_region1
+  alias: Stockholm
+stockholm_county_admin_region1_alias5:
+  location: stockholm_county_admin_region1
+  alias: Stockholms Lan
+uusimaa_admin_region1_alias1:
+  location: uusimaa_admin_region1
+  alias: Uusimaa
+uusimaa_admin_region1_alias2:
+  location: uusimaa_admin_region1
+  alias: Landskapet Nyland
+uusimaa_admin_region1_alias3:
+  location: uusimaa_admin_region1
+  alias: Newland
+uusimaa_admin_region1_alias4:
+  location: uusimaa_admin_region1
+  alias: Newland Region
+uusimaa_admin_region1_alias5:
+  location: uusimaa_admin_region1
+  alias: Nilandia
+uusimaa_admin_region1_alias6:
+  location: uusimaa_admin_region1
+  alias: Nova Zemla
+varsinais_suomi_admin_region1_alias1:
+  location: varsinais_suomi_admin_region1
+  alias: Varsinais-Suomi
+varsinais_suomi_admin_region1_alias2:
+  location: varsinais_suomi_admin_region1
+  alias: Egentliga Finland
+varsinais_suomi_admin_region1_alias3:
+  location: varsinais_suomi_admin_region1
+  alias: Finland Proper
+varsinais_suomi_admin_region1_alias4:
+  location: varsinais_suomi_admin_region1
+  alias: Finlanda Propriu-Zisa
+varsinais_suomi_admin_region1_alias5:
+  location: varsinais_suomi_admin_region1
+  alias: Finlanda Propriu-Zisă
+varsinais_suomi_admin_region1_alias6:
+  location: varsinais_suomi_admin_region1
+  alias: Finlande du Sud-Ouest
+waikato_admin_region1_alias1:
+  location: waikato_admin_region1
+  alias: Waikato
+wien_admin_region1_alias1:
+  location: wien_admin_region1
+  alias: Wien
+wien_admin_region1_alias2:
+  location: wien_admin_region1
+  alias: Vena
+wien_admin_region1_alias3:
+  location: wien_admin_region1
+  alias: Viana
+wien_admin_region1_alias4:
+  location: wien_admin_region1
+  alias: Viden
+wien_admin_region1_alias5:
+  location: wien_admin_region1
+  alias: Viena
+wien_admin_region1_alias6:
+  location: wien_admin_region1
+  alias: Vienna
+austria_country_alias1:
+  location: austria_country
+  alias: Austria
+austria_country_alias2:
+  location: austria_country
+  alias: "'Aositulia"
+austria_country_alias3:
+  location: austria_country
+  alias: An Ostair
+austria_country_alias4:
+  location: austria_country
+  alias: Ao
+austria_country_alias5:
+  location: austria_country
+  alias: Aostria
+austria_country_alias6:
+  location: austria_country
+  alias: Aotrisy
+czech_republic_country_alias1:
+  location: czech_republic_country
+  alias: Czech Republic
+czech_republic_country_alias2:
+  location: czech_republic_country
+  alias: An tSeic
+czech_republic_country_alias3:
+  location: czech_republic_country
+  alias: Bohemia
+czech_republic_country_alias4:
+  location: czech_republic_country
+  alias: Ceahkka
+czech_republic_country_alias5:
+  location: czech_republic_country
+  alias: Cechia
+czech_republic_country_alias6:
+  location: czech_republic_country
+  alias: Cecland
+denmark_country_alias1:
+  location: denmark_country
+  alias: Denmark
+denmark_country_alias2:
+  location: denmark_country
+  alias: An Danmhairg
+denmark_country_alias3:
+  location: denmark_country
+  alias: Daeaenmark
+denmark_country_alias4:
+  location: denmark_country
+  alias: Daenemark
+denmark_country_alias5:
+  location: denmark_country
+  alias: Danaen
+denmark_country_alias6:
+  location: denmark_country
+  alias: Danemalaku
+estonia_country_alias1:
+  location: estonia_country
+  alias: Estonia
+estonia_country_alias2:
+  location: estonia_country
+  alias: "'Esitonia"
+estonia_country_alias3:
+  location: estonia_country
+  alias: An Eastoin
+estonia_country_alias4:
+  location: estonia_country
+  alias: An Eastóin
+estonia_country_alias5:
+  location: estonia_country
+  alias: E-xto-ni-a
+estonia_country_alias6:
+  location: estonia_country
+  alias: E-xto-ni-a (Estonia)
+finland_country_alias1:
+  location: finland_country
+  alias: Finland
+finland_country_alias2:
+  location: finland_country
+  alias: An Fhionlainn
+finland_country_alias3:
+  location: finland_country
+  alias: Felande
+finland_country_alias4:
+  location: finland_country
+  alias: Fenland
+finland_country_alias5:
+  location: finland_country
+  alias: Fenlann
+finland_country_alias6:
+  location: finland_country
+  alias: Filande
+germany_country_alias1:
+  location: germany_country
+  alias: Germany
+germany_country_alias2:
+  location: germany_country
+  alias: A' Ghearmailt
+germany_country_alias3:
+  location: germany_country
+  alias: Alamagn
+germany_country_alias4:
+  location: germany_country
+  alias: Alemagne
+germany_country_alias5:
+  location: germany_country
+  alias: Alemaina
+germany_country_alias6:
+  location: germany_country
+  alias: Alemana
+hungary_country_alias1:
+  location: hungary_country
+  alias: Hungary
+hungary_country_alias2:
+  location: hungary_country
+  alias: A Magyar Koeztarsasag
+hungary_country_alias3:
+  location: hungary_country
+  alias: A Magyar Koztarsasag
+hungary_country_alias4:
+  location: hungary_country
+  alias: A Magyar Köztársaság
+hungary_country_alias5:
+  location: hungary_country
+  alias: A Magyar Nepkoeztarsasag
+hungary_country_alias6:
+  location: hungary_country
+  alias: A Magyar Nepkoztarsasag
+ireland_country_alias1:
+  location: ireland_country
+  alias: Ireland
+ireland_country_alias2:
+  location: ireland_country
+  alias: "'Aealani"
+ireland_country_alias3:
+  location: ireland_country
+  alias: Aereland
+ireland_country_alias4:
+  location: ireland_country
+  alias: Ai-len
+ireland_country_alias5:
+  location: ireland_country
+  alias: Aialan
+ireland_country_alias6:
+  location: ireland_country
+  alias: Airija
+netherlands_country_alias1:
+  location: netherlands_country
+  alias: Netherlands
+netherlands_country_alias2:
+  location: netherlands_country
+  alias: Alankomaat
+netherlands_country_alias3:
+  location: netherlands_country
+  alias: An Isiltir
+netherlands_country_alias4:
+  location: netherlands_country
+  alias: An Ísiltír
+netherlands_country_alias5:
+  location: netherlands_country
+  alias: Bas Payis
+netherlands_country_alias6:
+  location: netherlands_country
+  alias: Belanda
+new_zealand_country_alias1:
+  location: new_zealand_country
+  alias: New Zealand
+new_zealand_country_alias2:
+  location: new_zealand_country
+  alias: 10.1073/pnas.0801507105
+new_zealand_country_alias3:
+  location: new_zealand_country
+  alias: An Nua-Shealainn
+new_zealand_country_alias4:
+  location: new_zealand_country
+  alias: An Nua-Shéalainn
+new_zealand_country_alias5:
+  location: new_zealand_country
+  alias: Aotearoa
+new_zealand_country_alias6:
+  location: new_zealand_country
+  alias: Bag-o nga Zelanda
+norway_country_alias1:
+  location: norway_country
+  alias: Norway
+norway_country_alias2:
+  location: norway_country
+  alias: An Iorua
+norway_country_alias3:
+  location: norway_country
+  alias: Kingdom of Norway
+norway_country_alias4:
+  location: norway_country
+  alias: Kongeriget Norge
+norway_country_alias5:
+  location: norway_country
+  alias: Kongeriket Noreg
+norway_country_alias6:
+  location: norway_country
+  alias: Kongeriket Norge
+russia_country_alias1:
+  location: russia_country
+  alias: Russia
+russia_country_alias2:
+  location: russia_country
+  alias: Conaidhm na Ruise
+russia_country_alias3:
+  location: russia_country
+  alias: Cónaidhm na Rúise
+russia_country_alias4:
+  location: russia_country
+  alias: Den russiske foderasjon
+russia_country_alias5:
+  location: russia_country
+  alias: Den russiske føderasjon
+russia_country_alias6:
+  location: russia_country
+  alias: Errusia
+spain_country_alias1:
+  location: spain_country
+  alias: Spain
+spain_country_alias2:
+  location: spain_country
+  alias: An Spainn
+spain_country_alias3:
+  location: spain_country
+  alias: An Spàinn
+spain_country_alias4:
+  location: spain_country
+  alias: An Spáinn
+spain_country_alias5:
+  location: spain_country
+  alias: Caxtillan
+spain_country_alias6:
+  location: spain_country
+  alias: Esipanye
+sweden_country_alias1:
+  location: sweden_country
+  alias: Sweden
+sweden_country_alias2:
+  location: sweden_country
+  alias: An tSualainn
+sweden_country_alias3:
+  location: sweden_country
+  alias: Isvec
+sweden_country_alias4:
+  location: sweden_country
+  alias: Isvetzia
+sweden_country_alias5:
+  location: sweden_country
+  alias: Iswidhan
+sweden_country_alias6:
+  location: sweden_country
+  alias: Kingdom of Sweden
+united_kingdom_country_alias1:
+  location: united_kingdom_country
+  alias: United Kingdom
+united_kingdom_country_alias2:
+  location: united_kingdom_country
+  alias: Ahendiman Nkabom
+united_kingdom_country_alias3:
+  location: united_kingdom_country
+  alias: An Riocht Aontaithe
+united_kingdom_country_alias4:
+  location: united_kingdom_country
+  alias: An Rioghachd Aonaichte
+united_kingdom_country_alias5:
+  location: united_kingdom_country
+  alias: An Rìoghachd Aonaichte
+united_kingdom_country_alias6:
+  location: united_kingdom_country
+  alias: An Ríocht Aontaithe
+united_states_country_alias1:
+  location: united_states_country
+  alias: United States
+united_states_country_alias2:
+  location: united_states_country
+  alias: ABD
+united_states_country_alias3:
+  location: united_states_country
+  alias: ALeaa-Oko ti Amerika
+united_states_country_alias4:
+  location: united_states_country
+  alias: Ameerika UEhendriigid
+united_states_country_alias5:
+  location: united_states_country
+  alias: Ameerika Ühendriigid
+united_states_country_alias6:
+  location: united_states_country
+  alias: Amelika
+baltics_set_alias1:
+  location: baltics_set
+  alias: Baltics
+eastern_europe_set_alias1:
+  location: eastern_europe_set
+  alias: Eastern Europe
+southern_europe_set_alias1:
+  location: southern_europe_set
+  alias: Southern Europe
+western_europe_set_alias1:
+  location: western_europe_set
+  alias: Western Europe
+nordics_set_alias1:
+  location: nordics_set
+  alias: Nordics
+europe_set_alias1:
+  location: europe_set
+  alias: Europe
+hard_city_alias1:
+  location: hard_city
+  alias: Hard
+haridwar_city_alias1:
+  location: haridwar_city
+  alias: Haridwar
+haridwar_city_alias2:
+  location: haridwar_city
+  alias: Hardwar
+haridwar_city_alias3:
+  location: haridwar_city
+  alias: Haridvar
