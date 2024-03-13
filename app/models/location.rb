@@ -2,14 +2,14 @@
 
 class Location < ApplicationRecord
   self.inheritance_column = nil
-  self.ignored_columns += %w[
-    geoname_feature_code
-    geoname_modification_date
-    geoname_admin1_code
-    geoname_admin2_code
-    geoname_admin3_code
-    geoname_admin4_code
-  ]
+  # self.ignored_columns += %w[
+  #   geoname_feature_code
+  #   geoname_modification_date
+  #   geoname_admin1_code
+  #   geoname_admin2_code
+  #   geoname_admin3_code
+  #   geoname_admin4_code
+  # ]
 
   has_many :hierarchies, class_name: "LocationHierarchy", dependent: :restrict_with_exception
   has_many :children_hierarchies,
@@ -33,6 +33,18 @@ class Location < ApplicationRecord
   validates :geoname_id, uniqueness: true, allow_nil: true
   validates :type, presence: true
 
+  def self.worldwide_mock
+    worldwide_location = Location.new
+
+    class << worldwide_location
+      def short_name
+        "Worldwide"
+      end
+    end
+
+    worldwide_location
+  end
+
   def short_name
     case type
     when "country", "set"
@@ -44,18 +56,6 @@ class Location < ApplicationRecord
 
   def rails_admin_name
     short_name
-  end
-
-  def self.worldwide_mock
-    worldwide_location = Location.new
-
-    class << worldwide_location
-      def short_name
-        "Worldwide"
-      end
-    end
-
-    worldwide_location
   end
 
   def child_of?(parents)
