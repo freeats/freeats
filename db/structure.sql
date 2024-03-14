@@ -55,7 +55,6 @@ CREATE TYPE public.candidate_contact_source AS ENUM (
     'nymeria',
     'salesql',
     'genderize',
-    'toughbyte',
     'other'
 );
 
@@ -1835,6 +1834,7 @@ ALTER TABLE ONLY public.location_hierarchies
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240314080741'),
 ('20240313143106'),
 ('20240313122316'),
 ('20240312134726'),
