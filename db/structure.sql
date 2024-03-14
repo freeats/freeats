@@ -310,6 +310,38 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: attachment_informations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.attachment_informations (
+    id bigint NOT NULL,
+    is_cv boolean,
+    active_storage_attachment_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: attachment_informations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.attachment_informations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: attachment_informations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.attachment_informations_id_seq OWNED BY public.attachment_informations.id;
+
+
+--
 -- Name: blazer_audits; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -997,6 +1029,13 @@ ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAU
 
 
 --
+-- Name: attachment_informations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.attachment_informations ALTER COLUMN id SET DEFAULT nextval('public.attachment_informations_id_seq'::regclass);
+
+
+--
 -- Name: blazer_audits id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1159,6 +1198,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: attachment_informations attachment_informations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.attachment_informations
+    ADD CONSTRAINT attachment_informations_pkey PRIMARY KEY (id);
 
 
 --
@@ -1347,6 +1394,13 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 --
 
 CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.active_storage_variant_records USING btree (blob_id, variation_digest);
+
+
+--
+-- Name: index_attachment_informations_on_active_storage_attachment_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_attachment_informations_on_active_storage_attachment_id ON public.attachment_informations USING btree (active_storage_attachment_id);
 
 
 --
@@ -1711,6 +1765,14 @@ ALTER TABLE ONLY public.solid_queue_ready_executions
 
 
 --
+-- Name: attachment_informations fk_rails_89a7cd7423; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.attachment_informations
+    ADD CONSTRAINT fk_rails_89a7cd7423 FOREIGN KEY (active_storage_attachment_id) REFERENCES public.active_storage_attachments(id);
+
+
+--
 -- Name: active_storage_variant_records fk_rails_993965df05; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1776,6 +1838,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240313143106'),
 ('20240313122316'),
 ('20240312134726'),
+('20240312105257'),
 ('20240307081926'),
 ('20240307081337'),
 ('20240306075855'),
