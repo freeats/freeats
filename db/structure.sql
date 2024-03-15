@@ -10,6 +10,20 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: citext; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION citext; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
+
+
+--
 -- Name: ltree; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -511,6 +525,43 @@ CREATE SEQUENCE public.blazer_queries_id_seq
 --
 
 ALTER SEQUENCE public.blazer_queries_id_seq OWNED BY public.blazer_queries.id;
+
+
+--
+-- Name: candidate_email_addresses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.candidate_email_addresses (
+    id bigint NOT NULL,
+    candidate_id bigint NOT NULL,
+    address public.citext NOT NULL,
+    list_index integer NOT NULL,
+    type public.candidate_contact_type NOT NULL,
+    source public.candidate_contact_source DEFAULT 'other'::public.candidate_contact_source NOT NULL,
+    status public.candidate_contact_status DEFAULT 'current'::public.candidate_contact_status NOT NULL,
+    url character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: candidate_email_addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.candidate_email_addresses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: candidate_email_addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.candidate_email_addresses_id_seq OWNED BY public.candidate_email_addresses.id;
 
 
 --
@@ -1070,6 +1121,13 @@ ALTER TABLE ONLY public.blazer_queries ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: candidate_email_addresses id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_email_addresses ALTER COLUMN id SET DEFAULT nextval('public.candidate_email_addresses_id_seq'::regclass);
+
+
+--
 -- Name: candidate_phones id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1245,6 +1303,14 @@ ALTER TABLE ONLY public.blazer_dashboards
 
 ALTER TABLE ONLY public.blazer_queries
     ADD CONSTRAINT blazer_queries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: candidate_email_addresses candidate_email_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_email_addresses
+    ADD CONSTRAINT candidate_email_addresses_pkey PRIMARY KEY (id);
 
 
 --
@@ -1456,6 +1522,20 @@ CREATE INDEX index_blazer_dashboards_on_creator_id ON public.blazer_dashboards U
 --
 
 CREATE INDEX index_blazer_queries_on_creator_id ON public.blazer_queries USING btree (creator_id);
+
+
+--
+-- Name: index_candidate_email_addresses_on_candidate_id_and_address; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_candidate_email_addresses_on_candidate_id_and_address ON public.candidate_email_addresses USING btree (candidate_id, address);
+
+
+--
+-- Name: index_candidate_email_addresses_on_candidate_id_and_list_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_candidate_email_addresses_on_candidate_id_and_list_index ON public.candidate_email_addresses USING btree (candidate_id, list_index);
 
 
 --
@@ -1740,6 +1820,14 @@ ALTER TABLE ONLY public.location_aliases
 
 
 --
+-- Name: candidate_email_addresses fk_rails_3561be77a4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_email_addresses
+    ADD CONSTRAINT fk_rails_3561be77a4 FOREIGN KEY (candidate_id) REFERENCES public.candidates(id);
+
+
+--
 -- Name: solid_queue_failed_executions fk_rails_39bbc7a631; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1834,6 +1922,7 @@ ALTER TABLE ONLY public.location_hierarchies
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240314085122'),
 ('20240314080741'),
 ('20240313143106'),
 ('20240313122316'),

@@ -1,0 +1,15 @@
+john_email_address:
+  candidate: john
+  address: john@gmail.com
+  list_index: 1
+  type: personal
+  source: linkedin
+  status: current
+
+jane_email_address:
+  candidate: jane
+  address: jane@gmail.com
+  list_index: 1
+  type: work
+  source: other
+  status: current
