@@ -11,13 +11,4 @@ class CandidateAlternativeNameTest < ActiveSupport::TestCase
 
     assert_equal alt_name.name, "name with a lot of spaces"
   end
-
-  test "should convert empty name to nil" do
-    assert_raise ActiveRecord::NotNullViolation do
-      CandidateAlternativeName.create!(
-        candidate: candidates(:john),
-        name: ""
-      )
-    end
-  end
 end

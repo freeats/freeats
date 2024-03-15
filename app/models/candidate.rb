@@ -24,7 +24,7 @@ class Candidate < ApplicationRecord
 
   has_many_attached :files
 
-  strip_attributes collapse_spaces: true, only: :full_name
+  strip_attributes collapse_spaces: true, allow_empty: true, only: :full_name
 
   def destroy_file_attachment(attachment)
     transaction do
