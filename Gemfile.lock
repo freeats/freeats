@@ -79,7 +79,7 @@ GEM
       minitest (>= 5.1)
       mutex_m
       tzinfo (~> 2.0)
-    addressable (2.8.6)
+    addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
     base64 (0.2.0)
@@ -155,6 +155,7 @@ GEM
     ffi (1.16.3)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    hashie (5.0.0)
     htmlbeautifier (1.4.3)
     htmlentities (4.3.4)
     i18n (1.14.1)
@@ -417,6 +418,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  addressable (= 2.8.1)
   blazer
   bootsnap
   capybara
@@ -427,6 +429,7 @@ DEPENDENCIES
   dry-logger
   dry-monads
   dry-schema
+  hashie
   image_processing
   jbuilder
   jsbundling-rails

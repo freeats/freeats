@@ -1,0 +1,9 @@
+john_link:
+  candidate: john
+  url: "https://linkedin.com/john"
+  status: current
+
+jane_link:
+  candidate: jane
+  url: "https://linkedin.com/jane"
+  status: current

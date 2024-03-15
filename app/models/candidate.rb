@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Candidate < ApplicationRecord
+  has_many :links,
+           class_name: "CandidateLink",
+           dependent: :destroy,
+           inverse_of: :candidate
   has_many :alternative_names,
            class_name: "CandidateAlternativeName",
            dependent: :destroy,

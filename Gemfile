@@ -30,6 +30,10 @@ gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "view_component", "~> 3.0"
 gem "phonelib"
+gem "hashie"
+# TODO: remove version restriction after fixing URL validation in the gem
+# https://github.com/sporkmonger/addressable/issues/511
+gem "addressable", "2.8.1"
 gem "strip_attributes"
 
 group :development, :test do

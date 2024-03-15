@@ -597,6 +597,39 @@ ALTER SEQUENCE public.candidate_email_addresses_id_seq OWNED BY public.candidate
 
 
 --
+-- Name: candidate_links; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.candidate_links (
+    id bigint NOT NULL,
+    candidate_id bigint NOT NULL,
+    url character varying NOT NULL,
+    status public.candidate_contact_status DEFAULT 'current'::public.candidate_contact_status NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: candidate_links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.candidate_links_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: candidate_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.candidate_links_id_seq OWNED BY public.candidate_links.id;
+
+
+--
 -- Name: candidate_phones; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1167,6 +1200,13 @@ ALTER TABLE ONLY public.candidate_email_addresses ALTER COLUMN id SET DEFAULT ne
 
 
 --
+-- Name: candidate_links id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_links ALTER COLUMN id SET DEFAULT nextval('public.candidate_links_id_seq'::regclass);
+
+
+--
 -- Name: candidate_phones id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1358,6 +1398,14 @@ ALTER TABLE ONLY public.candidate_alternative_names
 
 ALTER TABLE ONLY public.candidate_email_addresses
     ADD CONSTRAINT candidate_email_addresses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: candidate_links candidate_links_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_links
+    ADD CONSTRAINT candidate_links_pkey PRIMARY KEY (id);
 
 
 --
@@ -1590,6 +1638,13 @@ CREATE UNIQUE INDEX index_candidate_email_addresses_on_candidate_id_and_address 
 --
 
 CREATE UNIQUE INDEX index_candidate_email_addresses_on_candidate_id_and_list_index ON public.candidate_email_addresses USING btree (candidate_id, list_index);
+
+
+--
+-- Name: index_candidate_links_on_candidate_id_and_url; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_candidate_links_on_candidate_id_and_url ON public.candidate_links USING btree (candidate_id, url);
 
 
 --
@@ -1978,12 +2033,21 @@ ALTER TABLE ONLY public.location_hierarchies
 
 
 --
+-- Name: candidate_links fk_rails_ff2d75d07e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_links
+    ADD CONSTRAINT fk_rails_ff2d75d07e FOREIGN KEY (candidate_id) REFERENCES public.candidates(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240315094556'),
 ('20240314143743'),
 ('20240314085122'),
 ('20240314080741'),
