@@ -43,3 +43,6 @@ esbuild_meta.json
 
 # RubyMine
 .idea/*
+
+# Debug tools
+/.byebug_history

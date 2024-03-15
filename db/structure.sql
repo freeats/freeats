@@ -528,6 +528,38 @@ ALTER SEQUENCE public.blazer_queries_id_seq OWNED BY public.blazer_queries.id;
 
 
 --
+-- Name: candidate_alternative_names; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.candidate_alternative_names (
+    id bigint NOT NULL,
+    candidate_id bigint NOT NULL,
+    name character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: candidate_alternative_names_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.candidate_alternative_names_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: candidate_alternative_names_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.candidate_alternative_names_id_seq OWNED BY public.candidate_alternative_names.id;
+
+
+--
 -- Name: candidate_email_addresses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1121,6 +1153,13 @@ ALTER TABLE ONLY public.blazer_queries ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: candidate_alternative_names id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_alternative_names ALTER COLUMN id SET DEFAULT nextval('public.candidate_alternative_names_id_seq'::regclass);
+
+
+--
 -- Name: candidate_email_addresses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1303,6 +1342,14 @@ ALTER TABLE ONLY public.blazer_dashboards
 
 ALTER TABLE ONLY public.blazer_queries
     ADD CONSTRAINT blazer_queries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: candidate_alternative_names candidate_alternative_names_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_alternative_names
+    ADD CONSTRAINT candidate_alternative_names_pkey PRIMARY KEY (id);
 
 
 --
@@ -1522,6 +1569,13 @@ CREATE INDEX index_blazer_dashboards_on_creator_id ON public.blazer_dashboards U
 --
 
 CREATE INDEX index_blazer_queries_on_creator_id ON public.blazer_queries USING btree (creator_id);
+
+
+--
+-- Name: index_candidate_alternative_names_on_candidate_id_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_candidate_alternative_names_on_candidate_id_and_name ON public.candidate_alternative_names USING btree (candidate_id, name);
 
 
 --
@@ -1860,6 +1914,14 @@ ALTER TABLE ONLY public.attachment_informations
 
 
 --
+-- Name: candidate_alternative_names fk_rails_8aef3d4c1f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_alternative_names
+    ADD CONSTRAINT fk_rails_8aef3d4c1f FOREIGN KEY (candidate_id) REFERENCES public.candidates(id);
+
+
+--
 -- Name: active_storage_variant_records fk_rails_993965df05; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1922,6 +1984,7 @@ ALTER TABLE ONLY public.location_hierarchies
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240314143743'),
 ('20240314085122'),
 ('20240314080741'),
 ('20240313143106'),
