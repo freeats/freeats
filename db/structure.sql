@@ -704,6 +704,36 @@ ALTER SEQUENCE public.candidates_id_seq OWNED BY public.candidates.id;
 
 
 --
+-- Name: email_threads; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.email_threads (
+    id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: email_threads_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.email_threads_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: email_threads_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.email_threads_id_seq OWNED BY public.email_threads.id;
+
+
+--
 -- Name: location_aliases; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1221,6 +1251,13 @@ ALTER TABLE ONLY public.candidates ALTER COLUMN id SET DEFAULT nextval('public.c
 
 
 --
+-- Name: email_threads id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_threads ALTER COLUMN id SET DEFAULT nextval('public.email_threads_id_seq'::regclass);
+
+
+--
 -- Name: location_aliases id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1422,6 +1459,14 @@ ALTER TABLE ONLY public.candidate_phones
 
 ALTER TABLE ONLY public.candidates
     ADD CONSTRAINT candidates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_threads email_threads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_threads
+    ADD CONSTRAINT email_threads_pkey PRIMARY KEY (id);
 
 
 --
@@ -2047,6 +2092,7 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240315150905'),
 ('20240315094556'),
 ('20240314143743'),
 ('20240314085122'),
