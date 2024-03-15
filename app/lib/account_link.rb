@@ -24,9 +24,18 @@ class AccountLink
 
     normalized_link =
       case @uri.domain
-      when "github.com", /hh\.(ru|kz)/
+      when /hh\.(ru|kz)/
         path = @uri.path.last == "/" ? @uri.path[0...-1] : @uri.path
         "https://#{@uri.domain}#{path.downcase}"
+      when "github.com"
+        splited_path = @uri.path.split("/").filter(&:present?)
+        username = splited_path.shift
+
+        downcased_url_part = [username].join("/").downcase
+        other_url_part = splited_path.join("/")
+
+        normalized_link = "https://#{@uri.domain}/#{downcased_url_part}/#{other_url_part}"
+        normalized_link.last == "/" ? normalized_link[0...-1] : normalized_link
       when "gitlab.io"
         # Here we pull everything except `www` and `gitlab.io`
         # from the left side of the link.
