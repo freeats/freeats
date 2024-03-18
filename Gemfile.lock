@@ -156,6 +156,11 @@ GEM
     ffi (1.16.3)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    gon (6.4.0)
+      actionpack (>= 3.0.20)
+      i18n (>= 0.7)
+      multi_json
+      request_store (>= 1.0)
     hashie (5.0.0)
     htmlbeautifier (1.4.3)
     htmlentities (4.3.4)
@@ -223,6 +228,7 @@ GEM
       stimulus-rails
       turbo-rails
     msgpack (1.7.2)
+    multi_json (1.15.0)
     mutex_m (0.2.0)
     nested_form (0.3.2)
     net-imap (0.4.10)
@@ -312,6 +318,8 @@ GEM
     regexp_parser (2.9.0)
     reline (0.4.3)
       io-console (~> 0.5)
+    request_store (1.6.0)
+      rack (>= 1.4)
     rexml (3.2.6)
     rouge (4.2.0)
     rubocop (1.61.0)
@@ -431,6 +439,7 @@ DEPENDENCIES
   dry-logger
   dry-monads
   dry-schema
+  gon
   hashie
   image_processing
   jbuilder

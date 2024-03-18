@@ -4,6 +4,9 @@ source "https://rubygems.org"
 
 ruby file: ".ruby-version"
 
+# TODO: remove version restriction after fixing URL validation in the gem
+# https://github.com/sporkmonger/addressable/issues/511
+gem "addressable", "2.8.1"
 gem "blazer"
 gem "bootsnap", require: false
 gem "cssbundling-rails"
@@ -11,6 +14,8 @@ gem "dry-initializer"
 gem "dry-logger"
 gem "dry-monads"
 gem "dry-schema"
+gem "gon"
+gem "hashie"
 gem "image_processing"
 gem "jbuilder"
 gem "jsbundling-rails"
@@ -18,6 +23,7 @@ gem "lookbook", "~> 2.0.0"
 gem "mission_control-jobs"
 gem "pg", "~> 1.1"
 gem "pghero"
+gem "phonelib"
 gem "puma", ">= 5.0"
 gem "rails", "~> 7.1.0"
 gem "rails_admin", "~> 3.0"
@@ -26,20 +32,15 @@ gem "slim-rails"
 gem "solid_queue"
 gem "sprockets-rails"
 gem "stimulus-rails"
+gem "strip_attributes"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "view_component", "~> 3.0"
-gem "phonelib"
-gem "hashie"
-# TODO: remove version restriction after fixing URL validation in the gem
-# https://github.com/sporkmonger/addressable/issues/511
-gem "addressable", "2.8.1"
-gem "strip_attributes"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[mri windows]
   gem "byebug", platforms: %i[mri mingw x64_mingw]
+  gem "debug", platforms: %i[mri windows]
   gem "rubocop", require: false
   gem "rubocop-minitest", require: false
   gem "rubocop-performance", require: false

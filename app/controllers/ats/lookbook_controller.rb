@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Ats::LookbookController < ApplicationController
+class ATS::LookbookController < ApplicationController
   # TODO: add authentication before accessing the lookbook.
 
   def fetch_options_for_select_component_preview

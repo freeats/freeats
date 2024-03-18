@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-class Ats::CandidatesController < ApplicationController
+class ATS::CandidatesController < ApplicationController
+  layout "ats/application"
+
+  def index; end
+
   def show
     @candidate = Candidate.find(params[:id])
 

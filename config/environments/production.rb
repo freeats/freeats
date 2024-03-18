@@ -14,7 +14,7 @@ Rails.application.configure do
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
 
-  config.autoload_lib(ignore: %w(rubocop))
+  config.autoload_lib(ignore: %w[rubocop])
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false

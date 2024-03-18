@@ -1,0 +1,14 @@
+$font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
+
+// Bootstrap
+@import "../src/shared/variables";
+@import "../src/shared/colors";
+@import "bootstrap/scss/bootstrap";
+
+// Custom component styles
+@import "../src/shared/components";
+
+@import "../src/shared/scaffolds";
+@import "../src/shared/profile";
+@import "../src/shared/navbar";
+@import "../src/shared/footer";

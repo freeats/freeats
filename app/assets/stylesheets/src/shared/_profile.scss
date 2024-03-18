@@ -1,0 +1,29 @@
+.profile-button {
+  button {
+    padding: 0;
+    margin: 0;
+
+    &:after {
+      content: none;
+    }
+  }
+
+  .profile-avatar-thumbnail {
+    @extend .rounded-circle;
+    max-height: 32px;
+    max-width: 32px;
+    border: 1px solid $gray-900;
+    background-color: $white;
+  }
+
+  .dropdown-item {
+    font-size: 14px;
+  }
+  a.dropdown-item:visited {
+    color: $navbar-text;
+  }
+
+  input {
+    outline: none;
+  }
+}

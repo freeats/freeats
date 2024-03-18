@@ -43,11 +43,11 @@ class CreateLocations < ActiveRecord::Migration[6.1]
               sets bigint[];
             BEGIN
               sets := (SELECT array_agg(id) FROM locations WHERE id = ANY(location_ids) AND type = 'set');
-    
+
               IF sets IS NULL THEN
                 RETURN location_ids;
               END iF;
-    
+
               RETURN (
                 WITH result_ids AS (
                   WITH RECURSIVE lh(location_id) AS (
@@ -70,7 +70,7 @@ class CreateLocations < ActiveRecord::Migration[6.1]
               );
             END;
           $$ LANGUAGE plpgsql IMMUTABLE;
-    
+
           CREATE FUNCTION location_parents(loc_id bigint) RETURNS bigint[] AS $$
             BEGIN
               RETURN (

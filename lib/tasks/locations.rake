@@ -16,7 +16,7 @@ namespace :locations do
     if ActiveRecord::Base.connection.table_exists?("location_hierarchies_backup")
       raise StandardError,
             "location_hierarchies_backup table exists! " \
-              "Please run `rails locations:remove_location_hierarchies_backup_table` first!"
+            "Please run `rails locations:remove_location_hierarchies_backup_table` first!"
     end
 
     backup_sql = "CREATE TABLE location_hierarchies_backup AS TABLE location_hierarchies;"
@@ -29,9 +29,9 @@ namespace :locations do
     HubLog.info("Done")
     HubLog.info("=" * 50)
     HubLog.info("Please run `rails locations:remove_location_hierarchies_backup_table` task " \
-                  "to remove backup table if everything is fine.")
+                "to remove backup table if everything is fine.")
     HubLog.info("Or run `rails locations:restore_location_hierarchies_from_backup_table` " \
-                  "task to restore `location_hierarchies` table from the backup table.")
+                "task to restore `location_hierarchies` table from the backup table.")
     HubLog.info("=" * 50)
   end
 
@@ -65,7 +65,7 @@ namespace :locations do
 
     HubLog.info("Done")
     HubLog.info("Please run `rails locations:remove_location_hierarchies_backup_table` task " \
-                  "to remove backup table if everything is fine.")
+                "to remove backup table if everything is fine.")
   end
 
   task fill_location_aliases: :environment do

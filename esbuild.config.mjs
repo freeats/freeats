@@ -5,7 +5,11 @@ import fs from "node:fs";
 
 const result = await esbuild
   .build({
-    entryPoints: ["entrypoints/lookbook.js"],
+    entryPoints: [
+      "entrypoints/lookbook.js",
+      "entrypoints/fontawesome_all.js",
+      "entrypoints/ats.js",
+    ],
     bundle: true,
     sourcemap: true,
     metafile: true,

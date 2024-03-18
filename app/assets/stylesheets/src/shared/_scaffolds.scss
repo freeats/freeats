@@ -1,0 +1,44 @@
+$footer-min-height: 117px;
+
+html,
+body {
+  height: 100%;
+  min-width: 320px;
+  margin: 0;
+}
+
+// place the footer at the bottom of the page
+.wrapper {
+  min-height: calc(100% - #{$footer-min-height});
+}
+
+.notification {
+  @extend .alert;
+}
+
+#alerts {
+  position: relative;
+  top: -8px;
+
+  .notification {
+    margin-bottom: 16px;
+    padding: 8px 30px 8px 16px;
+    border-radius: 0.25rem;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 24px;
+
+    svg {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      width: 12px !important;
+    }
+  }
+}
+
+.notification-close {
+  cursor: pointer;
+  margin-left: 12px;
+}
