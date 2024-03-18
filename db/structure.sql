@@ -666,6 +666,37 @@ ALTER SEQUENCE public.candidate_phones_id_seq OWNED BY public.candidate_phones.i
 
 
 --
+-- Name: candidate_sources; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.candidate_sources (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: candidate_sources_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.candidate_sources_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: candidate_sources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.candidate_sources_id_seq OWNED BY public.candidate_sources.id;
+
+
+--
 -- Name: candidates; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1244,6 +1275,13 @@ ALTER TABLE ONLY public.candidate_phones ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: candidate_sources id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_sources ALTER COLUMN id SET DEFAULT nextval('public.candidate_sources_id_seq'::regclass);
+
+
+--
 -- Name: candidates id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1451,6 +1489,14 @@ ALTER TABLE ONLY public.candidate_links
 
 ALTER TABLE ONLY public.candidate_phones
     ADD CONSTRAINT candidate_phones_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: candidate_sources candidate_sources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_sources
+    ADD CONSTRAINT candidate_sources_pkey PRIMARY KEY (id);
 
 
 --
@@ -2092,6 +2138,7 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240318034734'),
 ('20240315150905'),
 ('20240315094556'),
 ('20240314143743'),

@@ -21,6 +21,9 @@ class Candidate < ApplicationRecord
            dependent: :destroy,
            inverse_of: :candidate,
            foreign_key: :candidate_id
+  belongs_to :source,
+             class_name: "CandidateSource",
+             optional: true
 
   has_one_attached :avatar do |attachable|
     attachable.variant(:medium, resize_to_fill: [400, 400], preprocessed: true)
