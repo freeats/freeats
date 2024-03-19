@@ -713,7 +713,8 @@ CREATE TABLE public.candidates (
     updated_at timestamp(6) without time zone NOT NULL,
     headline character varying DEFAULT ''::character varying NOT NULL,
     telegram character varying DEFAULT ''::character varying NOT NULL,
-    skype character varying DEFAULT ''::character varying NOT NULL
+    skype character varying DEFAULT ''::character varying NOT NULL,
+    candidate_source_id bigint
 );
 
 
@@ -1850,6 +1851,13 @@ CREATE UNIQUE INDEX index_candidate_phones_on_phone_and_candidate_id ON public.c
 
 
 --
+-- Name: index_candidates_on_candidate_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidates_on_candidate_source_id ON public.candidates USING btree (candidate_source_id);
+
+
+--
 -- Name: index_candidates_on_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2131,6 +2139,14 @@ ALTER TABLE ONLY public.location_aliases
 
 
 --
+-- Name: candidates fk_rails_21931277a5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidates
+    ADD CONSTRAINT fk_rails_21931277a5 FOREIGN KEY (candidate_source_id) REFERENCES public.candidate_sources(id);
+
+
+--
 -- Name: candidate_email_addresses fk_rails_3561be77a4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2257,6 +2273,7 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240318083527'),
 ('20240318051606'),
 ('20240318045509'),
 ('20240318034734'),
