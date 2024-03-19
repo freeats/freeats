@@ -707,11 +707,13 @@ CREATE TABLE public.candidates (
     full_name character varying NOT NULL,
     company character varying,
     merged_to integer,
-    resume_updated_at timestamp without time zone,
     last_activity_at timestamp without time zone DEFAULT clock_timestamp() NOT NULL,
-    dont_contant boolean DEFAULT false NOT NULL,
+    blacklisted boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    headline character varying DEFAULT ''::character varying NOT NULL,
+    telegram character varying DEFAULT ''::character varying NOT NULL,
+    skype character varying DEFAULT ''::character varying NOT NULL
 );
 
 
@@ -2258,6 +2260,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240318051606'),
 ('20240318045509'),
 ('20240318034734'),
+('20240318030310'),
 ('20240315150905'),
 ('20240315094556'),
 ('20240314143743'),

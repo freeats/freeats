@@ -24,6 +24,7 @@ class Candidate < ApplicationRecord
   belongs_to :source,
              class_name: "CandidateSource",
              optional: true
+  belongs_to :location, optional: true
 
   has_one_attached :avatar do |attachable|
     attachable.variant(:medium, resize_to_fill: [400, 400], preprocessed: true)
