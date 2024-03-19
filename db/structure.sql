@@ -878,6 +878,71 @@ ALTER SEQUENCE public.locations_id_seq OWNED BY public.locations.id;
 
 
 --
+-- Name: note_threads; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.note_threads (
+    id bigint NOT NULL,
+    notable_type character varying NOT NULL,
+    notable_id bigint NOT NULL,
+    hidden boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: note_threads_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.note_threads_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: note_threads_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.note_threads_id_seq OWNED BY public.note_threads.id;
+
+
+--
+-- Name: notes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notes (
+    id bigint NOT NULL,
+    text text DEFAULT ''::text NOT NULL,
+    note_thread_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: notes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.notes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.notes_id_seq OWNED BY public.notes.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1317,6 +1382,20 @@ ALTER TABLE ONLY public.locations ALTER COLUMN id SET DEFAULT nextval('public.lo
 
 
 --
+-- Name: note_threads id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.note_threads ALTER COLUMN id SET DEFAULT nextval('public.note_threads_id_seq'::regclass);
+
+
+--
+-- Name: notes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notes ALTER COLUMN id SET DEFAULT nextval('public.notes_id_seq'::regclass);
+
+
+--
 -- Name: solid_queue_blocked_executions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1537,6 +1616,22 @@ ALTER TABLE ONLY public.location_hierarchies
 
 ALTER TABLE ONLY public.locations
     ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: note_threads note_threads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.note_threads
+    ADD CONSTRAINT note_threads_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notes notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notes
+    ADD CONSTRAINT notes_pkey PRIMARY KEY (id);
 
 
 --
@@ -1858,6 +1953,20 @@ CREATE INDEX index_locations_on_type ON public.locations USING btree (type);
 
 
 --
+-- Name: index_note_threads_on_notable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_note_threads_on_notable ON public.note_threads USING btree (notable_type, notable_id);
+
+
+--
+-- Name: index_notes_on_note_thread_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notes_on_note_thread_id ON public.notes USING btree (note_thread_id);
+
+
+--
 -- Name: index_solid_queue_blocked_executions_for_maintenance; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2036,6 +2145,14 @@ ALTER TABLE ONLY public.solid_queue_failed_executions
 
 
 --
+-- Name: notes fk_rails_4a1d11a9b2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notes
+    ADD CONSTRAINT fk_rails_4a1d11a9b2 FOREIGN KEY (note_thread_id) REFERENCES public.note_threads(id);
+
+
+--
 -- Name: solid_queue_blocked_executions fk_rails_4cd34e2228; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2138,6 +2255,8 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240318051606'),
+('20240318045509'),
 ('20240318034734'),
 ('20240315150905'),
 ('20240315094556'),
