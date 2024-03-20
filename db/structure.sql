@@ -108,6 +108,32 @@ CREATE TYPE public.location_type AS ENUM (
 
 
 --
+-- Name: position_change_status_reason; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.position_change_status_reason AS ENUM (
+    'other',
+    'new_position',
+    'deprioritized',
+    'filled',
+    'no_longer_relevant',
+    'cancelled'
+);
+
+
+--
+-- Name: position_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.position_status AS ENUM (
+    'draft',
+    'active',
+    'passive',
+    'closed'
+);
+
+
+--
 -- Name: array_deduplicate(anyarray); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -946,6 +972,39 @@ ALTER SEQUENCE public.notes_id_seq OWNED BY public.notes.id;
 
 
 --
+-- Name: positions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.positions (
+    id bigint NOT NULL,
+    status public.position_status DEFAULT 'draft'::public.position_status NOT NULL,
+    name character varying NOT NULL,
+    change_status_reason public.position_change_status_reason DEFAULT 'new_position'::public.position_change_status_reason NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: positions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.positions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: positions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.positions_id_seq OWNED BY public.positions.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1399,6 +1458,13 @@ ALTER TABLE ONLY public.notes ALTER COLUMN id SET DEFAULT nextval('public.notes_
 
 
 --
+-- Name: positions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.positions_id_seq'::regclass);
+
+
+--
 -- Name: solid_queue_blocked_executions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1635,6 +1701,14 @@ ALTER TABLE ONLY public.note_threads
 
 ALTER TABLE ONLY public.notes
     ADD CONSTRAINT notes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: positions positions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.positions
+    ADD CONSTRAINT positions_pkey PRIMARY KEY (id);
 
 
 --
@@ -2273,6 +2347,7 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240319154220'),
 ('20240318083527'),
 ('20240318051606'),
 ('20240318045509'),
