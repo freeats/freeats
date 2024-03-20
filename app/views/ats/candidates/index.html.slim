@@ -1,0 +1,24 @@
+- ats_title("Candidates")
+
+= render "grid_form_filters", grid: @candidates_grid
+
+ruby:
+  candidates = @candidates_grid.assets.without_count
+
+.row.align-items-center.mb-3.row-gap-2
+  - if @candidates_count > @candidates_grid.assets.limit_value
+    .col-12.col-lg-auto
+      = paginate(@candidates_grid.assets, theme: "ats")
+  .col-12.col-lg
+    b> Candidates:
+    = render PrettyNumberComponent.new(@candidates_count)
+  .col-auto
+    = render ButtonLinkComponent.new(new_ats_candidate_path,
+                                     size: :small,
+                                     data: { turbo_frame: :turbo_modal_window })
+      | Add candidate
+
+= datagrid_table(@candidates_grid, candidates)
+
+- if @candidates_count > @candidates_grid.assets.limit_value
+  = paginate(@candidates_grid.assets, theme: "ats")

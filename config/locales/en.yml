@@ -28,5 +28,42 @@
 #       enabled: "ON"
 
 en:
+  datetime:
+    distance_in_words:
+      short:
+        about_x_hours:
+          one: 1 hour
+          other: "%{count} hours"
+        about_x_months:
+          one: 1 month
+          other: "%{count} months"
+        about_x_years:
+          one: 1 year
+          other: "%{count} years"
+        almost_x_years:
+          one: 1 year
+          other: "%{count} years"
+        half_a_minute: 1 minute
+        less_than_x_minutes:
+          one: 1 minute
+          other: "%{count} minutes"
+        less_than_x_seconds:
+          one: 1 second
+          other: "%{count} seconds"
+        over_x_years:
+          one: 1 year
+          other: "%{count} years"
+        x_days:
+          one: 1 day
+          other: "%{count} days"
+        x_minutes:
+          one: 1 minute
+          other: "%{count} minutes"
+        x_months:
+          one: 1 month
+          other: "%{count} months"
+        x_seconds:
+          one: 1 second
+          other: "%{count} seconds"
   footer:
     copyright: © %{current_year} Toughbyte

@@ -541,3 +541,27 @@ new_zealand-waikato:
 new_zealand:
   location: new_zealand_country
   path: New_Zealand
+
+india:
+  location: india_country
+  path: India
+
+india-haridwar:
+  location: haridwar_city
+  path: India.Haridwar
+
+central_asia:
+  location: central_asia_set
+  path: Central_Asia
+
+ukraine:
+  location: ukraine_country
+  path: Ukraine
+
+ukraine-kyiv:
+  location: kyiv_city
+  path: Ukraine.Kyiv
+
+western_balkans:
+  location: western_balkans_set
+  path: Western_Balkans

@@ -1,0 +1,8 @@
+<%# Please don't convert this file to Slim %>
+
+<%# https://github.com/bogdan/datagrid/issues/141 %>
+<tr id="<%= dom_id(asset) %>" class="<%= options[:cycle] && cycle(*options[:cycle]) %> <%= grid.respond_to?(:column_class) ? grid.column_class(asset) : "" %>">
+  <% grid.html_columns(*options[:columns]).each do |column| %>
+    <td class="<%= datagrid_column_classes(grid, column) %>"><%= datagrid_value(grid, column, asset) %></td>
+  <% end %>
+</tr>

@@ -113,6 +113,8 @@ GEM
     cssbundling-rails (1.4.0)
       railties (>= 6.0.0)
     csv (3.2.8)
+    datagrid (1.8.1)
+      railties (>= 6.0)
     date (3.3.4)
     debug (1.9.1)
       irb (~> 1.10)
@@ -433,6 +435,7 @@ DEPENDENCIES
   byebug
   capybara
   cssbundling-rails
+  datagrid
   debug
   dockerfile-rails (>= 1.6)
   dry-initializer
@@ -444,6 +447,7 @@ DEPENDENCIES
   image_processing
   jbuilder
   jsbundling-rails
+  kaminari
   lookbook (~> 2.0.0)
   mission_control-jobs
   pg (~> 1.1)

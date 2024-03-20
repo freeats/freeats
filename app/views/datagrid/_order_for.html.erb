@@ -1,0 +1,14 @@
+<%# Please don't convert this file to Slim %>
+
+<div class="order d-flex">
+  <%= link_to(
+      content_tag(:i, nil, class: 'fas fa-arrow-up'),
+      datagrid_order_path(grid, column, false),
+      data: { turbo_frame: "_top" },
+      class: "asc pe-1") %>
+  <%= link_to(
+      content_tag(:i, nil, class: 'fas fa-arrow-down'),
+      datagrid_order_path(grid, column, true),
+      data: { turbo_frame: "_top" },
+      class: "desc") %>
+</div>

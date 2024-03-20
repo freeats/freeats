@@ -12,7 +12,18 @@ Rails.application.routes.draw do
       get :fetch_options_for_select_component_preview
     end
 
-    resources :candidates
+    resources :candidates do
+      get ":tab", to: "candidates#show", on: :member,
+                  tab: /info/, as: "tab"
+    end
+  end
+
+  namespace :api, defaults: { format: "json" } do
+    namespace :v1 do
+      resource :locations, only: [] do
+        get :fetch_locations
+      end
+    end
   end
 
   # TODO: check that admin interface is protected by authentication.

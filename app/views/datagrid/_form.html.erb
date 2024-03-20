@@ -1,0 +1,23 @@
+<%# Please don't convert this file to Slim %>
+
+<div class="card mb-3">
+  <div class="card-body p-3">
+    <%= form_with model: grid, **options, local: true do |f| -%>
+      <div class="row">
+        <% grid.filters.each do |filter| %>
+          <div class="datagrid-filter filter mb-3 col-xl-2 col-md-3 col-sm-4 <%= filter.options[:class] %>">
+            <%= grid_filter(form: f, grid:, filter:) %>
+          </div>
+        <% end -%>
+      </div>
+      <div class="datagrid-actions hstack gap-2">
+        <%= render ButtonComponent.new(size: :small) do %>
+          <% I18n.t('datagrid.form.search') %>
+        <% end %>
+        <%= render ButtonLinkComponent.new(url_for(grid.to_param => {}), variant: :secondary, size: :small) do %>
+          <% I18n.t('datagrid.form.reset') %>
+        <% end %>
+      </div>
+    <% end -%>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+// This file contains everything that can't be properly categorized.
+
+.small-avatar-thumbnail {
+  @extend .rounded;
+  max-height: 2rem;
+  width: 2rem;
+}

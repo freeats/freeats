@@ -33,6 +33,14 @@ class Location < ApplicationRecord
   validates :geoname_id, uniqueness: true, allow_nil: true
   validates :type, presence: true
 
+  def self.search_by_name(name, types: self.types.keys, limit: 25)
+    HubQueries.location_search_by_name(
+      name,
+      types:,
+      limit:
+    )
+  end
+
   def self.worldwide_mock
     worldwide_location = Location.new
 

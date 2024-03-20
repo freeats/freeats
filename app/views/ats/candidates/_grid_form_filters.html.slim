@@ -1,0 +1,16 @@
+/ Partial variables:
+/ - grid : instance of ATS::CandidatesGrid
+
+.card.mb-3
+  .card-body.p-3
+    = form_for grid, method: :get, url: ats_candidates_path, local: true,
+               html: { class: "datagrid ats_candidates_grid" } do |f|
+      .row
+        - grid.filters.each do |filter|
+          .datagrid-filter.filter.mb-3.col-xl-2.col-md-3.col-sm-4
+            = grid_filter(form: f, grid:, filter:)
+      .datagrid-actions.hstack.gap-2
+        = render ButtonComponent.new(size: :small)
+          = t("datagrid.form.search")
+        = render ButtonLinkComponent.new(url_for(grid.to_param => {}), variant: :secondary, size: :small)
+          = t("datagrid.form.reset")

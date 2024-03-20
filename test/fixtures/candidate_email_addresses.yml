@@ -13,3 +13,11 @@ jane_email_address:
   type: work
   source: other
   status: current
+
+ivan_email_address:
+  candidate: ivan
+  address: ivan@ivanov.com
+  list_index: 1
+  type: personal
+  source: other
+  status: current

@@ -7,7 +7,9 @@
 // To reference this file, add <%= javascript_include_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
+import "../src/shared/bootstrap_activators";
 import '../src/shared/global_jquery_loader';
+import '../src/shared/modal_remover';
 import '@hotwired/turbo-rails';
-
+import "../controllers";
 import 'bootstrap';

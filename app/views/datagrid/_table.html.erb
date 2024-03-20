@@ -1,0 +1,22 @@
+<%# Please don't convert this file to Slim %>
+
+<%#
+Local variables:
+* grid - instance of Datagrid
+* assets - Array of database Entities
+* options - passed options Hash
+%>
+<% if grid.html_columns(*options[:columns]).any? %>
+  <div class="table-responsive">
+    <%= content_tag :table, options[:html].merge({ class: "#{options[:html][:class]} table table-striped" }) do %>
+      <thead>
+        <%= datagrid_header(grid, **options) %>
+      </thead>
+      <tbody>
+        <%= datagrid_rows(grid, assets, **options) %>
+      </tbody>
+    <% end %>
+  </div>
+<% else -%>
+  <%= I18n.t("datagrid.table.no_columns").html_safe %>
+<% end %>

@@ -1,0 +1,43 @@
+/# locals: (form_options:, modal_id:, hidden_fields: [], modal_size: nil)
+/ - hidden_fields - in a form of { name: value, ... }
+
+ruby:
+  modified_form_options = form_options.merge(
+    data: {
+      action: "turbo:submit-end->async-modals#complete "
+    }
+  ) do |_, a, b|
+    a.merge(b) do |key, c, d|
+      if key == :action
+        [c, d].join(" ") # Allow setting StimulusJS controller for `turbo:submit-end` event.
+      else
+        d
+      end
+    end
+  end
+  modified_form_options.merge!(class: "modal-dialog #{modal_size}") do |_, a, b|
+    [a, b].join(" ")
+  end
+
+= turbo_frame_tag :turbo_modal_window, target: "_top"
+  .modal.fade [aria-hidden="true" role="dialog" tabindex="-1" id=modal_id data-controller="async-modals"
+               data-bs-backdrop="static"]
+    = form_with role: "document", **modified_form_options
+      .modal-hidden-inputs
+        - hidden_fields.each do |k, v|
+          - if k.to_s.last(2) == "[]"
+            - v.each do |el|
+              = hidden_field_tag k, el
+          - else
+            = hidden_field_tag k, v
+      .modal-content
+        .modal-header
+          h5.modal-title
+            = content_for :title
+          button.btn-close aria-label="Close" data-bs-dismiss="modal" type="button"
+        - if content_for?(:body)
+          .modal-body
+            = content_for :body
+        - if content_for?(:footer)
+          .modal-footer
+            = content_for :footer

@@ -5,3 +5,7 @@ john_alt_name:
 jane_alt_name:
   candidate: jane
   name: Jenek
+
+ivan_alt_name:
+  candidate: ivan
+  name: Vanya

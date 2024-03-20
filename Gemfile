@@ -10,6 +10,7 @@ gem "addressable", "2.8.1"
 gem "blazer"
 gem "bootsnap", require: false
 gem "cssbundling-rails"
+gem "datagrid"
 gem "dry-initializer"
 gem "dry-logger"
 gem "dry-monads"
@@ -19,6 +20,7 @@ gem "hashie"
 gem "image_processing"
 gem "jbuilder"
 gem "jsbundling-rails"
+gem "kaminari"
 gem "lookbook", "~> 2.0.0"
 gem "mission_control-jobs"
 gem "pg", "~> 1.1"
@@ -38,7 +40,6 @@ gem "tzinfo-data", platforms: %i[windows jruby]
 gem "view_component", "~> 3.0"
 
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "debug", platforms: %i[mri windows]
   gem "rubocop", require: false

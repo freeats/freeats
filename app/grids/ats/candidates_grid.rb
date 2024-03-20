@@ -1,0 +1,215 @@
+# frozen_string_literal: true
+
+class ATS::CandidatesGrid
+  include Datagrid
+
+  SELECTED_FIELDS =
+    <<~SQL.squish
+      candidates.blacklisted,
+      candidates.candidate_source_id,
+      candidates.company,
+      candidates.created_at,
+      candidates.id,
+      candidates.last_activity_at,
+      candidates.location_id,
+      candidates.full_name,
+      candidates.recruiter_id
+    SQL
+
+  #
+  # Scope
+  #
+
+  scope do
+    Candidate
+      .not_merged
+      .select(SELECTED_FIELDS)
+  end
+
+  self.batch_size = 500
+
+  attr_accessor :page
+
+  #
+  # Filters
+  #
+
+  filter(
+    :candidate,
+    :string,
+    header: "Candidate",
+    placeholder: "Search"
+  ) do |query|
+    search_by_names_or_emails(query).select(SELECTED_FIELDS)
+  end
+
+  filter(
+    :locations,
+    :string,
+    multiple: true,
+    placeholder: "Location",
+    autocomplete: {
+      type: :multiple_locations,
+      location_types: %w[country city]
+    }
+  ) do |location_ids|
+    in_location(location_ids)
+  end
+
+  # TODO: adapt the commented code after adding the `positions` associations
+  # filter(
+  #   :position,
+  #   :enum,
+  #   select: lambda {
+  #     Position.joins(:company)
+  #             .order("positions.status ASC, companies.name ASC, positions.name ASC")
+  #             .pluck("companies.name", :name, :id)
+  #             .map do |company_name, position_name, position_id|
+  #               ["#{company_name} - #{position_name}", position_id]
+  #             end
+  #   },
+  #   include_blank: "Position",
+  #   placeholder: "Position"
+  # ) do |position_id|
+  #   joins(:placements).where(placements: { position_id: })
+  # end
+
+  # TODO: adapt the commented code after adding the `placements` associations
+  # filter(
+  #   :stage,
+  #   :enum,
+  #   select: -> { Placement.stages.transform_keys(&:capitalize) },
+  #   multiple: true,
+  #   placeholder: "Stage"
+  # ) do |stage|
+  #   where(placements: { stage: }).joins(:placements)
+  # end
+
+  # TODO: adapt the commented code after adding the `placements` associations
+  # filter(
+  #   :status,
+  #   :enum,
+  #   select: lambda {
+  #     Placement.statuses.map { |k, v| [k.humanize, v] }
+  #                       .insert(1, %w[Disqualified disqualified])
+  #   },
+  #   include_blank: "Status",
+  #   placeholder: "Status"
+  # ) do |status|
+  #    query =
+  #     if status == "disqualified"
+  #       where.not(placements: { status: "qualified" })
+  #     else
+  #       where(placements: { status: })
+  #     end
+  #   query.joins(:placements)
+  # end
+
+  # TODO: adapt the commented code after adding the `members` associations
+  # filter(
+  #   :recruiter,
+  #   :enum,
+  #   select: -> { Member.active.order("users.name").pluck("users.name", :id) },
+  #   include_blank: "Recruiter",
+  #   placeholder: "Recruiter"
+  # ) do |recruiter_id|
+  #   where(recruiter_id:)
+  # end
+
+  filter(
+    :skip_blacklisted,
+    :enum,
+    select: [["Skip blacklisted", true]],
+    default: [false],
+    checkboxes: true
+  ) do |val|
+    where(blacklisted: false) if val.first == "true"
+  end
+
+  #
+  # Columns
+  #
+
+  column(:avatar, html: true, order: false, header: "") do |model|
+    link_to(
+      tab_ats_candidate_path(
+        model.id,
+        :info
+      )
+    ) do
+      picture_avatar_icon model.avatar, {}, class: "small-avatar-thumbnail"
+    end
+  end
+
+  column(:name, html: true) do |model|
+    link_to(
+      model.full_name,
+      tab_ats_candidate_path(
+        model.id,
+        :info
+      )
+    )
+  end
+
+  column(:company, order: false)
+
+  # TODO: adapt the commented code after adding the `placements` and `positions` associations
+  # column(
+  #   :client_position_stage,
+  #   header: "Client - Position - Stage",
+  #   preload: {
+  #     placements: [
+  #       :candidate,
+  #       {
+  #         position: [
+  #           { company: { manager: :user } },
+  #           { recruiter: :user },
+  #           :roles,
+  #           :must_have_skills,
+  #           :one_of_skills,
+  #           :nice_to_have_skills,
+  #           :location,
+  #           :candidates_from_locations
+  #         ]
+  #       }
+  #     ]
+  #   },
+  #   html: true
+  # ) do |model|
+  #   ats_candidates_grid_render_client_position_stage(model)
+  # end
+
+  # TODO: adapt the commented code after adding the `members` association
+  # column(:recruiter, html: true, preload: { recruiter: :user }) do |model|
+  #   link_to model.recruiter.name, ats_member_path(model.recruiter) if model.recruiter.present?
+  # end
+
+  column(
+    :added,
+    order: "candidates.id DESC",
+    order_desc: "candidates.id"
+  ) do |model|
+    # `added_date` should be `model.added_event.performed_at` but it creates N+1 query,
+    # and if used with `includes(:events)` then too many events are preallocated as it is not
+    # easily possible to include only a specific type of events.
+    # `created_at` is a compromise between business logic and implementation.
+    added_date = model.created_at
+    format(added_date.to_fs(:datetime_full)) do |value|
+      tag.span(data: { bs_toggle: "tooltip", placement: "top" }, title: value) do
+        "#{short_time_ago_in_words(added_date)} ago"
+      end
+    end
+  end
+
+  column(
+    :last_activity,
+    html: true,
+    order: "candidates.last_activity_at DESC",
+    order_desc: "candidates.last_activity_at"
+  ) do |model|
+    tag.span(data: { bs_toggle: "tooltip", placement: "top" },
+             title: model.last_activity_at.to_fs(:datetime_full)) do
+      "#{short_time_ago_in_words(model.last_activity_at)} ago"
+    end
+  end
+end
