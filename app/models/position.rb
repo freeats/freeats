@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Position < ApplicationRecord
+  belongs_to :recruiter, optional: true, class_name: "Member"
+
   enum status: %i[draft active passive closed].index_with(&:to_s)
   enum change_status_reason: %i[
     other

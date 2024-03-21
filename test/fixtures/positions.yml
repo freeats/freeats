@@ -1,4 +1,5 @@
 ruby_position:
+  recruiter: hiring_manager_member
   name: Ruby developer
   status: active
   change_status_reason: filled

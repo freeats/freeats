@@ -1139,7 +1139,8 @@ CREATE TABLE public.positions (
     name character varying NOT NULL,
     change_status_reason public.position_change_status_reason DEFAULT 'new_position'::public.position_change_status_reason NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    recruiter_id bigint
 );
 
 
@@ -2304,6 +2305,13 @@ CREATE INDEX index_notes_on_note_thread_id ON public.notes USING btree (note_thr
 
 
 --
+-- Name: index_positions_on_recruiter_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_positions_on_recruiter_id ON public.positions USING btree (recruiter_id);
+
+
+--
 -- Name: index_solid_queue_blocked_executions_for_maintenance; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2482,6 +2490,14 @@ ALTER TABLE ONLY public.candidates
 
 
 --
+-- Name: positions fk_rails_2a3f3cea27; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.positions
+    ADD CONSTRAINT fk_rails_2a3f3cea27 FOREIGN KEY (recruiter_id) REFERENCES public.members(id);
+
+
+--
 -- Name: candidate_email_addresses fk_rails_3561be77a4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2624,6 +2640,7 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240321153228'),
 ('20240321153227'),
 ('20240321063622'),
 ('20240319154220'),
