@@ -108,6 +108,19 @@ CREATE TYPE public.location_type AS ENUM (
 
 
 --
+-- Name: member_access_level; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.member_access_level AS ENUM (
+    'inactive',
+    'interviewer',
+    'employee',
+    'hiring_manager',
+    'admin'
+);
+
+
+--
 -- Name: position_change_status_reason; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -967,6 +980,38 @@ ALTER SEQUENCE public.locations_id_seq OWNED BY public.locations.id;
 
 
 --
+-- Name: members; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.members (
+    id bigint NOT NULL,
+    account_id bigint NOT NULL,
+    access_level public.member_access_level NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: members_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.members_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: members_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.members_id_seq OWNED BY public.members.id;
+
+
+--
 -- Name: note_threads; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1518,6 +1563,13 @@ ALTER TABLE ONLY public.locations ALTER COLUMN id SET DEFAULT nextval('public.lo
 
 
 --
+-- Name: members id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.members ALTER COLUMN id SET DEFAULT nextval('public.members_id_seq'::regclass);
+
+
+--
 -- Name: note_threads id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1775,6 +1827,14 @@ ALTER TABLE ONLY public.location_hierarchies
 
 ALTER TABLE ONLY public.locations
     ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: members members_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.members
+    ADD CONSTRAINT members_pkey PRIMARY KEY (id);
 
 
 --
@@ -2134,6 +2194,13 @@ CREATE INDEX index_locations_on_type ON public.locations USING btree (type);
 
 
 --
+-- Name: index_members_on_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_members_on_account_id ON public.members USING btree (account_id);
+
+
+--
 -- Name: index_note_threads_on_notable; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2302,6 +2369,14 @@ CREATE INDEX index_solid_queue_semaphores_on_key_and_value ON public.solid_queue
 
 
 --
+-- Name: members fk_rails_0ef6c30e45; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.members
+    ADD CONSTRAINT fk_rails_0ef6c30e45 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: location_aliases fk_rails_1d9daa974b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2452,6 +2527,7 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240321063622'),
 ('20240319154220'),
 ('20240318112738'),
 ('20240318083527'),

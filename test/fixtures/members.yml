@@ -1,0 +1,19 @@
+admin_member:
+  account: admin_account
+  access_level: admin
+
+hiring_manager_member:
+  account: hiring_manager_account
+  access_level: hiring_manager
+
+employee_member:
+  account: employee_account
+  access_level: employee
+
+interviewer_member:
+  account: interviewer_account
+  access_level: interviewer
+
+inactive_member:
+  account: inactive_account
+  access_level: inactive

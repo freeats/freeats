@@ -122,7 +122,7 @@ setup that is tuned for usage with fixtures in app/misc/rodauth_app.rb:
   `AUTH_EMAIL` environment variable:
 
   ```sh
-  AUTH_EMAIL=recruiter@mail.com rails s
+  AUTH_EMAIL=employee@mail.com rails s
   ```
 
 - If you would like to logout, set the `AUTH_NOLOGIN` environment variable:

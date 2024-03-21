@@ -1,7 +1,19 @@
-admin:
+admin_account:
   email: admin@mail.com
   status: verified
 
-recruiter:
-  email: recruiter@mail.com
+hiring_manager_account:
+  email: hiring_manager@mail.com
+  status: verified
+
+employee_account:
+  email: employee@mail.com
+  status: verified
+
+interviewer_account:
+  email: interviewer@mail.com
+  status: verified
+
+inactive_account:
+  email: inactive@mail.com
   status: verified
