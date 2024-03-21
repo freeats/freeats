@@ -60,8 +60,13 @@ class ATS::CandidatesController < ApplicationController
   def update
     @candidate = Candidate.find(params[:id])
 
-    @candidate.avatar.attach(candidate_params[:avatar]) if candidate_params[:avatar].present?
-    @candidate.avatar.purge if candidate_params[:remove_avatar].present?
+    @candidate.attach_avatar(candidate_params[:avatar]) if candidate_params[:avatar].present?
+    @candidate.destroy_avatar if candidate_params[:remove_avatar] == "1"
+
+    @candidate.files.attach(candidate_params[:file]) if candidate_params[:file].present?
+    if candidate_params[:file_id_to_remove].present?
+      @candidate.files.find(candidate_params[:file_id_to_remove]).purge
+    end
 
     redirect_to "/"
   end
@@ -69,6 +74,7 @@ class ATS::CandidatesController < ApplicationController
   private
 
   def candidate_params
-    params.require(:candidate).permit(:avatar, :remove_avatar, :full_name)
+    params.require(:candidate).permit(:avatar, :remove_avatar, :full_name,
+                                      :file, :file_id_to_remove)
   end
 end

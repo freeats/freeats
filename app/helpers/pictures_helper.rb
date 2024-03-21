@@ -15,7 +15,7 @@ module PicturesHelper
 
     tag.picture do
       # tag.img(src_sym => attachment.icon.url, **opts)
-      if (icon = attachment.variant(:icon))
+      if (icon = attachment.variant(:icon)).present?
         image_tag(icon, **opts)
       else
         image_tag("icons/user.png", **opts)

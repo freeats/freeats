@@ -41,6 +41,11 @@ jobs:
           sudo apt-get install libpq-dev
           sudo apt-get install postgresql-client
 
+      # Required for processing images.
+      - name: Install libvips library
+        run: |
+          sudo apt-get install libvips
+
       - name: Get yarn cache directory
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"

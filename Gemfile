@@ -7,6 +7,7 @@ ruby file: ".ruby-version"
 # TODO: remove version restriction after fixing URL validation in the gem
 # https://github.com/sporkmonger/addressable/issues/511
 gem "addressable", "2.8.1"
+gem "aws-sdk-s3", require: false
 gem "blazer"
 gem "bootsnap", require: false
 gem "cssbundling-rails"
@@ -62,6 +63,7 @@ group :development do
   # gem "spring"
 
   gem "dockerfile-rails", ">= 1.6"
+  gem "dotenv-rails"
 end
 
 group :test do
