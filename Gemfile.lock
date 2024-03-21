@@ -81,8 +81,12 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    after_commit_everywhere (1.4.0)
+      activerecord (>= 4.2)
+      activesupport
     ast (2.4.2)
     base64 (0.2.0)
+    bcrypt (3.1.20)
     bigdecimal (3.1.6)
     bindex (0.8.1)
     blazer (3.0.3)
@@ -323,6 +327,21 @@ GEM
     request_store (1.6.0)
       rack (>= 1.4)
     rexml (3.2.6)
+    roda (3.78.0)
+      rack
+    rodauth (2.33.0)
+      roda (>= 2.6.0)
+      sequel (>= 4)
+    rodauth-model (0.2.1)
+      rodauth (~> 2.0)
+    rodauth-rails (1.13.0)
+      bcrypt
+      railties (>= 5.0, < 8)
+      roda (~> 3.73)
+      rodauth (~> 2.30)
+      rodauth-model (~> 0.2)
+      sequel-activerecord_connection (~> 1.1)
+      tilt
     rouge (4.2.0)
     rubocop (1.61.0)
       json (~> 2.3)
@@ -366,6 +385,12 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sequel (5.78.0)
+      bigdecimal
+    sequel-activerecord_connection (1.3.1)
+      activerecord (>= 4.2, < 8)
+      after_commit_everywhere (~> 1.1)
+      sequel (~> 5.38)
     slim (5.2.1)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
@@ -456,6 +481,8 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 7.1.0)
   rails_admin (~> 3.0)
+  rodauth-model
+  rodauth-rails
   rubocop
   rubocop-minitest
   rubocop-performance

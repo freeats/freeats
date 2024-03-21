@@ -2,7 +2,7 @@ doctype html
 html
   head
     meta content="text/html; charset=UTF-8" http-equiv="Content-Type"
-    title = content_for(:title) || "ATS"
+    title = content_for(:title) || @page_title || "ATS"
     meta content="width=device-width, initial-scale=1.0" name="viewport"
     link rel="preconnect" href="https://fonts.googleapis.com" crossorigin=""
     link rel="dns-prefetch" href="https://fonts.googleapis.com"

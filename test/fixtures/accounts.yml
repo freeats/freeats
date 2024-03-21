@@ -1,0 +1,7 @@
+admin:
+  email: admin@mail.com
+  status: verified
+
+recruiter:
+  email: recruiter@mail.com
+  status: verified

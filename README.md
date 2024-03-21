@@ -101,3 +101,32 @@
     ```
 
 12. Open <http://localhost:3000>.
+
+## Authentication
+
+For authentication we use the [rodauth] gem together with [rodauth-rails] and
+[rodauth-model] gems for easier integration with Rails.
+
+[rodauth]: https://github.com/jeremyevans/rodauth
+[rodauth-rails]: https://github.com/janko/rodauth-rails
+[rodauth-model]: https://github.com/janko/rodauth-model
+
+In production the only way to authenticate is through Google OAuth.
+In development we need an alternative way of doing authentication to not
+depend on internet connection and Google services. Currently we have this
+setup that is tuned for usage with fixtures in app/misc/rodauth_app.rb:
+
+- By default you are logined with an `admin@mail.com` email.
+
+- If you would like to log in as another user, provide their email in the
+  `AUTH_EMAIL` environment variable:
+
+  ```sh
+  AUTH_EMAIL=recruiter@mail.com rails s
+  ```
+
+- If you would like to logout, set the `AUTH_NOLOGIN` environment variable:
+
+  ```sh
+  AUTH_NOLOGIN=1 rails s
+  ```

@@ -238,6 +238,66 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: account_remember_keys; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.account_remember_keys (
+    id bigint NOT NULL,
+    key character varying NOT NULL,
+    deadline timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: account_remember_keys_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.account_remember_keys_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: account_remember_keys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.account_remember_keys_id_seq OWNED BY public.account_remember_keys.id;
+
+
+--
+-- Name: accounts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.accounts (
+    id bigint NOT NULL,
+    status integer DEFAULT 1 NOT NULL,
+    email public.citext NOT NULL
+);
+
+
+--
+-- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.accounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.accounts_id_seq OWNED BY public.accounts.id;
+
+
+--
 -- Name: active_storage_attachments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1311,6 +1371,20 @@ ALTER SEQUENCE public.solid_queue_semaphores_id_seq OWNED BY public.solid_queue_
 
 
 --
+-- Name: account_remember_keys id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_remember_keys ALTER COLUMN id SET DEFAULT nextval('public.account_remember_keys_id_seq'::regclass);
+
+
+--
+-- Name: accounts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.accounts ALTER COLUMN id SET DEFAULT nextval('public.accounts_id_seq'::regclass);
+
+
+--
 -- Name: active_storage_attachments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1525,6 +1599,22 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions ALTER COLUMN id SET DEF
 --
 
 ALTER TABLE ONLY public.solid_queue_semaphores ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_semaphores_id_seq'::regclass);
+
+
+--
+-- Name: account_remember_keys account_remember_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_remember_keys
+    ADD CONSTRAINT account_remember_keys_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -1789,6 +1879,13 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 
 ALTER TABLE ONLY public.solid_queue_semaphores
     ADD CONSTRAINT solid_queue_semaphores_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_accounts_on_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_accounts_on_email ON public.accounts USING btree (email) WHERE (status = ANY (ARRAY[1, 2]));
 
 
 --
@@ -2285,6 +2382,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 
 --
+-- Name: account_remember_keys fk_rails_9b2f6d8501; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_remember_keys
+    ADD CONSTRAINT fk_rails_9b2f6d8501 FOREIGN KEY (id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: solid_queue_claimed_executions fk_rails_9cfe4d4944; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2348,6 +2453,7 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240319154220'),
+('20240318112738'),
 ('20240318083527'),
 ('20240318051606'),
 ('20240318045509'),
