@@ -1,0 +1,11 @@
+john_msg1:
+  email_thread: john
+  message_id: <c1c8df1e-db3c-0211-872b-fcf6f6cb3214@mixmax.com>
+  in_reply_to: ""
+  timestamp: 1533050757
+  subject: "Геймдев проект с релокацией в Финляндию"
+  plain_body: |-
+    <%= File.read(Rails.root.join("test/fixtures/files/john_msg1.txt")).gsub("\n", "\n    ") %>
+  html_body: |-
+    <%= File.read(Rails.root.join("test/fixtures/files/john_msg1.html")).gsub("\n", "\n    ") %>
+  plain_mime_type: text/plain

@@ -95,6 +95,18 @@ CREATE TYPE public.candidate_contact_type AS ENUM (
 
 
 --
+-- Name: email_message_sent_via; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.email_message_sent_via AS ENUM (
+    'gmail',
+    'internal_sequence',
+    'internal_compose',
+    'internal_reply'
+);
+
+
+--
 -- Name: location_type; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -837,6 +849,47 @@ ALTER SEQUENCE public.candidates_id_seq OWNED BY public.candidates.id;
 
 
 --
+-- Name: email_messages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.email_messages (
+    id bigint NOT NULL,
+    email_thread_id bigint NOT NULL,
+    message_id character varying DEFAULT ''::character varying NOT NULL,
+    in_reply_to character varying DEFAULT ''::character varying NOT NULL,
+    autoreply_headers jsonb DEFAULT '{}'::jsonb NOT NULL,
+    "timestamp" integer NOT NULL,
+    subject character varying DEFAULT ''::character varying NOT NULL,
+    plain_body text DEFAULT ''::text NOT NULL,
+    html_body text DEFAULT ''::text NOT NULL,
+    plain_mime_type character varying DEFAULT ''::character varying NOT NULL,
+    sent_via public.email_message_sent_via,
+    "references" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: email_messages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.email_messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: email_messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.email_messages_id_seq OWNED BY public.email_messages.id;
+
+
+--
 -- Name: email_threads; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1535,6 +1588,13 @@ ALTER TABLE ONLY public.candidates ALTER COLUMN id SET DEFAULT nextval('public.c
 
 
 --
+-- Name: email_messages id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_messages ALTER COLUMN id SET DEFAULT nextval('public.email_messages_id_seq'::regclass);
+
+
+--
 -- Name: email_threads id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1795,6 +1855,14 @@ ALTER TABLE ONLY public.candidate_sources
 
 ALTER TABLE ONLY public.candidates
     ADD CONSTRAINT candidates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_messages email_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_messages
+    ADD CONSTRAINT email_messages_pkey PRIMARY KEY (id);
 
 
 --
@@ -2100,6 +2168,27 @@ CREATE INDEX index_candidates_on_location_id ON public.candidates USING btree (l
 --
 
 CREATE INDEX index_candidates_on_recruiter_id ON public.candidates USING btree (recruiter_id);
+
+
+--
+-- Name: index_email_messages_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_messages_on_created_at ON public.email_messages USING btree (created_at);
+
+
+--
+-- Name: index_email_messages_on_email_thread_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_messages_on_email_thread_id ON public.email_messages USING btree (email_thread_id);
+
+
+--
+-- Name: index_email_messages_on_message_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_messages_on_message_id ON public.email_messages USING btree (message_id);
 
 
 --
@@ -2489,6 +2578,14 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 
 
 --
+-- Name: email_messages fk_rails_c79e1f5f48; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_messages
+    ADD CONSTRAINT fk_rails_c79e1f5f48 FOREIGN KEY (email_thread_id) REFERENCES public.email_threads(id);
+
+
+--
 -- Name: candidate_phones fk_rails_cfcc7aa34d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2527,6 +2624,7 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240321153227'),
 ('20240321063622'),
 ('20240319154220'),
 ('20240318112738'),

@@ -36,6 +36,18 @@ class Candidate < ApplicationRecord
 
   validates :full_name, presence: true
 
+  scope :with_emails, lambda { |emails|
+    not_merged
+      .left_outer_joins(:email_addresses)
+      .where(
+        <<~SQL,
+          candidate_email_addresses.address IN
+          (SELECT unnest(array[?]::citext[]))
+        SQL
+        emails
+      )
+  }
+
   scope :not_merged, -> { where(merged_to: nil) }
 
   def self.search_by_names_or_emails(name_or_email)
