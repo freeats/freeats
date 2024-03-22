@@ -1,0 +1,67 @@
+/ Partial variables:
+/ - candidate
+/ - pattern
+/ - form
+
+ruby:
+  pattern ||= nil
+  klass_name = candidate.class.name.downcase
+
+= tag.div id: "#{klass_name}-contacts-emails",
+          class: "sortable-container",
+          data: { controller: "array-fields",
+                  array_fields_class_name_value: klass_name,
+                  array_fields_field_name_value: "email",
+                  array_fields_sortable_value: true }
+  - field_collection = candidate.email_addresses + [CandidateEmailAddress.new]
+  = form.fields_for(:email_addresses, field_collection) do |address_form|
+    .sortable-unit [id="#{klass_name}_emails#{address_form.options[:child_index]}"
+      data-update-requirement-attribute-for-select-field-target="form"
+      data-controller="update-requirement-attribute-for-select-field"]
+      .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
+        i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
+        .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
+          = render TextInputComponent.new(address_form, method: :address, size: :small,
+                                          placeholder: "Address", pattern:,
+                                          "data-update-requirement-attribute-for-select-field-target": "mainField")
+          = render TextInputComponent.new(address_form, method: :url, size: :small, placeholder: "Link")
+          = render "shared/profile/info_cards/email_addresses_select_fields",
+                   address_form:, klass_name:
+            = address_form
+            - if address_form.object.id.present?
+              = address_form.hidden_field(:id)
+        button.btn.btn-sm.text-secondary.border-0.shadow-none.align-self-start.pe-0[
+            type="button"
+            class="#{klass_name}-delete-email-button"
+            id="#{klass_name}_delete_email_button#{address_form.options[:child_index]}"
+            style="font-size: 1.25rem;"
+            data-action="click->array-fields#deleteField"
+            data-array-fields-block-id-param="#{klass_name}_emails#{address_form.options[:child_index]}"]
+          i.fas.fa-trash-alt
+  .sortable-unit [id="#{klass_name}_emails_hidden" hidden="true"
+    data-update-requirement-attribute-for-select-field-target="form"
+    data-controller="update-requirement-attribute-for-select-field"]
+    = form.fields_for(:email_addresses, CandidateEmailAddress.new, child_index: "id") do |address_form|
+      .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
+        i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
+        .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
+          = render TextInputComponent.new(address_form, method: :address, size: :small,
+                                          pattern:, placeholder: "Address",
+                                          "data-update-requirement-attribute-for-select-field-target": "mainField")
+          = render TextInputComponent.new(address_form, method: :url, size: :small, placeholder: "Link")
+          = render "shared/profile/info_cards/email_addresses_select_fields",
+                   address_form:, klass_name:
+        button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
+            type="button"
+            class="#{klass_name}-delete-email-button"
+            id="#{klass_name}_delete_email_button"
+            style="font-size: 1.25rem;"
+            data-action="click->array-fields#deleteField"
+            data-array-fields-block-id-param="#{klass_name}_emails"]
+          i.fas.fa-trash-alt
+  = render ButtonComponent.new(variant: :cancel,
+                               size: :tiny,
+                               type: :button,
+                               id: "#{klass_name}_add_email_button",
+                               data: { action: "click->array-fields#addField" })
+    | Add

@@ -1,0 +1,7 @@
+= render "ats/candidates/profile" do
+  .row.mt-3
+    / .col
+      = render "shared/profile/file_upload_button", resource_id_field: :person_id, resource_id: @candidate.id
+      - if @candidate.file_entries.present?
+        = render partial: "hub/candidates/candidate_files",
+                 locals: { all_file_entries: @all_file_entries, candidate: @candidate }

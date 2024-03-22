@@ -1,0 +1,67 @@
+/ ruby:
+/   compose_state =
+/     if !current_member.gmail_linked?
+/       :gmail_not_linked
+/     elsif @mail_to_address.blank?
+/       :candidate_no_emails
+/     end
+/   tooltip_text =
+/     if compose_state.present?
+/       t("hub.profiles.emails_tab.compose_button_disabled_tooltip.#{compose_state}")
+/     end
+/   synchronize_button_tooltip_text = tooltip_text if compose_state == :gmail_not_linked
+
+= render "ats/candidates/profile"
+
+  / #email-threads
+  /   / TOP BUTTONS
+  /   - unless @single_message
+  /     .row.mt-2.g-2
+  /       .col-6.col-sm-auto
+  /         = hub_person_button_tooltip_wrapper(tooltip: tooltip_text, data: { bs_trigger: "hover" })
+  /           = render ButtonLinkComponent.new(new_hub_compose_path(person_ids: @candidate.id,
+  /                                                                 controller_name:,
+  /                                                                 default_to_address: @mail_to_address),
+  /                                            size: :small,
+  /                                            class: "compose-button",
+  /                                            disabled: tooltip_text.present?,
+  /                                            data: { controller: ("button-utils" if tooltip_text.blank?) })
+  /             | Compose
+  /       .col-6.col-sm
+  /       .col-auto
+  /         = hub_person_button_tooltip_wrapper(tooltip: synchronize_button_tooltip_text, data: { bs_trigger: "hover" })
+  /           = render ButtonLinkComponent.new(synchronize_email_messages_hub_candidate_path(@candidate.id),
+  /                                            size: :small,
+  /                                            data: { bs_toggle: "tooltip",
+  /                                                    bs_placement: "top",
+  /                                                    turbo_method: :post },
+  /                                            title: "Please make sure that all email addresses " \
+  /                                                   "have been added to this profile before pressing the button",
+  /                                            disabled: synchronize_button_tooltip_text.present?)
+  /             | Synchronize
+  /       .col-auto
+  /         = render partial: "hub/people/stop_sequence_button",
+  /                  locals: { object: @candidate, running_sequences: @running_sequences }
+  /       .col-12#turbo_form
+  /         - if @specified_mail_to
+  /           = render partial: "hub/email_messages/form",
+  /                    locals: { default_to_address: @specified_mail_to,
+  /                              person_ids: @candidate.id,
+  /                              templates: @templates,
+  /                              controller_name: }
+  /   / EMAILS
+  /   .row
+  /     .col#turbo_thread_list
+  /       = render partial: "hub/email_threads/email_thread",
+  /                collection: @ordered_candidate_email_threads,
+  /                as: :email_thread,
+  /                locals: { hashed_avatars: @hashed_avatars,
+  /                          person_ids: @candidate.id,
+  /                          disabled_reason: (compose_state.presence if compose_state != :candidate_no_emails),
+  /                          single_message: @single_message }
+  /   .row.mt-3
+  /     .col
+  /     - if @single_message
+  /       = link_to "View all emails", tab_hub_candidate_path(@candidate, :emails)
+  /     - else
+  /       = paginate(@ordered_candidate_email_threads, theme: "hub")

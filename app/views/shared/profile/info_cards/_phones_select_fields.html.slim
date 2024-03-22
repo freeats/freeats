@@ -1,0 +1,31 @@
+/ Partial variables:
+/ - phones_form
+/ - klass_name
+
+ruby:
+  phone_types = CandidatePhone.types.map do |_, value|
+    { value:, text: value.humanize, selected: value == phones_form.object.type }
+  end
+  phone_sources = CandidatePhone.sources.map do |_, value|
+    { value:, text: value.humanize, selected: value == phones_form.object.source }
+  end
+  phone_statuses = CandidatePhone.statuses.map do |_, value|
+    { value:, text: value.humanize, selected: value == phones_form.object.status }
+  end
+  phone_types = phone_types.reverse if klass_name == "lead"
+
+= render SingleSelectComponent.new( \
+  phones_form,
+  method: :source,
+  local: { options: phone_sources },
+)
+= render SingleSelectComponent.new( \
+  phones_form,
+  method: :type,
+  local: { options: phone_types },
+)
+= render SingleSelectComponent.new( \
+  phones_form,
+  method: :status,
+  local: { options: phone_statuses },
+)

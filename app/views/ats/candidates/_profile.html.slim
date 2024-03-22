@@ -1,0 +1,116 @@
+- content_for(:title) { "#{@candidate.full_name} #{@active_tab.humanize(capitalize: false)}" }
+/ - render_reassign_button = proc do |mobile: false|
+  / = render "shared/profile/reassign_button",
+            currently_assigned_user: @assigned_recruiter&.user,
+            tooltip_title: "Recruiter",
+            target_model: @candidate,
+            target_url: assign_recruiter_ats_candidate_path(@candidate),
+            input_button_name: "candidate[recruiter_id]",
+            unassignment_label: "Unassign recruiter",
+            mobile:
+
+/ HEADER
+- content_for :header
+  #header-card.col.profile-card
+    = render "ats/candidates/header_show"
+
+  / .turbo_candidate_reassign_recruiter_button.d-lg-none.col-12.mt-2.mb-3
+    = capture(mobile: true, &render_reassign_button)
+
+/ HEADER END
+
+/ TAB LIST
+
+- content_for :tab_list
+  ruby:
+    tab_labels = {
+      info: "Info",
+      activities: "Activities"
+    }
+
+  - tab_labels[:emails] = capture
+    | Emails
+    / - if @email_count.positive?
+      | &nbsp;
+      span.badge.bg-secondary = @email_count
+
+  - tab_labels[:scorecards] = capture
+    | Scorecards
+
+  - tab_labels[:files] = capture
+    | Files
+    / - if @candidate.file_entries.size > 1 && @candidate.cv.present? \
+         || @candidate.file_entries.size.positive? && @candidate.cv.blank?
+      | &nbsp;
+      span.badge.bg-secondary = @candidate.file_entries.size
+
+  ul.nav.d-none.d-md-flex
+    li.nav-item
+      = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
+                class: "nav-link #{'active' if @active_tab == 'info'}"
+    li.nav-item
+      = link_to tab_labels[:emails], tab_ats_candidate_path(@candidate, :emails),
+                class: "nav-link #{'active' if @active_tab == 'emails'}"
+    li.nav-item
+      = link_to tab_labels[:scorecards], tab_ats_candidate_path(@candidate, :scorecards),
+                class: "nav-link #{'active' if @active_tab == 'scorecards'}"
+    li.nav-item
+      = link_to tab_labels[:files], tab_ats_candidate_path(@candidate, :files),
+                class: "nav-link #{'active' if @active_tab == 'files'}"
+    li.nav-item
+      = link_to tab_labels[:activities], tab_ats_candidate_path(@candidate, :activities),
+                class: "nav-link #{'active' if @active_tab == 'activities'}"
+  / .d-md-none.dropdown.w-100.profile-mobile-nav
+    button.btn.form-control.d-flex.align-items-center.text-dark.dropdown-toggle.w-100.px-3[
+        id="dropdownNavLink" data-bs-toggle="dropdown"]
+      = tab_labels[@active_tab.to_sym]
+    ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
+      li = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
+                   class: "dropdown-item #{'active' if @active_tab == 'info'}"
+      li = link_to tab_labels[:emails], tab_ats_candidate_path(@candidate, :emails),
+                   class: "dropdown-item #{'active' if @active_tab == 'emails'}"
+      li = link_to tab_labels[:scorecards], tab_ats_candidate_path(@candidate, :scorecards),
+                   class: "dropdown-item #{'active' if @active_tab == 'scorecards'}"
+      li = link_to tab_labels[:files], tab_ats_candidate_path(@candidate, :files),
+                   class: "dropdown-item #{'active' if @active_tab == 'files'}"
+      li = link_to tab_labels[:activities], tab_ats_candidate_path(@candidate, :activities),
+                   class: "dropdown-item #{'active' if @active_tab == 'activities'}"
+
+/ TABS LIST END
+
+/ SIDE INFO
+
+/ - content_for :side_info
+  .turbo_candidate_reassign_recruiter_button.col-12.d-none.d-lg-block
+    = capture(&render_reassign_button)
+  = render partial: "ats/candidates/placements_notes_panel",
+           locals: { candidate: @candidate,
+                     source_candidates_position_id: @source_candidates_position_id,
+                     source_candidates_input: @source_candidates_input,
+                     relevant_grouped_placements: @relevant_grouped_placements,
+                     irrelevant_grouped_placements: @irrelevant_grouped_placements,
+                     toughbyte_placements: @toughbyte_placements,
+                     toughbyte_company: @toughbyte_company,
+                     notes_params: @notes_params,
+                     additional_create_param_input: hidden_field_tag("note[note_thread][candidate_id]",
+                                                                     @candidate.id) }
+
+/ SIDE INFO END
+
+/ BODY BOTTOM
+
+/ TODO: Code that can be used for merge logic.
+/ - content_for :body_bottom
+  #turbo_merge_dialog_section
+    - if @duplicates.size.positive?
+      = render "ats/candidates/merge_duplicates",
+               candidate: @candidate,
+               duplicates: @duplicates
+  #turbo_find_dialog_section
+    - if ats_candidate_show_find_dialog?(@candidate)
+      = render "ats/candidates/find_dialog", candidate: @candidate
+  #merge-candidates-modal
+
+/ BODY BOTTOM END
+div id="#{@page_id}-#{@active_tab}"
+  = yield

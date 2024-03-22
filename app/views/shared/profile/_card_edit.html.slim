@@ -1,0 +1,52 @@
+/ Partial variables:
+/ - header
+/ - target_model
+/ - target_url
+/ - form_options [Hash] - options for form. e.g. stimulus targets, controller, etc.
+
+ruby:
+  classes = "#{card_name}-card-edit #{'my-3' unless card_name == 'header'}"
+
+  case controller
+  when ATS::CandidatesController
+    show_card_path = "show_card_ats_candidate_path"
+    show_header_path = "show_header_ats_candidate_path"
+    # when ATS::PositionsController
+    # show_card_path = "show_card_ats_position_path"
+    # show_header_path = "show_header_ats_position_path"
+  end
+
+  cancel_path =
+    if card_name == "header"
+      public_send(show_header_path, target_model)
+    else
+      public_send(show_card_path, target_model, card_name:)
+    end
+
+- content = capture
+  .card.card-edit class=classes data-controller="profile-cards"
+    = form_with model: target_model, url: target_url, **form_options do |form|
+      .d-flex.flex-row.card-header.align-items-center.gap-2
+        .flex-fill.card-title.text-truncate = header
+        .float-end.hstack.gap-2
+          = render ButtonComponent.new(size: :tiny,
+                                       data: { \
+                                         bs_toggle: :tooltip,
+                                         bs_title: "Ctrl + Enter",
+                                         bs_placement: :top,
+                                         turbo_frame: :turbo_modal_window,
+                                         profile_cards_activator_target: :shortcut \
+                                       })
+            | Save
+
+          = render ButtonLinkComponent.new(cancel_path, variant: :secondary, size: :tiny, type: :submit)
+            | Cancel
+
+      .card-body.enter-turbo-submit
+        = yield form
+
+- if card_name != 'header'
+  = turbo_frame_tag "turbo_#{card_name}_section", class: "row gx-3"
+    = content
+- else
+  = content

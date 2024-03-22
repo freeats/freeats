@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Candidate < ApplicationRecord
+  include Dry::Monads[:result]
   include Locatable
 
   has_many :links,
@@ -114,6 +115,67 @@ class Candidate < ApplicationRecord
         &.destroy
 
       attachment.purge
+    end
+  end
+
+  def names
+    [full_name, *alternative_names.pluck(:name)]
+  end
+
+  def encoded_names
+    names.map { "\"#{URI.encode_www_form_component(_1)}\"" }
+  end
+
+  def github_search_url
+    search_string = names.map { "fullname:\"#{_1}\"" }.join(" ")
+    "https://github.com/search?utf8=%E2%9C%93&q=#{CGI.escape(search_string)}" \
+      "&type=Users&ref=advsearch&l=&l="
+  end
+
+  def gmail_search_url
+    "https://mail.google.com/mail/u/0/#search/#{encoded_names.join(' OR ')}"
+  end
+
+  def google_search_url
+    google_query =
+      [*names, *email_addresses.pluck(:address)]
+      .filter(&:present?).map { |p| "\"#{p}\"" }.join(" OR ")
+    "https://www.google.com/search?q=#{URI.encode_www_form_component(google_query)}"
+  end
+
+  def facebook_search_url
+    "https://www.facebook.com/search/people/?q=#{encoded_names.join(' OR ')}"
+  end
+
+  def linkedin_search_url
+    "https://www.linkedin.com/search/results/people/?keywords=#{encoded_names.join(' OR ')}"
+  end
+
+  def vk_search_url
+    query = names.join("%20")
+    "https://vk.com/search/people?q=#{query}"
+  end
+
+  def change(params)
+    case Candidates::Change.new(candidate: self, params: params.to_h).call
+    in Success()
+      true
+    in Failure("record_invalid")
+      false
+    end
+  end
+
+  def sorted_links
+    domains = AccountLink::DOMAINS
+    sorted_links = links.to_a
+    sorted_links&.sort_by do |link|
+      domain_index =
+        if domains[link.url] && (link.status == "current")
+          domains.values.find_index { |k, _| domains[link.url] == k }
+        else
+          Float::INFINITY
+        end
+      [domain_index, link.status == "current" ? 0 : 1]
     end
   end
 end

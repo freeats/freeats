@@ -1,0 +1,32 @@
+/ Partial variables:
+/ - address_form
+/ - klass_name
+
+ruby:
+  address_types = CandidateEmailAddress.types.map do |_, value|
+    { value:, text: value.humanize, selected: value == address_form.object.type }
+  end
+  address_sources = CandidateEmailAddress.sources.map do |_, value|
+    { value:, text: value.humanize, selected: value == address_form.object.source }
+  end
+  address_statuses = CandidateEmailAddress.statuses.map do |_, value|
+    { value:, text: value.humanize, selected: value == address_form.object.status }
+  end
+  address_types = address_types.reverse if klass_name == "lead"
+
+.d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
+  = render SingleSelectComponent.new( \
+    address_form,
+    method: :source,
+    local: { options: address_sources },
+  )
+  = render SingleSelectComponent.new( \
+    address_form,
+    method: :type,
+    local: { options: address_types },
+  )
+  = render SingleSelectComponent.new( \
+    address_form,
+    method: :status,
+    local: { options: address_statuses },
+  )

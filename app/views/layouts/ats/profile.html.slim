@@ -1,0 +1,25 @@
+- content_for :profile
+  #profile.row
+
+    .col-12.col-lg-7.col-xl-8
+      section#header.row
+        = yield :header
+
+      - if content_for?(:tab_list)
+        section#tab-list.row.mt-2
+          .col
+            ul.nav.nav-tabs
+              = yield :tab_list
+
+      section#tab-content.tab-content
+        .tab-pane.active
+          = yield
+
+    .col-12.col-lg-5.col-xl-4.mt-4.mt-lg-0
+      section#side-info
+        = yield :side_info
+
+= render template: "layouts/ats/application"
+
+/ For elements that need to be at the bottom, e.g. fixed windows or modals.
+= yield :body_bottom

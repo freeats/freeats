@@ -1,0 +1,19 @@
+/ Partial variables:
+/ - profile
+
+.d-flex.flex-column.flex-xl-row.align-items-end
+  .dropdown
+    = render ButtonComponent.new(variant: :cancel,
+                                 size: :tiny,
+                                 type: :button,
+                                 aria: { expanded: false, haspopup: true },
+                                 data: { bs_toggle: "dropdown" }) do |c|
+      - c.with_icon("fa-light fa-chevron-down", position: :right)
+      | Search
+    ul.dropdown-menu.dropdown-menu-end
+      li = link_to "Facebook", profile.facebook_search_url, class: "dropdown-item", target: "_blank"
+      li = link_to "GitHub", profile.github_search_url, class: "dropdown-item", target: "_blank"
+      li = link_to "Gmail", profile.gmail_search_url, class: "dropdown-item", target: "_blank"
+      li = link_to "Google", profile.google_search_url, class: "dropdown-item", target: "_blank"
+      li = link_to "LinkedIn", profile.linkedin_search_url, class: "dropdown-item", target: "_blank"
+      li = link_to "VKontakte", profile.vk_search_url, class: "dropdown-item", target: "_blank"

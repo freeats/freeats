@@ -1,0 +1,25 @@
+/ Partial variables:
+/ - header
+/ - path
+/ - card_name
+/ - target_model
+/ - tooltip_text
+
+ruby:
+  path ||= ""
+  edit_card_path =
+    path.presence ||
+      case controller
+      when ATS::CandidatesController then "edit_card_ats_candidate_path"
+        # when ATS::PositionsController then "edit_card_ats_position_path"
+      end
+
+- header ||= nil
+- tooltip_text ||= nil
+= turbo_frame_tag "turbo_#{card_name}_section"
+  .card.mt-3.empty-card-templates [style="border: none;" data-bs-toggle="#{'tooltip' if tooltip_text.present?}"
+      data-bs-title=tooltip_text.presence]
+    = link_to public_send(edit_card_path, target_model, card_name:),
+      class: "btn d-inline-block empty-card #{'disabled' if tooltip_text.present?}"
+      i.fas.fa-plus
+      =< header || "#{card_name.humanize}"

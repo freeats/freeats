@@ -1,0 +1,25 @@
+/ Partial variables:
+/ - candidate
+
+- header = card_header(title: "Contact info", icon_style: "fa-at")
+
+= card_show "contact_info", target_model: candidate, header:
+  .row.row-gap-2
+    .col-12.col-md-6.col-lg-12.col-xl-6.vstack.gap-2
+      = render LabeledComponent.new(right_class: "col-form-label-sm") do |c|
+        - c.with_label("Source", size: :small)
+        = candidate_card_source(candidate)
+      = render LabeledComponent.new(right_class: "col-form-label-sm row row-gap-1",
+                                    right_layout_class: "col-12 col-md-7") do |c|
+        - c.with_label("Emails", size: :small)
+        = candidate_card_email_links(candidate)
+    .col-12.col-md-6.col-lg-12.col-xl-6.vstack.gap-2
+      = render LabeledComponent.new(right_class: "col-form-label-sm") do |c|
+        - c.with_label("Phones", size: :small)
+        = candidate_card_phone_links(candidate)
+      = render LabeledComponent.new(right_class: "col-form-label-sm") do |c|
+        - c.with_label("Links", size: :small)
+        = candidate_card_beautiful_links(candidate)
+      = render LabeledComponent.new(right_class: "col-form-label-sm") do |c|
+        - c.with_label("Chats", size: :small)
+        = candidate_card_chat_links(candidate)

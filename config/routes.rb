@@ -13,9 +13,17 @@ Rails.application.routes.draw do
       get :fetch_options_for_select_component_preview
     end
 
-    resources :candidates do
+    resources :candidates, except: %i[show edit] do
+      get "/", to: redirect("/ats/candidates/%{id}/info"), on: :member, id: /\d+/
+      get :show_card, on: :member
+      get :edit_card, on: :member
+      patch :update_card, on: :member
+      get :show_header, on: :member
+      get :edit_header, on: :member
+      patch :update_header, on: :member
+      delete :remove_avatar, on: :member
       get ":tab", to: "candidates#show", on: :member,
-                  tab: /info/, as: "tab"
+                  tab: /info|emails|scorecards|files|activities/, as: "tab"
     end
   end
 

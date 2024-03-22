@@ -1,0 +1,9 @@
+/ Variables:
+/ - candidate
+/ - is_form - whether it is used as a form, false by default
+- is_form ||= false
+
+.profile-avatar.img-thumbnail class=("profile-avatar-edit float-md-end" if is_form)
+  / = link_to picture_medium(candidate.avatar), candidate.avatar.medium.url, target: :_blank
+  - if !is_form && candidate.blacklisted
+    .profile-avatar-overlay.alert-danger Blacklisted

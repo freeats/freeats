@@ -64,6 +64,15 @@ class CandidatePhone < ApplicationRecord
     Phonelib.possible?(phone) || Phonelib.valid_for_country?(phone, country_code)
   end
 
+  def self.international_phone(phone)
+    normalized_phone = Phonelib::Phone.new(phone)
+    if normalized_phone.valid?
+      Phonelib.parse(phone).international
+    else
+      phone
+    end
+  end
+
   private
 
   def phone_must_be_valid

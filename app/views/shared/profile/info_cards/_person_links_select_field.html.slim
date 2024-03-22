@@ -1,0 +1,14 @@
+/ Partial variables:
+/ - links_form
+
+ruby:
+  link_statuses = CandidateLink.statuses.map do |_, value|
+    { value:, text: value.humanize, selected: value == links_form.object.status }
+  end
+
+.col-12.col-sm-4
+  = render SingleSelectComponent.new( \
+    links_form,
+    method: :status,
+    local: { options: link_statuses },
+  )

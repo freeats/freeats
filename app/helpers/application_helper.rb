@@ -89,6 +89,19 @@ module ApplicationHelper
     grid_params
   end
 
+  def link_to_with_copy_popover_button(content, href, data: {}, **)
+    link_to(
+      content,
+      href,
+      target: ("_blank" if data[:turbo_frame].blank?),
+      data: {
+        controller: "copy-to-clipboard",
+        copy_to_clipboard_link_with_popover_value: true
+      }.merge(data),
+      **
+    )
+  end
+
   private
 
   def compose_select_component(grid:, filter:)

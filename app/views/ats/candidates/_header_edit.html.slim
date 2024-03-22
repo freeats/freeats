@@ -1,0 +1,46 @@
+- avatar_edit_buttons = proc do |form| # rubocop:disable Lint/UnusedBlockArgument
+  form
+  .hstack.gap-2.h-100
+    / = render "shared/profile/image_upload_button",
+             file_field: :avatar,
+             form:
+    / - if @candidate.avatar.present?
+      = render "shared/profile/image_delete_button",
+               url: remove_avatar_ats_candidate_path(@candidate),
+               disabled: @candidate.fallback_avatar_url.present?
+
+= turbo_frame_tag :turbo_header_section
+  #header-edit
+    = candidate_card_edit "header", @candidate, target_url: update_header_ats_candidate_path(@candidate) do |form|
+      .header-edit-avatar-row.mb-2
+        = card_row render("ats/candidates/avatar_image", candidate: @candidate, is_form: true),
+                   capture(form, &avatar_edit_buttons), form: true
+      = render LabeledComponent.new(class: "mb-2") do |c|
+        - c.with_label("Full name", size: :small, form:, for_field: :full_name)
+        = render TextInputComponent.new(form, method: :full_name, size: :small, required: true)
+      / alternative names
+      = render LabeledComponent.new(class: "mb-2") do |c|
+        - c.with_label("Headline", size: :small, form:, for_field: :headline)
+        = render TextInputComponent.new(form, method: :headline, size: :small)
+      = render LabeledComponent.new(class: "mb-2") do |c|
+        - c.with_label("Company", size: :small, form:, for_field: :company)
+        = render TextInputComponent.new(form, method: :company, size: :small)
+      = render LabeledComponent.new(class: "mb-2") do |c|
+        - c.with_label("Location", size: :small, form:, for_field: :location_id)
+        = render SingleSelectComponent.new( \
+            form,
+            method: :location_id,
+            remote: { \
+              search_url: fetch_locations_api_v1_locations_path(types: "city,country", q: "QUERY"),
+              options: compose_location_option_for_select(@candidate.location),
+            },
+          )
+      = render LabeledComponent.new do |c|
+        - c.with_label("Blacklisted", size: :small, form:, for_field: :blacklisted)
+        = form.check_box(:blacklisted, class: "form-control-sm")
+      / - if current_user.admin?
+        - delete_buttons_row = capture
+          .d-flex.flex-wrap.gap-2
+            = render("shared/profile/delete_button", object: @candidate)
+      / = render LabeledComponent.new(class: "mt-2")
+        = delete_buttons_row

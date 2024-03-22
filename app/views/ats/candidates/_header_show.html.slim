@@ -1,0 +1,71 @@
+ruby:
+  # names_query = "\"#{@candidate.full_name}\""
+  # duplicates_count = @candidate.possible_duplicates_count
+  red_name = @candidate.blacklisted?
+  icon_class = "fa fa-ban me-2" if red_name
+
+- candidate_name = capture
+    h1.fw-bold.mb-0.text-break class=("text-danger" if red_name)
+      - if icon_class.present?
+        i class=icon_class
+      = @candidate.full_name
+      / - if duplicates_count.positive?
+        = link_to(ats_candidates_path(ats_candidates_grid: { candidate: names_query, include_handsoff: true }),
+                  data: { turbo_frame: "_top",
+                          bs_toggle: "tooltip",
+                          bs_title: "#{pluralize(duplicates_count, 'other candidate profile')} with this name found",
+                          bs_placement: "right" })
+          i.text-secondary.fas.fa-users.mx-2
+
+= turbo_frame_tag :turbo_header_section
+  .row.gx-3
+    / .col-auto.d-flex.mb-3
+      / AVATAR
+      = render "ats/candidates/avatar_image", candidate: @candidate
+
+    / ACTIONS
+    .col-auto.d-flex.flex-column.align-items-end.ms-auto.order-md-last.gap-2.mb-2
+      .d-flex.profile-header-actions
+        = render "ats/candidates/action_buttons", profile: @candidate
+        = link_to edit_header_ats_candidate_path(@candidate),
+                  class: "btn",
+                  data: { bs_toggle: "tooltip", bs_title: "Edit" }
+          i.fas.fa-pencil-alt
+
+    / BASE INFO
+    .col-12.col-md
+      = candidate_name
+
+      - if @candidate.alternative_names.present?
+        .font-small.mt-1 = @candidate.alternative_names.pluck(:name).join(", ")
+
+      - if @candidate.headline.present? || @candidate.company.present?
+        ruby:
+          candidate_headline = @candidate.headline
+          company = @candidate.company
+          arr_to_clamp = if candidate_headline&.downcase&.include?(company&.to_s&.downcase)
+                           [candidate_headline]
+                         else
+                           [candidate_headline, company]
+                         end
+          # That regexp is for fixing a long solid headline.
+          text_to_clamp = candidate_turn_array_to_string_with_line_breakers(arr_to_clamp)
+        = text_to_clamp
+        / = clamp_text text_to_clamp, { inline_expand_button: true },
+                     html_options: { class: "mt-2 font-body overflow-hidden" },
+                     button_html_options: { class: "font-body" }
+
+      - if @candidate.location_id?
+        .mt-2.font-body
+          = @candidate.location.short_name
+
+      / ACTIVITY
+      .row.font-small.text-secondary.mt-3.gx-2
+        .col-auto.text-nowrap.mb-2 [data-bs-toggle="tooltip"
+            title="Added on #{@candidate.created_at.to_fs(:datetime_full)}"]
+          i.fas.fa-plus-square
+          | &nbsp;#{short_time_ago_in_words(@candidate.created_at)} ago
+        .col-auto.text-nowrap.mb-2 [data-bs-toggle="tooltip"
+            title=("Last activity on #{@candidate.last_activity_at.to_fs(:datetime_full)}")]
+          i.fas.fa-hourglass-half
+          | &nbsp;#{short_time_ago_in_words(@candidate.last_activity_at)} ago
