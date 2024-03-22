@@ -95,6 +95,18 @@ CREATE TYPE public.candidate_contact_type AS ENUM (
 
 
 --
+-- Name: email_message_field; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.email_message_field AS ENUM (
+    'from',
+    'to',
+    'cc',
+    'bcc'
+);
+
+
+--
 -- Name: email_message_sent_via; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -849,6 +861,41 @@ ALTER SEQUENCE public.candidates_id_seq OWNED BY public.candidates.id;
 
 
 --
+-- Name: email_message_addresses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.email_message_addresses (
+    id bigint NOT NULL,
+    email_message_id bigint,
+    address public.citext NOT NULL,
+    field public.email_message_field NOT NULL,
+    "position" integer NOT NULL,
+    name character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: email_message_addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.email_message_addresses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: email_message_addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.email_message_addresses_id_seq OWNED BY public.email_message_addresses.id;
+
+
+--
 -- Name: email_messages; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1589,6 +1636,13 @@ ALTER TABLE ONLY public.candidates ALTER COLUMN id SET DEFAULT nextval('public.c
 
 
 --
+-- Name: email_message_addresses id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_message_addresses ALTER COLUMN id SET DEFAULT nextval('public.email_message_addresses_id_seq'::regclass);
+
+
+--
 -- Name: email_messages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1856,6 +1910,14 @@ ALTER TABLE ONLY public.candidate_sources
 
 ALTER TABLE ONLY public.candidates
     ADD CONSTRAINT candidates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_message_addresses email_message_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_message_addresses
+    ADD CONSTRAINT email_message_addresses_pkey PRIMARY KEY (id);
 
 
 --
@@ -2169,6 +2231,20 @@ CREATE INDEX index_candidates_on_location_id ON public.candidates USING btree (l
 --
 
 CREATE INDEX index_candidates_on_recruiter_id ON public.candidates USING btree (recruiter_id);
+
+
+--
+-- Name: index_email_message_addresses_on_address; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_message_addresses_on_address ON public.email_message_addresses USING btree (address);
+
+
+--
+-- Name: index_email_message_addresses_on_email_message_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_message_addresses_on_email_message_id ON public.email_message_addresses USING btree (email_message_id);
 
 
 --
@@ -2640,6 +2716,7 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240321160130'),
 ('20240321153228'),
 ('20240321153227'),
 ('20240321063622'),

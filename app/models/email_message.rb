@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EmailMessage < ApplicationRecord
+  has_many :email_message_addresses, dependent: :destroy
+
   belongs_to :email_thread
 
   enum sent_via: %i[gmail internal_sequence internal_compose internal_reply].index_with(&:to_s)
