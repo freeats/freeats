@@ -1,0 +1,24 @@
+admin_avatar_attachment:
+  name: account_avatar
+  record: admin_account (Account)
+  blob: account_avatar
+
+hiring_manager_avatar_attachment:
+  name: account_avatar
+  record: hiring_manager_account (Account)
+  blob: account_avatar
+
+employee_avatar_attachment:
+  name: account_avatar
+  record: employee_account (Account)
+  blob: account_avatar
+
+interviewer_avatar_attachment:
+  name: account_avatar
+  record: interviewer_account (Account)
+  blob: account_avatar
+
+inactive_avatar_attachment:
+  name: account_avatar
+  record: inactive_account (Account)
+  blob: account_avatar

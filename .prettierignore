@@ -6,6 +6,7 @@ public/error-page-v2.css
 public/assets
 app/assets/builds
 test/fixtures/files
+test/fixtures/active_storage
 tmp
 vendor
 config/database.yml

@@ -311,7 +311,8 @@ ALTER SEQUENCE public.account_remember_keys_id_seq OWNED BY public.account_remem
 CREATE TABLE public.accounts (
     id bigint NOT NULL,
     status integer DEFAULT 1 NOT NULL,
-    email public.citext NOT NULL
+    email public.citext NOT NULL,
+    name character varying NOT NULL
 );
 
 
@@ -2794,6 +2795,7 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240322085731'),
 ('20240322040604'),
 ('20240321160130'),
 ('20240321153228'),
