@@ -3,7 +3,7 @@
 class Candidates::Add
   include Dry::Monads[:result]
 
-  # TODO: pass actor_user
+  # TODO: pass actor_account
   include Dry::Initializer.define -> do
     option :params, Types::Strict::Hash
   end

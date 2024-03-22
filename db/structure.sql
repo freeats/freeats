@@ -1177,6 +1177,40 @@ ALTER SEQUENCE public.notes_id_seq OWNED BY public.notes.id;
 
 
 --
+-- Name: position_stages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.position_stages (
+    id bigint NOT NULL,
+    position_id bigint NOT NULL,
+    name character varying NOT NULL,
+    list_index integer NOT NULL,
+    greenhouse_id integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: position_stages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.position_stages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: position_stages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.position_stages_id_seq OWNED BY public.position_stages.id;
+
+
+--
 -- Name: positions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1699,6 +1733,13 @@ ALTER TABLE ONLY public.notes ALTER COLUMN id SET DEFAULT nextval('public.notes_
 
 
 --
+-- Name: position_stages id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.position_stages ALTER COLUMN id SET DEFAULT nextval('public.position_stages_id_seq'::regclass);
+
+
+--
 -- Name: positions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1982,6 +2023,14 @@ ALTER TABLE ONLY public.note_threads
 
 ALTER TABLE ONLY public.notes
     ADD CONSTRAINT notes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: position_stages position_stages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.position_stages
+    ADD CONSTRAINT position_stages_pkey PRIMARY KEY (id);
 
 
 --
@@ -2381,6 +2430,27 @@ CREATE INDEX index_notes_on_note_thread_id ON public.notes USING btree (note_thr
 
 
 --
+-- Name: index_position_stages_on_greenhouse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_position_stages_on_greenhouse_id ON public.position_stages USING btree (greenhouse_id);
+
+
+--
+-- Name: index_position_stages_on_position_id_and_list_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_position_stages_on_position_id_and_list_index ON public.position_stages USING btree (position_id, list_index);
+
+
+--
+-- Name: index_position_stages_on_position_id_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_position_stages_on_position_id_and_name ON public.position_stages USING btree (position_id, name);
+
+
+--
 -- Name: index_positions_on_recruiter_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2702,6 +2772,14 @@ ALTER TABLE ONLY public.location_hierarchies
 
 
 --
+-- Name: position_stages fk_rails_f5fbacf194; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.position_stages
+    ADD CONSTRAINT fk_rails_f5fbacf194 FOREIGN KEY (position_id) REFERENCES public.positions(id);
+
+
+--
 -- Name: candidate_links fk_rails_ff2d75d07e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2716,6 +2794,7 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240322040604'),
 ('20240321160130'),
 ('20240321153228'),
 ('20240321153227'),
