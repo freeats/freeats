@@ -145,6 +145,28 @@ CREATE TYPE public.member_access_level AS ENUM (
 
 
 --
+-- Name: placement_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.placement_status AS ENUM (
+    'qualified',
+    'reserved',
+    'location',
+    'no_reply',
+    'not_interested',
+    'other_offer',
+    'overpriced',
+    'overqualified',
+    'position_closed',
+    'remote_only',
+    'team_fit',
+    'underqualified',
+    'workload',
+    'other'
+);
+
+
+--
 -- Name: position_change_status_reason; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -1178,6 +1200,41 @@ ALTER SEQUENCE public.notes_id_seq OWNED BY public.notes.id;
 
 
 --
+-- Name: placements; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.placements (
+    id bigint NOT NULL,
+    position_id bigint NOT NULL,
+    position_stage_id bigint NOT NULL,
+    candidate_id bigint NOT NULL,
+    status public.placement_status DEFAULT 'qualified'::public.placement_status NOT NULL,
+    greenhouse_id integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: placements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.placements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: placements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.placements_id_seq OWNED BY public.placements.id;
+
+
+--
 -- Name: position_stages; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1734,6 +1791,13 @@ ALTER TABLE ONLY public.notes ALTER COLUMN id SET DEFAULT nextval('public.notes_
 
 
 --
+-- Name: placements id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.placements ALTER COLUMN id SET DEFAULT nextval('public.placements_id_seq'::regclass);
+
+
+--
 -- Name: position_stages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2024,6 +2088,14 @@ ALTER TABLE ONLY public.note_threads
 
 ALTER TABLE ONLY public.notes
     ADD CONSTRAINT notes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: placements placements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.placements
+    ADD CONSTRAINT placements_pkey PRIMARY KEY (id);
 
 
 --
@@ -2431,6 +2503,34 @@ CREATE INDEX index_notes_on_note_thread_id ON public.notes USING btree (note_thr
 
 
 --
+-- Name: index_placements_on_candidate_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_placements_on_candidate_id ON public.placements USING btree (candidate_id);
+
+
+--
+-- Name: index_placements_on_greenhouse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_placements_on_greenhouse_id ON public.placements USING btree (greenhouse_id);
+
+
+--
+-- Name: index_placements_on_position_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_placements_on_position_id ON public.placements USING btree (position_id);
+
+
+--
+-- Name: index_placements_on_position_stage_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_placements_on_position_stage_id ON public.placements USING btree (position_stage_id);
+
+
+--
 -- Name: index_position_stages_on_greenhouse_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2677,6 +2777,14 @@ ALTER TABLE ONLY public.solid_queue_blocked_executions
 
 
 --
+-- Name: placements fk_rails_7be786382b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.placements
+    ADD CONSTRAINT fk_rails_7be786382b FOREIGN KEY (position_stage_id) REFERENCES public.position_stages(id);
+
+
+--
 -- Name: solid_queue_ready_executions fk_rails_81fcbd66af; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2725,6 +2833,14 @@ ALTER TABLE ONLY public.solid_queue_claimed_executions
 
 
 --
+-- Name: placements fk_rails_b301cc4475; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.placements
+    ADD CONSTRAINT fk_rails_b301cc4475 FOREIGN KEY (position_id) REFERENCES public.positions(id);
+
+
+--
 -- Name: active_storage_attachments fk_rails_c3b3935057; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2746,6 +2862,14 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 
 ALTER TABLE ONLY public.email_messages
     ADD CONSTRAINT fk_rails_c79e1f5f48 FOREIGN KEY (email_thread_id) REFERENCES public.email_threads(id);
+
+
+--
+-- Name: placements fk_rails_caa177de79; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.placements
+    ADD CONSTRAINT fk_rails_caa177de79 FOREIGN KEY (candidate_id) REFERENCES public.candidates(id);
 
 
 --
@@ -2796,6 +2920,7 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240322085731'),
+('20240322055152'),
 ('20240322040604'),
 ('20240321160130'),
 ('20240321153228'),

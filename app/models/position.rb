@@ -3,7 +3,11 @@
 class Position < ApplicationRecord
   DEFAULT_STAGES = %w[sourced contacted replied hired].freeze
 
-  has_many :stages, class_name: "PositionStage", dependent: :destroy
+  has_many :stages,
+           -> { order(:list_index) },
+           inverse_of: :position,
+           class_name: "PositionStage",
+           dependent: :destroy
 
   belongs_to :recruiter, optional: true, class_name: "Member"
 
