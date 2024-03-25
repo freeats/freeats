@@ -13,3 +13,4 @@ import '../src/shared/modal_remover';
 import '@hotwired/turbo-rails';
 import "../controllers";
 import 'bootstrap';
+import 'trix';

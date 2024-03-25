@@ -1,0 +1,43 @@
+@import "trix/dist/trix";
+
+[data-controller="trix-toolbar"] {
+  .trix-no-quote .trix-button--icon-quote {
+    display: none;
+  }
+
+  .trix-no-link .trix-button--icon-link {
+    display: none;
+  }
+
+  .trix-button-row {
+    gap: 0 1rem;
+    flex-wrap: wrap;
+  }
+
+  .trix-button-group:not(:first-child) {
+    margin-left: unset;
+  }
+}
+
+// TODO: move it into block above
+//       when rich_text_area in cover letter modal replaced by trix_editor.
+trix-toolbar {
+  .trix-button-group--file-tools {
+    display: none;
+  }
+}
+
+.trix-content-custom {
+  blockquote {
+    border: 0 solid #ccc;
+    border-left-width: 0.3em;
+    margin-left: 0.3em;
+    padding-left: 0.6em;
+  }
+  pre {
+    font-family: monospace;
+    padding: 0.5em;
+    background-color: #eee;
+    overflow-x: auto;
+  }
+}
