@@ -29,6 +29,11 @@ class Position < ApplicationRecord
     other
   ].freeze
 
+  has_and_belongs_to_many :collaborators,
+                          class_name: "Member",
+                          association_foreign_key: :collaborator_id,
+                          join_table: :positions_collaborators
+
   has_many :stages,
            -> { order(:list_index) },
            inverse_of: :position,

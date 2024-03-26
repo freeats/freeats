@@ -1318,6 +1318,16 @@ CREATE TABLE public.positions (
 
 
 --
+-- Name: positions_collaborators; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.positions_collaborators (
+    position_id bigint NOT NULL,
+    collaborator_id bigint NOT NULL
+);
+
+
+--
 -- Name: positions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2244,6 +2254,13 @@ ALTER TABLE ONLY public.solid_queue_semaphores
 
 
 --
+-- Name: idx_on_collaborator_id_position_id_d61c6081fc; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_collaborator_id_position_id_d61c6081fc ON public.positions_collaborators USING btree (collaborator_id, position_id);
+
+
+--
 -- Name: index_accounts_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2841,11 +2858,27 @@ ALTER TABLE ONLY public.placements
 
 
 --
+-- Name: positions_collaborators fk_rails_7ef0cdb0c5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.positions_collaborators
+    ADD CONSTRAINT fk_rails_7ef0cdb0c5 FOREIGN KEY (position_id) REFERENCES public.positions(id);
+
+
+--
 -- Name: solid_queue_ready_executions fk_rails_81fcbd66af; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.solid_queue_ready_executions
     ADD CONSTRAINT fk_rails_81fcbd66af FOREIGN KEY (job_id) REFERENCES public.solid_queue_jobs(id) ON DELETE CASCADE;
+
+
+--
+-- Name: positions_collaborators fk_rails_8588910131; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.positions_collaborators
+    ADD CONSTRAINT fk_rails_8588910131 FOREIGN KEY (collaborator_id) REFERENCES public.members(id);
 
 
 --
@@ -2975,6 +3008,7 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240326102218'),
 ('20240325141539'),
 ('20240322085731'),
 ('20240322055152'),
