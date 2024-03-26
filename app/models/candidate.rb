@@ -33,6 +33,7 @@ class Candidate < ApplicationRecord
   end
 
   has_many_attached :files
+  has_rich_text :cover_letter
 
   strip_attributes collapse_spaces: true, allow_empty: true, only: :full_name
 
@@ -176,6 +177,50 @@ class Candidate < ApplicationRecord
         end
       [domain_index, link.status == "current" ? 0 : 1]
     end
+  end
+
+  def cover_letter_template
+    return if cover_letter.present?
+
+    <<~HTML
+      <div>
+        <i>HEADLINE with NUMBER years of experience</i>
+        <br>
+        Tech:
+        <br>
+        Location: Helsinki, Finland
+        <br>
+        English:
+        <br>
+        Salary expectations:
+        <br><br>
+        <b>Current job</b>
+        <br><br>
+        <i>TITLE at COMPANY for the last NUMBER years</i>
+        <br>
+        Skill:
+        <br>
+        Working on:
+        <br><br>
+        <b>Job change</b>
+        <br><br>
+        Not looking to change job actively
+        <br>
+        Notice period:
+        <br><br>
+        <b>Notes</b>
+        <br>
+      </div>
+    HTML
+  end
+
+  def source=(source_name)
+    self.candidate_source =
+      if source_name.blank?
+        nil
+      else
+        CandidateSource.find_by("lower(f_unaccent(name)) = lower(f_unaccent(?))", source_name)
+      end
   end
 
   def cv

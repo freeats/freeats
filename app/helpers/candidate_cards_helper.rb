@@ -39,7 +39,7 @@ module CandidateCardsHelper
   def candidate_card_source(candidate)
     return if candidate.candidate_source.blank?
 
-    candidate.candidate_source
+    candidate.candidate_source.name
   end
 
   def candidate_card_phone_links(candidate)
@@ -165,5 +165,20 @@ module CandidateCardsHelper
     tag.div(class: "row links-row gx-2 align-items-center") do
       safe_join(chat_links)
     end
+  end
+
+  def candidate_card_cover_letter_copy_button(candidate)
+    tag.button(
+      tag.i(class: "far fa-copy"),
+      type: "button",
+      class: "btn btn-link p-0 align-top ms-2",
+      data: {
+        controller: "copy-to-clipboard",
+        clipboard_text: candidate.cover_letter.body.to_html,
+        clipboard_plain_text: candidate.cover_letter.to_plain_text,
+        bs_title: "Copied!",
+        bs_trigger: "manual"
+      }
+    )
   end
 end

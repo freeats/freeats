@@ -1,10 +1,6 @@
-/ Partial variables:
-/ - candidate
-/ - pattern
-/ - form
+/# locals: (candidate:, pattern: nil, form:)
 
 ruby:
-  pattern ||= nil
   klass_name = candidate.class.name.downcase
 
 = tag.div id: "#{klass_name}-contacts-emails",
@@ -25,7 +21,7 @@ ruby:
                                           placeholder: "Address", pattern:,
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
           = render TextInputComponent.new(address_form, method: :url, size: :small, placeholder: "Link")
-          = render "shared/profile/info_cards/email_addresses_select_fields",
+          = render "ats/candidates/info_cards/email_addresses_select_fields",
                    address_form:, klass_name:
             = address_form
             - if address_form.object.id.present?
@@ -49,7 +45,7 @@ ruby:
                                           pattern:, placeholder: "Address",
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
           = render TextInputComponent.new(address_form, method: :url, size: :small, placeholder: "Link")
-          = render "shared/profile/info_cards/email_addresses_select_fields",
+          = render "ats/candidates/info_cards/email_addresses_select_fields",
                    address_form:, klass_name:
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"

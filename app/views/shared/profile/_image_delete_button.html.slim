@@ -1,0 +1,21 @@
+/# locals: (url:, disabled: false)
+
+ruby:
+  disabled_tooltip_text = "You can't delete the avatar right now. It’s being processed."
+
+- if disabled
+  span data-bs-toggle="tooltip" data-bs-title=disabled_tooltip_text
+    = render ButtonComponent.new(variant: :danger_secondary, size: :small, disabled: true) do |c|
+      - c.with_icon("fas fa-trash-alt", position: :right)
+      | Delete
+- else
+  = form_with url:, method: :delete, class: "d-inline", local: true
+    = render ButtonComponent.new(variant: :danger_secondary,
+                                 size: :small,
+                                 data: { toggle: "ats-confirmation",
+                                         title: "Delete avatar?",
+                                         btn_cancel_label: "Cancel",
+                                         btn_ok_label: "Delete",
+                                         btn_ok_class: "btn btn-danger btn-small" }) do |c|
+      - c.with_icon("fas fa-trash-alt", position: :right)
+      | Delete

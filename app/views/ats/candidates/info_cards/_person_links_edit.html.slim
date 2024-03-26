@@ -1,6 +1,5 @@
-/ Partial variables:CandidateLink
-/ - candidate
-/ - form
+/# locals: (candidate:, form:)
+
 ruby:
   klass_name = candidate.class.name.downcase
   order_field_collection = candidate.sorted_links + [CandidateLink.new]
@@ -22,7 +21,7 @@ ruby:
                                             placeholder: "Link", type: :url,
                                             value: Addressable::URI.unencode(links_form.object&.url),
                                             "data-update-requirement-attribute-for-select-field-target": "mainField")
-          = render "shared/profile/info_cards/person_links_select_field", links_form:
+          = render "ats/candidates/info_cards/person_links_select_field", links_form:
           - if links_form.object.id.present?
             = links_form.hidden_field(:id)
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
@@ -43,7 +42,7 @@ ruby:
             = render TextInputComponent.new(links_form, method: :url, size: :small,
                                             placeholder: "Link", type: :url,
                                             "data-update-requirement-attribute-for-select-field-target": "mainField")
-          = render "shared/profile/info_cards/person_links_select_field", links_form:
+          = render "ats/candidates/info_cards/person_links_select_field", links_form:
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"
             class="#{klass_name}-delete-link-button"

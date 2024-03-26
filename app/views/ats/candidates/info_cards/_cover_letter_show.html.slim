@@ -1,8 +1,7 @@
-/ Partial variables:
-/ - candidate
+/# locals: (candidate:)
 
 - header = card_header(title: "Cover letter", icon_style: "fa-envelope-open-text") do
-    = hub_candidate_card_cover_letter_copy_button(candidate)
+  = candidate_card_cover_letter_copy_button(candidate)
 
 = card_show "cover_letter", target_model: candidate, header:
   = trix_sanitize_and_add_target_blank_to_links candidate.cover_letter.to_s

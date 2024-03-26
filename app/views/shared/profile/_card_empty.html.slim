@@ -1,12 +1,6 @@
-/ Partial variables:
-/ - header
-/ - path
-/ - card_name
-/ - target_model
-/ - tooltip_text
+/# locals: (header: nil, path: "", card_name:, target_model:, tooltip_text: nil)
 
 ruby:
-  path ||= ""
   edit_card_path =
     path.presence ||
       case controller
@@ -14,8 +8,6 @@ ruby:
         # when ATS::PositionsController then "edit_card_ats_position_path"
       end
 
-- header ||= nil
-- tooltip_text ||= nil
 = turbo_frame_tag "turbo_#{card_name}_section"
   .card.mt-3.empty-card-templates [style="border: none;" data-bs-toggle="#{'tooltip' if tooltip_text.present?}"
       data-bs-title=tooltip_text.presence]

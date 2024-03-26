@@ -1,6 +1,4 @@
-/ Partial variables:
-/ - candidate
-/ - form
+/# locals: (candidate:, form:)
 
 ruby:
   klass_name = candidate.class.name.downcase
@@ -24,7 +22,7 @@ ruby:
                                           placeholder: "Phone",
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
           .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
-            = render "shared/profile/info_cards/phones_select_fields",
+            = render "ats/candidates/info_cards/phones_select_fields",
                       phones_form:, klass_name:
             - if phones_form.object.id.present?
               = phones_form.hidden_field(:id)
@@ -46,7 +44,7 @@ ruby:
           = render TextInputComponent.new(phones_form, method: :phone, size: :small, placeholder: "Phone",
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
           .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
-            = render "shared/profile/info_cards/phones_select_fields",
+            = render "ats/candidates/info_cards/phones_select_fields",
                       phones_form:, klass_name:
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"

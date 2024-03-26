@@ -7,4 +7,8 @@ class CandidateSource < ApplicationRecord
 
   validates :name, presence: true
   validates :name, uniqueness: true
+
+  def self.search_by_name(name)
+    where("lower(f_unaccent(name)) LIKE lower(f_unaccent(?))", "%#{name}%")
+  end
 end

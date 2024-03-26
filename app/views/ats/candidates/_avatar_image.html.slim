@@ -1,9 +1,11 @@
-/ Variables:
-/ - candidate
-/ - is_form - whether it is used as a form, false by default
-- is_form ||= false
+/# locals: (candidate:, is_form: false)
+/ is_form - whether it is used as a form
 
 .profile-avatar.img-thumbnail class=("profile-avatar-edit float-md-end" if is_form)
-  / = link_to picture_medium(candidate.avatar), candidate.avatar.medium.url, target: :_blank
-  - if !is_form && candidate.blacklisted
-    .profile-avatar-overlay.alert-danger Blacklisted
+  - if candidate.avatar.attached?
+    = image_tag candidate.avatar.variant(:icon)
+    - if !is_form && candidate.blacklisted
+      .profile-avatar-overlay.alert-danger Blacklisted
+  - else
+    = link_to image_tag(ApplicationController.helpers.asset_path("icons/user.png")),
+              ApplicationController.helpers.asset_path("icons/user.png")

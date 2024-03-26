@@ -15,8 +15,8 @@ class ATS::CandidatesController < ApplicationController
   private_constant :INFO_CARDS
 
   before_action :set_candidate, only: %i[show show_header edit_header update_header
-                                         show_card edit_card update_card upload_file
-                                         change_cv_status delete_file
+                                         show_card edit_card update_card remove_avatar
+                                         upload_file change_cv_status delete_file
                                          delete_cv_file download_cv_file upload_cv_file]
 
   def index
@@ -116,10 +116,10 @@ class ATS::CandidatesController < ApplicationController
 
     if card_name == "contact_info"
       render(
-        partial: "shared/profile/info_cards/contact_info_show",
+        partial: "ats/candidates/info_cards/contact_info_show",
         locals: { candidate: @candidate }
       )
-    elsif card_name == "cover_letter" # && @candidate.cover_letter.blank?
+    elsif card_name == "cover_letter" && @candidate.cover_letter.blank?
       render(
         partial: "shared/profile/card_empty",
         locals: { card_name: "cover_letter", target_model: @candidate }
@@ -137,22 +137,12 @@ class ATS::CandidatesController < ApplicationController
 
     card_name = params[:card_name]
 
-    case card_name
-    when "contact_info"
-      render(
-        partial: "shared/profile/info_cards/#{card_name}_edit",
-        locals: {
-          candidate: @candidate
-        }
-      )
-    else
-      render(
-        partial: "ats/candidates/info_cards/#{card_name}_edit",
-        locals: {
-          candidate: @candidate
-        }
-      )
-    end
+    render(
+      partial: "ats/candidates/info_cards/#{card_name}_edit",
+      locals: {
+        candidate: @candidate
+      }
+    )
   end
 
   def update_card
@@ -160,15 +150,24 @@ class ATS::CandidatesController < ApplicationController
 
     @candidate.change(candidate_params)
     card_name = params[:card_name]
+
     render_turbo_stream(
       [
         turbo_stream.replace(
           "turbo_#{card_name}_section",
-          partial: "hub/candidates/info_cards/#{card_name}_show",
+          partial: "ats/candidates/info_cards/#{card_name}_show",
           locals: { candidate: @candidate }
         )
       ]
     )
+  end
+
+  def remove_avatar
+    @candidate.destroy_avatar
+    @candidate.save!
+    redirect_back fallback_location: tab_ats_candidate_path(@candidate, :info)
+  rescue StandardError => e
+    redirect_back fallback_location: tab_ats_candidate_path(@candidate, :info), alert: e.message
   end
 
   def upload_file
@@ -217,12 +216,16 @@ class ATS::CandidatesController < ApplicationController
   private
 
   def candidate_params
-    params
+    return @candidate_params if @candidate_params.present?
+
+    @candidate_params =
+      params
       .require(:candidate)
       .permit(
         :avatar,
         :remove_avatar,
         :file,
+        :cover_letter,
         :file_id_to_remove,
         :file_id_to_change_cv_status,
         :new_cv_status,
@@ -234,12 +237,37 @@ class ATS::CandidatesController < ApplicationController
         :headline,
         :telegram,
         :skype,
-        :candidate_source_id,
+        :source,
         links: [],
         alternative_names: [],
-        email_addresses: [],
+        emails: [],
         phones: []
       )
+
+    email_params =
+      params[:candidate].permit(
+        email_addresses_attributes: %i[address status url source type]
+      )[:email_addresses_attributes]
+
+    if email_params
+      @candidate_params[:emails] = email_params.values.filter { _1[:address].present? }
+    end
+
+    phone_params =
+      params[:candidate].permit(
+        candidate_phones_attributes: %i[phone status source type]
+      )[:candidate_phones_attributes]
+
+    @candidate_params[:phones] = phone_params.values.filter { _1[:phone].present? } if phone_params
+
+    link_params =
+      params[:candidate].permit(
+        candidate_links_attributes: %i[url status]
+      )[:candidate_links_attributes]
+
+    @candidate_params[:links] = link_params.values.filter { _1[:url].present? } if link_params
+
+    @candidate_params
   end
 
   # rubocop:disable Naming/MemoizedInstanceVariableName

@@ -1,18 +1,21 @@
-/ Partial variables:
-/ - candidate
+/# locals: (candidate:)
 
 ruby:
   header = card_header(title: "Contact info", icon_style: "fa-at")
+  source_options =
+    if candidate.candidate_source.present?
+      [candidates_compose_source_option_for_select(candidate.candidate_source)]
+    end
 
 = candidate_card_edit "contact_info", candidate, header: do |form|
   / Source
-  / = render LabeledComponent.new(class: "mb-2") do |c|
+  = render LabeledComponent.new(class: "mb-2") do |c|
     - c.with_label("Source", form:, for_field: :source, size: :small)
     = render SingleSelectComponent.new( \
         form,
         method: :source,
         remote: { \
-          search_url: fetch_person_sources_api_v1_person_sources_path(q: "QUERY"),
+          search_url: fetch_candidate_sources_api_v1_candidate_sources_path(q: "QUERY"),
           options: source_options,
         },
       )
@@ -20,19 +23,19 @@ ruby:
   / Emails
   = render LabeledComponent.new(class: "mb-2") do |c|
     - c.with_label("Emails", size: :small, form:)
-    = render "shared/profile/info_cards/email_addresses_edit",
+    = render "ats/candidates/info_cards/email_addresses_edit",
              form:, candidate:
     /, pattern: regexp_to_pattern(Devise.email_regexp)
 
   / Phones
   = render LabeledComponent.new(class: "mb-2") do |c|
     - c.with_label("Phones", size: :small, form:)
-    = render "shared/profile/info_cards/phones_edit", form:, candidate:
+    = render "ats/candidates/info_cards/phones_edit", form:, candidate:
 
   / Links
   = render(LabeledComponent.new(class: "mb-2")) do |c|
     - c.with_label("Links", size: :small, form:)
-    = render("shared/profile/info_cards/person_links_edit", form:, candidate:)
+    = render("ats/candidates/info_cards/person_links_edit", form:, candidate:)
 
   / Telegram
   = render LabeledComponent.new(class: "mb-2") do |c|

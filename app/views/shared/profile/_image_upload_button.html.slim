@@ -1,0 +1,12 @@
+/# locals: (form:, file_field:)
+
+= render ButtonComponent.new(variant: :secondary,
+                             size: :small,
+                             type: :button,
+                             class: "file-upload-button",
+                             data: { bs_toggle: "tooltip", title: drag_and_drop_tooltip }) do |c|
+  - c.with_icon("fas fa-upload", position: :right)
+  | Upload
+  = form.file_field file_field,
+                    accept: "image/*",
+                    class: "upload d-inline"

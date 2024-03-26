@@ -3,11 +3,11 @@
     .col
       #contact-info-card.profile-card
         - if candidate_card_contact_info_has_data?(@candidate)
-          = render "shared/profile/info_cards/contact_info_show", candidate: @candidate
+          = render "ats/candidates/info_cards/contact_info_show", candidate: @candidate
         - else
           = card_empty "contact_info", target_model: @candidate
       .profile-card
-        - if 1 == 2 # @candidate.cover_letter.present?
+        - if @candidate.cover_letter.present?
           = render "ats/candidates/info_cards/cover_letter_show", candidate: @candidate
         - else
           = card_empty "cover_letter", target_model: @candidate

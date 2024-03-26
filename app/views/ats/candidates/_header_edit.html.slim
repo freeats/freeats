@@ -1,13 +1,12 @@
 - avatar_edit_buttons = proc do |form| # rubocop:disable Lint/UnusedBlockArgument
   form
   .hstack.gap-2.h-100
-    / = render "shared/profile/image_upload_button",
+    = render "shared/profile/image_upload_button",
              file_field: :avatar,
              form:
-    / - if @candidate.avatar.present?
+    - if @candidate.avatar.present?
       = render "shared/profile/image_delete_button",
-               url: remove_avatar_ats_candidate_path(@candidate),
-               disabled: @candidate.fallback_avatar_url.present?
+               url: remove_avatar_ats_candidate_path(@candidate)
 
 = turbo_frame_tag :turbo_header_section
   #header-edit
@@ -18,7 +17,9 @@
       = render LabeledComponent.new(class: "mb-2") do |c|
         - c.with_label("Full name", size: :small, form:, for_field: :full_name)
         = render TextInputComponent.new(form, method: :full_name, size: :small, required: true)
-      / alternative names
+      / = render LabeledComponent.new(class: "mb-2") do |c|
+        - c.with_label("Alternative names", size: :small, form:)
+        = render "ats/candidates/info_cards/alternative_names_edit", form:, candidate: @candidate
       = render LabeledComponent.new(class: "mb-2") do |c|
         - c.with_label("Headline", size: :small, form:, for_field: :headline)
         = render TextInputComponent.new(form, method: :headline, size: :small)

@@ -1,13 +1,10 @@
-/ Partial variables:
-/ - candidate
+/# locals: (candidate:)
 
 - header = card_header(title: "Cover letter", icon_style: "fa-envelope-open-text")
 
-- # rubocop:disable Lint/UnusedBlockArgument
 = candidate_card_edit "cover_letter", candidate, header: do |form|
   .card
     .card-body
-      / = trix_editor form,
-                   :cover_letter,
-                   value: candidate.cover_letter.presence || candidate.cover_letter_template
-- # rubocop:enable Lint/UnusedBlockArgument
+      = trix_editor form,
+                    :cover_letter,
+                    value: candidate.cover_letter.presence || candidate.cover_letter_template

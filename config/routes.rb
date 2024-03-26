@@ -38,6 +38,10 @@ Rails.application.routes.draw do
       resource :locations, only: [] do
         get :fetch_locations
       end
+
+      resource :candidate_sources, only: [] do
+        get :fetch_candidate_sources
+      end
     end
   end
 
