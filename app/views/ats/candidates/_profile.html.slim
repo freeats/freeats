@@ -39,10 +39,10 @@
 
   - tab_labels[:files] = capture
     | Files
-    / - if @candidate.file_entries.size > 1 && @candidate.cv.present? \
-         || @candidate.file_entries.size.positive? && @candidate.cv.blank?
+    - if @candidate.files.size > 1 && @candidate.cv.present? \
+         || @candidate.files.size.positive? && @candidate.cv.blank?
       | &nbsp;
-      span.badge.bg-secondary = @candidate.file_entries.size
+      span.badge.bg-secondary = @candidate.files.size
 
   ul.nav.d-none.d-md-flex
     li.nav-item

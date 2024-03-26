@@ -108,13 +108,12 @@ class Candidate < ApplicationRecord
     avatar.purge
   end
 
-  def destroy_file_attachment(attachment)
-    transaction do
-      AttachmentInformation
-        .find_by(active_storage_attachment_id: attachment.id)
-        &.destroy
+  def destroy_file(file_id)
+    file = files.find(file_id)
 
-      attachment.purge
+    transaction do
+      file.attachment_information&.destroy!
+      file.purge
     end
   end
 
@@ -177,5 +176,16 @@ class Candidate < ApplicationRecord
         end
       [domain_index, link.status == "current" ? 0 : 1]
     end
+  end
+
+  def cv
+    files
+      .attachments
+      .joins(:attachment_information)
+      .find_by(attachment_information: { is_cv: true })
+  end
+
+  def all_files
+    files.joins(:blob).order(id: :desc)
   end
 end

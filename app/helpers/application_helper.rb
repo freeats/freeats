@@ -102,6 +102,10 @@ module ApplicationHelper
     )
   end
 
+  def drag_and_drop_tooltip
+    "You can also drag a file directly to this button in order to upload it"
+  end
+
   private
 
   def compose_select_component(grid:, filter:)

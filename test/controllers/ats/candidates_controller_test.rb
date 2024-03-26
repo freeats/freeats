@@ -39,6 +39,8 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should assign the medium and icon avatars and remove them" do
+    skip "Unskip when we implement logic to assign avatar to the candidate"
+
     file = fixture_file_upload("app/assets/images/icons/user.png", "image/png")
     candidate = candidates(:john)
     number_of_created_blobs = 3
@@ -79,7 +81,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_not candidate.files.attached?
 
     assert_difference "ActiveStorage::Blob.count", 1 do
-      patch ats_candidate_path(candidate), params: { candidate: { file: } }
+      post upload_file_ats_candidate_path(candidate), params: { candidate: { file: } }
     end
 
     candidate.reload
@@ -87,10 +89,68 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_predicate candidate.files, :attached?
     assert_match(%r{uploads/candidate/#{candidate.id}/.*\.png}, candidate.files.first.blob.key)
 
-    patch ats_candidate_path(candidate), params: { candidate: { file_id_to_remove: candidate.files.first.id } }
+    delete delete_file_ats_candidate_path(candidate, candidate: { file_id_to_remove: candidate.files.first.id })
 
     candidate.reload
 
     assert_not candidate.files.attached?
+  end
+
+  test "should upload candidate file and remove it" do
+    candidate = candidates(:john)
+
+    assert_empty candidate.files
+
+    file = fixture_file_upload("empty.pdf", "application/pdf")
+    assert_difference "ActiveStorage::Blob.count" do
+      post upload_file_ats_candidate_path(candidate), params: { candidate: { file: } }
+    end
+
+    assert_response :redirect
+    assert_equal candidate.files.last.id, ActiveStorage::Attachment.last.id
+
+    file_id_to_remove = candidate.files.last.id
+    assert_difference "ActiveStorage::Blob.count", -1 do
+      delete delete_file_ats_candidate_path(candidate), params: { candidate: { file_id_to_remove: } }
+    end
+
+    assert_response :success
+    assert_empty candidate.files
+  end
+
+  test "should set file as cv and then reassign the cv flag to another file" do
+    candidate = candidates(:jane)
+    attachment = candidate.files.last
+
+    assert_equal candidate.files.count, 1
+
+    assert_not candidate.cv
+
+    patch change_cv_status_ats_candidate_path(candidate),
+          params: { candidate: { file_id_to_change_cv_status: attachment.id,
+                                 new_cv_status: true } }
+
+    assert_response :success
+    candidate.reload
+
+    assert_predicate candidate.cv, :present?
+
+    # Attach new file and make him CV
+    new_cv_file = fixture_file_upload("empty.pdf", "application/pdf")
+    assert_difference "ActiveStorage::Blob.count" do
+      post upload_file_ats_candidate_path(candidate), params: { candidate: { file: new_cv_file } }
+    end
+
+    assert_response :redirect
+
+    new_attachment = candidate.files.last
+    patch change_cv_status_ats_candidate_path(candidate),
+          params: { candidate: { file_id_to_change_cv_status: new_attachment.id,
+                                 new_cv_status: true } }
+
+    assert_response :success
+
+    assert_not attachment.attachment_information.is_cv
+    assert new_attachment.attachment_information.is_cv
   end
 end

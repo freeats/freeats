@@ -1,0 +1,57 @@
+/# locals: (all_files:, candidate:)
+
+#turbo_candidate_files
+  table#files-table.table.mt-3
+    thead
+      tr
+        th scope="col" Name
+        th scope="col" Added by
+        th scope="col" When
+        th scope="col" style="width: 50px;" CV
+        th scope="col"
+
+    tbody
+      - all_files.each do |file|
+        tr
+          td.text-truncate
+            = link_to file.blob.filename, file.url.to_s, target: :_blank
+          td
+            / - if file.added_event.actor_user_id?
+            /   = picture_avatar_icon file.added_event.actor_user.avatar, {}, class: "small-avatar-thumbnail"
+            /   =< file.added_event.actor_user.name
+            / - else
+            /   | Email
+          td
+            span data-bs-toggle="tooltip" title=file.created_at.to_fs(:datetime_full)
+              => short_time_ago_in_words(file.created_at)
+              | ago
+            / span data-bs-toggle="tooltip" title=file.added_event.performed_at.to_fs(:datetime_full)
+              => short_time_ago_in_words(file.added_event.performed_at)
+              | ago
+          td.files-table-cv-column
+            - if file.cv?
+              = button_to change_cv_status_ats_candidate_path(candidate,
+                          candidate: { file_id_to_change_cv_status: file.id, new_cv_status: false }),
+                          method: :patch, class: "btn" do
+                span.clickable
+                  i.far.fa-check-circle.hide-on-hover
+                  i.far.fa-times-circle.text-danger.show-on-hover
+            - else
+              = form_with url: change_cv_status_ats_candidate_path(candidate,
+                          candidate: { file_id_to_change_cv_status: file.id, new_cv_status: true }),
+                          method: :patch
+                button.btn type="submit"
+                  span.clickable
+                    i.far.fa-check-circle.text-success.show-on-hover
+          td.text-end
+            = button_to delete_file_ats_candidate_path(candidate, candidate: { file_id_to_remove: file.id }),
+                                            class: "btn btn-light",
+                                            method: :delete,
+                                            data: { \
+                                              toggle: "ats-confirmation",
+                                              title: "Delete file?",
+                                              btn_cancel_label: "Cancel",
+                                              btn_ok_label: "Delete",
+                                              btn_ok_class: "btn btn-danger btn-small" \
+                                            }
+              i.fas.fa-trash-alt

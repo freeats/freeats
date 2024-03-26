@@ -15,7 +15,8 @@ class ATS::CandidatesController < ApplicationController
   private_constant :INFO_CARDS
 
   before_action :set_candidate, only: %i[show show_header edit_header update_header
-                                         show_card edit_card update_card]
+                                         show_card edit_card update_card upload_file
+                                         change_cv_status delete_file]
 
   def index
     @candidates_grid = ATS::CandidatesGrid.new(
@@ -44,7 +45,7 @@ class ATS::CandidatesController < ApplicationController
         when "scorecards"
           # scorecards
         when "files"
-          # files
+          @all_files = @candidate.all_files
         when "activities"
           # activities
           # else
@@ -84,20 +85,6 @@ class ATS::CandidatesController < ApplicationController
     in Failure[:candidate_invalid, candidate]
       redirect_to ats_candidates_path, alert: candidate.errors.full_messages
     end
-  end
-
-  def update
-    @candidate = Candidate.find(params[:id])
-
-    @candidate.attach_avatar(candidate_params[:avatar]) if candidate_params[:avatar].present?
-    @candidate.destroy_avatar if candidate_params[:remove_avatar] == "1"
-
-    @candidate.files.attach(candidate_params[:file]) if candidate_params[:file].present?
-    if candidate_params[:file_id_to_remove].present?
-      @candidate.files.find(candidate_params[:file_id_to_remove]).purge
-    end
-
-    redirect_to "/"
   end
 
   def show_header
@@ -183,6 +170,30 @@ class ATS::CandidatesController < ApplicationController
     )
   end
 
+  def upload_file
+    @candidate.files.attach(candidate_params[:file])
+
+    redirect_to tab_ats_candidate_path(@candidate, :files)
+  end
+
+  def delete_file
+    @candidate.destroy_file(candidate_params[:file_id_to_remove])
+
+    render_candidate_files(@candidate)
+  end
+
+  def change_cv_status
+    file = @candidate.files.find(candidate_params[:file_id_to_change_cv_status])
+
+    file.change_cv_status(candidate_params[:new_cv_status])
+    if @candidate.errors.present?
+      render_error @candidate.errors.full_messages
+      return
+    end
+
+    render_candidate_files(@candidate)
+  end
+
   private
 
   def candidate_params
@@ -193,6 +204,8 @@ class ATS::CandidatesController < ApplicationController
         :remove_avatar,
         :file,
         :file_id_to_remove,
+        :file_id_to_change_cv_status,
+        :new_cv_status,
         :recruiter_id,
         :location_id,
         :full_name,
@@ -235,5 +248,14 @@ class ATS::CandidatesController < ApplicationController
 
     redirect_to tab_ats_candidate_path(@candidate.merged_to, params[:tab] || :info) # ,
     # warning: MERGED_WARNING
+  end
+
+  def render_candidate_files(candidate)
+    render_turbo_stream(
+      turbo_stream.update(
+        "turbo_candidate_files", partial: "ats/candidates/candidate_files",
+                                 locals: { all_files: candidate.all_files, candidate: }
+      )
+    )
   end
 end

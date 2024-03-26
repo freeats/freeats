@@ -1,0 +1,9 @@
+/# locals: (candidate:)
+
+= form_with model: candidate, url: upload_file_ats_candidate_path, local: true, multipart: true, method: :post do |form|
+  .btn.btn-primary.btn-small.file-upload-button data-bs-toggle="tooltip" title=drag_and_drop_tooltip
+    span Upload file
+    = form.file_field :file,
+                      required: true,
+                      class: "upload turbo-instant-submit",
+                      accept: ".bmp,.doc,.docx,.jpeg,.jpg,.m4a,.mp3,.mp4,.odt,.pdf,.png,.rtf,.svg,.wav,.webm,.webp"

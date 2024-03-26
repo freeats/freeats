@@ -1,1 +1,2 @@
 account_avatar: <%= ActiveStorage::FixtureSet.blob filename: "icon.jpg" %>
+empty_file: <%= ActiveStorage::FixtureSet.blob filename: "empty.pdf" %>

@@ -22,3 +22,8 @@ inactive_avatar_attachment:
   name: account_avatar
   record: inactive_account (Account)
   blob: account_avatar
+
+empty_file_jane_attachment:
+  name: files
+  record: jane (Candidate)
+  blob: empty_file

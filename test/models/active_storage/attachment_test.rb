@@ -24,7 +24,7 @@ class ActiveStorage::AttachmentTest < ActiveSupport::TestCase
     assert_equal candidate.files.count, 1
     assert_equal AttachmentInformation.count, 1
 
-    candidate.destroy_file_attachment(attachment)
+    candidate.destroy_file(attachment.id)
 
     assert_equal candidate.files.count, 0
     assert_equal AttachmentInformation.count, 0
@@ -33,7 +33,7 @@ class ActiveStorage::AttachmentTest < ActiveSupport::TestCase
 
   test "should delete additional_information and keep blob after deleting attachment" do
     candidate1 = candidates(:john)
-    candidate2 = candidates(:jane)
+    candidate2 = candidates(:ivan)
 
     assert_equal candidate1.files.count, 0
     assert_equal candidate2.files.count, 0
@@ -57,7 +57,7 @@ class ActiveStorage::AttachmentTest < ActiveSupport::TestCase
     assert_equal candidate2.files.count, 1
     assert_equal AttachmentInformation.count, 1
 
-    candidate1.destroy_file_attachment(attachment1)
+    candidate1.destroy_file(attachment1.id)
 
     assert_equal candidate1.files.count, 0
     assert_equal candidate2.files.count, 1

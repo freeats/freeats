@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ActiveStorageAttachmentBlob
+module ActiveStorageBlob
   def build_after_unfurling(*args, **kwargs)
     blob = super(*args, **kwargs)
     record = kwargs[:record]

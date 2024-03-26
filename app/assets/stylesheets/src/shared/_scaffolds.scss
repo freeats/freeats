@@ -70,3 +70,117 @@ footer .container-fluid {
 [class*="container"] {
   --bs-gutter-x: 3rem;
 }
+
+// Most browsers don't support styling `<input>` tag which is required for file upload fields. This
+// hack is used to place an invisible input near a real button so we can style the real button
+// instead. The input is 100 pixels above because `cursor: pointer;` doesn't work within it's area.
+//
+// Example:
+// .btn.btn-primary.file-upload-button
+//   | Upload avatar
+//   = form.file_field :avatar, class: "upload"
+.file-upload-button {
+  position: relative;
+  overflow: hidden;
+  input.upload {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    position: absolute;
+    top: -100px;
+    left: 0;
+    height: calc(100% + 100px);
+    width: 100%;
+    cursor: pointer;
+  }
+}
+
+#files-table {
+  table-layout: fixed;
+  vertical-align: middle;
+
+  th {
+    width: auto;
+  }
+
+  th:first-child {
+    width: auto;
+  }
+
+  th:nth-child(2) {
+    width: 30%;
+  }
+
+  th:nth-child(3) {
+    width: 20%;
+  }
+
+  th:nth-child(4) {
+    width: 5.7rem;
+  }
+
+  th:last-child {
+    width: 5.7rem;
+  }
+
+  .show-on-hover {
+    display: none;
+  }
+
+  .hide-on-hover {
+    display: inline-block;
+  }
+
+  .files-table-cv-column:hover {
+    .show-on-hover {
+      display: inline-block;
+    }
+
+    .hide-on-hover {
+      display: none;
+    }
+  }
+
+  .files-table-cv-column {
+    font-size: 20px;
+
+    form,
+    button {
+      font-size: inherit;
+      padding: 0;
+    }
+
+    button:focus {
+      box-shadow: none;
+    }
+
+    .btn {
+      border-color: transparent;
+    }
+  }
+}
+
+body {
+  font-size: 0.875rem;
+  line-height: 1.3125rem;
+}
+
+// Change styles to Bootstrap v4.
+.table {
+  & > :not(:first-child) {
+    border-top: 1px solid $gray-500;
+  }
+  & > thead {
+    border-top: 1px solid $gray-500;
+  }
+  tr:not(:last-child) {
+    border-bottom: 1px solid $gray-500;
+  }
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+  td,
+  th {
+    padding: 0.75rem;
+    border-bottom: none;
+  }
+}

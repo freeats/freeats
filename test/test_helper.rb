@@ -12,7 +12,9 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
-    # Add more helper methods to be used by all tests here...
+    # Necessary to test ActiveStorage when we render files tab with the disk service,
+    # otherwise we got an error when trying to compose url for the file.
+    ActiveSupport.on_load(:action_controller) { include ActiveStorage::SetCurrent }
   end
 end
 # rubocop:enable Style/ClassAndModuleChildren

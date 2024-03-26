@@ -14,3 +14,13 @@ import '@hotwired/turbo-rails';
 import "../controllers";
 import 'bootstrap';
 import 'trix';
+
+import initConfirmations from '../src/shared/confirmations';
+import {
+  activateFileUploadInput,
+  activateInstanceSubmit
+} from '../src/shared/input_utils';
+
+initConfirmations();
+activateFileUploadInput();
+activateInstanceSubmit();

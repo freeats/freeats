@@ -33,7 +33,7 @@ module CandidateCardsHelper
       candidate.links.exists? ||
       candidate.skype.present? ||
       candidate.telegram.present? ||
-      candidate.source.present?
+      candidate.candidate_source.present?
   end
 
   def candidate_card_source(candidate)
