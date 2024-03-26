@@ -18,6 +18,7 @@
     "esbuild": "^0.14.36",
     "esbuild-rails": "^1.0.7",
     "jquery": "^3.7.1",
+    "jquery-ui": "^1.13.2",
     "sass": "^1.71.1",
     "selectize": "git+https://github.com/toughbyte/selectize.js.git",
     "trix": "^2.0.10"

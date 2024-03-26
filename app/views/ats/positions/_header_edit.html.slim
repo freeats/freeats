@@ -1,0 +1,9 @@
+ruby:
+
+= turbo_frame_tag :turbo_header_section
+  #header-edit
+    = card_edit(card_name: "header", target_model: @position,
+                target_url: update_header_ats_position_path(@position)) do |form|
+      = render LabeledComponent.new(class: "mb-2") do |c|
+        - c.with_label("Name", size: :small, class: "fw-semibold", form:, for_field: :name)
+        = render TextInputComponent.new(form, method: :name, size: :small)

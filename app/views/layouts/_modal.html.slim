@@ -1,7 +1,17 @@
-/# locals: (form_options:, modal_id:, hidden_fields: [], modal_size: nil)
+/ Here cannot be used new variable restrict style from Rails 7.1,
+/ because of all passed variables in locals will be also passed to
+/ this modal partial, but new style require pass only defined
+/ variables. We can’t define all of them.
+
+/ Layout variables:
+/ - form_options
+/ - modal_id
 / - hidden_fields - in a form of { name: value, ... }
+/ - modal_size
 
 ruby:
+  modal_size ||= nil
+  hidden_fields ||= []
   modified_form_options = form_options.merge(
     data: {
       action: "turbo:submit-end->async-modals#complete "

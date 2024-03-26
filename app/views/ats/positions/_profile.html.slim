@@ -1,0 +1,53 @@
+- ats_title(@position.name)
+/ HEADER
+- content_for :header
+  .col-12.col-lg-7.col-xl-8
+    section#header
+      #header-card.profile-card
+        = render "ats/positions/header_show"
+/ SIDE HEADER
+- content_for :side_header
+  = render "ats/positions/side_header"
+/ TAB LIST
+- content_for :tab_list
+  section#tab-list.mt-2
+    ul.nav.nav-tabs role="tablist"
+      .d-none.d-md-flex
+        li.nav-item
+          = link_to_if @active_tab != "info", "Info", tab_ats_position_path(@position, :info),
+                       class: "nav-link"
+            span.nav-link.active
+              | Info
+        li.nav-item
+          = link_to_if @active_tab != "pipeline", "Pipeline",
+                       tab_ats_position_path(@position, :pipeline), class: "nav-link"
+            span.nav-link.active
+              | Pipeline
+        li.nav-item
+          = link_to_if @active_tab != "sequence_templates", "Sequence templates",
+                       tab_ats_position_path(@position, :sequence_templates), class: "nav-link"
+            span.nav-link.active
+              | Sequence templates
+        li.nav-item
+          = link_to_if @active_tab != "activities", "Activities",
+                       tab_ats_position_path(@position, :activities),
+                       class: "nav-link"
+            span.nav-link.active
+              | Activities
+      .d-md-none.dropdown.w-100.profile-mobile-nav
+        button.btn.form-control.d-flex.align-items-center.text-dark.dropdown-toggle.w-100.px-3[
+            id="dropdownNavLink" data-bs-toggle="dropdown"]
+          = @active_tab.humanize
+        ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
+          li = link_to "Info", tab_ats_position_path(@position, :info),
+                       class: "dropdown-item #{'active' if @active_tab == 'info'}"
+          li = link_to "Pipeline", tab_ats_position_path(@position, :pipeline),
+                       class: "dropdown-item #{'active' if @active_tab == 'pipeline'}"
+          li = link_to "Sequence templates", tab_ats_position_path(@position, :sequence_templates),
+                       class: "dropdown-item #{'active' if @active_tab == 'sequence_templates'}"
+          li = link_to "Activities", tab_ats_position_path(@position, :activities),
+                       class: "dropdown-item #{'active' if @active_tab == 'activities'}"
+/ TAB LIST END
+
+div id="#{@page_id}-#{@active_tab}"
+  = yield

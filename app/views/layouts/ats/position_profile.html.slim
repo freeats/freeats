@@ -1,0 +1,9 @@
+- content_for :profile
+  #profile.row
+    = yield :header
+    = yield :side_header
+    = yield :tab_list
+    section#tab-content.tab-content
+      .tab-pane.active
+        = yield
+= render template: "layouts/ats/application"

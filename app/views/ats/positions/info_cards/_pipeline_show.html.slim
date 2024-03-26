@@ -1,0 +1,13 @@
+/ Partial variables:
+/ - position
+/ - control_button
+
+- header = card_header(title: "Pipeline", icon_style: "fa-list-check")
+
+= card_show "pipeline", target_model: position, header:
+  .row.row-gap-2
+    .col-12.col-md-6.col-lg-12.col-xl-6.vstack.gap-2
+      - position.stages.each do |stage|
+        = render LabeledComponent.new(right_class: "col-form-label-sm") do |c|
+          - c.with_label(stage.name.humanize, size: :small)
+          = "TODO: link to scorecard template"

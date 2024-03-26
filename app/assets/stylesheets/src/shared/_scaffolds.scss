@@ -76,6 +76,16 @@ footer .container-fluid {
   --bs-gutter-x: 3rem;
 }
 
+.code-green {
+  color: $green;
+}
+.code-gray {
+  color: $gray-500;
+}
+.code-black {
+  color: $gray-900;
+}
+
 // Most browsers don't support styling `<input>` tag which is required for file upload fields. This
 // hack is used to place an invisible input near a real button so we can style the real button
 // instead. The input is 100 pixels above because `cursor: pointer;` doesn't work within it's area.
@@ -252,4 +262,8 @@ body {
 
 .btn {
   --bs-btn-font-size: 0.875rem;
+}
+
+.hidden {
+  display: none; // does not include !important flag as bootstrap's d-none class
 }

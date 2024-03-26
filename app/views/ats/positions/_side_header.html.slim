@@ -1,0 +1,35 @@
+/ Dropdowns inside the side header are hidden for a moment during clicking tabs and all content below are jumping,
+/ so min-height here
+= turbo_frame_tag :side_header, class: "col-12 col-lg-5 col-xl-4 mt-4 mt-lg-0", style: "min-height: 173px;",
+                                data: { controller: "persistent-dropdown" }
+
+  = render LabeledComponent.new(class: "mb-2", left_layout_class: "col-3", right_layout_class: "col-9",
+                                right_class: "full-width-reassignment-button \
+                                             turbo_position_reassign_recruiter_button") do |c|
+    - c.with_label("Recruiter", size: :small)
+    = render "shared/profile/reassign_button",
+             currently_assigned_account: @position.recruiter&.account,
+             target_model: @position,
+             target_url: reassign_recruiter_ats_position_path(@position),
+             input_button_name: "position[recruiter_id]",
+             mobile: true
+
+  = render LabeledComponent.new(class: "mb-2",
+                                left_layout_class: "col-3", right_layout_class: "col-9",
+                                left_class: "text-truncate") do |c|
+    - c.with_label("Collaborators", size: :small, class: "text-gray-600", for_field: "position_collaborator_ids")
+    | TODO: Add Collaborators select
+/   div [data-bs-toggle=("tooltip" if @position.collaborator_names.present?)
+/        data-bs-title=@position.collaborator_names]
+/     = form_with model: [:ats, @position],
+/                 url: update_side_header_ats_position_path(@position),
+/                 local: true,
+/                 class: "turbo-instant-submit" do |form|
+/       = render MultipleSelectComponent.new( \
+/           form,
+/           method: :collaborator_ids,
+/           size: :small,
+/           include_hidden: true,
+/           local: { options: @options_for_collaborators },
+/           data: collaborators_data \
+/         )

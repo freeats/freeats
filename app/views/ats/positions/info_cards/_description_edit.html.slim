@@ -1,0 +1,16 @@
+/ Partial variables:
+/ - position
+/ - target_url
+
+- header = card_header(title: "Description", icon_style: "fa-file-alt")
+
+= card_edit(card_name: "description",
+            target_model: position,
+            target_url:,
+            header:) do |form|
+  .card
+    .card-body
+      = trix_editor form,
+                    :description,
+                    value: position_description_edit_value(position),
+                    skipped_options: ["link"]

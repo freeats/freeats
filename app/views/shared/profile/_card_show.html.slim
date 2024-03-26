@@ -4,7 +4,7 @@ ruby:
   edit_card_path =
     case controller
     when ATS::CandidatesController then "edit_card_ats_candidate_path"
-      # when ATS::PositionsController then "edit_card_ats_position_path"
+    when ATS::PositionsController then "edit_card_ats_position_path"
     end
 
 = turbo_frame_tag "turbo_#{card_name}_section"

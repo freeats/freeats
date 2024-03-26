@@ -28,6 +28,20 @@
   }
 }
 
+#header-edit {
+  .card-body {
+    @extend .py-md-2;
+  }
+  .header-edit-avatar-row {
+    .card-row {
+      @extend .mt-md-0;
+    }
+    .card-row-left-side {
+      @extend .py-md-0;
+    }
+  }
+}
+
 #profile {
   @include media-breakpoint-up(md) {
     .col-md-profile {

@@ -1,0 +1,9 @@
+- control_button = :edit
+= render "ats/positions/profile"
+  .row
+    .col-12.col-lg-7.col-xl-8
+      .profile-card
+        = render "ats/positions/info_cards/description_show", position: @position, control_button:
+
+      .profile-card
+        = render "ats/positions/info_cards/pipeline_show", position: @position, control_button:

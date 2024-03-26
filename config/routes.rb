@@ -31,12 +31,34 @@ Rails.application.routes.draw do
       get ":tab", to: "candidates#show", on: :member,
                   tab: /info|emails|scorecards|files|activities/, as: "tab"
     end
+
+    resources :positions, except: %i[edit update] do
+      get "/", to: redirect("/ats/positions/%{id}/info"), on: :member, id: /\d+/
+      get ":tab",
+          to: "positions#show",
+          on: :member,
+          tab: /info|pipeline||sequence_templates||activities/,
+          as: "tab"
+      patch :change_status, on: :member
+      patch :reassign_recruiter, on: :member
+      get :show_header, on: :member
+      get :edit_header, on: :member
+      patch :update_header, on: :member
+      patch :update_side_header, to: "positions#update_side_header", on: :member
+      get :show_card, on: :member
+      get :edit_card, on: :member
+      patch :update_card, to: "positions#update_card", on: :member
+    end
   end
 
   namespace :api, defaults: { format: "json" } do
     namespace :v1 do
       resource :locations, only: [] do
         get :fetch_locations
+      end
+
+      resource :members, only: [] do
+        get :fetch_members
       end
 
       resource :candidate_sources, only: [] do

@@ -15,6 +15,16 @@ import "../controllers";
 import 'bootstrap';
 import 'trix';
 
+// Taken from configuring jquery-ui download page https://jqueryui.com/download/ when toggling
+// only "sortable" and "datepicker".
+import 'jquery-ui/ui/data';
+import 'jquery-ui/ui/widget';
+import 'jquery-ui/ui/scroll-parent';
+import 'jquery-ui/ui/widgets/mouse';
+import 'jquery-ui/ui/keycode';
+import 'jquery-ui/ui/widgets/sortable';
+import 'jquery-ui/ui/widgets/datepicker';
+
 import initConfirmations from '../src/shared/confirmations';
 import {
   activateFileUploadInput,

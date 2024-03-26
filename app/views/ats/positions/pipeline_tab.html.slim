@@ -1,0 +1,170 @@
+ruby:
+  status_labels = {}
+  mobile_status_labels = {}
+  qualified = params[:pipeline_tab] == "qualified"
+
+/ DESKTOP
+- status_labels["qualified"] = capture
+  | Qualified
+  span.badge.badge-sm.status-counter.ms-2 [
+      class=(params[:pipeline_tab].blank? || qualified ? "bg-light text-secondary" : "bg-secondary")]
+    #turbo_position_pipeline_qualified_status_counter
+      = @qualified_count
+- status_labels["reserved"] = capture
+  | Reserved
+  span.badge.badge-sm.status-counter.ms-2 [
+      class=(params[:pipeline_tab] == "reserved" ? "bg-light text-secondary" : "bg-secondary")]
+    #turbo_position_pipeline_reserved_status_counter
+      = @reserved_count
+- status_labels["disqualified"] = capture
+  | Disqualified
+  span.badge.badge-sm.status-counter.ms-2 [
+      class=(params[:pipeline_tab] == "disqualified" ? "bg-light text-secondary" : "bg-secondary")]
+    #turbo_position_pipeline_disqualified_status_counter
+      = @disqualified_count
+/ MOBILE
+- mobile_status_labels["qualified"] = capture
+  | Qualified
+  span.badge.badge-sm.status-counter.ms-2 class="bg-secondary"
+    #turbo_position_pipeline_qualified_mobile_status_counter
+      = @qualified_count
+- mobile_status_labels["reserved"] = capture
+  | Reserved
+  span.badge.badge-sm.status-counter.ms-2 class="bg-secondary"
+    #turbo_position_pipeline_reserved_mobile_status_counter
+      = @reserved_count
+- mobile_status_labels["disqualified"] = capture
+  | Disqualified
+  span.badge.badge-sm.status-counter.ms-2 class="bg-secondary"
+    #turbo_position_pipeline_disqualified_mobile_status_counter
+      = @disqualified_count
+
+= render "ats/positions/profile"
+  #pipeline-placements.mt-3
+    / STATUS NAVIGATION
+    .row.g-3.align-items-center
+      .col-auto
+        / DESKTOP
+        .btn-group.d-none.d-md-block aria-label="Candidate status" role="group"
+          a.btn [class=(params[:pipeline_tab].blank? || qualified ? "btn-secondary" : "btn-light")
+                 href=tab_hub_position_path(@position.id, :pipeline, assigned_only: params[:assigned_only])]
+            = status_labels["qualified"]
+          a.btn [class=(params[:pipeline_tab] == "reserved" ? "btn-secondary" : "btn-light")
+                 href="#{tab_hub_position_path(
+                   @position.id, :pipeline, pipeline_tab: "reserved", assigned_only: params[:assigned_only])}"]
+            = status_labels["reserved"]
+          a.btn [class=(params[:pipeline_tab] == "disqualified" ? "btn-secondary" : "btn-light")
+                 href="#{tab_hub_position_path(
+                   @position.id, :pipeline, pipeline_tab: "disqualified", assigned_only: params[:assigned_only])}"]
+            = status_labels["disqualified"]
+        / MOBILE
+        button.btn.btn-secondary.w-100.d-md-none.dropdown-toggle [
+            aria-expanded="false" aria-haspopup="true" data-bs-toggle="dropdown" type="button"]
+          = status_labels[params[:pipeline_tab] || "qualified"]
+        ul.dropdown-menu
+          li
+            = link_to mobile_status_labels["qualified"],
+                      tab_hub_position_path(@position.id, :pipeline, assigned_only: params[:assigned_only]),
+                      class: "dropdown-item"
+          li
+            = link_to mobile_status_labels["reserved"],
+                      tab_hub_position_path( \
+                        @position.id, :pipeline, pipeline_tab: "reserved", assigned_only: params[:assigned_only]),
+                      class: "dropdown-item"
+          li
+            = link_to mobile_status_labels["disqualified"],
+                      tab_hub_position_path( \
+                        @position.id, :pipeline, pipeline_tab: "disqualified", assigned_only: params[:assigned_only]),
+                      class: "dropdown-item"
+
+      .col-sm-auto.ms-auto
+        = form_tag tab_hub_position_path(@position.id, :pipeline), method: :get, class: "form-check"
+          - if params[:pipeline_tab]
+            = hidden_field_tag :pipeline_tab, params[:pipeline_tab]
+          = check_box_tag :assigned_only, "true", params[:assigned_only], class: "form-check-input"
+          = label_tag :assigned_only, "Assigned only", class: "form-check-label"
+      .col-sm-auto
+        = render ButtonLinkComponent.new(new_hub_candidate_path({ position_id: @position.id }),
+                                         variant: :secondary,
+                                         size: :small,
+                                         data: { turbo_frame: :turbo_modal_window })
+          | Add candidate
+      .col-sm-auto
+        = render ButtonComponent.new(size: :small,
+                                     variant: :secondary,
+                                     type: :button,
+                                     aria: { expanded: false, haspopup: true },
+                                     data: { bs_toggle: "dropdown" }) do |c|
+          - c.with_icon("fa-light fa-chevron-down", position: :right)
+          | Search
+        .dropdown-menu.dropdown-menu-end
+          a.dropdown-item href=@position.source_in_linkedin_url  target="_blank" LinkedIn
+          a.dropdown-item href=@position.source_in_linkedin_x_ray_url  target="_blank" LinkedIn X-Ray
+          a.dropdown-item href=@position.source_in_github_url  target="_blank" GitHub
+          = link_to "Hub", hub_candidates_path(hub_position_source_hub_options(@position)), class: "dropdown-item"
+      .col-sm-auto
+        = render "source_button"
+
+    /! MOBILE ONLY STAGE NAVIGATION
+    #pipeline-mobile-stage-nav.d-sm-none.nav.nav-pills.d-flex.justify-content-between.mt-3.mb-2 role="tablist"
+      .d-sm-none.dropdown.w-100.profile-mobile-nav data-controller="pipeline-column"
+        button.btn.form-control.d-flex.align-items-center.text-dark.dropdown-toggle.w-100.px-3 [
+            id="dropdownNavLink" data-bs-toggle="dropdown"]
+          span.hstack.gap-2 data-pipeline-column-target="dropdownPlaceholder"
+              => @stages.first.humanize
+              span.badge.badge-sm.bg-secondary class="turbo_position_pipeline_#{@stages.first}_stage_counter"
+                = @grouped_placements[@stages.first][:count]
+        ul.dropdown-menu.w-100
+          - @stages.each_with_index do |stage, index|
+            li = link_to "#nav-#{stage}", id: "nav-#{stage}-tab", role: "tab",
+                         class: "dropdown-item hstack gap-2 py-2 #{'active' if index.zero?}",
+                         aria: { controls: "nav-#{stage}", selected: ("#{index.zero? ? 'true' : 'false'}") },
+                         data: { \
+                           bs_toggle: "tab",
+                           action: "click->pipeline-column#mobileStageDropdownPlaceholder",
+                         }
+                 => stage.humanize
+                 span.badge.badge-sm.bg-secondary class="turbo_position_pipeline_#{stage}_stage_counter"
+                   = @grouped_placements[stage][:count]
+
+    #pipeline-body.mt-3
+      .scroll-sm.pipeline-body-column
+        .tab-content.d-flex
+          - @stages.each_with_index do |stage, index|
+            ruby:
+              # rubocop:disable Lint/UselessAssignment
+              column_status = @grouped_placements[stage][:count] < @placement_limit ? "noMore" : "probablyMore"
+              # rubocop:enable Lint/UselessAssignment
+            .tab-pane.fade.d-sm-block.show-sm.w-100.rounded.p-sm-2.me-sm-3.mb-sm-1.pipeline-column [
+              aria-labelledby="#{stage}-tab"
+              class="#{index.zero? ? 'show active' : ''}"
+              data-controller="pipeline-column"
+              data-pipeline-column-card-limit=@placement_limit
+              data-pipeline-column-endpoint=hub_position_fetch_pipeline_placements_path(@position)
+              data-pipeline-column-stage=stage
+              data-pipeline-column-status=column_status
+              id="nav-#{stage}"
+              role="tabpanel"]
+              .d-none.d-sm-block.pipeline-stage-header.mb-2
+                .row
+                  .col
+                    = link_to stage.humanize,
+                              hub_candidates_path( \
+                                hub_candidates_grid: { \
+                                  position: @position,
+                                  recruiter: params[:assigned_only] ? current_member : "",
+                                  stage: [stage],
+                                  status: params[:pipeline_tab] || "qualified",
+                                  order: :last_activity,
+                                },
+                                source_candidates_position_id: @position.id,
+                              )
+                    span.badge.badge-sm.bg-secondary.pipeline-stage-counter.ms-2 [
+                      class="turbo_position_pipeline_#{stage}_stage_counter"]
+                      = @grouped_placements[stage][:count]
+              .column-scroll-sm [data-action="scroll->pipeline-column#loadMore"
+                data-pipeline-column-target="scrollColumnWrapper"]
+                div data-pipeline-column-target="column" id="#{stage}-stage-placements"
+                  div id="turbo_#{stage}_stage_placements"
+                    = render collection: @grouped_placements[stage][:placements],
+                            partial: "ats/placements/placement_pipeline_card"

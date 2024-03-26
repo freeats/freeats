@@ -1,0 +1,12 @@
+/ Partial variables:
+/ - position
+
+- header = card_header(title: "Pipeline", icon_style: "fa-list-check")
+
+= card_edit(card_name: "pipeline",
+        target_model: position,
+        target_url: update_card_ats_position_path,
+        header:) do |form|
+  = render LabeledComponent.new(class: "mb-2") do |c|
+    - c.with_label("Stages", size: :small, form:)
+    = render "ats/positions/info_cards/stages_edit", form:, position:

@@ -1,0 +1,8 @@
+= render "ats/positions/profile"
+  .col-12.col-md-8.mt-3
+    = render ButtonLinkComponent.new(new_hub_sequence_template_path(model_id: @position.id, model_type: "Position"),
+                                     size: :small)
+      | Add sequence template
+    - if @position.sequence_templates.present?
+      = datagrid_table(@sequence_templates_grid, html: { class: "datagrid profile_grid mt-3" })
+  .my-3 = paginate(@sequence_templates_grid.assets, theme: "hub")

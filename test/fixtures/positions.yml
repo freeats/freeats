@@ -8,3 +8,8 @@ golang_position:
   name: Golang developer
   status: active
   change_status_reason: filled
+
+closed_position:
+  name: Java developer
+  status: closed
+  change_status_reason: other
