@@ -1,0 +1,18 @@
+/# locals: (file:)
+
+div
+  - if file.present?
+    - if File.extname(file.url).casecmp?(".pdf")
+      object data="#{file.url}" height="800px" type="application/pdf" width="100%"
+        | Your browser does not support inline PDF document view.
+    - elsif File.extname(file.url).downcase.in? %w[.doc .docx]
+      iframe [frameborder="0" height="800px" width="100%" loading="lazy"
+        src="https://view.officeapps.live.com/op/embed.aspx?src=#{file.url}"]
+    - else
+      .border.p-4
+        | CV has
+        b =<> File.extname(file.url)
+        ' extension and cannot be displayed.
+        ' Please
+        => link_to "download file", file.url, target: "_blank"
+        | to view it's content.

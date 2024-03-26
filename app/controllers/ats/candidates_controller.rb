@@ -16,7 +16,8 @@ class ATS::CandidatesController < ApplicationController
 
   before_action :set_candidate, only: %i[show show_header edit_header update_header
                                          show_card edit_card update_card upload_file
-                                         change_cv_status delete_file]
+                                         change_cv_status delete_file
+                                         delete_cv_file download_cv_file upload_cv_file]
 
   def index
     @candidates_grid = ATS::CandidatesGrid.new(
@@ -176,10 +177,23 @@ class ATS::CandidatesController < ApplicationController
     redirect_to tab_ats_candidate_path(@candidate, :files)
   end
 
+  def upload_cv_file
+    file = @candidate.files.attach(candidate_params[:file]).attachments.last
+    file.change_cv_status(true)
+
+    redirect_to tab_ats_candidate_path(@candidate, :info)
+  end
+
   def delete_file
     @candidate.destroy_file(candidate_params[:file_id_to_remove])
 
     render_candidate_files(@candidate)
+  end
+
+  def delete_cv_file
+    @candidate.destroy_file(candidate_params[:file_id_to_remove])
+
+    redirect_to tab_ats_candidate_path(@candidate, :info)
   end
 
   def change_cv_status
@@ -192,6 +206,12 @@ class ATS::CandidatesController < ApplicationController
     end
 
     render_candidate_files(@candidate)
+  end
+
+  def download_cv_file
+    send_data @candidate.cv.download,
+              filename: "#{@candidate.full_name} - #{@candidate.cv.blob.filename}",
+              disposition: :attachment
   end
 
   private

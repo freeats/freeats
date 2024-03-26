@@ -23,8 +23,11 @@ Rails.application.routes.draw do
       patch :update_header, on: :member
       delete :remove_avatar, on: :member
       post :upload_file, on: :member
+      post :upload_cv_file, on: :member
       delete :delete_file, on: :member
+      delete :delete_cv_file, on: :member
       patch :change_cv_status, on: :member
+      get :download_cv_file, on: :member
       get ":tab", to: "candidates#show", on: :member,
                   tab: /info|emails|scorecards|files|activities/, as: "tab"
     end

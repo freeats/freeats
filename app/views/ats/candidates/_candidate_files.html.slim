@@ -16,6 +16,7 @@
           td.text-truncate
             = link_to file.blob.filename, file.url.to_s, target: :_blank
           td
+            / TODO: Adapt after adding added_event.
             / - if file.added_event.actor_user_id?
             /   = picture_avatar_icon file.added_event.actor_user.avatar, {}, class: "small-avatar-thumbnail"
             /   =< file.added_event.actor_user.name
@@ -25,6 +26,7 @@
             span data-bs-toggle="tooltip" title=file.created_at.to_fs(:datetime_full)
               => short_time_ago_in_words(file.created_at)
               | ago
+            / TODO: Adapt after adding added_event.
             / span data-bs-toggle="tooltip" title=file.added_event.performed_at.to_fs(:datetime_full)
               => short_time_ago_in_words(file.added_event.performed_at)
               | ago
@@ -45,13 +47,13 @@
                     i.far.fa-check-circle.text-success.show-on-hover
           td.text-end
             = button_to delete_file_ats_candidate_path(candidate, candidate: { file_id_to_remove: file.id }),
-                                            class: "btn btn-light",
-                                            method: :delete,
-                                            data: { \
-                                              toggle: "ats-confirmation",
-                                              title: "Delete file?",
-                                              btn_cancel_label: "Cancel",
-                                              btn_ok_label: "Delete",
-                                              btn_ok_class: "btn btn-danger btn-small" \
-                                            }
+                        class: "btn btn-light",
+                        method: :delete,
+                        data: { \
+                          toggle: "ats-confirmation",
+                          title: "Delete file?",
+                          btn_cancel_label: "Cancel",
+                          btn_ok_label: "Delete",
+                          btn_ok_class: "btn btn-danger btn-small" \
+                        }
               i.fas.fa-trash-alt
