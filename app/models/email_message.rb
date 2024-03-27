@@ -60,14 +60,10 @@ class EmailMessage < ApplicationRecord
     # Following `join` is used to filter email messages instead of direct `where`
     # clause because `where` clause would also filter out the results.
     relevant_email_addresses = Arel::Table.new(:relevant_email_addresses)
-
-    # f_trim_dots is extremely slow with large amount of records.
-    # Trimming dots on the Ruby side is reducing loading time by much.
     join_relevant_addresses =
       email_message_addresses
       .where(
-        Arel::Nodes::NamedFunction.new("f_trim_dots", [email_message_addresses[:address]])
-                                  .in(email_addresses.map { _1.gsub(DOT_TRIMMING_REGEX, "") })
+        email_message_addresses[:address].in(email_addresses)
       )
       .where(field ? email_message_addresses[:field].eq(field) : Arel::Nodes::True.new)
       .project(email_message_addresses[:email_message_id].as("relevant_email_address"))
