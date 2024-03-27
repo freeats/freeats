@@ -154,4 +154,19 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     #   assert_equal event.properties["comment"], "explanation"
     # end
   end
+
+  test "should update collaborators" do
+    position = positions(:ruby_position)
+    params = {}
+    params[:collaborator_ids] =
+      Member.active.where.not(id: position.recruiter_id).order("random()").first(3).pluck(:id) -
+      [position.recruiter_id, params[:recruiter_id]]
+
+    patch update_side_header_ats_position_path(position), params: { position: params }
+
+    assert_response :success
+    position.reload
+
+    assert_equal position.collaborator_ids.sort, params[:collaborator_ids].sort
+  end
 end

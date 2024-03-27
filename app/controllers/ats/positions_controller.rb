@@ -19,6 +19,8 @@ class ATS::PositionsController < ApplicationController
   def index; end
 
   def show
+    set_side_header_predefined_options
+
     # case @active_tab
     # when "info"
     # when "pipeline"
@@ -85,7 +87,9 @@ class ATS::PositionsController < ApplicationController
       param.in?(%w[collaborator_ids])
     end
 
-    if @position.change(position_params, actor_user: current_user)
+    # TODO: implement position change operation
+    # if @position.change(position_params, actor_user: current_user)
+    if @position.update(position_params)
       set_side_header_predefined_options
       render_turbo_stream(
         turbo_stream.replace(
@@ -255,7 +259,8 @@ class ATS::PositionsController < ApplicationController
             :name,
             :recruiter_id,
             :description,
-            stages_attributes: {}
+            stages_attributes: {},
+            collaborator_ids: []
           )
   end
 
@@ -278,5 +283,15 @@ class ATS::PositionsController < ApplicationController
   def position_status_options(position)
     statuses = Position.statuses.keys - [position.status]
     statuses.map { |status| [status.humanize, status] }
+  end
+
+  def set_side_header_predefined_options
+    @active_recruiters =
+      Member.includes(:account).active.map { [_1.account.name, _1.id] }
+
+    @options_for_collaborators =
+      @active_recruiters.filter { |_, id| id != @position.recruiter_id }.map do |text, value|
+        { text:, value:, selected: @position.collaborator_ids&.include?(value) }
+      end
   end
 end
