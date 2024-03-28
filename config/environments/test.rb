@@ -19,6 +19,9 @@ Rails.application.configure do
   # loading is working properly before deploying your code.
   config.eager_load = false
 
+  # Enable preloading with Spring.
+  config.cache_classes = false
+
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
   config.public_file_server.headers = {

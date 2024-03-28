@@ -138,8 +138,8 @@ CREATE TYPE public.location_type AS ENUM (
 CREATE TYPE public.member_access_level AS ENUM (
     'inactive',
     'interviewer',
-    'employee',
     'hiring_manager',
+    'employee',
     'admin'
 );
 
@@ -297,6 +297,37 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: account_identities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.account_identities (
+    id bigint NOT NULL,
+    account_id bigint,
+    provider character varying NOT NULL,
+    uid character varying NOT NULL
+);
+
+
+--
+-- Name: account_identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.account_identities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: account_identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.account_identities_id_seq OWNED BY public.account_identities.id;
+
+
+--
 -- Name: account_remember_keys; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -332,7 +363,6 @@ ALTER SEQUENCE public.account_remember_keys_id_seq OWNED BY public.account_remem
 
 CREATE TABLE public.accounts (
     id bigint NOT NULL,
-    status integer DEFAULT 1 NOT NULL,
     email public.citext NOT NULL,
     name character varying NOT NULL
 );
@@ -1653,6 +1683,13 @@ ALTER SEQUENCE public.solid_queue_semaphores_id_seq OWNED BY public.solid_queue_
 
 
 --
+-- Name: account_identities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_identities ALTER COLUMN id SET DEFAULT nextval('public.account_identities_id_seq'::regclass);
+
+
+--
 -- Name: account_remember_keys id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1923,6 +1960,14 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions ALTER COLUMN id SET DEF
 --
 
 ALTER TABLE ONLY public.solid_queue_semaphores ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_semaphores_id_seq'::regclass);
+
+
+--
+-- Name: account_identities account_identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_identities
+    ADD CONSTRAINT account_identities_pkey PRIMARY KEY (id);
 
 
 --
@@ -2261,10 +2306,24 @@ CREATE UNIQUE INDEX idx_on_collaborator_id_position_id_d61c6081fc ON public.posi
 
 
 --
+-- Name: index_account_identities_on_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_account_identities_on_account_id ON public.account_identities USING btree (account_id);
+
+
+--
+-- Name: index_account_identities_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_account_identities_on_provider_and_uid ON public.account_identities USING btree (provider, uid);
+
+
+--
 -- Name: index_accounts_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_accounts_on_email ON public.accounts USING btree (email) WHERE (status = ANY (ARRAY[1, 2]));
+CREATE UNIQUE INDEX index_accounts_on_email ON public.accounts USING btree (email);
 
 
 --
@@ -2882,6 +2941,14 @@ ALTER TABLE ONLY public.positions_collaborators
 
 
 --
+-- Name: account_identities fk_rails_8868aa7ac0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_identities
+    ADD CONSTRAINT fk_rails_8868aa7ac0 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
 -- Name: attachment_informations fk_rails_89a7cd7423; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3008,8 +3075,11 @@ ALTER TABLE ONLY public.candidate_links
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240327132812'),
+('20240327104934'),
 ('20240326102218'),
 ('20240325141539'),
+('20240325063100'),
 ('20240322085731'),
 ('20240322055152'),
 ('20240322040604'),

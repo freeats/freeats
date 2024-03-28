@@ -17,3 +17,7 @@ interviewer_member:
 inactive_member:
   account: inactive_account
   access_level: inactive
+
+new_employee_member:
+  account: new_employee_account
+  access_level: employee

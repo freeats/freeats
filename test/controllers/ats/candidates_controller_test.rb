@@ -3,6 +3,10 @@
 require "test_helper"
 
 class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    sign_in accounts(:employee_account)
+  end
+
   test "should get index" do
     get ats_candidates_url
 

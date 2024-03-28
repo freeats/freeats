@@ -67,18 +67,19 @@ Rails.application.routes.draw do
     end
   end
 
-  # TODO: check that admin interface is protected by authentication.
-  mount RailsAdmin::Engine => "/admin", as: "rails_admin"
+  # rubocop:disable Style/SymbolProc
+  constraints(Rodauth::Rails.authenticate { |rodauth| rodauth.admin? }) do
+    mount RailsAdmin::Engine => "admin", as: "rails_admin"
 
-  # TODO: add authentication before accessing the lookbook.
-  mount Lookbook::Engine, at: "lookbook" unless Rails.env.test?
+    mount Lookbook::Engine, at: "lookbook" unless Rails.env.test?
 
-  # TODO: add authentication before accessing the pghero.
-  mount PgHero::Engine, at: "pghero"
+    mount PgHero::Engine, at: "pghero"
 
-  # TODO: add authentication before accessing the blazer.
-  mount Blazer::Engine, at: "blazer"
+    mount MissionControl::Jobs::Engine, at: "jobs"
+  end
 
-  # TODO: add authentication before accessing jobs.
-  mount MissionControl::Jobs::Engine, at: "jobs"
+  constraints(Rodauth::Rails.authenticate { |rodauth| rodauth.admin? || rodauth.employee? }) do
+    mount Blazer::Engine, at: "blazer"
+  end
+  # rubocop:enable Style/SymbolProc
 end

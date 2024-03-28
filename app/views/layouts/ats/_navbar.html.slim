@@ -48,9 +48,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
           = link_to "Profile", "/",
                     class: "nav-link #{'nav-link-selected' if is_ats_profile}"
         li.nav-item
-          / TODO: Replace with the correct path
-          = button_to "Sign out", "/", method: :delete, class: "dropdown-item",
-                      form_class: "pt-2"
+          = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
+                      form_class: "pt-2", form: { data: { turbo: false } }
 
     / Desktop
     .dropdown.profile-button.d-none.d-lg-block
@@ -62,6 +61,6 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
         / TODO: Replace with the correct path
         li = link_to "Profile", "/",
                     class: "dropdown-item #{'nav-link-selected' if is_ats_profile}"
-        / TODO: Replace with the correct path
-        li = button_to "Sign out", "/", method: :delete, class: "dropdown-item",
-                      form_class: "dropdown-item"
+        li
+          = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
+                      form_class: "dropdown-item", form: { data: { turbo: false } }

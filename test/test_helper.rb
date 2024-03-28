@@ -15,6 +15,14 @@ module ActiveSupport
     # Necessary to test ActiveStorage when we render files tab with the disk service,
     # otherwise we got an error when trying to compose url for the file.
     ActiveSupport.on_load(:action_controller) { include ActiveStorage::SetCurrent }
+
+    def sign_in(account)
+      post("/test-environment-only/please-login", params: { email: account.email })
+    end
+
+    def sign_out
+      post("/logout")
+    end
   end
 end
 # rubocop:enable Style/ClassAndModuleChildren

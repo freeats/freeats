@@ -6,7 +6,13 @@ class RodauthMain < Rodauth::Rails::Auth
   # rubocop:disable Layout/LineLength
   configure do
     # List of authentication features that are loaded.
-    enable :login, :logout, :remember
+    enable :login, :logout, :remember, :omniauth_base
+
+    # Google OAuth 2.0
+    omniauth_provider :google_oauth2,
+                      Rails.application.credentials.google_oauth.client_id!,
+                      Rails.application.credentials.google_oauth.client_secret!,
+                      scope: "email", access_type: "online"
 
     # See the Rodauth documentation for the list of available config options:
     # http://rodauth.jeremyevans.net/documentation.html
@@ -39,7 +45,7 @@ class RodauthMain < Rodauth::Rails::Auth
     title_instance_variable :@page_title
 
     # Store account status in an integer column without foreign key constraint.
-    account_status_column :status
+    # account_status_column :status
 
     # Store password hash in a column instead of a separate table.
     account_password_hash_column :password_hash
@@ -63,7 +69,7 @@ class RodauthMain < Rodauth::Rails::Auth
     # delete_account_on_close? true
 
     # Redirect to the app from login and registration pages if already logged in.
-    already_logged_in { redirect root_url }
+    already_logged_in { redirect "/" }
 
     # ==> Emails
     # Use a custom mailer for delivering authentication emails.
@@ -174,4 +180,20 @@ class RodauthMain < Rodauth::Rails::Auth
     remember_deadline_interval({ days: 7 })
   end
   # rubocop:enable Layout/LineLength
+
+  def admin?
+    member && member.admin? # rubocop:disable Style/SafeNavigation
+  end
+
+  def employee?
+    member && member.employee? # rubocop:disable Style/SafeNavigation
+  end
+
+  def active?
+    member && member.active? # rubocop:disable Style/SafeNavigation
+  end
+
+  def member
+    @member = Member.find_by(account_id: rails_account[:id])
+  end
 end

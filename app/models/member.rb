@@ -12,7 +12,18 @@ class Member < ApplicationRecord
 
   belongs_to :account
 
-  enum access_level: %i[inactive interviewer employee hiring_manager admin].index_with(&:to_s)
+  enum access_level: %i[inactive interviewer hiring_manager employee admin].index_with(&:to_s)
 
   scope :active, -> { where.not(access_level: :inactive) }
+
+  def active?
+    !inactive?
+  end
+
+  def deactivate
+    transaction do
+      update!(access_level: :inactive)
+      account.identities.destroy_all
+    end
+  end
 end

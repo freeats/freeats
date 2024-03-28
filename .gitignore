@@ -46,3 +46,5 @@ esbuild_meta.json
 
 # Debug tools
 /.byebug_history
+
+/config/credentials/test.key

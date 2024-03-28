@@ -3,6 +3,7 @@
 class Account < ApplicationRecord
   include Rodauth::Model(RodauthMain)
 
+  has_many :identities, dependent: :destroy
   has_one :member, dependent: :destroy
 
   has_one_attached :avatar do |attachable|
@@ -10,7 +11,9 @@ class Account < ApplicationRecord
     attachable.variant(:medium, resize_to_fill: [450, 450], preprocessed: true)
   end
 
-  enum :status, verified: 2, closed: 3 # unverified: 1
-
   validates :name, presence: true
+
+  def rails_admin_name
+    email
+  end
 end

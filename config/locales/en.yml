@@ -67,3 +67,7 @@ en:
           other: "%{count} seconds"
   footer:
     copyright: © %{current_year} Toughbyte
+  admin:
+    actions:
+      deactivate_member:
+        menu: "Deactivate"

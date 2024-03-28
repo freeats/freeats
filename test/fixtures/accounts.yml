@@ -1,24 +1,25 @@
 admin_account:
   email: admin@mail.com
-  status: verified
   name: Admin Admin
 
 hiring_manager_account:
   email: hiring_manager@mail.com
-  status: verified
   name: Dmitry Matveyev
 
 employee_account:
   email: employee@mail.com
-  status: verified
   name: Alexandra Dovgal
 
 interviewer_account:
   email: interviewer@mail.com
-  status: verified
   name: Michael Interviewer
 
+# Inactive account doesn't have any identities.
 inactive_account:
   email: inactive@mail.com
-  status: verified
   name: Sergey Tomashevsky
+
+# Only has an account created and a member record.
+new_employee_account:
+  email: new_employee@mail.com
+  name: New Employee

@@ -3,6 +3,10 @@
 require "test_helper"
 
 class PositionsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    sign_in accounts(:employee_account)
+  end
+
   test "should show position info" do
     get tab_ats_position_url(positions(:ruby_position), :info)
 
