@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Placement < ApplicationRecord
+  has_many :scorecards, dependent: :restrict_with_exception
   belongs_to :position
   belongs_to :position_stage
   belongs_to :candidate

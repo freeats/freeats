@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PositionStage < ApplicationRecord
+  has_many :scorecards, dependent: :restrict_with_exception
+  has_one :scorecard_template, dependent: :restrict_with_exception
   belongs_to :position
 
   before_save :update_list_index_for_hired_stage

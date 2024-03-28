@@ -193,6 +193,18 @@ CREATE TYPE public.position_status AS ENUM (
 
 
 --
+-- Name: scorecard_score; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.scorecard_score AS ENUM (
+    'irrelevant',
+    'relevant',
+    'good',
+    'perfect'
+);
+
+
+--
 -- Name: array_deduplicate(anyarray); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1386,6 +1398,143 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: scorecard_questions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.scorecard_questions (
+    id bigint NOT NULL,
+    scorecard_id bigint NOT NULL,
+    question character varying NOT NULL,
+    list_index integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: scorecard_questions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.scorecard_questions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: scorecard_questions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.scorecard_questions_id_seq OWNED BY public.scorecard_questions.id;
+
+
+--
+-- Name: scorecard_template_questions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.scorecard_template_questions (
+    id bigint NOT NULL,
+    scorecard_template_id bigint NOT NULL,
+    question character varying NOT NULL,
+    list_index integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: scorecard_template_questions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.scorecard_template_questions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: scorecard_template_questions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.scorecard_template_questions_id_seq OWNED BY public.scorecard_template_questions.id;
+
+
+--
+-- Name: scorecard_templates; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.scorecard_templates (
+    id bigint NOT NULL,
+    position_stage_id bigint NOT NULL,
+    title character varying NOT NULL,
+    greenhouse_id integer,
+    visible_to_interviewer boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: scorecard_templates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.scorecard_templates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: scorecard_templates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.scorecard_templates_id_seq OWNED BY public.scorecard_templates.id;
+
+
+--
+-- Name: scorecards; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.scorecards (
+    id bigint NOT NULL,
+    position_stage_id bigint NOT NULL,
+    placement_id bigint NOT NULL,
+    title character varying NOT NULL,
+    interviewer character varying NOT NULL,
+    score public.scorecard_score NOT NULL,
+    greenhouse_id integer,
+    visible_to_interviewer boolean DEFAULT false NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: scorecards_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.scorecards_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: scorecards_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.scorecards_id_seq OWNED BY public.scorecards.id;
+
+
+--
 -- Name: solid_queue_blocked_executions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1900,6 +2049,34 @@ ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.po
 
 
 --
+-- Name: scorecard_questions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecard_questions ALTER COLUMN id SET DEFAULT nextval('public.scorecard_questions_id_seq'::regclass);
+
+
+--
+-- Name: scorecard_template_questions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecard_template_questions ALTER COLUMN id SET DEFAULT nextval('public.scorecard_template_questions_id_seq'::regclass);
+
+
+--
+-- Name: scorecard_templates id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecard_templates ALTER COLUMN id SET DEFAULT nextval('public.scorecard_templates_id_seq'::regclass);
+
+
+--
+-- Name: scorecards id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecards ALTER COLUMN id SET DEFAULT nextval('public.scorecards_id_seq'::regclass);
+
+
+--
 -- Name: solid_queue_blocked_executions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2227,6 +2404,38 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: scorecard_questions scorecard_questions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecard_questions
+    ADD CONSTRAINT scorecard_questions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: scorecard_template_questions scorecard_template_questions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecard_template_questions
+    ADD CONSTRAINT scorecard_template_questions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: scorecard_templates scorecard_templates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecard_templates
+    ADD CONSTRAINT scorecard_templates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: scorecards scorecards_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecards
+    ADD CONSTRAINT scorecards_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: solid_queue_blocked_executions solid_queue_blocked_executions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2303,6 +2512,13 @@ ALTER TABLE ONLY public.solid_queue_semaphores
 --
 
 CREATE UNIQUE INDEX idx_on_collaborator_id_position_id_d61c6081fc ON public.positions_collaborators USING btree (collaborator_id, position_id);
+
+
+--
+-- Name: idx_on_scorecard_template_id_list_index_625d06ef82; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_scorecard_template_id_list_index_625d06ef82 ON public.scorecard_template_questions USING btree (scorecard_template_id, list_index);
 
 
 --
@@ -2691,6 +2907,62 @@ CREATE INDEX index_positions_on_recruiter_id ON public.positions USING btree (re
 
 
 --
+-- Name: index_scorecard_questions_on_scorecard_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scorecard_questions_on_scorecard_id ON public.scorecard_questions USING btree (scorecard_id);
+
+
+--
+-- Name: index_scorecard_questions_on_scorecard_id_and_list_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_scorecard_questions_on_scorecard_id_and_list_index ON public.scorecard_questions USING btree (scorecard_id, list_index);
+
+
+--
+-- Name: index_scorecard_template_questions_on_scorecard_template_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scorecard_template_questions_on_scorecard_template_id ON public.scorecard_template_questions USING btree (scorecard_template_id);
+
+
+--
+-- Name: index_scorecard_templates_on_greenhouse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scorecard_templates_on_greenhouse_id ON public.scorecard_templates USING btree (greenhouse_id);
+
+
+--
+-- Name: index_scorecard_templates_on_position_stage_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_scorecard_templates_on_position_stage_id ON public.scorecard_templates USING btree (position_stage_id);
+
+
+--
+-- Name: index_scorecards_on_greenhouse_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scorecards_on_greenhouse_id ON public.scorecards USING btree (greenhouse_id);
+
+
+--
+-- Name: index_scorecards_on_placement_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scorecards_on_placement_id ON public.scorecards USING btree (placement_id);
+
+
+--
+-- Name: index_scorecards_on_position_stage_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scorecards_on_position_stage_id ON public.scorecards USING btree (position_stage_id);
+
+
+--
 -- Name: index_solid_queue_blocked_executions_for_maintenance; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2845,6 +3117,14 @@ CREATE INDEX index_solid_queue_semaphores_on_key_and_value ON public.solid_queue
 
 
 --
+-- Name: scorecards fk_rails_0668b92833; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecards
+    ADD CONSTRAINT fk_rails_0668b92833 FOREIGN KEY (placement_id) REFERENCES public.placements(id);
+
+
+--
 -- Name: members fk_rails_0ef6c30e45; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2925,6 +3205,14 @@ ALTER TABLE ONLY public.positions_collaborators
 
 
 --
+-- Name: scorecard_questions fk_rails_81cd2756c8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecard_questions
+    ADD CONSTRAINT fk_rails_81cd2756c8 FOREIGN KEY (scorecard_id) REFERENCES public.scorecards(id);
+
+
+--
 -- Name: solid_queue_ready_executions fk_rails_81fcbd66af; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2962,6 +3250,14 @@ ALTER TABLE ONLY public.attachment_informations
 
 ALTER TABLE ONLY public.candidate_alternative_names
     ADD CONSTRAINT fk_rails_8aef3d4c1f FOREIGN KEY (candidate_id) REFERENCES public.candidates(id);
+
+
+--
+-- Name: scorecard_templates fk_rails_8bda10f867; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecard_templates
+    ADD CONSTRAINT fk_rails_8bda10f867 FOREIGN KEY (position_stage_id) REFERENCES public.position_stages(id);
 
 
 --
@@ -3045,6 +3341,14 @@ ALTER TABLE ONLY public.location_hierarchies
 
 
 --
+-- Name: scorecard_template_questions fk_rails_e373b6a964; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecard_template_questions
+    ADD CONSTRAINT fk_rails_e373b6a964 FOREIGN KEY (scorecard_template_id) REFERENCES public.scorecard_templates(id);
+
+
+--
 -- Name: location_hierarchies fk_rails_eb4e848cce; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3069,6 +3373,14 @@ ALTER TABLE ONLY public.candidate_links
 
 
 --
+-- Name: scorecards fk_rails_ffb1a0c157; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecards
+    ADD CONSTRAINT fk_rails_ffb1a0c157 FOREIGN KEY (position_stage_id) REFERENCES public.position_stages(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -3077,7 +3389,11 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240327132812'),
 ('20240327104934'),
+('20240327062244'),
+('20240327060244'),
 ('20240326102218'),
+('20240326084615'),
+('20240326081427'),
 ('20240325141539'),
 ('20240325063100'),
 ('20240322085731'),

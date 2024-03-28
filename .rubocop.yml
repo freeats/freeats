@@ -210,3 +210,5 @@ Rails/HasAndBelongsToMany:
   Enabled: false
 Rails/LinkToBlank:
   Enabled: false
+Style/RedundantLineContinuation:
+  Enabled: false

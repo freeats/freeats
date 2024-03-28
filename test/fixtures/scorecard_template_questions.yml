@@ -1,0 +1,4 @@
+ruby_position_contacted_first_question:
+  scorecard_template: ruby_position_contacted
+  list_index: 1
+  question: "What is your favorite color?"
