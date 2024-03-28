@@ -15,7 +15,7 @@ class PositionStages::Add
       position_stage.save!
       Success(position_stage)
     else
-      Failure[:position_stage_invalid, position_stage]
+      Failure[:position_stage_invalid, position_stage.errors.full_messages]
     end
   end
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ATS::PositionsController < ApplicationController
+  include Dry::Monads[:result]
+
   TABS = [
     "Info",
     "Pipeline",
@@ -83,14 +85,18 @@ class ATS::PositionsController < ApplicationController
   end
 
   def update_side_header
-    changed_field = position_params.keys.find do |param|
-      param.in?(%w[collaborator_ids])
-    end
-
-    # TODO: implement position change operation
-    # if @position.change(position_params, actor_user: current_user)
-    if @position.update(position_params)
+    case Positions::Change.new(
+      position: @position,
+      params: position_params.to_h.deep_symbolize_keys,
+      actor_account: current_account
+    ).call
+    in Failure[:position_invalid, error]
+      render_error error, status: :unprocessable_entity
+    in Success[_]
       set_side_header_predefined_options
+      changed_field = position_params.keys.find do |param|
+        param.in?(%w[collaborator_ids])
+      end
       render_turbo_stream(
         turbo_stream.replace(
           :side_header,
@@ -98,15 +104,18 @@ class ATS::PositionsController < ApplicationController
           locals: { changed_field: }
         )
       )
-    else
-      render_error @position.errors.full_messages, status: :unprocessable_entity
     end
   end
 
   def reassign_recruiter
-    # TODO: implement position change operation
-    # if @position.change(position_params, actor_user: current_user)
-    if @position.update(recruiter_id: position_params[:recruiter_id])
+    case Positions::Change.new(
+      position: @position,
+      params: position_params.to_h.deep_symbolize_keys,
+      actor_account: current_account
+    ).call
+    in Failure[:position_invalid, error]
+      render_error error, status: :unprocessable_entity
+    in Success[_]
       locals = {
         currently_assigned_account: @position.recruiter&.account,
         tooltip_title: "Recruiter",
@@ -124,8 +133,6 @@ class ATS::PositionsController < ApplicationController
         )
       )
       # rubocop:enable Rails/SkipsModelValidations
-    else
-      render_error @position.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -160,12 +167,14 @@ class ATS::PositionsController < ApplicationController
     card_name = params[:card_name]
     return unless card_name.in?(INFO_CARDS)
 
-    @position_params = position_params
-
-    # TODO: implement position change operation
-    # @position.change(@position_params, actor_user: current_user)
-    # TODO: add logic to create/update stages.
-    if @position.update(@position_params) && @position.errors.blank?
+    case Positions::Change.new(
+      position: @position,
+      params: position_params.to_h.deep_symbolize_keys,
+      actor_account: current_account
+    ).call
+    in Failure[:position_invalid, _error] | Failure[:position_stage_invalid, _error]
+      render_error _error, status: :unprocessable_entity
+    in Success[_]
       render_turbo_stream(
         turbo_stream.update(
           "turbo_#{card_name}_section",
@@ -174,8 +183,6 @@ class ATS::PositionsController < ApplicationController
         ),
         warning: @position.warnings.full_messages.uniq.join("<br>")
       )
-    else
-      render_error @position.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -188,14 +195,17 @@ class ATS::PositionsController < ApplicationController
   end
 
   def update_header
-    # TODO: implement position change operation
-    # if @position.change(position_params, actor_user: current_user)
-    if @position.update(position_params)
+    case Positions::Change.new(
+      position: @position,
+      params: position_params.to_h.deep_symbolize_keys,
+      actor_account: current_account
+    ).call
+    in Failure[:position_invalid, error]
+      render_error error, status: :unprocessable_entity
+    in Success[_]
       render_turbo_stream(
         [turbo_stream.replace(:turbo_header_section, partial: "ats/positions/header_show")]
       )
-    else
-      render_error @position.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -229,25 +239,24 @@ class ATS::PositionsController < ApplicationController
         }
       }
       render(modal_render_options)
-    # TODO: implement position update status operation
-    # elsif @position.update_status(
-    #   new_status:,
-    #   actor_user: current_user,
-    #   new_change_status_reason: params[:new_change_status_reason],
-    #   comment: params[:comment]
-    # )
-    elsif @position.update(
-      status: new_status,
-      change_status_reason: params[:new_change_status_reason]
-    )
-      render_turbo_stream(
-        [
-          turbo_stream.replace(:turbo_header_section, partial: "ats/positions/header_show")
-        ],
-        warning: @position.warnings.full_messages.uniq.join("<br>")
-      )
     else
-      render_error @position.errors.full_messages, status: :unprocessable_entity
+      case Positions::ChangeStatus.new(
+        position: @position,
+        actor_account: current_account,
+        new_status:,
+        new_change_status_reason: params[:new_change_status_reason],
+        comment: params[:comment]
+      ).call
+      in Failure[:position_invalid, error]
+        render_error error, status: :unprocessable_entity
+      in Success[_]
+        render_turbo_stream(
+          [
+            turbo_stream.replace(:turbo_header_section, partial: "ats/positions/header_show")
+          ],
+          warning: @position.warnings.full_messages.uniq.join("<br>")
+        )
+      end
     end
   end
 
@@ -277,7 +286,7 @@ class ATS::PositionsController < ApplicationController
   end
 
   def set_position
-    @position = Position.find(params[:id] || params[:position_id])
+    @position = Position.includes(:stages).find(params[:id] || params[:position_id])
   end
 
   def position_status_options(position)

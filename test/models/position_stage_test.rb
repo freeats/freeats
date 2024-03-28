@@ -11,15 +11,12 @@ class PositionStageTest < ActiveSupport::TestCase
 
     assert_equal position.id, sourced_position_stage.position_id
 
-    position_stage = nil
     assert_no_difference "PositionStage.count" do
       case PositionStages::Add.new(params: { position:, name: sourced_position_stage.name }).call
-      in Failure[:position_stage_invalid, _position_stage]
-        position_stage = _position_stage
+      in Failure[:position_stage_invalid, _errors]
+        assert_equal _errors, ["Name has already been taken"]
       end
     end
-
-    assert_equal position_stage.errors[:name], ["has already been taken"]
   end
 
   test "should keep hired position_stage list_index at the end when we add a new position_stage" do
