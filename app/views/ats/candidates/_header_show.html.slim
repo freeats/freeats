@@ -37,8 +37,8 @@ ruby:
     .col-12.col-md
       = candidate_name
 
-      - if @candidate.alternative_names.present?
-        .font-small.mt-1 = @candidate.alternative_names.pluck(:name).join(", ")
+      - if @candidate.candidate_alternative_names.present?
+        .font-small.mt-1 = @candidate.candidate_alternative_names.pluck(:name).join(", ")
 
       - if @candidate.headline.present? || @candidate.company.present?
         ruby:

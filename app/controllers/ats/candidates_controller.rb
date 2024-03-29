@@ -114,15 +114,11 @@ class ATS::CandidatesController < ApplicationController
 
     card_name = params[:card_name]
 
-    if card_name == "contact_info"
-      render(
-        partial: "ats/candidates/info_cards/contact_info_show",
-        locals: { candidate: @candidate }
-      )
-    elsif card_name == "cover_letter" && @candidate.cover_letter.blank?
+    if card_name == "contact_info" && !helpers.candidate_card_contact_info_has_data?(@candidate) ||
+       card_name == "cover_letter" && @candidate.cover_letter.blank?
       render(
         partial: "shared/profile/card_empty",
-        locals: { card_name: "cover_letter", target_model: @candidate }
+        locals: { card_name:, target_model: @candidate }
       )
     else
       render(
@@ -151,15 +147,28 @@ class ATS::CandidatesController < ApplicationController
     @candidate.change(candidate_params)
     card_name = params[:card_name]
 
-    render_turbo_stream(
-      [
-        turbo_stream.replace(
-          "turbo_#{card_name}_section",
-          partial: "ats/candidates/info_cards/#{card_name}_show",
-          locals: { candidate: @candidate }
-        )
-      ]
-    )
+    if card_name == "contact_info" && !helpers.candidate_card_contact_info_has_data?(@candidate) ||
+       card_name == "cover_letter" && @candidate.cover_letter.blank?
+      render_turbo_stream(
+        [
+          turbo_stream.replace(
+            "turbo_#{card_name}_section",
+            partial: "shared/profile/card_empty",
+            locals: { card_name:, target_model: @candidate }
+          )
+        ]
+      )
+    else
+      render_turbo_stream(
+        [
+          turbo_stream.replace(
+            "turbo_#{card_name}_section",
+            partial: "ats/candidates/info_cards/#{card_name}_show",
+            locals: { candidate: @candidate }
+          )
+        ]
+      )
+    end
   end
 
   def remove_avatar
@@ -246,8 +255,8 @@ class ATS::CandidatesController < ApplicationController
 
     email_params =
       params[:candidate].permit(
-        email_addresses_attributes: %i[address status url source type]
-      )[:email_addresses_attributes]
+        candidate_email_addresses_attributes: %i[address status url source type]
+      )[:candidate_email_addresses_attributes]
 
     if email_params
       @candidate_params[:emails] = email_params.values.filter { _1[:address].present? }

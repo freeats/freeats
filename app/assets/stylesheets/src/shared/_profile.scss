@@ -50,6 +50,39 @@
       padding-right: 0;
     }
   }
+
+  .link-font {
+    font-size: 1.25rem;
+  }
+  .links-row {
+    margin-top: -0.25rem;
+    .linkedin-icon {
+      color: $linkedin-blue;
+    }
+    .github-icon {
+      color: $github-black;
+    }
+    .facebook-icon {
+      color: $facebook-blue;
+    }
+    .twitter-icon {
+      color: $twitter-black;
+    }
+    .vk-icon {
+      color: $vk-blue;
+    }
+    a,
+    span {
+      max-height: 1.5rem;
+      margin-top: 0.25rem;
+    }
+    img {
+      vertical-align: bottom;
+    }
+    i {
+      vertical-align: bottom;
+    }
+  }
 }
 
 .profile-avatar {

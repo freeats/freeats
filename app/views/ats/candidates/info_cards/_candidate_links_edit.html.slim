@@ -1,18 +1,17 @@
 /# locals: (candidate:, form:)
 
 ruby:
-  klass_name = candidate.class.name.downcase
   order_field_collection = candidate.sorted_links + [CandidateLink.new]
 
-= tag.div id: "#{klass_name}-contacts-links",
+= tag.div id: "candidate-contacts-links",
           class: "sortable-container",
           data: { controller: "array-fields",
-                  array_fields_class_name_value: klass_name,
+                  array_fields_class_name_value: "candidate",
                   array_fields_field_name_value: "link",
                   array_fields_sortable_value: false }
-  = form.fields_for(:person_links, order_field_collection) do |links_form|
+  = form.fields_for(:candidate_links, order_field_collection) do |links_form|
     - index = links_form.index
-    .sortable-unit [id="#{klass_name}_links#{index}" data-update-requirement-attribute-for-select-field-target="form"
+    .sortable-unit [id="candidate_links#{index}" data-update-requirement-attribute-for-select-field-target="form"
       data-controller="update-requirement-attribute-for-select-field"]
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
@@ -21,39 +20,39 @@ ruby:
                                             placeholder: "Link", type: :url,
                                             value: Addressable::URI.unencode(links_form.object&.url),
                                             "data-update-requirement-attribute-for-select-field-target": "mainField")
-          = render "ats/candidates/info_cards/person_links_select_field", links_form:
+          = render "ats/candidates/info_cards/candidate_links_select_field", links_form:
           - if links_form.object.id.present?
             = links_form.hidden_field(:id)
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"
-            class="#{klass_name}-delete-link-button"
-            id="#{klass_name}_delete_link_button#{index}"
+            class="candidate-delete-link-button"
+            id="candidate_delete_link_button#{index}"
             style="font-size: 1.25rem;"
             data-action="click->array-fields#deleteField"
-            data-array-fields-block-id-param="#{klass_name}_links#{index}"]
+            data-array-fields-block-id-param="candidate_links#{index}"]
           i.fas.fa-trash-alt
-  .sortable-unit [id="#{klass_name}_links_hidden" hidden="true"
+  .sortable-unit [id="candidate_links_hidden" hidden="true"
     data-update-requirement-attribute-for-select-field-target="form"
     data-controller="update-requirement-attribute-for-select-field"]
-    = form.fields_for(:person_links, CandidateLink.new, child_index: "id") do |links_form|
+    = form.fields_for(:candidate_links, CandidateLink.new, child_index: "id") do |links_form|
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
           .col-12.col-sm-8
             = render TextInputComponent.new(links_form, method: :url, size: :small,
                                             placeholder: "Link", type: :url,
                                             "data-update-requirement-attribute-for-select-field-target": "mainField")
-          = render "ats/candidates/info_cards/person_links_select_field", links_form:
+          = render "ats/candidates/info_cards/candidate_links_select_field", links_form:
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"
-            class="#{klass_name}-delete-link-button"
-            id="#{klass_name}_delete_link_button"
+            class="candidate-delete-link-button"
+            id="candidate_delete_link_button"
             style="font-size: 1.25rem;"
             data-action="click->array-fields#deleteField"
-            data-array-fields-block-id-param="#{klass_name}_links"]
+            data-array-fields-block-id-param="candidate_links"]
           i.fas.fa-trash-alt
   = render ButtonComponent.new(variant: :cancel,
                                size: :tiny,
                                type: :button,
-                               id: "#{klass_name}_add_link_button",
+                               id: "candidate_add_link_button",
                                data: { action: "click->array-fields#addField" })
     | Add

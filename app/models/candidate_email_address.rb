@@ -47,6 +47,39 @@ class CandidateEmailAddress < ApplicationRecord
     normalized_email =~ EMAIL_REGEXP
   end
 
+  def self.combine(old_email_addresses:, new_email_addresses:, candidate_id:)
+    status_priority = %w[current outdated invalid].freeze
+
+    new_emails = new_email_addresses.sort_by { status_priority.index(_1[:status]) }
+    new_emails = new_emails.filter { _1[:address].present? }.uniq { _1[:address] }
+
+    new_candidate_email_addresses = []
+
+    new_emails.each.with_index(1) do |attributes, index|
+      existing_email_address =
+        old_email_addresses
+        .find do |email_address|
+          email_address.address == attributes[:address]
+        end
+
+      if existing_email_address
+        attributes[:list_index] = index
+        existing_email_address.assign_attributes(attributes)
+        new_candidate_email_addresses << existing_email_address
+      else
+        new_candidate_email_addresses <<
+          new(
+            attributes.merge(
+              list_index: index,
+              candidate_id:
+            )
+          )
+      end
+    end
+
+    new_candidate_email_addresses
+  end
+
   def address_must_be_valid
     return if CandidateEmailAddress.valid_email?(address)
 

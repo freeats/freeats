@@ -30,7 +30,7 @@ module CandidateCardsHelper
   def candidate_card_contact_info_has_data?(candidate)
     candidate.candidate_emails.present? ||
       candidate.phones.present? ||
-      candidate.links.exists? ||
+      candidate.links.present? ||
       candidate.skype.present? ||
       candidate.telegram.present? ||
       candidate.candidate_source.present?
@@ -43,11 +43,11 @@ module CandidateCardsHelper
   end
 
   def candidate_card_phone_links(candidate)
-    return if candidate.phones.blank?
+    return if candidate.candidate_phones.blank?
 
     tag.div(class: "d-flex flex-row flex-wrap column-gap-2 row-gap-1") do
       safe_join(
-        candidate.phones.map do |phone|
+        candidate.candidate_phones.map do |phone|
           tooltip_text = [
             "Source: #{phone.source.humanize}",
             "Type: #{phone.type&.capitalize || 'None'}",
@@ -81,10 +81,10 @@ module CandidateCardsHelper
   end
 
   def candidate_card_email_links(candidate)
-    return if candidate.email_addresses.blank?
+    return if candidate.candidate_email_addresses.blank?
 
     safe_join(
-      [candidate.email_addresses.map do |e|
+      [candidate.candidate_email_addresses.map do |e|
          tooltip_text = [
            "Source: #{e.source.humanize}",
            "Type: #{e.type.capitalize}",
@@ -123,7 +123,7 @@ module CandidateCardsHelper
   end
 
   def candidate_card_beautiful_links(candidate)
-    return if candidate.links.blank?
+    return if candidate.candidate_links.blank?
 
     beautiful_links = candidate.sorted_links.map do |link|
       if link.status == "current"

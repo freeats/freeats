@@ -1,19 +1,15 @@
 /# locals: (candidate:, form:)
 
-ruby:
-  klass_name = candidate.class.name.downcase
-
-/ .sortable-container id=("#{klass_name}-contacts-phones")
-= tag.div id: "#{klass_name}-contacts-phones",
+= tag.div id: "candidate-contacts-phones",
           class: "sortable-container",
           data: { controller: "array-fields",
-                  array_fields_class_name_value: klass_name,
+                  array_fields_class_name_value: "candidate",
                   array_fields_field_name_value: "phone",
                   array_fields_sortable_value: true }
-  - field_collection = candidate.phones + [CandidatePhone.new]
-  = form.fields_for(:phones, field_collection) do |phones_form|
+  - field_collection = candidate.candidate_phones + [CandidatePhone.new]
+  = form.fields_for(:candidate_phones, field_collection) do |phones_form|
     - index = phones_form.index
-    .sortable-unit [id="#{klass_name}_phones#{index}" data-update-requirement-attribute-for-select-field-target="form"
+    .sortable-unit [id="candidate_phones#{index}" data-update-requirement-attribute-for-select-field-target="form"
       data-controller="update-requirement-attribute-for-select-field"]
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
@@ -22,41 +18,39 @@ ruby:
                                           placeholder: "Phone",
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
           .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
-            = render "ats/candidates/info_cards/phones_select_fields",
-                      phones_form:, klass_name:
+            = render "ats/candidates/info_cards/candidate_phones_select_fields", phones_form:
             - if phones_form.object.id.present?
               = phones_form.hidden_field(:id)
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"
-            class="#{klass_name}-delete-phone-button"
-            id="#{klass_name}_delete_phone_button#{index}"
+            class="candidate-delete-phone-button"
+            id="candidate_delete_phone_button#{index}"
             style="font-size: 1.25rem;"
             data-action="click->array-fields#deleteField"
-            data-array-fields-block-id-param="#{klass_name}_phones#{index}"]
+            data-array-fields-block-id-param="candidate_phones#{index}"]
           i.fas.fa-trash-alt
-  .sortable-unit [id="#{klass_name}_phones_hidden" hidden="true"
+  .sortable-unit [id="candidate_phones_hidden" hidden="true"
     data-update-requirement-attribute-for-select-field-target="form"
     data-controller="update-requirement-attribute-for-select-field"]
-    = form.fields_for(:phones, CandidatePhone.new, child_index: "id") do |phones_form|
+    = form.fields_for(:candidate_phones, CandidatePhone.new, child_index: "id") do |phones_form|
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
           = render TextInputComponent.new(phones_form, method: :phone, size: :small, placeholder: "Phone",
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
           .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
-            = render "ats/candidates/info_cards/phones_select_fields",
-                      phones_form:, klass_name:
+            = render "ats/candidates/info_cards/candidate_phones_select_fields", phones_form:
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"
-            class="#{klass_name}-delete-phone-button"
-            id="#{klass_name}_delete_phone_button"
+            class="candidate-delete-phone-button"
+            id="candidate_delete_phone_button"
             style="font-size: 1.25rem;"
             data-action="click->array-fields#deleteField"
-            data-array-fields-block-id-param="#{klass_name}_phones"]
+            data-array-fields-block-id-param="candidate_phones"]
           i.fas.fa-trash-alt
   = render ButtonComponent.new(variant: :cancel,
                                size: :tiny,
                                type: :button,
-                               id: "#{klass_name}_add_phone_button",
+                               id: "candidate_add_phone_button",
                                data: { action: "click->array-fields#addField" })
     | Add

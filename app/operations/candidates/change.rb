@@ -22,13 +22,21 @@ class Candidates::Change
     # old_candidate_source = candidate.candidate_source
 
     # # Associations
-    # old_links = candidate.links
-    # old_alternative_names = candidate.alternative_names
-    # old_emails = candidate.email_addresses
-    # old_phones = candidate.phones
+    # old_links = candidate.candidate_links
+    # old_alternative_names = candidate.candidate_alternative_names
+    # old_emails = candidate.candidate_email_addresses
+    # old_phones = candidate.candidate_phones
+
+    params[:emails].uniq! { _1[:address].downcase } if params[:emails].present?
+    if params[:phones].present?
+      params[:phones].uniq! do |phone_record|
+        CandidatePhone.normalize(phone_record[:phone], candidate.location&.country_code || "RU")
+      end
+    end
+    params[:links].uniq! { AccountLink.new(_1[:url]).normalize } if params[:links].present?
+
     ActiveRecord::Base.transaction do
       candidate.assign_attributes(params)
-
       candidate.save!
       # TODO: create events
     end

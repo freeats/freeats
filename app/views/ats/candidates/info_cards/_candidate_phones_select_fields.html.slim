@@ -1,4 +1,4 @@
-/# locals: (phones_form:, klass_name:)
+/# locals: (phones_form:)
 
 ruby:
   phone_types = CandidatePhone.types.map do |_, value|
@@ -10,7 +10,6 @@ ruby:
   phone_statuses = CandidatePhone.statuses.map do |_, value|
     { value:, text: value.humanize, selected: value == phones_form.object.status }
   end
-  phone_types = phone_types.reverse if klass_name == "lead"
 
 = render SingleSelectComponent.new( \
   phones_form,

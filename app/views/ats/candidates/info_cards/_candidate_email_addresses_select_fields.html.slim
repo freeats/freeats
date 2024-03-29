@@ -1,4 +1,4 @@
-/# locals: (address_form:, klass_name:)
+/# locals: (address_form:)
 
 ruby:
   address_types = CandidateEmailAddress.types.map do |_, value|
@@ -10,7 +10,6 @@ ruby:
   address_statuses = CandidateEmailAddress.statuses.map do |_, value|
     { value:, text: value.humanize, selected: value == address_form.object.status }
   end
-  address_types = address_types.reverse if klass_name == "lead"
 
 .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
   = render SingleSelectComponent.new( \

@@ -27,7 +27,7 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
 
     # search by alternative name
     grid_assets =
-      ATS::CandidatesGrid.new(candidate: ivan_candidate.alternative_names.sample.name).assets.to_a
+      ATS::CandidatesGrid.new(candidate: ivan_candidate.candidate_alternative_names.sample.name).assets.to_a
 
     assert_includes grid_assets, ivan_candidate
     assert_not_includes grid_assets, john_candidate

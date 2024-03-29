@@ -2655,13 +2655,6 @@ CREATE UNIQUE INDEX index_candidate_email_addresses_on_candidate_id_and_address 
 
 
 --
--- Name: index_candidate_email_addresses_on_candidate_id_and_list_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_candidate_email_addresses_on_candidate_id_and_list_index ON public.candidate_email_addresses USING btree (candidate_id, list_index);
-
-
---
 -- Name: index_candidate_links_on_candidate_id_and_url; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3387,6 +3380,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240328064406'),
 ('20240327132812'),
 ('20240327104934'),
 ('20240327062244'),

@@ -17,6 +17,7 @@ class CandidateEmailAddressTest < ActiveSupport::TestCase
   end
 
   test "shouldn't create if address with the same list_index already exists" do
+    skip "This uniq index was removed. Skipping for the time being."
     assert_raise ActiveRecord::RecordNotUnique do
       CandidateEmailAddress.create!(
         candidate: candidates(:john),

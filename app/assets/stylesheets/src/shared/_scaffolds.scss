@@ -76,6 +76,18 @@ footer .container-fluid {
   --bs-gutter-x: 3rem;
 }
 
+.linkedin-blue {
+  color: $linkedin-blue;
+}
+
+.hh-red {
+  color: $hh-red;
+}
+
+.toughbyte-black {
+  color: $toughbyte-black;
+}
+
 .code-green {
   color: $green;
 }
@@ -266,4 +278,10 @@ body {
 
 .hidden {
   display: none; // does not include !important flag as bootstrap's d-none class
+}
+
+.links-row {
+  .disabled {
+    opacity: 0.65 !important;
+  }
 }
