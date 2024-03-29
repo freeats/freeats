@@ -12,6 +12,7 @@ class Account < ApplicationRecord
   end
 
   validates :name, presence: true
+  validates :email, presence: true
 
   def rails_admin_name
     email

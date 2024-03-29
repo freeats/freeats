@@ -169,3 +169,106 @@ rake 'auth:setup_account[dmitry.matveyev@toughbyte.com]'
 # Start the server without automatic login
 AUTH_NOLOGIN=1 rails s
 ```
+
+## Deployment
+
+### Dokku
+
+TODO
+
+### AWS S3
+
+TODO
+
+### Database
+
+TODO
+
+### Google OAuth
+
+Application uses Google OAuth 2.0 system for authentication requiring only
+access to email and not keeping any tokens for offline actions. In order
+to set up this system, the following actions should be performed:
+
+1. Go to <https://console.developers.google.com/>.
+2. Select your project (or create it) in the upper left corner.
+3. Go to "OAuth consent screen" tab.
+4. Choose to create a new consent screen.
+5. Assuming you own a Gmail domain for you company, choose "internal" type.
+   This will avoid any reviews from Google and you won't need to write
+   documents on data policy and privacy.
+6. Record your Gmail domain there, links to documents can be any links to
+   the deployed instance, no one checks them.
+7. Save and next.
+8. In "Scopes" choose only email scope.
+9. Finish setting the consent screen.
+10. Go to "Credentials" tab.
+11. Click "Create credentials" -> "OAuth client ID".
+12. In "Application type" choose "Web application".
+13. Under "Authorized redirect URIs" add a new item and, if your website is
+    deployed at `example.com`, the URI should be
+    `https://example.com/auth/google_oauth2/callback`.
+14. Fill all necessary fields and save it.
+15. Save "Client ID" and "Client secret" for further use. You can later download
+    it again, it will not be lost.
+16. Open a terminal and go to the project root, e.g. `cd projects/ats`.
+17. Open production credentials with `rails credentials:edit -e production`.
+18. Fill in the keys `client_id` and `client_secret` in `google_oauth`.
+19. Close and save it.
+
+Now everything should work.
+
+## Administration
+
+### Accounts
+
+Accounts are implemented via two separate tables: `accounts` and `members`.
+`accounts` table works solely with authentication logic, it only contains
+the bare minimum information to authenticate a user and some common things
+for representation like name and avatar. Next `members` table
+is actually responsible for authorization with its `access_level` and it
+has a one-to-one relation with `accounts`.
+
+How to add a new account:
+
+1. Go to admin panel at `/admin`.
+2. Choose "Accounts" table on the left.
+3. Click on "Add new" tab.
+4. Fill in name and email. Make sure to enter the email from your owned
+   Gmail domain, otherwise the authentication via Google OAuth will not work.
+5. Save the record. It will appear at the very top of the list without any
+   members assigned to it.
+6. Go to "Members" table on the left.
+7. Click on "Add new" tab.
+8. Choose the newly created account and choose the appropriate access level.
+   All other fields are optional.
+9. Save the record.
+
+Now you have successfully created a new account. This person can now log in
+using Google OAuth with the email above.
+
+How to deactivate an account:
+
+1. Go to admin panel at `/admin`.
+2. Choose "Members" table on the left.
+3. Search the member by their email address.
+4. On the right side of the table there're several actions available. To the
+   **FAR** right there's a circled cross icon, when hovered over with mouse it shows
+   "Deactivate" text. **Do not confuse it** with the the "Delete" operation
+   which is a bare cross icon.
+5. Click on "Deactivate" icon.
+
+Now the member is considered deactivated and they will lose any access to
+their account but their information will be still available in the system.
+
+How to reactivate an account:
+
+1. Go to admin panel at `/admin`.
+2. Choose "Members" table on the left.
+3. Search the member by their email address.
+4. Click on the pencil icon, it has an "Edit" text when hovered with mouse.
+5. Choose the appropriate access level.
+6. Save the record.
+
+Now the member will be considered active again and will be able to log into
+the system.

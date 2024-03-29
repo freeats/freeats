@@ -50,4 +50,36 @@ RailsAdmin.config do |config|
 
   # Implement `rails_admin_name` method in models to have a pretty name for them.
   config.label_methods.unshift(:rails_admin_name)
+
+  config.model("Account") do
+    include_fields :id, :name, :email, :member
+
+    edit do
+      exclude_fields :member
+    end
+  end
+
+  config.model("Member") do
+    list do
+      include_fields :id, :account, :access_level, :created_at
+      search_by :rails_admin_search
+    end
+
+    show_edit_fieilds = %i[id account access_level updated_at created_at
+                           collaborator_positions positions]
+    show do
+      include_fields(*show_edit_fieilds)
+    end
+    edit do
+      include_fields(*show_edit_fieilds)
+
+      configure :access_level do
+        enum do
+          %i[interviewer hiring_manager employee admin].index_with(&:to_s)
+        end
+      end
+
+      configure(:account) { required true }
+    end
+  end
 end

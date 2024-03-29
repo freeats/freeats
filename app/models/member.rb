@@ -14,7 +14,10 @@ class Member < ApplicationRecord
 
   enum access_level: %i[inactive interviewer hiring_manager employee admin].index_with(&:to_s)
 
+  validates :access_level, presence: true
+
   scope :active, -> { where.not(access_level: :inactive) }
+  scope :rails_admin_search, ->(query) { joins(:account).where(accounts: { email: query.strip }) }
 
   def active?
     !inactive?
@@ -25,5 +28,9 @@ class Member < ApplicationRecord
       update!(access_level: :inactive)
       account.identities.destroy_all
     end
+  end
+
+  def rails_admin_name
+    "#{account&.email}|#{access_level}"
   end
 end
