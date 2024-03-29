@@ -22,7 +22,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
       li.nav-item
         = link_to "Positions", "/", # TODO: Replace with the correct path \
           class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
-      li.nav-item
+      / li.nav-item
         = link_to "Sequences", "/", # TODO: Replace with the correct path \
           class: "nav-link#{' nav-link-selected' if @nav_item == :sequences}"
       / TODO: Add condition to check the current user is admin before dicplaying the admin dropdown
