@@ -58,6 +58,42 @@ class Position < ApplicationRecord
 
   strip_attributes collapse_spaces: true, allow_empty: true, only: :name
 
+  def self.color_codes_table
+    positions = Position.arel_table
+
+    positions
+      .project(
+        Arel::Nodes::Case
+          .new(positions[:status])
+          .when("draft").then(-3)
+          .when("passive").then(3)
+          .when("closed").then(6)
+          .when("active").then(-1)
+          .as("code"),
+        positions[:id].as("position_id")
+      ).as("color_codes")
+  end
+
+  def self.search_by_name(name)
+    where("positions.name ILIKE ?", "%#{name}%")
+  end
+
+  def self.with_color_codes
+    positions = Position.arel_table
+
+    color_codes = color_codes_table
+
+    position_joins =
+      positions
+      .join(color_codes)
+      .on(color_codes[:position_id].eq(positions[:id]))
+
+    select(
+      positions[Arel.star],
+      color_codes[:code].as("color_code")
+    ).joins(position_joins.join_sources)
+  end
+
   def warnings
     @warnings ||= ActiveModel::Errors.new(self)
   end

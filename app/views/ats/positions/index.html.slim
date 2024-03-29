@@ -1,0 +1,17 @@
+- ats_title("Positions")
+= datagrid_form_for @positions_grid, url: ats_positions_path
+.row.align-items-center.mb-3.row-gap-2
+  - if @positions_grid.assets.total_pages > 1
+    .col-12.col-lg-auto = paginate(@positions_grid.assets, theme: "ats")
+  .col
+    span
+      b Positions:
+      =< render PrettyNumberComponent.new(@positions_stats[:positions])
+  .col-auto
+    = render ButtonLinkComponent.new(new_ats_position_path,
+            size: :small,
+            data: { turbo_frame: :turbo_modal_window })
+      | Add position
+
+= datagrid_table(@positions_grid, @positions_grid_assets)
+= paginate(@positions_grid.assets, theme: "ats")

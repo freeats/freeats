@@ -20,7 +20,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
         = link_to "Candidates", ats_candidates_path,
           class: "nav-link#{' nav-link-selected' if @nav_item == :candidates}"
       li.nav-item
-        = link_to "Positions", "/", # TODO: Replace with the correct path \
+        = link_to "Positions", ats_positions_path,
           class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
       / li.nav-item
         = link_to "Sequences", "/", # TODO: Replace with the correct path \

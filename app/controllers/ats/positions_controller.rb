@@ -3,6 +3,8 @@
 class ATS::PositionsController < ApplicationController
   include Dry::Monads[:result]
 
+  layout "ats/application"
+
   TABS = [
     "Info",
     "Pipeline",
@@ -18,7 +20,33 @@ class ATS::PositionsController < ApplicationController
                          reassign_recruiter show_card edit_card update_card change_status destroy]
   before_action :set_tabs, only: :show
   helper_method :position_status_options
-  def index; end
+  def index
+    @positions_grid_params =
+      params[:ats_positions_grid]
+      &.to_unsafe_h
+      &.symbolize_keys
+      &.filter { |k, _v| ATS::PositionsGrid.datagrid_attributes.include?(k) } || {}
+    @positions_grid = ATS::PositionsGrid.new(
+      helpers.add_default_sorting(
+        @positions_grid_params.merge(current_account:),
+        nil
+      )
+    )
+
+    positions = @positions_grid.assets.unscope(:order)
+    ActiveRecord::Base.connection.select_all(
+      <<~SQL
+        SELECT COUNT(DISTINCT positions.id)
+        FROM (#{positions.unscope(:includes).reselect('positions.*').to_sql}) AS positions
+      SQL
+    ).rows.first.tap do |pos_count, _|
+      @positions_stats = {
+        positions: pos_count
+      }
+    end
+    @positions_grid.scope { |scope| scope.page(params[:page]) }
+    @positions_grid_assets = @positions_grid.assets.order(:name)
+  end
 
   def show
     set_side_header_predefined_options
@@ -61,20 +89,18 @@ class ATS::PositionsController < ApplicationController
   end
 
   def create
-    auto_assigned_params = {
-      recruiter_id: current_user.member.id,
-      company_id: params[:position][:company_id]
-    }
-    @position = Position.new(position_params.merge(auto_assigned_params))
+    case Positions::Add.new(
+      params: position_params.to_h.deep_symbolize_keys,
+      actor_account: current_account
+    ).call
+    in Success[position]
+      warnings = position.warnings.full_messages
 
-    if @position.save_new(actor_user: current_user)
-      warnings = @position.warnings.full_messages
-
-      redirect_to tab_ats_position_path(@position, :info),
+      redirect_to tab_ats_position_path(position, :info),
                   notice: "Position draft was successfully created.",
                   warning: warnings.presence
-    else
-      render_error(@position.errors.full_messages)
+    in Failure[:position_invalid, _error] | Failure[:position_stage_invalid, _error]
+      render_error _error
     end
   end
 
