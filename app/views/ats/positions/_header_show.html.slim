@@ -1,9 +1,9 @@
 = turbo_frame_tag :turbo_header_section
   .row.g-3
     / ACTIONS
-    .col-auto.d-flex.align-items-end.ms-auto.order-md-last
+    .col-auto.d-flex.ms-auto.order-md-last
       / POSITION STATUS
-      .hstack.justify-content-end.gap-3.mt-2
+      .justify-content-end.gap-3
         .dropdown
           = render ButtonComponent.new(variant: :cancel,
                   size: :tiny,
@@ -35,16 +35,16 @@
         | &ensp;
         = @position.name
 
-    / ACTIVITY
-    .row.font-small.text-secondary.mt-2.gx-2
-      / TODO: use commented line after added events
-      / - position_added_performed_at = @position.added_event&.performed_at || @position.created_at
-      - position_added_performed_at = @position.created_at
-      .col-auto.text-nowrap.mb-2 [data-bs-toggle="tooltip"
-        title="Added on #{position_added_performed_at.to_fs(:datetime_full)}"]
-        i.fas.fa-plus-square
-        | &nbsp;#{short_time_ago_in_words(position_added_performed_at)} ago
-      .col-auto.text-nowrap.mb-2.px-1 [data-bs-toggle="tooltip"
-        title=("Updated on #{@position.updated_at.to_fs(:datetime_full)}")]
-        i.fas.fa-square-pen
-        | &nbsp;#{short_time_ago_in_words(@position.updated_at)} ago
+      / ACTIVITY
+      .row.font-small.text-secondary.mt-2.gx-2
+        / TODO: use commented line after added events
+        / - position_added_performed_at = @position.added_event&.performed_at || @position.created_at
+        - position_added_performed_at = @position.created_at
+        .col-auto.text-nowrap.mb-2 [data-bs-toggle="tooltip"
+          title="Added on #{position_added_performed_at.to_fs(:datetime_full)}"]
+          i.fas.fa-plus-square
+          | &nbsp;#{short_time_ago_in_words(position_added_performed_at)} ago
+        .col-auto.text-nowrap.mb-2.px-1 [data-bs-toggle="tooltip"
+          title=("Updated on #{@position.updated_at.to_fs(:datetime_full)}")]
+          i.fas.fa-square-pen
+          | &nbsp;#{short_time_ago_in_words(@position.updated_at)} ago
