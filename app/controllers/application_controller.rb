@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include ErrorHandler
+
   add_flash_types :warning
 
   private

@@ -2,8 +2,11 @@
 
 class API::V1::MembersController < ApplicationController
   def fetch_members
+    access_level = params[:access_level]
     allow_nil = params[:allow_nil] == "true"
-    dataset = Member.active.where.not(id: current_member.id)
+    dataset = Member.active
+    dataset = dataset.where(access_level:) if access_level.present?
+    dataset = [current_member] + dataset.reject { _1 == current_member }
     data =
       if allow_nil
         [

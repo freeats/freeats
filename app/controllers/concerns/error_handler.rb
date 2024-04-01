@@ -7,7 +7,8 @@ module ErrorHandler
     messages,
     redirect_url: request.referer,
     status: :bad_request,
-    fallback_location: ats_dashboard_index_path
+    # TODO: change to ats_dashboard_index_path
+    fallback_location: root_path
   )
     if Rails.env.test?
       respond_to do |format|

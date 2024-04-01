@@ -50,8 +50,10 @@ class Positions::Change
     case result
     in Success(_)
       Success(position.reload)
-    in Failure[ActiveRecord::RecordInvalid, e]
-      Failure[:position_invalid, e]
+    in Failure[ActiveRecord::RecordInvalid => e]
+      Failure[:position_invalid, position.errors.full_messages.presence || e]
+    in Failure[:position_stage_invalid, _]
+      result
     end
   end
 end

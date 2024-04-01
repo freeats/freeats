@@ -321,12 +321,18 @@ class ATS::PositionsController < ApplicationController
   end
 
   def set_side_header_predefined_options
-    @active_recruiters =
-      Member.includes(:account).active.map { [_1.account.name, _1.id] }
-
     @options_for_collaborators =
-      @active_recruiters.filter { |_, id| id != @position.recruiter_id }.map do |text, value|
-        { text:, value:, selected: @position.collaborator_ids&.include?(value) }
+      Member
+      .includes(:account)
+      .where(access_level: Position::COLLABORATORS_ACCESS_LEVEL)
+      .filter_map do |member|
+        if member.id != @position.recruiter_id
+          {
+            text: member.account.name,
+            value: member.id,
+            selected: @position.collaborator_ids&.include?(member.id)
+          }
+        end
       end
   end
 end

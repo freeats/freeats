@@ -26,7 +26,9 @@ ruby:
         {
           controller: "reassignment-buttons",
           "reassignment-buttons-search-url-value": fetch_members_api_v1_members_path(
-            unassignment_option: unassignment_label, allow_nil: unassignment_label.present?
+            unassignment_option: unassignment_label,
+            allow_nil: unassignment_label.present?,
+            access_level: Position::RECRUITER_ACCESS_LEVEL
           )
         }
       }

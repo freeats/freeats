@@ -29,6 +29,9 @@ class Position < ApplicationRecord
     other
   ].freeze
 
+  RECRUITER_ACCESS_LEVEL = %w[admin employee].freeze
+  COLLABORATORS_ACCESS_LEVEL = %w[admin employee].freeze
+
   has_and_belongs_to_many :collaborators,
                           class_name: "Member",
                           association_foreign_key: :collaborator_id,
@@ -55,6 +58,9 @@ class Position < ApplicationRecord
     no_longer_relevant
     cancelled
   ].index_with(&:to_s)
+
+  validate :recruiter_access_level
+  validate :collaborators_access_level
 
   strip_attributes collapse_spaces: true, allow_empty: true, only: :name
 
@@ -96,5 +102,28 @@ class Position < ApplicationRecord
 
   def warnings
     @warnings ||= ActiveModel::Errors.new(self)
+  end
+
+  private
+
+  def recruiter_access_level
+    return if recruiter.blank? || recruiter.access_level.in?(Position::RECRUITER_ACCESS_LEVEL)
+
+    errors.add(
+      :base,
+      "Recruiter must be #{Position::RECRUITER_ACCESS_LEVEL.join(' or ')}"
+    )
+  end
+
+  def collaborators_access_level
+    if collaborators.blank? ||
+       collaborators.all? { _1.access_level.in?(Position::COLLABORATORS_ACCESS_LEVEL) }
+      return
+    end
+
+    errors.add(
+      :base,
+      "Collaborators must be #{Position::COLLABORATORS_ACCESS_LEVEL.join(' or ')}"
+    )
   end
 end

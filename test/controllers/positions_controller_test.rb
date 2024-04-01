@@ -14,7 +14,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should reassign recruiter" do
-    recruiter = members(:hiring_manager_member)
+    recruiter = members(:employee_member)
     position = positions(:ruby_position)
 
     patch reassign_recruiter_ats_position_path(position),
@@ -163,7 +163,12 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     position = positions(:ruby_position)
     params = {}
     params[:collaborator_ids] =
-      Member.active.where.not(id: position.recruiter_id).order("random()").first(3).pluck(:id) -
+      Member
+      .where(access_level: Position::COLLABORATORS_ACCESS_LEVEL)
+      .where.not(id: position.recruiter_id)
+      .order("random()")
+      .first(3)
+      .pluck(:id) -
       [position.recruiter_id, params[:recruiter_id]]
 
     patch update_side_header_ats_position_path(position), params: { position: params }

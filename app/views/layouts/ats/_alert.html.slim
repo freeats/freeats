@@ -1,0 +1,19 @@
+/# locals: (text: nil, type: nil, alerts: nil)
+
+- alerts ||= [type:, text:]
+
+#alerts
+  - alerts.each do |alert|
+      ruby:
+        class_name =
+          case alert[:type]
+          when :warning then "alert-warning"
+          when :notice then "alert-success"
+          when :error then "alert-danger"
+          else
+            raise ArgumentError
+          end
+      .notification class=class_name role="alert"
+        = sanitize Array(alert[:text]).join("<br>"), attributes: %w[href rel target]
+        span.notification-close
+          i.fas.fa-times
