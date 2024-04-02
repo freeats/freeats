@@ -33,6 +33,16 @@ class RodauthApp < Rodauth::Rails::App
       end
     end
 
+    # Authentication in staging.
+    if Rails.env.staging?
+      r.on "staging-environment-only" do
+        r.is "please-login" do
+          rodauth.account_from_login(r.params["email"])
+          rodauth.login("omniauth")
+        end
+      end
+    end
+
     # Ignore "remember" plugin's routes since we don't need them right now.
     r.is "remember" do
       false

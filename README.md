@@ -102,6 +102,23 @@
 
 12. Open <http://localhost:3000>.
 
+## Staging environment
+
+How to run it locally:
+
+1. Set environment variables in `.env.staging`:
+
+   ```
+   HOST_URL=http://localhost:3000
+   DATABASE_URL=ats_staging
+   ```
+
+2. Precompile assets with `rails assets:precompile`.
+3. Setup the database with `RAILS_ENV=staging rails db:setup db:fixtures:load`.
+4. Run the server with `RAILS_ENV=staging rails server`.
+
+After finishing work, run `rails assets:clobber` to remove precompiled assets.
+
 ## Authentication
 
 For authentication we use the [rodauth] gem together with [rodauth-rails] and
@@ -169,6 +186,19 @@ rake 'auth:setup_account[dmitry.matveyev@toughbyte.com]'
 # Start the server without automatic login
 AUTH_NOLOGIN=1 rails s
 ```
+
+### Staging environment
+
+For demonstration purposes we have a working deployed project with staging
+environment at <https://ats.toughbyte.com>.
+There we can bypass Google OAuth authentication and use these
+endpoints to authenticate as different roles:
+
+- Admin -- <https://ats.toughbyte.com/staging-environment-only/please-login?email=admin%40mail.com>
+- Employee -- <https://ats.toughbyte.com/staging-environment-only/please-login?email=employee%40mail.com>
+- Hiring manager -- <https://ats.toughbyte.com/staging-environment-only/please-login?email=hiring_manager%40mail.com>
+- Interviewer -- <https://ats.toughbyte.com/staging-environment-only/please-login?email=interviewer%40mail.com>
+- Inactive -- <https://ats.toughbyte.com/staging-environment-only/please-login?email=inactive%40mail.com>
 
 ## Deployment
 

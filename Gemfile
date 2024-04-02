@@ -75,3 +75,11 @@ group :test do
   gem "faker"
   gem "selenium-webdriver"
 end
+
+# rubocop:disable Bundler/DuplicatedGem
+group :staging do
+  gem "byebug", platforms: %i[mri mingw x64_mingw]
+  gem "debug", platforms: %i[mri windows]
+  gem "dotenv-rails"
+end
+# rubocop:enable Bundler/DuplicatedGem
