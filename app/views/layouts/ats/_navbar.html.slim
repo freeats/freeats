@@ -4,9 +4,8 @@ ruby:
 nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
   / Mobile user icon
   .profile-button.d-lg-none.order-1
-    / TODO: display the user's avatar
-    = image_tag("icons/user.png", class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo")
-    /= picture_avatar_icon user.avatar, {}, class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo"
+    = picture_avatar_icon current_account.avatar, {},
+      class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo"
 
   button.navbar-toggler.px-1 [aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
                               data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button"]
@@ -54,9 +53,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
     / Desktop
     .dropdown.profile-button.d-none.d-lg-block
       button.dropdown-toggle.btn aria-expanded="false" aria-haspopup="true" data-bs-toggle="dropdown" role="button"
-        / TODO: display the user's avatar
-        = image_tag("icons/user.png", class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo")
-        /= picture_avatar_icon user.avatar, {}, class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo"
+        = picture_avatar_icon current_account.avatar, {},
+          class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo"
       ul.dropdown-menu.dropdown-menu-end
         / TODO: Replace with the correct path
         li = link_to "Profile", "/",

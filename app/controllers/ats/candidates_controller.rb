@@ -172,7 +172,7 @@ class ATS::CandidatesController < ApplicationController
   end
 
   def remove_avatar
-    @candidate.destroy_avatar
+    @candidate.avatar.purge
     @candidate.save!
     redirect_back fallback_location: tab_ats_candidate_path(@candidate, :info)
   rescue StandardError => e

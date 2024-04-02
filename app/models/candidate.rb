@@ -3,6 +3,7 @@
 class Candidate < ApplicationRecord
   include Dry::Monads[:result]
   include Locatable
+  include Avatar
 
   has_many :candidate_links,
            class_name: "CandidateLink",
@@ -30,11 +31,6 @@ class Candidate < ApplicationRecord
   accepts_nested_attributes_for :candidate_email_addresses, allow_destroy: true
   accepts_nested_attributes_for :candidate_phones, allow_destroy: true
   accepts_nested_attributes_for :candidate_links, allow_destroy: true
-
-  has_one_attached :avatar do |attachable|
-    attachable.variant(:icon, resize_to_fill: [144, 144], preprocessed: true)
-    attachable.variant(:medium, resize_to_fill: [450, 450], preprocessed: true)
-  end
 
   has_many_attached :files
   has_rich_text :cover_letter
@@ -100,17 +96,6 @@ class Candidate < ApplicationRecord
 
   def candidate_emails
     candidate_email_addresses.pluck(:address)
-  end
-
-  def attach_avatar(avatar_file)
-    jpg_avatar = ImageProcessing::Vips.source(avatar_file).convert!("jpg")
-    original_filename = avatar_file.original_filename
-    filename = File.basename(original_filename, File.extname(original_filename))
-    avatar.attach(io: jpg_avatar, filename: "#{filename}.jpg")
-  end
-
-  def destroy_avatar
-    avatar.purge
   end
 
   def destroy_file(file_id)

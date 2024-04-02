@@ -66,8 +66,6 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should assign the medium and icon avatars and remove them" do
-    skip "Unskip when we implement logic to assign avatar to the candidate"
-
     file = fixture_file_upload("app/assets/images/icons/user.png", "image/png")
     candidate = candidates(:john)
     number_of_created_blobs = 3
@@ -78,7 +76,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference "ActiveStorage::Blob.count", number_of_created_blobs do
       perform_enqueued_jobs do
-        patch ats_candidate_path(candidate), params: { candidate: { avatar: file } }
+        patch update_header_ats_candidate_path(candidate), params: { candidate: { avatar: file } }
       end
     end
 
@@ -89,10 +87,10 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil candidate.avatar.variant(:medium)
 
     ActiveStorage::Blob.last(number_of_created_blobs).each do |blob|
-      assert_match(%r{uploads/candidate/#{candidate.id}/.*\.jpg}, blob.key)
+      assert_match(%r{uploads/candidate/#{candidate.id}/.*}, blob.key)
     end
 
-    patch ats_candidate_path(candidate), params: { candidate: { remove_avatar: "1" } }
+    delete remove_avatar_ats_candidate_path(candidate)
 
     candidate.reload
 

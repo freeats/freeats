@@ -52,7 +52,7 @@ RailsAdmin.config do |config|
   config.label_methods.unshift(:rails_admin_name)
 
   config.model("Account") do
-    include_fields :id, :name, :email, :member
+    include_fields :id, :name, :email, :member, :avatar
 
     edit do
       exclude_fields :member

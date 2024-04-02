@@ -3,7 +3,7 @@
 
 .profile-avatar.img-thumbnail class=("profile-avatar-edit float-md-end" if is_form)
   - if candidate.avatar.attached?
-    = image_tag candidate.avatar.variant(:icon)
+    = image_tag candidate.avatar.variant(:medium)
     - if !is_form && candidate.blacklisted
       .profile-avatar-overlay.alert-danger Blacklisted
   - else
