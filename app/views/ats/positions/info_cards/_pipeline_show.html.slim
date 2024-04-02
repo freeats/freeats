@@ -8,6 +8,17 @@
   .row.row-gap-2
     .col-12.col-md-6.col-lg-12.col-xl-6.vstack.gap-2
       - position.stages.each do |stage|
-        = render LabeledComponent.new(right_class: "col-form-label-sm") do |c|
+        = render LabeledComponent.new( \
+          left_class: "text-gray-600 d-flex align-items-center",
+          right_class: "col-form-label-sm" \
+        ) do |c|
           - c.with_label(stage.name.humanize, size: :small)
-          = "TODO: link to scorecard template"
+          - if (scorecard_template = stage.scorecard_template).present?
+            = link_to scorecard_template.title, ats_scorecard_template_path(scorecard_template), data: { turbo: false }
+            - if stage.scorecard_template.visible_to_interviewer
+              |< (visible to interviewer)
+          - else
+            - form_with url: ats_scorecard_templates_path do |f|
+              = f.hidden_field :position_stage_id, value: stage.id
+              = render ButtonComponent.new(type: :submit, size: :small, variant: :cancel, data: { turbo: false })
+                | Add scorecard template

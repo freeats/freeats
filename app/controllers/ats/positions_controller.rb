@@ -312,7 +312,8 @@ class ATS::PositionsController < ApplicationController
   end
 
   def set_position
-    @position = Position.includes(:stages).find(params[:id] || params[:position_id])
+    @position =
+      Position.includes(stages: :scorecard_template).find(params[:id] || params[:position_id])
   end
 
   def position_status_options(position)

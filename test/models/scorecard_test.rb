@@ -47,7 +47,7 @@ class ScorecardTest < ActiveSupport::TestCase
       end
     end
 
-    assert_includes e.to_s, "null value in column \"placement_id\""
+    assert_includes e, "null value in column \"placement_id\""
   end
 
   test "should not create scorecard with invalid question" do

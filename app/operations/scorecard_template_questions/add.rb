@@ -23,10 +23,12 @@ class ScorecardTemplateQuestions::Add
     case result
     in Success(_)
       Success(scorecard_template_question)
-    in Failure(ActiveRecord::RecordInvalid => e)
-      Failure[:scorecard_template_question_invalid, e]
+    in Failure[ActiveRecord::RecordInvalid => e]
+      Failure[:scorecard_template_question_invalid,
+              scorecard_template_question.errors.full_messages.presence || e.to_s]
     in Failure[ActiveRecord::RecordNotUnique => e]
-      Failure[:scorecard_template_question_not_unique, e]
+      Failure[:scorecard_template_question_not_unique,
+              scorecard_template_question.errors.full_messages.presence || e.to_s]
     end
   end
 end

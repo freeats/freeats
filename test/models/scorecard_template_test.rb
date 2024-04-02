@@ -6,12 +6,12 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
   test "should create only one scorecard template" do
-    position_stage = position_stages(:ruby_position_interviewed)
+    position_stage = position_stages(:ruby_position_replied)
 
     assert_difference "ScorecardTemplate.count" do
       scorecard_template = ScorecardTemplates::Add.new(position_stage:).call.value!
 
-      assert_equal scorecard_template.title, "Interviewed stage scorecard template"
+      assert_equal scorecard_template.title, "Replied stage scorecard template"
     end
 
     error = nil

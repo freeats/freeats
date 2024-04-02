@@ -33,7 +33,7 @@ class PositionStageTest < ActiveSupport::TestCase
   end
 
   test "should keep hired position_stage list_index at the end when we edit existing position_stage" do
-    position_interviewed_stage = position_stages(:ruby_position_interviewed)
+    position_interviewed_stage = position_stages(:ruby_position_replied)
     position_hired_stage = position_stages(:ruby_position_hired)
 
     assert_equal position_hired_stage.list_index, 4

@@ -1,0 +1,59 @@
+/# locals: (questions:, form:)
+
+ruby:
+  klass_name = "scorecard-template"
+  order_field_collection = questions + [ScorecardTemplateQuestion.new]
+
+= tag.div id: "#{klass_name}-questions",
+          class: "sortable-container",
+          data: { controller: "array-fields",
+                  array_fields_class_name_value: klass_name,
+                  array_fields_field_name_value: "question",
+                  array_fields_sortable_value: true }
+  = form.fields_for( \
+    :scorecard_template_questions,
+    order_field_collection \
+  ) do |questions_form|
+    - index = questions_form.index
+    .sortable-unit id="#{klass_name}_questions#{index}"
+      .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
+        i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
+        .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
+          = render TextInputComponent.new(questions_form, method: :question, size: :small,
+                                          placeholder: "Enter question", type: :text,
+                                          value: questions_form.object&.question)
+          - if questions_form.object.id.present?
+            = questions_form.hidden_field(:id)
+        button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
+            type="button"
+            class="#{klass_name}-delete-question-button"
+            id="#{klass_name}_delete_question_button#{index}"
+            style="font-size: 1.25rem;"
+            data-action="click->array-fields#deleteField"
+            data-array-fields-block-id-param="#{klass_name}_questions#{index}"]
+          i.fas.fa-trash-alt
+  .sortable-unit id="#{klass_name}_questions_hidden" hidden="true"
+    = form.fields_for( \
+      :scorecard_template_questions,
+      ScorecardTemplateQuestion.new,
+      child_index: "id" \
+    ) do |questions_form|
+      .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
+        i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
+        .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
+          = render TextInputComponent.new(questions_form, method: :question, size: :small,
+                                          placeholder: "Enter question", type: :text)
+        button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
+            type="button"
+            class="#{klass_name}-delete-question-button"
+            id="#{klass_name}_delete_question_button"
+            style="font-size: 1.25rem;"
+            data-action="click->array-fields#deleteField"
+            data-array-fields-block-id-param="#{klass_name}_questions"]
+          i.fas.fa-trash-alt
+  = render ButtonComponent.new(variant: :cancel,
+                               size: :tiny,
+                               type: :button,
+                               id: "#{klass_name}_add_question_button",
+                               data: { action: "click->array-fields#addField" })
+    | Add question

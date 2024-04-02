@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class Scorecard < ApplicationRecord
-  has_many :scorecard_questions, dependent: :destroy
+  has_many :scorecard_questions,
+           -> { order(:list_index) },
+           dependent: :destroy,
+           inverse_of: :scorecard
   belongs_to :position_stage
   belongs_to :placement
 

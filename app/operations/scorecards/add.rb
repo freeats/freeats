@@ -45,9 +45,11 @@ class Scorecards::Add
       Success(scorecard)
     in Failure(ActiveRecord::RecordInvalid => _e) |
        Failure(ActiveRecord::NotNullViolation => _e)
-      Failure[:scorecard_invalid, _e]
+      Failure[:scorecard_invalid,
+              scorecard.errors.full_messages.presence || _e.to_s]
     in Failure[ActiveRecord::RecordNotUnique => e]
-      Failure[:scorecard_not_unique, e]
+      Failure[:scorecard_not_unique,
+              scorecard.errors.full_messages.presence || e.to_s]
     in Failure[:scorecard_question_invalid, _e] |
        Failure[:scorecard_question_not_unique, _e]
       result

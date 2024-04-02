@@ -49,6 +49,8 @@ Rails.application.routes.draw do
       get :edit_card, on: :member
       patch :update_card, to: "positions#update_card", on: :member
     end
+
+    resources :scorecard_templates, only: %i[create show edit update]
   end
 
   namespace :api, defaults: { format: "json" } do

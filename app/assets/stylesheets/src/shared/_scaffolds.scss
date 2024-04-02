@@ -97,6 +97,9 @@ footer .container-fluid {
 .code-black {
   color: $gray-900;
 }
+.text-gray-600 {
+  color: $gray-600;
+}
 
 // Most browsers don't support styling `<input>` tag which is required for file upload fields. This
 // hack is used to place an invisible input near a real button so we can style the real button
@@ -290,4 +293,30 @@ h1 {
   .disabled {
     opacity: 0.65 !important;
   }
+}
+
+a {
+  &:not(.btn, .dropdown-item) {
+    text-decoration: none;
+  }
+  &:hover:not(.btn, .nav-link, .dropdown-item, .badge) {
+    text-decoration: underline;
+  }
+  &:visited:not(.btn, .nav-link, .dropdown-item, .badge) {
+    color: $blue-600;
+  }
+}
+
+h1 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: bold;
+}
+
+.sortable-handle {
+  margin-top: 0.75rem;
+}
+
+.card-body ul {
+  margin-bottom: 0px;
 }

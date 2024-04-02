@@ -14,7 +14,11 @@ class ScorecardTemplateQuestionTest < ActiveSupport::TestCase
     }
 
     assert_difference "ScorecardTemplateQuestion.count" do
-      ScorecardTemplateQuestions::Add.new(params:).call.value!
+      scorecard_template_question = ScorecardTemplateQuestions::Add.new(params:).call.value!
+
+      assert_equal scorecard_template_question.list_index, params[:list_index]
+      assert_equal scorecard_template_question.question, params[:question]
+      assert_equal scorecard_template_question.scorecard_template_id, scorecard_template.id
     end
 
     e = nil
@@ -24,6 +28,6 @@ class ScorecardTemplateQuestionTest < ActiveSupport::TestCase
         e = error
       end
     end
-    assert_includes e.to_s, "idx_on_scorecard_template_id_list_index_"
+    assert_includes e, "idx_on_scorecard_template_id_list_index_"
   end
 end

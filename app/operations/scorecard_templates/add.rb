@@ -24,9 +24,11 @@ class ScorecardTemplates::Add
     in Success(_)
       Success(scorecard_template)
     in Failure(ActiveRecord::RecordInvalid => e)
-      Failure[:scorecard_template_invalid, e]
+      Failure[:scorecard_template_invalid,
+              scorecard_template.errors.full_messages.presence || e.to_s]
     in Failure[ActiveRecord::RecordNotUnique => e]
-      Failure[:scorecard_template_not_unique, e]
+      Failure[:scorecard_template_not_unique,
+              scorecard_template.errors.full_messages.presence || e.to_s]
     end
   end
 end

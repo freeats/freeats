@@ -83,6 +83,25 @@
       vertical-align: bottom;
     }
   }
+
+  .card {
+    border-color: $gray-500;
+
+    .card-title {
+      font-size: 1rem;
+    }
+
+    .card-header {
+      background-color: $gray-100;
+      border-bottom-color: $gray-500;
+      border-radius: 0.25rem 0.25rem 0 0;
+      padding: 0.75rem 1rem;
+    }
+
+    .card-body {
+      padding: 0.5rem 1rem;
+    }
+  }
 }
 
 .profile-avatar {
