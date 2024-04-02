@@ -272,12 +272,18 @@ body {
   }
 }
 
-.btn {
+:not(.dropdown) > .btn {
   --bs-btn-font-size: 0.875rem;
 }
 
 .hidden {
   display: none; // does not include !important flag as bootstrap's d-none class
+}
+
+h1 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: bold;
 }
 
 .links-row {
