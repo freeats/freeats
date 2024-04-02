@@ -102,6 +102,37 @@
       padding: 0.5rem 1rem;
     }
   }
+
+  .empty-card-templates {
+    .empty-card {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+      border: 1px solid #e1e4e8;
+      border-style: dashed;
+      background-color: inherit;
+      &:hover {
+        background-color: #f8f9fa;
+      }
+    }
+  }
+
+  .reassignment-button {
+    @include media-breakpoint-down(md) {
+      & > * {
+        max-width: 216px;
+      }
+    }
+  }
+
+  .full-width-reassignment-button {
+    .reassignment-button {
+      @include media-breakpoint-down(md) {
+        & > * {
+          max-width: 100% !important;
+        }
+      }
+    }
+  }
 }
 
 .profile-avatar {

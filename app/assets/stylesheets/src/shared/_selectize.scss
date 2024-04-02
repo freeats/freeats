@@ -119,3 +119,20 @@
   margin-left: 0.1875rem;
   margin-right: 0.4375rem;
 }
+
+.selectize-dropdown.recruiter-select {
+  .selectize-dropdown-content {
+    > div {
+      padding: 5px 4px;
+      height: 32px;
+
+      svg {
+        width: 32px;
+      }
+
+      picture {
+        width: 32px;
+      }
+    }
+  }
+}

@@ -1,8 +1,8 @@
 = render "ats/positions/profile"
-  ul.list-group.col-12.col-lg-7.col-xl-8.mt-3.text-break
-    - @activities.each do |event|
-      li.list-group-item
-        span.fw-light.me-2
-          = event.performed_at.to_fs(:datetime)
-        span = hub_position_display_activity(event)
-  .mt-3 = paginate(@activities, theme: "hub")
+  / ul.list-group.col-12.col-lg-7.col-xl-8.mt-3.text-break
+  /   - @activities.each do |event|
+  /     li.list-group-item
+  /       span.fw-light.me-2
+  /         = event.performed_at.to_fs(:datetime)
+  /       span = hub_position_display_activity(event)
+  / .mt-3 = paginate(@activities, theme: "hub")

@@ -279,6 +279,10 @@ body {
   --bs-btn-font-size: 0.875rem;
 }
 
+.btn.btn-sm {
+  padding: 0.125rem 0.5rem;
+}
+
 .hidden {
   display: none; // does not include !important flag as bootstrap's d-none class
 }
