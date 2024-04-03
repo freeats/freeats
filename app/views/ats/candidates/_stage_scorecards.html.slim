@@ -1,0 +1,11 @@
+/# locals: (stage:, placement:)
+
+.d-flex.gap-2.align-items-center.justify-content-around.mb-2
+  .d-flex.gap-2.align-items-center.flex-row.flex-column.flex-grow-1
+    .col-12.col-sm-8
+      - stage.scorecards.each(&:title)
+  = render ButtonLinkComponent.new( \
+    new_ats_scorecard_path(position_stage_id: stage.id, placement_id: placement.id),
+    variant: :cancel, size: :tiny, type: :button \
+  )
+    | Add scorecard

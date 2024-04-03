@@ -1,8 +1,8 @@
 ruby_position_sourced:
   position_stage: ruby_position_sourced
-  title: Interview
+  title: Sourced stage scorecard template
 
 ruby_position_contacted:
   position_stage: ruby_position_contacted
-  title: Second Interview
+  title: Contacted stage scorecard template
   visible_to_interviewer: true

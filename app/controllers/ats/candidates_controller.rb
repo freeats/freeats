@@ -299,7 +299,10 @@ class ATS::CandidatesController < ApplicationController
   end
 
   def set_candidate
-    @candidate = Candidate.find(params[:candidate_id] || params[:id])
+    @candidate =
+      Candidate
+      .includes(placements: { position: { stages: :scorecard_template } })
+      .find(params[:candidate_id] || params[:id])
 
     return if @candidate.merged_to.nil?
 

@@ -2,3 +2,8 @@ sam_ruby:
   position: ruby_position
   candidate: sam
   position_stage: ruby_position_replied
+
+sam_golang:
+  position: golang_position
+  candidate: sam
+  position_stage: golang_position_sourced

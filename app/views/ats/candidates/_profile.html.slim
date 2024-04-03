@@ -60,7 +60,7 @@
     li.nav-item
       = link_to tab_labels[:activities], tab_ats_candidate_path(@candidate, :activities),
                 class: "nav-link #{'active' if @active_tab == 'activities'}"
-  / .d-md-none.dropdown.w-100.profile-mobile-nav
+  .d-md-none.dropdown.w-100.profile-mobile-nav
     button.btn.form-control.d-flex.align-items-center.text-dark.dropdown-toggle.w-100.px-3[
         id="dropdownNavLink" data-bs-toggle="dropdown"]
       = tab_labels[@active_tab.to_sym]

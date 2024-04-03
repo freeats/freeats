@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     end
 
     resources :scorecard_templates, only: %i[create show edit update]
+    resources :scorecards, only: %i[new create show]
   end
 
   namespace :api, defaults: { format: "json" } do

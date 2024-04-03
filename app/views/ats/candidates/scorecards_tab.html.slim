@@ -1,2 +1,17 @@
 = render "ats/candidates/profile" do
-  .row.mt-3
+  .accordion.mt-3 id="scorecards-accordion"
+    - @candidate.placements.each.with_index do |placement, index|
+      - position = placement.position
+      .accordion-item
+        .accordion-header
+          .accordion-button [type="button" data-bs-toggle="collapse" data-bs-target="#position-#{position.id}"
+              aria-expanded="#{index.zero?}" aria-controls="position-#{position.id}"
+              class=("collapsed" if index.positive?)]
+            = position.name
+        .accordion-collapse.collapse [data-bs-parent="#scorecards-accordion" id="position-#{position.id}"
+          class=("show" if index.zero?)]
+          .accordion-body
+            - position.stages.filter { _1.scorecard_template.present? }.each do |stage|
+                = render LabeledComponent.new do |c|
+                  - c.with_label(stage.name, size: :small)
+                  = render "stage_scorecards", stage:, placement:

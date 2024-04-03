@@ -5,4 +5,6 @@ class ScorecardQuestion < ApplicationRecord
 
   validates :question, presence: true
   validates :list_index, presence: true
+
+  has_rich_text :answer
 end

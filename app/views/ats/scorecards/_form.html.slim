@@ -1,0 +1,92 @@
+/# locals: (scorecard:)
+
+= form_with model: scorecard, url: ats_scorecards_path, local: true,
+            html: { class: "form evaluation-form" }, data: { turbo: false } do |form|
+  .h1.mb-4 #{@scorecard.title} scorecard
+
+  = render LabeledComponent.new( \
+    class: "mb-2",
+    left_layout_class: "col-auto",
+    right_layout_class: "col",
+    right_class: "ps-0 col-form-label-sm" \
+  ) do |c|
+    - c.with_label("Candidate", size: :small, style: "min-width: 100px;")
+    - candidate = scorecard.placement.candidate
+    = link_to(candidate.full_name, ats_candidate_path(candidate))
+  = render LabeledComponent.new( \
+    class: "mb-2",
+    left_layout_class: "col-auto",
+    right_layout_class: "col",
+    right_class: "ps-0 col-form-label-sm" \
+  ) do |c|
+    - c.with_label("Position", size: :small, style: "min-width: 100px;")
+    - position = scorecard.placement.position
+    = link_to(position.name, ats_position_path(position))
+  = render LabeledComponent.new( \
+    class: "mb-2",
+    left_layout_class: "col-auto",
+    right_layout_class: "col",
+    right_class: "ps-0 col-form-label-sm" \
+  ) do |c|
+    - c.with_label("Template", size: :small, style: "min-width: 100px;")
+    - scorecard_template = scorecard.position_stage.scorecard_template
+    = link_to(scorecard_template.title, ats_scorecard_template_path(scorecard_template))
+  = render LabeledComponent.new( \
+    class: "mb-3",
+    left_layout_class: "col-12 col-md-auto",
+    right_layout_class: "col-12 col-md-5" \
+  ) do |c|
+    - c.with_label("Interviewer", size: :small, style: "min-width: 88px;", form:, for_field: :interviewer)
+    = render TextInputComponent.new(form, method: :interviewer, size: :small, required: true)
+
+  - scorecard.scorecard_questions.each do |scorecard_question|
+    .profile-card
+      .card.mb-3
+        .card-header
+          span.card-title
+            = scorecard_question.question
+        .card-body
+          = form.text_area(:answer, class: "form-control", value: scorecard_question.answer,
+            autocomplete: "off", required: true, rows: 2)
+
+  .profile-card
+    .card
+      .card-header
+        span.card-title Summary
+      .card-body
+        .fw-bold
+          | Score
+          span.text-danger data-bs-toggle="tooltip" data-bs-placement="top" title="This is required question" *
+        .row.g-1
+          .col-auto
+            = form.radio_button(:rating, :irrelevant, required: true, class: "btn-check")
+            = form.label(:rating_irrelevant, class: "btn btn-sm btn-outline-danger")
+              i.fas.fa-frown
+              | <br>Completely<br>irrelevant
+          .col-auto
+            = form.radio_button(:rating, :relevant, required: true, class: "btn-check")
+            = form.label(:rating_relevant, class: "btn btn-sm btn-outline-warning")
+              i.fas.fa-meh
+              | <br>Might be<br>irrelevant
+          .col-auto
+            = form.radio_button(:rating, :good, required: true, class: "btn-check")
+            = form.label(:rating_good, class: "btn btn-sm btn-outline-success")
+              i.fas.fa-smile
+              | <br>Good<br>candidate
+          .col-auto
+            = form.radio_button(:rating, :perfect, required: true, class: "btn-check")
+            = form.label(:rating_perfect, class: "btn btn-sm btn-outline-info")
+              i.fas.fa-grin-stars
+              | <br>Perfect<br>candidate
+        .mt-3.fw-bold
+            | Open-ended feedback
+        = form.text_area(:summary, class: "form-control", value: scorecard.summary,
+          autocomplete: "off", required: true, rows: 5)
+  .card-submit.hstack.gap-2.mt-4
+    = render ButtonComponent.new(size: :small)
+      | Save
+    = render ButtonLinkComponent.new( \
+      tab_ats_candidate_path(scorecard.placement.candidate, tab: :scorecards),
+      variant: :cancel, size: :small \
+    )
+      | Cancel

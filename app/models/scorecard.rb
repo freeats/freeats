@@ -8,6 +8,8 @@ class Scorecard < ApplicationRecord
   belongs_to :position_stage
   belongs_to :placement
 
+  has_rich_text :summary
+
   enum score: %i[
     irrelevant
     relevant

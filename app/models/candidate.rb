@@ -5,6 +5,7 @@ class Candidate < ApplicationRecord
   include Locatable
   include Avatar
 
+  has_many :placements, dependent: :restrict_with_exception
   has_many :candidate_links,
            class_name: "CandidateLink",
            dependent: :destroy,
