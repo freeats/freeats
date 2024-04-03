@@ -1179,6 +1179,41 @@ ALTER SEQUENCE public.locations_id_seq OWNED BY public.locations.id;
 
 
 --
+-- Name: member_email_addresses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.member_email_addresses (
+    id bigint NOT NULL,
+    member_id bigint NOT NULL,
+    address public.citext NOT NULL,
+    token character varying DEFAULT ''::character varying NOT NULL,
+    refresh_token character varying DEFAULT ''::character varying NOT NULL,
+    last_email_synchronization_uid integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: member_email_addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.member_email_addresses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: member_email_addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.member_email_addresses_id_seq OWNED BY public.member_email_addresses.id;
+
+
+--
 -- Name: members; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2007,6 +2042,13 @@ ALTER TABLE ONLY public.locations ALTER COLUMN id SET DEFAULT nextval('public.lo
 
 
 --
+-- Name: member_email_addresses id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.member_email_addresses ALTER COLUMN id SET DEFAULT nextval('public.member_email_addresses_id_seq'::regclass);
+
+
+--
 -- Name: members id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2345,6 +2387,14 @@ ALTER TABLE ONLY public.location_hierarchies
 
 ALTER TABLE ONLY public.locations
     ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: member_email_addresses member_email_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.member_email_addresses
+    ADD CONSTRAINT member_email_addresses_pkey PRIMARY KEY (id);
 
 
 --
@@ -2823,6 +2873,13 @@ CREATE INDEX index_locations_on_type ON public.locations USING btree (type);
 
 
 --
+-- Name: index_member_email_addresses_on_member_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_member_email_addresses_on_member_id ON public.member_email_addresses USING btree (member_id);
+
+
+--
 -- Name: index_members_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3182,6 +3239,14 @@ ALTER TABLE ONLY public.solid_queue_blocked_executions
 
 
 --
+-- Name: member_email_addresses fk_rails_51bc8df779; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.member_email_addresses
+    ADD CONSTRAINT fk_rails_51bc8df779 FOREIGN KEY (member_id) REFERENCES public.members(id);
+
+
+--
 -- Name: placements fk_rails_7be786382b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3380,6 +3445,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240403070728'),
 ('20240328064406'),
 ('20240327132812'),
 ('20240327104934'),

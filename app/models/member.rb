@@ -9,6 +9,7 @@ class Member < ApplicationRecord
            inverse_of: :recruiter,
            foreign_key: :recruiter_id,
            dependent: :restrict_with_exception
+  has_many :member_email_addresses, dependent: :destroy
 
   belongs_to :account
 
