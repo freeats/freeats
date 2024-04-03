@@ -2,63 +2,64 @@ ruby:
   is_ats_profile = request.fullpath.eql?("/ats/profile")
 
 nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
-  / Mobile user icon
-  .profile-button.d-lg-none.order-1
-    = picture_avatar_icon current_account.avatar, {},
-      class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo"
+  - if current_account.present?
+    / Mobile user icon
+    .profile-button.d-lg-none.order-1
+      = picture_avatar_icon current_account.avatar, {},
+        class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo"
 
-  button.navbar-toggler.px-1 [aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
-                              data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button"]
-    span.navbar-toggler-icon
-  #navbarNav.collapse.navbar-collapse.gap-lg-2.order-2
-    ul.navbar-nav.text-nowrap.gap-1.gap-lg-0.mb-1.mb-lg-0
-      li.nav-item
-        = link_to "Dashboard", "/", # TODO: Replace with the correct path \
-          class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
-      li.nav-item
-        = link_to "Candidates", ats_candidates_path,
-          class: "nav-link#{' nav-link-selected' if @nav_item == :candidates}"
-      li.nav-item
-        = link_to "Positions", ats_positions_path,
-          class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
-      / li.nav-item
-        = link_to "Sequences", "/", # TODO: Replace with the correct path \
-          class: "nav-link#{' nav-link-selected' if @nav_item == :sequences}"
-      / TODO: Add condition to check the current user is admin before dicplaying the admin dropdown
-      li.nav-item.dropdown
-        a.nav-link.dropdown-toggle [id="adminNavbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false" role="button"] Admin
-        ul.dropdown-menu.px-3 aria-labelledby="adminNavbarDropdown"
-          li = link_to "Blazer", blazer_path, class: "nav-link dropdown-item"
-          li = link_to "Jobs", "/jobs", class: "nav-link dropdown-item"
-          li = link_to "LookBook", "/lookbook", class: "nav-link dropdown-item"
-          li = link_to "PgHero", pg_hero_path, class: "nav-link dropdown-item"
-          li = link_to "RailsAdmin", rails_admin.dashboard_path, class: "nav-link dropdown-item"
-
-    / Necessary to place the profile button on the right side of the navbar.
-    .flex-fill
-
-    / Mobile
-    .mt-1.d-lg-none
-      ul.navbar-nav.gap-1
-        li.dropdown-divider.my-2 role="separator"
+    button.navbar-toggler.px-1 [aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                                data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button"]
+      span.navbar-toggler-icon
+    #navbarNav.collapse.navbar-collapse.gap-lg-2.order-2
+      ul.navbar-nav.text-nowrap.gap-1.gap-lg-0.mb-1.mb-lg-0
         li.nav-item
+          = link_to "Dashboard", "/", # TODO: Replace with the correct path \
+            class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
+        li.nav-item
+          = link_to "Candidates", ats_candidates_path,
+            class: "nav-link#{' nav-link-selected' if @nav_item == :candidates}"
+        li.nav-item
+          = link_to "Positions", ats_positions_path,
+            class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
+        / li.nav-item
+          = link_to "Sequences", "/", # TODO: Replace with the correct path \
+            class: "nav-link#{' nav-link-selected' if @nav_item == :sequences}"
+        / TODO: Add condition to check the current user is admin before dicplaying the admin dropdown
+        li.nav-item.dropdown
+          a.nav-link.dropdown-toggle [id="adminNavbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true"
+                                      aria-expanded="false" role="button"] Admin
+          ul.dropdown-menu.px-3 aria-labelledby="adminNavbarDropdown"
+            li = link_to "Blazer", blazer_path, class: "nav-link dropdown-item"
+            li = link_to "Jobs", "/jobs", class: "nav-link dropdown-item"
+            li = link_to "LookBook", "/lookbook", class: "nav-link dropdown-item"
+            li = link_to "PgHero", pg_hero_path, class: "nav-link dropdown-item"
+            li = link_to "RailsAdmin", rails_admin.dashboard_path, class: "nav-link dropdown-item"
+
+      / Necessary to place the profile button on the right side of the navbar.
+      .flex-fill
+
+      / Mobile
+      .mt-1.d-lg-none
+        ul.navbar-nav.gap-1
+          li.dropdown-divider.my-2 role="separator"
+          li.nav-item
+            / TODO: Replace with the correct path
+            = link_to "Profile", "/",
+                      class: "nav-link #{'nav-link-selected' if is_ats_profile}"
+          li.nav-item
+            = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
+                        form_class: "pt-2", form: { data: { turbo: false } }
+
+      / Desktop
+      .dropdown.profile-button.d-none.d-lg-block
+        button.dropdown-toggle.btn aria-expanded="false" aria-haspopup="true" data-bs-toggle="dropdown" role="button"
+          = picture_avatar_icon current_account.avatar, {},
+            class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo"
+        ul.dropdown-menu.dropdown-menu-end
           / TODO: Replace with the correct path
-          = link_to "Profile", "/",
-                    class: "nav-link #{'nav-link-selected' if is_ats_profile}"
-        li.nav-item
-          = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
-                      form_class: "pt-2", form: { data: { turbo: false } }
-
-    / Desktop
-    .dropdown.profile-button.d-none.d-lg-block
-      button.dropdown-toggle.btn aria-expanded="false" aria-haspopup="true" data-bs-toggle="dropdown" role="button"
-        = picture_avatar_icon current_account.avatar, {},
-          class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo"
-      ul.dropdown-menu.dropdown-menu-end
-        / TODO: Replace with the correct path
-        li = link_to "Profile", "/",
-                    class: "dropdown-item #{'nav-link-selected' if is_ats_profile}"
-        li
-          = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
-                      form_class: "dropdown-item", form: { data: { turbo: false } }
+          li = link_to "Profile", "/",
+                      class: "dropdown-item #{'nav-link-selected' if is_ats_profile}"
+          li
+            = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
+                        form_class: "dropdown-item", form: { data: { turbo: false } }

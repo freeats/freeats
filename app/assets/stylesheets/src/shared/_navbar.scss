@@ -1,4 +1,5 @@
 nav.header {
+  min-height: $navbar-min-height;
   background-color: $navbar-bg;
 
   .navbar-brand:hover {
