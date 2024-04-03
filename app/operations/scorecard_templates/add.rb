@@ -11,7 +11,7 @@ class ScorecardTemplates::Add
   def call
     params = {
       position_stage:,
-      title: "#{position_stage.name.capitalize} stage scorecard template"
+      title: "#{position_stage.name} stage scorecard template"
     }
     scorecard_template = ScorecardTemplate.new
     scorecard_template.assign_attributes(params)

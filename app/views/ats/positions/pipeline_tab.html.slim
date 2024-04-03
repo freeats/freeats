@@ -111,7 +111,7 @@
         button.btn.form-control.d-flex.align-items-center.text-dark.dropdown-toggle.w-100.px-3 [
             id="dropdownNavLink" data-bs-toggle="dropdown"]
           span.hstack.gap-2 data-pipeline-column-target="dropdownPlaceholder"
-              => @stages.first.humanize
+              => @stages.first
               span.badge.badge-sm.bg-secondary class="turbo_position_pipeline_#{@stages.first}_stage_counter"
                 = @grouped_placements[@stages.first][:count]
         ul.dropdown-menu.w-100
@@ -123,7 +123,7 @@
                            bs_toggle: "tab",
                            action: "click->pipeline-column#mobileStageDropdownPlaceholder",
                          }
-                 => stage.humanize
+                 => stage
                  span.badge.badge-sm.bg-secondary class="turbo_position_pipeline_#{stage}_stage_counter"
                    = @grouped_placements[stage][:count]
 
@@ -148,7 +148,7 @@
               .d-none.d-sm-block.pipeline-stage-header.mb-2
                 .row
                   .col
-                    = link_to stage.humanize,
+                    = link_to stage,
                               hub_candidates_path( \
                                 hub_candidates_grid: { \
                                   position: @position,

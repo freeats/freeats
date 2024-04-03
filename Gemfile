@@ -4,6 +4,7 @@ source "https://rubygems.org"
 
 ruby file: ".ruby-version"
 
+gem "active_record_union"
 # TODO: remove version restriction after fixing URL validation in the gem
 # https://github.com/sporkmonger/addressable/issues/511
 gem "addressable", "2.8.1"
@@ -67,6 +68,7 @@ group :development do
 
   gem "dockerfile-rails", ">= 1.6"
   gem "dotenv-rails"
+  gem "rack-mini-profiler"
 end
 
 group :test do

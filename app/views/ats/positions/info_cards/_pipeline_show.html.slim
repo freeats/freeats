@@ -12,7 +12,7 @@
           left_class: "text-gray-600 d-flex align-items-center",
           right_class: "col-form-label-sm" \
         ) do |c|
-          - c.with_label(stage.name.humanize, size: :small)
+          - c.with_label(stage.name, size: :small)
           - if (scorecard_template = stage.scorecard_template).present?
             = link_to scorecard_template.title, ats_scorecard_template_path(scorecard_template), data: { turbo: false }
             - if stage.scorecard_template.visible_to_interviewer

@@ -1,0 +1,62 @@
+# frozen_string_literal: true
+
+class ATS::DashboardPositionsGrid
+  include Datagrid
+
+  #
+  # Scope
+  #
+
+  scope do
+    Position
+      .where(status: %i[draft active passive])
+      .joins(
+        <<~SQL
+          LEFT JOIN placements
+          ON placements.position_id = positions.id AND placements.status = 'qualified'
+          LEFT JOIN candidates
+          ON placements.candidate_id = candidates.id AND candidates.merged_to IS NULL
+        SQL
+      ).select("positions.*").group("positions.id")
+  end
+
+  #
+  # Columns
+  #
+
+  column(
+    :status,
+    header: "",
+    order: "color_code",
+    order_desc: "color_code DESC",
+    # preload: :added_event,
+    html: true
+  ) do |model|
+    status_html = position_html_status_circle(model, tooltip_placement: "right")
+    link_to status_html, tab_ats_position_path(model, :pipeline)
+  end
+
+  column(
+    :name,
+    html: true,
+    order: false
+  ) do |model|
+    link_to model.name, tab_ats_position_path(model, :info)
+  end
+
+  column(
+    :recruiter,
+    html: true,
+    preload: { recruiter: :account }
+  ) do |model|
+    model.recruiter&.name
+  end
+
+  column(
+    :collaborators,
+    html: true,
+    preload: { collaborators: :account }
+  ) do |model|
+    model.collaborators.map(&:name).join(", ")
+  end
+end

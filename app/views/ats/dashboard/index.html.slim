@@ -1,0 +1,13 @@
+- ats_title("Dashboard")
+.hstack.my-3.gap-3
+  h5.mb-0.fw-bold Your positions
+- if @dashboard_positions_grid.rows.size.positive?
+  = datagrid_table(@dashboard_positions_grid)
+- else
+  p No draft, active or passive positions
+.hstack.my-3.gap-3
+  h5.mb-0.fw-bold Your candidates
+- if @dashboard_candidates_grid.rows.size.positive?
+  = datagrid_table(@dashboard_candidates_grid)
+- else
+  p No qualified candidates on stage replied or later

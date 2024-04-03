@@ -14,7 +14,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
     #navbarNav.collapse.navbar-collapse.gap-lg-2.order-2
       ul.navbar-nav.text-nowrap.gap-1.gap-lg-0.mb-1.mb-lg-0
         li.nav-item
-          = link_to "Dashboard", "/", # TODO: Replace with the correct path \
+          = link_to "Dashboard", root_path,
             class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
         li.nav-item
           = link_to "Candidates", ats_candidates_path,

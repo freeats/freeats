@@ -68,7 +68,7 @@ class RodauthOauthTest < ActionDispatch::IntegrationTest
   end
 
   test "should fail if the account has no associated member" do
-    account = accounts(:admin_account)
+    account = accounts(:employee_account)
     account.member.destroy!
     modify_oauth_mock(
       "info" => { "email" => account.email },

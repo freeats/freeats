@@ -34,4 +34,8 @@ class Member < ApplicationRecord
   def rails_admin_name
     "#{account&.email}|#{access_level}"
   end
+
+  def name
+    account.name
+  end
 end

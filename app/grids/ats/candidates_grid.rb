@@ -78,7 +78,7 @@ class ATS::CandidatesGrid
   # filter(
   #   :stage,
   #   :enum,
-  #   select: -> { Placement.stages.transform_keys(&:capitalize) },
+  #   select: -> { Placement.stages },
   #   multiple: true,
   #   placeholder: "Stage"
   # ) do |stage|

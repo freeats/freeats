@@ -7,7 +7,7 @@ class ScorecardTest < ActiveSupport::TestCase
 
   test "should create scorecard" do
     params = {
-      placement: placements(:sam_ruby),
+      placement: placements(:sam_ruby_replied),
       score: "good",
       interviewer: "John Doe"
     }
@@ -52,7 +52,7 @@ class ScorecardTest < ActiveSupport::TestCase
 
   test "should not create scorecard with invalid question" do
     params = {
-      placement: placements(:sam_ruby),
+      placement: placements(:sam_ruby_replied),
       score: "good",
       interviewer: "John Doe"
     }

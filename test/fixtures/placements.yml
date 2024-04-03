@@ -1,9 +1,24 @@
-sam_ruby:
+sam_ruby_replied:
   position: ruby_position
   candidate: sam
   position_stage: ruby_position_replied
 
-sam_golang:
+sam_golang_sourced:
   position: golang_position
   candidate: sam
+  position_stage: golang_position_sourced
+
+sam_golang_replied:
+  position: golang_position
+  candidate: sam
+  position_stage: golang_position_replied
+
+john_ruby_hired:
+  position: ruby_position
+  candidate: john
+  position_stage: ruby_position_hired
+
+ivan_golang_sourced:
+  position: golang_position
+  candidate: ivan
   position_stage: golang_position_sourced

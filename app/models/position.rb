@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Position < ApplicationRecord
-  DEFAULT_STAGES = %w[sourced contacted replied hired].freeze
+  DEFAULT_STAGES = %w[Sourced Contacted Replied Hired].freeze
 
   CHANGE_STATUS_REASON_LABELS = {
     other: "Other",

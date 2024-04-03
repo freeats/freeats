@@ -14,6 +14,7 @@ class ATS::CandidatesController < ApplicationController
     }.freeze
   private_constant :INFO_CARDS
 
+  before_action { @nav_item = :candidates }
   before_action :set_candidate, only: %i[show show_header edit_header update_header
                                          show_card edit_card update_card remove_avatar
                                          upload_file change_cv_status delete_file
