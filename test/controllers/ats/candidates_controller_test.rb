@@ -386,4 +386,55 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_equal email_address.address, new_address
     assert_predicate EmailMessage.messages_to_addresses(to: new_address), :exists?
   end
+
+  test "should assign and unassign recruiter for candidate" do
+    actor_user = accounts(:admin_account)
+    sign_in actor_user
+
+    candidate = Candidate.first
+    recruiter1 = members(:admin_member)
+    recruiter2 = members(:employee_member)
+
+    candidate.update!(recruiter_id: nil)
+
+    patch assign_recruiter_ats_candidate_path(candidate.id),
+          params: { candidate: { recruiter_id: recruiter1.id } }
+
+    assert_equal candidate.reload.recruiter_id, recruiter1.id
+
+    # TODO: uncomment if events have been added.
+    # Event.last.tap do |event|
+    #   assert_equal event.type, "candidate_responsible_assigned"
+    #   assert_equal event.actor_user_id, actor_user_id
+    #   assert_equal event.member_id, recruiter1.id
+    #   assert_equal event.person_id, candidate.id
+    # end
+
+    patch assign_recruiter_ats_candidate_path(candidate.id),
+          params: { candidate: { recruiter_id: recruiter2.id } }
+
+    assert_equal candidate.reload.recruiter_id, recruiter2.id
+
+    # TODO: uncomment if events have been added.
+    # TODO: Add asserts for candidate_responsible_unassigned event
+    # Event.last.tap do |event|
+    #   assert_equal event.type, "candidate_responsible_assigned"
+    #   assert_equal event.actor_user_id, actor_user_id
+    #   assert_equal event.member_id, recruiter2.id
+    #   assert_equal event.person_id, candidate.id
+    # end
+
+    patch assign_recruiter_ats_candidate_path(candidate.id),
+          params: { candidate: { recruiter_id: nil } }
+
+    assert_nil candidate.reload.recruiter_id
+
+    # TODO: uncomment if events have been added.
+    # Event.last.tap do |event|
+    #   assert_equal event.type, "person_responsible_unassigned"
+    #   assert_equal event.actor_user_id, actor_user_id
+    #   assert_equal event.member_id, recruiter2.id
+    #   assert_equal event.person_id, candidate.id
+    # end
+  end
 end

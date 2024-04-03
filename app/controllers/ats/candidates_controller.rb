@@ -17,7 +17,8 @@ class ATS::CandidatesController < ApplicationController
   before_action :set_candidate, only: %i[show show_header edit_header update_header
                                          show_card edit_card update_card remove_avatar
                                          upload_file change_cv_status delete_file
-                                         delete_cv_file download_cv_file upload_cv_file]
+                                         delete_cv_file download_cv_file upload_cv_file
+                                         assign_recruiter]
 
   def index
     @candidates_grid = ATS::CandidatesGrid.new(
@@ -171,6 +172,39 @@ class ATS::CandidatesController < ApplicationController
     end
   end
 
+  def assign_recruiter
+    case Candidates::AssignRecruiter.new(
+      candidate: @candidate,
+      recruiter_id: params[:candidate][:recruiter_id]
+    ).call
+    in Success(_)
+      locals = {
+        currently_assigned_account: @candidate.recruiter&.account,
+        tooltip_title: "Recruiter",
+        target_model: @candidate,
+        target_url: assign_recruiter_ats_candidate_path(@candidate),
+        input_button_name: "candidate[recruiter_id]",
+        unassignment_label: "Unassign recruiter",
+        mobile: params[:mobile]
+      }
+      set_layout_variables
+      # rubocop:disable Rails/SkipsModelValidations
+      render_turbo_stream(
+        [
+          # rendered_placements_notes_panel,
+          turbo_stream.update_all(
+            ".turbo_candidate_reassign_recruiter_button",
+            partial: "shared/profile/reassign_button",
+            locals:
+          )
+        ]
+      )
+    # rubocop:enable Rails/SkipsModelValidations
+    in Failure[:recruiter_invalid, error]
+      render_error error
+    end
+  end
+
   def remove_avatar
     @candidate.avatar.purge
     @candidate.save!
@@ -279,7 +313,6 @@ class ATS::CandidatesController < ApplicationController
     @candidate_params
   end
 
-  # rubocop:disable Naming/MemoizedInstanceVariableName
   def set_layout_variables
     @tabs = TABS.index_by(&:downcase)
     @active_tab ||=
@@ -288,8 +321,8 @@ class ATS::CandidatesController < ApplicationController
       else
         @tabs.keys.first
       end
+    @assigned_recruiter = @candidate.recruiter
   end
-  # rubocop:enable Naming/MemoizedInstanceVariableName
 
   def set_header_variables
     @created_at = @candidate.created_at

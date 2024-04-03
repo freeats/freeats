@@ -1,7 +1,7 @@
 - content_for(:title) { "#{@candidate.full_name} #{@active_tab.humanize(capitalize: false)}" }
-/ - render_reassign_button = proc do |mobile: false|
-  / = render "shared/profile/reassign_button",
-            currently_assigned_user: @assigned_recruiter&.user,
+- render_reassign_button = proc do |mobile: false|
+  = render "shared/profile/reassign_button",
+            currently_assigned_account: @assigned_recruiter&.account,
             tooltip_title: "Recruiter",
             target_model: @candidate,
             target_url: assign_recruiter_ats_candidate_path(@candidate),
@@ -14,7 +14,7 @@
   #header-card.col.profile-card
     = render "ats/candidates/header_show"
 
-  / .turbo_candidate_reassign_recruiter_button.d-lg-none.col-12.mt-2.mb-3
+  .turbo_candidate_reassign_recruiter_button.d-lg-none.col-12.mt-2.mb-3
     = capture(mobile: true, &render_reassign_button)
 
 / HEADER END
@@ -80,20 +80,20 @@
 
 / SIDE INFO
 
-/ - content_for :side_info
+- content_for :side_info
   .turbo_candidate_reassign_recruiter_button.col-12.d-none.d-lg-block
     = capture(&render_reassign_button)
-  = render partial: "ats/candidates/placements_notes_panel",
-           locals: { candidate: @candidate,
-                     source_candidates_position_id: @source_candidates_position_id,
-                     source_candidates_input: @source_candidates_input,
-                     relevant_grouped_placements: @relevant_grouped_placements,
-                     irrelevant_grouped_placements: @irrelevant_grouped_placements,
-                     toughbyte_placements: @toughbyte_placements,
-                     toughbyte_company: @toughbyte_company,
-                     notes_params: @notes_params,
-                     additional_create_param_input: hidden_field_tag("note[note_thread][candidate_id]",
-                                                                     @candidate.id) }
+  / = render partial: "hub/candidates/placements_notes_panel",
+  /         locals: { candidate: @candidate,
+  /                 source_candidates_position_id: @source_candidates_position_id,
+  /                 source_candidates_input: @source_candidates_input,
+  /                 relevant_grouped_placements: @relevant_grouped_placements,
+  /                 irrelevant_grouped_placements: @irrelevant_grouped_placements,
+  /                 toughbyte_placements: @toughbyte_placements,
+  /                 toughbyte_company: @toughbyte_company,
+  /                 notes_params: @notes_params,
+  /                 additional_create_param_input: hidden_field_tag("note[note_thread][candidate_id]",
+  /                         @candidate.id) }
 
 / SIDE INFO END
 

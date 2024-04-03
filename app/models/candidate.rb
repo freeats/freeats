@@ -28,6 +28,7 @@ class Candidate < ApplicationRecord
            foreign_key: :candidate_id
   belongs_to :candidate_source, optional: true
   belongs_to :location, optional: true
+  belongs_to :recruiter, optional: true, class_name: "Member"
 
   accepts_nested_attributes_for :candidate_email_addresses, allow_destroy: true
   accepts_nested_attributes_for :candidate_phones, allow_destroy: true

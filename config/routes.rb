@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       get :show_header, on: :member
       get :edit_header, on: :member
       patch :update_header, on: :member
+      patch :assign_recruiter, on: :member
       delete :remove_avatar, on: :member
       post :upload_file, on: :member
       post :upload_cv_file, on: :member
