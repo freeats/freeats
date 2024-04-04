@@ -38,6 +38,20 @@ COMMENT ON EXTENSION ltree IS 'data type for hierarchical tree-like structures';
 
 
 --
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
+
+
+--
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -2782,6 +2796,20 @@ CREATE INDEX index_email_messages_on_message_id ON public.email_messages USING b
 
 
 --
+-- Name: index_location_aliases_on_alias; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_location_aliases_on_alias ON public.location_aliases USING btree (alias);
+
+
+--
+-- Name: index_location_aliases_on_alias_trgm; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_location_aliases_on_alias_trgm ON public.location_aliases USING gin (lower(public.f_unaccent((alias)::text)) public.gin_trgm_ops);
+
+
+--
 -- Name: index_location_aliases_on_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3445,6 +3473,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240404084025'),
 ('20240403070728'),
 ('20240328064406'),
 ('20240327132812'),
