@@ -70,7 +70,7 @@ module ATS::PositionsHelper
     )
 
     <<~HTML.html_safe # rubocop:disable Rails/OutputSafety
-      <i class="fa-fw fa-user #{colors[color_code]} fas"
+      <i class="fa-fw fa-user #{colors[color_code]} #{position.draft? ? 'fal' : 'fas'}"
          data-bs-toggle="tooltip"
          data-bs-title='#{tooltip}'
          data-bs-html="true"
