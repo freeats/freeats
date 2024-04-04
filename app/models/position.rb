@@ -2,6 +2,7 @@
 
 class Position < ApplicationRecord
   DEFAULT_STAGES = %w[Sourced Contacted Replied Hired].freeze
+  LATEST_STAGE_NAME = "Hired"
 
   CHANGE_STATUS_REASON_LABELS = {
     other: "Other",

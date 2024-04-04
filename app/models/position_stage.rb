@@ -18,7 +18,7 @@ class PositionStage < ApplicationRecord
     position_stages.delete(self)
     position_stages << self
 
-    hired_position_stage = position_stages.find { _1.name == "Hired" }
+    hired_position_stage = position_stages.find { _1.name == Position::LATEST_STAGE_NAME }
 
     return if hired_position_stage.blank?
 

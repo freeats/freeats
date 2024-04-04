@@ -16,16 +16,7 @@ class Positions::Change
   end
 
   def call
-    old_stages = position.stages.pluck(:name)
-    new_stages =
-      params
-      .delete(:stages_attributes)
-      &.map { _2.fetch(:name, "") }
-      &.filter(&:present?) || []
-
-    new_stages -= old_stages
-
-    last_stage_list_index = position.stages.where.not(name: :hired).map(&:list_index).max
+    stages_attributes = params.delete(:stages_attributes)
 
     position.assign_attributes(params)
 
@@ -33,15 +24,10 @@ class Positions::Change
       ActiveRecord::Base.transaction do
         position.save!
 
-        new_stages.each.with_index(1) do |new_stage, index|
-          yield PositionStages::Add.new(
-            params: {
-              position:,
-              name: new_stage,
-              list_index: last_stage_list_index + index
-            }
-          ).call
+        if stages_attributes.present?
+          yield Positions::ChangeStages.new(position:, stages_attributes:).call
         end
+
         # TODO: create events
       end
       nil
@@ -51,7 +37,7 @@ class Positions::Change
     in Success(_)
       Success(position.reload)
     in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:position_invalid, position.errors.full_messages.presence || e]
+      Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
     in Failure[:position_stage_invalid, _]
       result
     end

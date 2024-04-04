@@ -178,4 +178,39 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal position.collaborator_ids.sort, params[:collaborator_ids].sort
   end
+
+  test "should add and then update position_stage" do
+    position = positions(:ruby_position)
+
+    assert_equal position.stages.pluck(:list_index), (1..4).to_a
+
+    name = "New Stage"
+    patch update_card_ats_position_path(
+      position,
+      card_name: "pipeline",
+      params: {
+        position: {
+          stages_attributes: { "0" => { name: } }
+        }
+      }
+    )
+
+    assert_equal position.reload.stages.pluck(:list_index), (1..5).to_a
+
+    added_stage = position.stages.find_by(name:)
+
+    new_name = "New Stage Changed Name"
+    patch update_card_ats_position_path(
+      position,
+      card_name: "pipeline",
+      params: {
+        position: {
+          stages_attributes: { "0" => { name: new_name, id: added_stage.id } }
+        }
+      }
+    )
+
+    assert_equal position.reload.stages.pluck(:list_index), (1..5).to_a
+    assert_equal added_stage.reload.name, new_name
+  end
 end
