@@ -27,8 +27,7 @@ class ATS::DashboardPositionsGrid
   column(
     :status,
     header: "",
-    order: "color_code",
-    order_desc: "color_code DESC",
+    order: false,
     # preload: :added_event,
     html: true
   ) do |model|

@@ -56,74 +56,70 @@ class ATS::CandidatesGrid
     in_location(location_ids)
   end
 
-  # TODO: adapt the commented code after adding the `positions` associations
-  # filter(
-  #   :position,
-  #   :enum,
-  #   select: lambda {
-  #     Position.joins(:company)
-  #             .order("positions.status ASC, companies.name ASC, positions.name ASC")
-  #             .pluck("companies.name", :name, :id)
-  #             .map do |company_name, position_name, position_id|
-  #               ["#{company_name} - #{position_name}", position_id]
-  #             end
-  #   },
-  #   include_blank: "Position",
-  #   placeholder: "Position"
-  # ) do |position_id|
-  #   joins(:placements).where(placements: { position_id: })
-  # end
-
-  # TODO: adapt the commented code after adding the `placements` associations
-  # filter(
-  #   :stage,
-  #   :enum,
-  #   select: -> { Placement.stages },
-  #   multiple: true,
-  #   placeholder: "Stage"
-  # ) do |stage|
-  #   where(placements: { stage: }).joins(:placements)
-  # end
-
-  # TODO: adapt the commented code after adding the `placements` associations
-  # filter(
-  #   :status,
-  #   :enum,
-  #   select: lambda {
-  #     Placement.statuses.map { |k, v| [k.humanize, v] }
-  #                       .insert(1, %w[Disqualified disqualified])
-  #   },
-  #   include_blank: "Status",
-  #   placeholder: "Status"
-  # ) do |status|
-  #    query =
-  #     if status == "disqualified"
-  #       where.not(placements: { status: "qualified" })
-  #     else
-  #       where(placements: { status: })
-  #     end
-  #   query.joins(:placements)
-  # end
-
-  # TODO: adapt the commented code after adding the `members` associations
-  # filter(
-  #   :recruiter,
-  #   :enum,
-  #   select: -> { Member.active.order("users.name").pluck("users.name", :id) },
-  #   include_blank: "Recruiter",
-  #   placeholder: "Recruiter"
-  # ) do |recruiter_id|
-  #   where(recruiter_id:)
-  # end
+  filter(
+    :position,
+    :enum,
+    select: lambda {
+      Position.order("positions.status ASC, positions.name ASC")
+              .pluck(:name, :id)
+    },
+    include_blank: "Position",
+    placeholder: "Position"
+  ) do |position_id|
+    joins(:placements).where(placements: { position_id: }).distinct
+  end
 
   filter(
-    :skip_blacklisted,
+    :stage,
     :enum,
-    select: [["Skip blacklisted", true]],
-    default: [false],
+    select: -> {
+      PositionStage.group(:name).order("MIN(list_index)").pluck(:name).map { [_1, _1] }
+    },
+    multiple: true,
+    placeholder: "Stage"
+  ) do |stage_name|
+    joins(placements: :position_stage)
+      .where(placements: { position_stages: { name: stage_name } })
+      .distinct
+  end
+
+  filter(
+    :status,
+    :enum,
+    select: lambda {
+      Placement.statuses.map { |k, v| [k.humanize, v] }
+                        .insert(1, %w[Disqualified disqualified])
+    },
+    include_blank: "Status",
+    placeholder: "Status"
+  ) do |status|
+    query =
+      if status == "disqualified"
+        where.not(placements: { status: "qualified" })
+      else
+        where(placements: { status: })
+      end
+    query.joins(:placements).distinct
+  end
+
+  filter(
+    :recruiter,
+    :enum,
+    select: -> { Member.active.order("accounts.name").pluck("accounts.name", :id) },
+    include_blank: "Recruiter",
+    placeholder: "Recruiter"
+  ) do |recruiter_id|
+    where(recruiter_id:)
+  end
+
+  filter(
+    :include_blacklisted,
+    :enum,
+    select: [["Include blacklisted", true]],
+    default: ["false"],
     checkboxes: true
   ) do |val|
-    where(blacklisted: false) if val.first == "true"
+    where(blacklisted: false) if val.first == "false"
   end
 
   #
@@ -132,10 +128,7 @@ class ATS::CandidatesGrid
 
   column(:avatar, html: true, order: false, header: "") do |model|
     link_to(
-      tab_ats_candidate_path(
-        model.id,
-        :info
-      )
+      tab_ats_candidate_path(model.id, :info)
     ) do
       picture_avatar_icon model.avatar, {}, class: "small-avatar-thumbnail"
     end
@@ -153,36 +146,25 @@ class ATS::CandidatesGrid
 
   column(:company, order: false)
 
-  # TODO: adapt the commented code after adding the `placements` and `positions` associations
-  # column(
-  #   :client_position_stage,
-  #   header: "Client - Position - Stage",
-  #   preload: {
-  #     placements: [
-  #       :candidate,
-  #       {
-  #         position: [
-  #           { company: { manager: :user } },
-  #           { recruiter: :user },
-  #           :roles,
-  #           :must_have_skills,
-  #           :one_of_skills,
-  #           :nice_to_have_skills,
-  #           :location,
-  #           :candidates_from_locations
-  #         ]
-  #       }
-  #     ]
-  #   },
-  #   html: true
-  # ) do |model|
-  #   ats_candidates_grid_render_client_position_stage(model)
-  # end
+  column(
+    :position_stage,
+    header: "Position - Stage",
+    preload: {
+      placements: %i[position position_stage]
+    },
+    html: true
+  ) do |model|
+    candidates_grid_render_position_stage(model)
+  end
 
-  # TODO: adapt the commented code after adding the `members` association
-  # column(:recruiter, html: true, preload: { recruiter: :user }) do |model|
-  #   link_to model.recruiter.name, ats_member_path(model.recruiter) if model.recruiter.present?
-  # end
+  column(
+    :recruiter,
+    header: "Recruiter",
+    html: true,
+    preload: { recruiter: :account }
+  ) do |model|
+    model.recruiter&.name
+  end
 
   column(
     :added,

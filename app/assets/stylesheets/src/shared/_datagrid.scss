@@ -89,7 +89,8 @@ table.datagrid {
   color: $gray-600;
 }
 
-table.ats_positions_grid {
+table.ats_positions_grid,
+table.ats_dashboard_positions_grid {
   td.status {
     text-align: center;
     width: 1rem;

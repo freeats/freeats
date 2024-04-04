@@ -8,12 +8,8 @@ class ATS::DashboardController < ApplicationController
   def index
     # TODO: authorize
 
-    dashboard_positions_grid_params = helpers.add_default_sorting(
-      params[:ats_dashboard_positions_grid],
-      :status
-    )
     @dashboard_positions_grid =
-      ATS::DashboardPositionsGrid.new(dashboard_positions_grid_params) do |scope|
+      ATS::DashboardPositionsGrid.new do |scope|
         recruiter_id = current_member.id
         scope
           .where(positions: { recruiter_id: })
@@ -29,8 +25,7 @@ class ATS::DashboardController < ApplicationController
                 Arel.sql(
                   <<~SQL
                     positions.recruiter_id != ?,
-                    color_code ASC,
-                    ongoing_hiring DESC
+                    color_code ASC
                 SQL
                 ),
                 recruiter_id

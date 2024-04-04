@@ -27,7 +27,7 @@ class ATS::PositionsGrid
     select: -> { Position.statuses.transform_keys(&:humanize) },
     multiple: true,
     default: -> {
-      Position.statuses.keys
+      %i[draft active passive]
     },
     placeholder: "Status"
   ) do |statuses|
@@ -81,11 +81,7 @@ class ATS::PositionsGrid
     html: true
   ) do |model|
     status_html = position_html_status_circle(model, tooltip_placement: "right")
-    if current_member.employee?
-      link_to status_html, tab_ats_position_path(model, :pipeline)
-    else
-      status_html
-    end
+    link_to status_html, tab_ats_position_path(model, :pipeline)
   end
 
   column(

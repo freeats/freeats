@@ -17,6 +17,7 @@ class Member < ApplicationRecord
 
   validates :access_level, presence: true
 
+  default_scope { includes(:account) }
   scope :active, -> { where.not(access_level: :inactive) }
   scope :rails_admin_search, ->(query) { joins(:account).where(accounts: { email: query.strip }) }
 
