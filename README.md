@@ -119,6 +119,46 @@ How to run it locally:
 
 After finishing work, run `rails assets:clobber` to remove precompiled assets.
 
+## Credentials management
+
+We use builtin Rails feature for credentials management. First, make sure that
+you have an `EDITOR` environment variable set up, for example, for VSCode it
+could be `EDITOR="code --wait"`. Next make sure that you have the necessary
+key to decipher credentials: the main key is located at `config/master.key`,
+it is responsible for the "default" key. Environment-specific keys are located
+at `config/credentials/`, they override any default values in the master
+credentials.
+
+You can edit credentials:
+
+```shell
+# Edit master credentials
+$ rails credentials:edit
+
+# Edit production credentials (same applies for development, test and staging)
+$ rails credentials:edit -e production
+```
+
+You can use credentials in code where each YAML key corresponds to a method or
+a hash key:
+
+```ruby
+# For credentials:
+# amazon:
+#   access_key_id: "access_key"
+#   secret_access_key: "secret_key"
+#   bucket: bucket-name
+
+# When we don't know if `amazon` key is present at all.
+Rails.application.credentials.dig(:amazon, :access_key_id)
+
+# When we are fine if `access_key_id` is not present.
+Rails.application.credentials.amazon.access_key_id
+
+# If we insist that `access_key_id` must be present.
+Rails.application.credentials.amazon.access_key_id!
+```
+
 ## Authentication
 
 For authentication we use the [rodauth] gem together with [rodauth-rails] and
