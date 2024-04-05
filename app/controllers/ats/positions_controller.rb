@@ -26,12 +26,10 @@ class ATS::PositionsController < ApplicationController
       &.to_unsafe_h
       &.symbolize_keys
       &.filter { |k, _v| ATS::PositionsGrid.datagrid_attributes.include?(k) } || {}
-    @positions_grid = ATS::PositionsGrid.new(
-      helpers.add_default_sorting(
-        @positions_grid_params.merge(current_account:),
-        nil
-      )
-    )
+    @positions_grid =
+      ATS::PositionsGrid.new(@positions_grid_params.merge(current_account:)) do |scope|
+        scope.order("color_code ASC")
+      end
 
     positions = @positions_grid.assets.unscope(:order)
     ActiveRecord::Base.connection.select_all(

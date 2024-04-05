@@ -108,7 +108,10 @@ class Position < ApplicationRecord
   private
 
   def recruiter_access_level
-    return if recruiter.blank? || recruiter.access_level.in?(Position::RECRUITER_ACCESS_LEVEL)
+    if recruiter.blank? ||
+       recruiter.access_level.in?([*Position::RECRUITER_ACCESS_LEVEL, "inactive"])
+      return
+    end
 
     errors.add(
       :base,
@@ -118,7 +121,9 @@ class Position < ApplicationRecord
 
   def collaborators_access_level
     if collaborators.blank? ||
-       collaborators.all? { _1.access_level.in?(Position::COLLABORATORS_ACCESS_LEVEL) }
+       collaborators.all? do |c|
+         c.access_level.in?([*Position::COLLABORATORS_ACCESS_LEVEL, "inactive"])
+       end
       return
     end
 

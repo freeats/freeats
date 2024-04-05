@@ -27,4 +27,15 @@ class PositionTest < ActiveSupport::TestCase
 
     assert_equal position.reload.stages.pluck(:list_index), (1..5).to_a
   end
+
+  test "position should be valid if recruiter or collaborator are invalid" do
+    inactive_member = members(:inactive_member)
+    position = Position.new(name: "Name", recruiter: inactive_member)
+
+    assert_predicate position, :valid?
+
+    position.collaborators = [inactive_member]
+
+    assert_predicate position, :valid?
+  end
 end
