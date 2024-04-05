@@ -323,6 +323,7 @@ class ATS::CandidatesController < ApplicationController
         @tabs.keys.first
       end
     @assigned_recruiter = @candidate.recruiter
+    set_placements_variables
   end
 
   def set_header_variables
@@ -351,5 +352,13 @@ class ATS::CandidatesController < ApplicationController
                                  locals: { all_files: candidate.all_files, candidate: }
       )
     )
+  end
+
+  def set_placements_variables
+    # TODO: order by placement changed events
+    all_placements = @candidate.placements.includes(:position_stage, :position)
+
+    @irrelevant_placements = all_placements.filter(&:disqualified?)
+    @relevant_placements = all_placements - @irrelevant_placements
   end
 end

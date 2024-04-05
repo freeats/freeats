@@ -26,6 +26,7 @@ class Candidate < ApplicationRecord
            dependent: :destroy,
            inverse_of: :candidate,
            foreign_key: :candidate_id
+
   belongs_to :candidate_source, optional: true
   belongs_to :location, optional: true
   belongs_to :recruiter, optional: true, class_name: "Member"

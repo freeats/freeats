@@ -1,0 +1,60 @@
+ruby:
+  data_display_static ||= false
+  disqualify_text ||= false
+  requalify_text ||= false
+  tooltip ||= false
+  position_pipeline_card ||= false
+
+- unless placement.qualified?
+  = button_to change_status_ats_placement_path(placement),
+              class: "btn btn-light placement-button placement-dropdown-toggle",
+              name: "status", value: "qualified",
+              form_class: "d-inline-block",
+              data: { \
+                toggle: "ats-confirmation",
+                title: "Requalify candidate?",
+                btn_cancel_label: "Cancel", \
+                btn_ok_label: "Requalify" \
+              },
+              form: { data: { bs_toggle: "tooltip", bs_title: "Requalify", bs_placement: "bottom" } }
+    i.far.fa-arrow-rotate-left
+    - if requalify_text
+      | &nbsp;Requalify
+  / To keep the buttons in the same places on the pipeline
+- if position_pipeline_card && placement.reserved?
+  span style="width: 36px;"
+- if placement.qualified? || placement.reserved?
+  span.btn-group [data-bs-display=("static" if data_display_static) aria-expanded="false" aria-haspopup="true"
+      data-bs-toggle="dropdown" type="button"]
+    button.btn.btn-light.placement-dropdown-toggle.placement-button [data-bs-toggle="tooltip"
+      data-bs-title="Disqualify" data-bs-placement="bottom"]
+      i.far.fa-ban
+      - if disqualify_text
+        | &nbsp;Disqualify
+  ul.dropdown-menu.dropdown-menu-end
+    - Placement::MANUAL_DISQUALIFY_STATUSES.each do |status|
+      li
+        = form_with url: change_status_ats_placement_path(placement) do |form|
+          ruby:
+            tooltip_hash, button_attr =
+              if tooltip
+                if status == "position_closed" && !placement.position.closed?
+                  [
+                    {
+                      data: { bs_toggle: "tooltip", bs_placement: "left" },
+                      title: "The position is open"
+                   },
+                   {
+                     disabled: true
+                   }
+                  ]
+                else
+                  {
+                    data: { bs_toggle: "tooltip", bs_placement: "left" },
+                    title: t("ats.placements.disqualify_statuses.#{status}")
+                  }
+                end
+              end
+          = tag.div(**(tooltip_hash || {})) do
+            = form.button({ class: "dropdown-item", name: "status", value: status }.merge(button_attr || {})) do
+              = status.humanize

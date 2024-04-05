@@ -1,0 +1,9 @@
+/# locals: (placement:, dropdown_item: false, position_pipeline_card: false)
+
+= button_to change_status_ats_placement_path(placement, position_pipeline_card:),
+            class: (dropdown_item ? "dropdown-item" : "btn btn-light btn-sm card-btn btn-squared-default"),
+            name: "status", value: "reserved", form_class: ("d-inline-block" unless dropdown_item),
+            data: ({ bs_toggle: "tooltip", bs_title: "Reserve", bs_placement: "bottom" } if position_pipeline_card)
+  i.fa-clock.fa-fw class=(dropdown_item ? "fa-light" : "far")
+  - if dropdown_item
+    span.ms-2 Reserve

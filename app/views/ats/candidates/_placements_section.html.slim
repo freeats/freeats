@@ -1,0 +1,9 @@
+/# locals: (candidate:, relevant_placements:, irrelevant_placements:)
+
+#placements [data-notes-current-candidate-id=candidate.id]
+  = render partial: "ats/candidates/placements",
+           locals: { candidate:, placements: relevant_placements }
+
+  #irrelevant-sourced-placements
+    = render partial: "ats/candidates/placements",
+             locals: { candidate:, placements: irrelevant_placements }

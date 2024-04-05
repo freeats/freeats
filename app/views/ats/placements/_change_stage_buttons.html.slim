@@ -1,0 +1,14 @@
+/# locals: (placement:, with_text: false, with_forward_button: false, square_button: false, dropdown_item: false)
+
+= form_with url: change_stage_ats_placement_path(placement),
+            data: { turbo_frame: :turbo_modal_window },
+            class: ("d-inline-block" unless dropdown_item)
+  - if with_forward_button && placement.next_stage.present?
+    - square_button_classes = square_button ? "btn-light placement-button" : "btn-outline-light"
+    span type="button"
+      = button_tag name: "stage", value: placement.next_stage,
+                   class: "btn #{dropdown_item ? 'dropdown-item' : square_button_classes}",
+                   data: { bs_toggle: "tooltip", bs_title: placement.next_stage.humanize, bs_placement: "bottom" }
+        - if with_text
+          span.me-2 = sanitize placement.next_stage.humanize
+        i.fa-arrow-right class=(dropdown_item ? "fa-light" : "far")

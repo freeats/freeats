@@ -30,6 +30,11 @@ Rails.application.routes.draw do
       get :download_cv_file, on: :member
       get ":tab", to: "candidates#show", on: :member,
                   tab: /info|emails|scorecards|files|activities/, as: "tab"
+
+      resources :placements, only: %i[create destroy], shallow: true do
+        post :change_stage, on: :member
+        post :change_status, on: :member
+      end
     end
 
     resources :positions, except: %i[edit update] do
@@ -62,6 +67,10 @@ Rails.application.routes.draw do
 
       resource :members, only: [] do
         get :fetch_members
+      end
+
+      resource :positions, only: [] do
+        get :fetch_positions
       end
 
       resource :candidate_sources, only: [] do

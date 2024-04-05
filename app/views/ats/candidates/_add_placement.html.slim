@@ -1,0 +1,17 @@
+/# locals: (candidate:)
+
+.col-12
+  = form_with url: ats_candidate_placements_path(candidate),
+              id: "form-add-placement"
+    .row.my-4
+      .col
+        = select_tag :placement_position_id,
+                     "",
+                     class: "form-control",
+                     data: { "placements-notes-panel-target" => "addPlacementAutocomplete" },
+                     prompt: "Position",
+                     required: true
+      // TODO: remove .hstack / rewrite layout of partial after input component implemented
+      .col-auto.hstack
+        = render ButtonComponent.new(size: :small)
+          | Add

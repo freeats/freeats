@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Placement < ApplicationRecord
+  MANUAL_DISQUALIFY_STATUSES =
+    %w[team_fit remote_only location no_reply not_interested workload other_offer
+       overpriced overqualified underqualified position_closed other].freeze
   has_many :scorecards, dependent: :restrict_with_exception
   belongs_to :position
   belongs_to :position_stage
@@ -24,6 +27,34 @@ class Placement < ApplicationRecord
   ].index_with(&:to_s)
 
   validate :position_stage_must_be_present_in_position
+
+  def disqualified?
+    %w[qualified reserved].exclude?(status)
+  end
+
+  def sourced?
+    position_stage.name == "Sourced"
+  end
+
+  def hired?
+    position_stage.name == "Hired"
+  end
+
+  def stage
+    position_stage.name
+  end
+
+  def stages
+    @stages ||= position.stages.pluck(:name)
+  end
+
+  def next_stage
+    stages[stages.index(stage) + 1] unless stage == stages.last
+  end
+
+  def prev_stage
+    stages[stages.index(stage) - 1] unless stage == stages.first
+  end
 
   private
 

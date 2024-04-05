@@ -71,3 +71,30 @@ en:
     actions:
       deactivate_member:
         menu: "Deactivate"
+  ats:
+    placements:
+      disqualify_statuses:
+        team_fit: >-
+          There was a mismatch with the team culture.
+        remote_only: >-
+          The candidate prefers only remote work.
+        location: >-
+          The candidate is not interested in relocating or is in a location from which we don't consider candidates.
+        no_reply: >-
+          The candidate didn't reply to the first message or stopped replying afterwards.
+        not_interested: >-
+          The candidate wasn't interested due to tech used, conditions, availability or without specifying reason.
+        workload: >-
+          The candidate's availability didn't match with position requirements.
+        other_offer: >-
+          The candidate accepted another offer, a counteroffer from the current employer or decided to pursue another career path.
+        overpriced: >-
+          The candidate's salary expectations are higher than what can be offered given their level of experience.
+        overqualified: >-
+          The candidate has far more experience than is needed.
+        underqualified: >-
+          The candidate didn't have the required skills or level of experience needed.
+        position_closed: >-
+          The position was closed.
+        other: >-
+          The candidate was rejected for some other reason or the reason is not known.
