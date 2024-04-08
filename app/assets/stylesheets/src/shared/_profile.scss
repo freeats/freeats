@@ -142,6 +142,10 @@
       }
     }
   }
+
+  .accordion {
+    --bs-accordion-active-bg: #{$gray-100};
+  }
 }
 
 .profile-avatar {

@@ -1,9 +1,13 @@
 /# locals: (stage:, placement:)
 
-.d-flex.gap-2.align-items-center.justify-content-around.mb-2
-  .d-flex.gap-2.align-items-center.flex-row.flex-column.flex-grow-1
-    .col-12.col-sm-8
-      - stage.scorecards.each(&:title)
+.d-flex.gap-2.align-items-baseline.justify-content-around.mb-2
+  .d-flex.gap-2.flex-row.flex-column.flex-grow-1
+    - stage.scorecards.each do |scorecard|
+      .d-flex.mb-1.gap-1
+        = link_to(scorecard.title, ats_scorecard_path(scorecard))
+        = score_icon(scorecard.score)
+        / TODO: use date from event instead of scorecard.created_at
+        = "by #{scorecard.interviewer} on #{scorecard.created_at.strftime('%d.%m.%Y')}"
   = render ButtonLinkComponent.new( \
     new_ats_scorecard_path(position_stage_id: stage.id, placement_id: placement.id),
     variant: :cancel, size: :tiny, type: :button \

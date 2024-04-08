@@ -1,14 +1,20 @@
 = render "ats/candidates/profile" do
   .accordion.mt-3 id="scorecards-accordion"
-    - @candidate.placements.each.with_index do |placement, index|
+    - @placements_with_scorecard_templates.each.with_index do |placement, index|
       - position = placement.position
+      - unique_id = "position-#{position.id}-#{index}"
       .accordion-item
         .accordion-header
-          .accordion-button [type="button" data-bs-toggle="collapse" data-bs-target="#position-#{position.id}"
-              aria-expanded="#{index.zero?}" aria-controls="position-#{position.id}"
+          .accordion-button [type="button" data-bs-toggle="collapse" data-bs-target="##{unique_id}"
+              aria-expanded="#{index.zero?}" aria-controls=unique_id
               class=("collapsed" if index.positive?)]
-            = position.name
-        .accordion-collapse.collapse [data-bs-parent="#scorecards-accordion" id="position-#{position.id}"
+            .row.w-100.me-1
+              .col-8
+                = link_to(position.name, ats_position_path(position))
+              .col-4.text-end.text-secondary
+                /TODO: Set the correct status/stage with date from event
+                = "Added (#{placement.created_at.strftime('%d.%m.%Y')})"
+        .accordion-collapse.collapse [data-bs-parent="#scorecards-accordion" id=unique_id
           class=("show" if index.zero?)]
           .accordion-body
             - position.stages.filter { _1.scorecard_template.present? }.each do |stage|

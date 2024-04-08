@@ -1,21 +1,15 @@
 # frozen_string_literal: true
 
-class ScorecardQuestions::Add
+class ScorecardQuestions::Change
   include Dry::Monads[:result, :try]
 
-  # TODO: pass actor_account
   include Dry::Initializer.define -> do
-    option :params, Types::Strict::Hash.schema(
-      scorecard: Types.Instance(Scorecard),
-      list_index: Types::Strict::Integer,
-      question: Types::Params::String,
-      answer?: Types::Params::String
-    )
+    option :scorecard_question, Types.Instance(ScorecardQuestion)
+    option :answer, Types::Params::String
   end
 
   def call
-    scorecard_question = ScorecardQuestion.new
-    scorecard_question.assign_attributes(params)
+    scorecard_question.answer = answer
 
     result = Try[ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique] do
       scorecard_question.save!

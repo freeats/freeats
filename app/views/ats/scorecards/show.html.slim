@@ -1,0 +1,68 @@
+- ats_title("Scorecard")
+
+#profile.row
+  .col-12.col-lg-7.col-xl-8
+
+    .h1.mb-4 #{@scorecard.title}
+
+    = render LabeledComponent.new( \
+      class: "mb-2",
+      left_layout_class: "col-auto",
+      right_layout_class: "col",
+      right_class: "ps-0 col-form-label-sm" \
+    ) do |c|
+      - c.with_label("Candidate", size: :small, style: "min-width: 100px;")
+      - candidate = @scorecard.placement.candidate
+      = link_to(candidate.full_name, ats_candidate_path(candidate))
+    = render LabeledComponent.new( \
+      class: "mb-2",
+      left_layout_class: "col-auto",
+      right_layout_class: "col",
+      right_class: "ps-0 col-form-label-sm" \
+    ) do |c|
+      - c.with_label("Position", size: :small, style: "min-width: 100px;")
+      - position = @scorecard.placement.position
+      = link_to(position.name, ats_position_path(position))
+    = render LabeledComponent.new( \
+      class: "mb-2",
+      left_layout_class: "col-auto",
+      right_layout_class: "col",
+      right_class: "ps-0 col-form-label-sm" \
+    ) do |c|
+      - c.with_label("Template", size: :small, style: "min-width: 100px;")
+      - scorecard_template = @scorecard.position_stage.scorecard_template
+      = link_to(scorecard_template.title, ats_scorecard_template_path(scorecard_template))
+    = render LabeledComponent.new( \
+      class: "mb-3",
+      left_layout_class: "col-auto",
+      right_layout_class: "col",
+      right_class: "ps-0 col-form-label-sm" \
+    ) do |c|
+      - c.with_label("Interviewer", size: :small, style: "min-width: 100px;")
+      = @scorecard.interviewer
+
+    - @scorecard.scorecard_questions.each do |question|
+      .profile-card
+        .card.mb-3
+          .card-header
+            span.card-title
+              = question.question
+          .card-body
+            - if (answer = question.answer).present?
+              = answer
+            - else
+              .text-secondary No answer
+
+    .profile-card
+      .card
+        .card-header
+          span.card-title Summary
+        .card-body
+          .row.g-1
+            .col-auto.mb-2
+              = score_icon(@scorecard.score, with_text: true)
+          - if (summary = @scorecard.summary).present?
+            = summary
+  .card-submit.hstack.gap-2.mt-4
+    = render ButtonLinkComponent.new(edit_ats_scorecard_path, size: :small)
+      | Edit

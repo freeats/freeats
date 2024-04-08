@@ -8,7 +8,7 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get show" do
-    scorecard_template = scorecard_templates(:ruby_position_contacted)
+    scorecard_template = scorecard_templates(:ruby_position_contacted_scorecard_template)
 
     get ats_scorecard_template_url(scorecard_template)
 
@@ -16,7 +16,7 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update scorecard_template to became visible to interviewer" do
-    scorecard_template = scorecard_templates(:ruby_position_sourced)
+    scorecard_template = scorecard_templates(:ruby_position_sourced_scorecard_template)
 
     assert_not scorecard_template.visible_to_interviewer
 
@@ -28,7 +28,7 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update scorecard_template title" do
-    scorecard_template = scorecard_templates(:ruby_position_sourced)
+    scorecard_template = scorecard_templates(:ruby_position_sourced_scorecard_template)
     new_title = "new title"
 
     assert_not_equal new_title, scorecard_template.title
@@ -41,7 +41,7 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should remove question from scorecard_template" do
-    scorecard_template = scorecard_templates(:ruby_position_contacted)
+    scorecard_template = scorecard_templates(:ruby_position_contacted_scorecard_template)
 
     assert_equal scorecard_template.scorecard_template_questions.count, 1
 
@@ -55,7 +55,7 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should add question to scorecard_template and new question should have the least list_index" do
-    scorecard_template = scorecard_templates(:ruby_position_contacted)
+    scorecard_template = scorecard_templates(:ruby_position_contacted_scorecard_template)
 
     questions = scorecard_template.scorecard_template_questions
 

@@ -12,7 +12,7 @@ class Scorecards::New
   def call
     params = { placement: }
     params[:position_stage_id] = scorecard_template.position_stage_id
-    params[:title] = scorecard_template.title
+    params[:title] = "#{scorecard_template.title} scorecard"
     params[:visible_to_interviewer] = scorecard_template.visible_to_interviewer
 
     scorecard = Scorecard.new(params)

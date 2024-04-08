@@ -46,7 +46,11 @@ class ATS::CandidatesController < ApplicationController
         when "emails"
           # emails
         when "scorecards"
-          # scorecards
+          @placements_with_scorecard_templates =
+            @candidate
+            .placements
+            .includes(position: { stages: :scorecard_template })
+            .joins(position: { stages: :scorecard_template })
         when "files"
           @all_files = @candidate.all_files
         when "activities"
@@ -334,10 +338,7 @@ class ATS::CandidatesController < ApplicationController
   end
 
   def set_candidate
-    @candidate =
-      Candidate
-      .includes(placements: { position: { stages: :scorecard_template } })
-      .find(params[:candidate_id] || params[:id])
+    @candidate = Candidate.find(params[:candidate_id] || params[:id])
 
     return if @candidate.merged_to.nil?
 

@@ -1,8 +1,30 @@
 /# locals: (scorecard:)
 
-= form_with model: scorecard, url: ats_scorecards_path, local: true,
+ruby:
+  submit_path =
+    if scorecard.new_record?
+      ats_scorecards_path
+    else
+      ats_scorecard_path(scorecard)
+    end
+
+  cancel_path =
+    if scorecard.new_record?
+      tab_ats_candidate_path(scorecard.placement.candidate, tab: :scorecards)
+    else
+      ats_scorecard_path(scorecard)
+    end
+
+/ TODO: implement storing not saved scorecard data in local storage
+/ Hub has callbacks on `evaluation-form` class.
+= form_with model: scorecard, url: submit_path, local: true,
             html: { class: "form evaluation-form" }, data: { turbo: false } do |form|
-  .h1.mb-4 #{@scorecard.title} scorecard
+  = form.hidden_field :position_stage_id, value: scorecard.position_stage_id
+  = form.hidden_field :placement_id, value: scorecard.placement_id
+  = form.hidden_field :title, value: scorecard.title
+  = form.hidden_field :visible_to_interviewer, value: scorecard.visible_to_interviewer
+
+  .h1.mb-4 #{scorecard.title}
 
   = render LabeledComponent.new( \
     class: "mb-2",
@@ -39,15 +61,23 @@
     - c.with_label("Interviewer", size: :small, style: "min-width: 88px;", form:, for_field: :interviewer)
     = render TextInputComponent.new(form, method: :interviewer, size: :small, required: true)
 
-  - scorecard.scorecard_questions.each do |scorecard_question|
+  = form.fields_for(:scorecard_questions) do |question_form|
     .profile-card
       .card.mb-3
         .card-header
           span.card-title
-            = scorecard_question.question
+            = question_form.object.question
         .card-body
-          = form.text_area(:answer, class: "form-control", value: scorecard_question.answer,
-            autocomplete: "off", required: true, rows: 2)
+          .card
+            .card-body
+              - if question_form.object.new_record?
+                = question_form.hidden_field :question, value: question_form.object.question
+              - else
+                = question_form.hidden_field :id, value: question_form.object.id
+              = question_form.rich_text_area :answer,
+                              class: "trix-content-custom p-0 border-0 shadow-none",
+                              rows: 2,
+                              placeholder: ""
 
   .profile-card
     .card
@@ -59,34 +89,35 @@
           span.text-danger data-bs-toggle="tooltip" data-bs-placement="top" title="This is required question" *
         .row.g-1
           .col-auto
-            = form.radio_button(:rating, :irrelevant, required: true, class: "btn-check")
-            = form.label(:rating_irrelevant, class: "btn btn-sm btn-outline-danger")
+            = form.radio_button(:score, :irrelevant, required: true, class: "btn-check")
+            = form.label(:score_irrelevant, class: "btn btn-sm btn-outline-danger")
               i.fas.fa-frown
               | <br>Completely<br>irrelevant
           .col-auto
-            = form.radio_button(:rating, :relevant, required: true, class: "btn-check")
-            = form.label(:rating_relevant, class: "btn btn-sm btn-outline-warning")
+            = form.radio_button(:score, :relevant, required: true, class: "btn-check")
+            = form.label(:score_relevant, class: "btn btn-sm btn-outline-warning")
               i.fas.fa-meh
               | <br>Might be<br>irrelevant
           .col-auto
-            = form.radio_button(:rating, :good, required: true, class: "btn-check")
-            = form.label(:rating_good, class: "btn btn-sm btn-outline-success")
+            = form.radio_button(:score, :good, required: true, class: "btn-check")
+            = form.label(:score_good, class: "btn btn-sm btn-outline-success")
               i.fas.fa-smile
               | <br>Good<br>candidate
           .col-auto
-            = form.radio_button(:rating, :perfect, required: true, class: "btn-check")
-            = form.label(:rating_perfect, class: "btn btn-sm btn-outline-info")
+            = form.radio_button(:score, :perfect, required: true, class: "btn-check")
+            = form.label(:score_perfect, class: "btn btn-sm btn-outline-info")
               i.fas.fa-grin-stars
               | <br>Perfect<br>candidate
         .mt-3.fw-bold
             | Open-ended feedback
-        = form.text_area(:summary, class: "form-control", value: scorecard.summary,
-          autocomplete: "off", required: true, rows: 5)
+        .card
+          .card-body
+            = trix_editor form,
+                          :summary,
+                          placeholder: "",
+                          value: scorecard.summary
   .card-submit.hstack.gap-2.mt-4
     = render ButtonComponent.new(size: :small)
       | Save
-    = render ButtonLinkComponent.new( \
-      tab_ats_candidate_path(scorecard.placement.candidate, tab: :scorecards),
-      variant: :cancel, size: :small \
-    )
+    = render ButtonLinkComponent.new(cancel_path, variant: :cancel, size: :small)
       | Cancel

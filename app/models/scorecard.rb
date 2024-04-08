@@ -10,6 +10,8 @@ class Scorecard < ApplicationRecord
 
   has_rich_text :summary
 
+  accepts_nested_attributes_for :scorecard_questions
+
   enum score: %i[
     irrelevant
     relevant

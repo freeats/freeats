@@ -1,36 +1,33 @@
 # frozen_string_literal: true
 
-class Scorecards::Add
+class Scorecards::Change
   include Dry::Monads[:result, :try, :do]
 
   # TODO: pass actor_account
   include Dry::Initializer.define -> do
+    option :scorecard, Types.Instance(Scorecard)
     option :params, Types::Params::Hash.schema(
-      title: Types::Params::String,
       interviewer: Types::Params::String,
       score: Types::Params::String,
-      summary?: Types::Params::String,
-      position_stage_id: Types::Params::Integer,
-      placement_id: Types::Params::Integer,
-      visible_to_interviewer: Types::Params::Bool
+      summary?: Types::Params::String
     )
     option :questions_params, Types::Strict::Array.of(
       Types::Strict::Hash.schema(
-        question: Types::Params::String,
+        id: Types::Params::Integer,
         answer?: Types::Params::String
       )
     ).optional
   end
 
   def call
-    scorecard = Scorecard.new(params)
+    scorecard.assign_attributes(params)
 
     result = Try[ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique,
                  ActiveRecord::NotNullViolation] do
       ActiveRecord::Base.transaction do
         scorecard.save!
 
-        yield add_questions(scorecard, questions_params)
+        yield change_questions(questions_params)
       end
 
       nil
@@ -54,14 +51,14 @@ class Scorecards::Add
 
   private
 
-  def add_questions(scorecard, questions_params)
+  def change_questions(questions_params)
     return Success() if questions_params.blank?
 
-    questions_params.each.with_index(1) do |question_params, index|
-      question_params[:list_index] = index
-      question_params[:scorecard] = scorecard
+    questions_params.each do |question_params|
+      scorecard_question = scorecard.scorecard_questions.find { _1.id == question_params[:id] }
+      answer = question_params[:answer]
 
-      yield ScorecardQuestions::Add.new(params: question_params).call
+      yield ScorecardQuestions::Change.new(scorecard_question:, answer:).call
     end
 
     Success()

@@ -3,6 +3,11 @@ sam_ruby_replied:
   candidate: sam
   position_stage: ruby_position_replied
 
+sam_ruby_contacted:
+  position: ruby_position
+  candidate: sam
+  position_stage: ruby_position_contacted
+
 sam_golang_sourced:
   position: golang_position
   candidate: sam

@@ -26,8 +26,9 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
   end
 
   test "should destroy questions when destroying scorecard template" do
-    scorecard_template = scorecard_templates(:ruby_position_contacted)
-    scorecard_template_question = scorecard_template_questions(:ruby_position_contacted_first_question)
+    scorecard_template = scorecard_templates(:ruby_position_contacted_scorecard_template)
+    scorecard_template_question =
+      scorecard_template_questions(:ruby_position_contacted_first_scorecard_template_question)
 
     assert_equal scorecard_template.scorecard_template_questions.count, 1
 
