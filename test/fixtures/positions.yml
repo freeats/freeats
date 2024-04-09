@@ -10,6 +10,7 @@ golang_position:
   change_status_reason: filled
 
 closed_position:
+  recruiter: admin_member
   name: Java developer
   status: closed
   change_status_reason: other

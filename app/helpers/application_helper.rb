@@ -106,6 +106,22 @@ module ApplicationHelper
     "You can also drag a file directly to this button in order to upload it"
   end
 
+  def compose_actor_account_name(event)
+    if event.actor_account_id.blank?
+      "ATS"
+    else
+      tag.b(event.actor_account.name)
+    end
+  end
+
+  def event_actor_account_name_for_assignment(event:, member:)
+    if event.actor_account&.member == member
+      "themselves"
+    else
+      tag.b(member.name)
+    end
+  end
+
   private
 
   def compose_select_component(grid:, filter:)

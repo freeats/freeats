@@ -1,0 +1,10 @@
+ruby_position_added:
+  type: :position_added
+  actor_account: admin_account
+  eventable: ruby_position (Position)
+
+ruby_position_recruiter_assigned:
+  type: :position_recruiter_assigned
+  actor_account: admin_account
+  eventable: ruby_position (Position)
+  changed_to: <%= ActiveRecord::FixtureSet.identify(:admin_member) %>

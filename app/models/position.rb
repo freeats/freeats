@@ -44,6 +44,8 @@ class Position < ApplicationRecord
            class_name: "PositionStage",
            dependent: :destroy
 
+  has_many :events, as: :eventable, dependent: :destroy
+
   belongs_to :recruiter, optional: true, class_name: "Member"
 
   has_rich_text :description

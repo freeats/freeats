@@ -1,6 +1,48 @@
 # frozen_string_literal: true
 
 module ATS::PositionsHelper
+  def ats_position_display_activity(event)
+    actor_account_name = compose_actor_account_name(event)
+
+    text =
+      case event.type
+      when "position_added"
+        "#{actor_account_name} added the position"
+      when "position_changed"
+        to = event.changed_to
+        from = event.changed_from
+        field = event.changed_field.humanize(capitalize: false)
+
+        if field == "collaborators"
+          to = Member.joins(:account).where(id: to).pluck("accounts.name").join(", ")
+          from = Member.joins(:account).where(id: from).pluck("accounts.name").join(", ")
+        end
+
+        message = "#{actor_account_name} "
+        message <<
+        if to.present? && from.present?
+          "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
+        elsif to.present?
+          "added #{field} <b>#{to}</b>"
+        elsif from.present?
+          "removed #{field} <b>#{from}</b>"
+        end
+      when "position_recruiter_assigned"
+        <<~TEXT
+          #{actor_account_name} assigned the position \
+          to #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)}
+        TEXT
+      when "position_recruiter_unassigned"
+        <<~TEXT
+          #{actor_account_name} unassigned \
+          #{event_actor_account_name_for_assignment(event:, member: event.unassigned_member)} \
+          from the position
+        TEXT
+      end
+
+    sanitize(text)
+  end
+
   def ats_position_color_class_for_status(status)
     colors = {
       "active" => "code-green",

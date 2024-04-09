@@ -16,30 +16,128 @@ class Positions::Change
   end
 
   def call
+    old_values = {
+      name: position.name,
+      recruiter_id: position.recruiter_id,
+      description: position.description.to_s,
+      collaborator_ids: position.collaborators.pluck(:collaborator_id)
+    }
+
     stages_attributes = params.delete(:stages_attributes)
 
     position.assign_attributes(params)
 
+    ActiveRecord::Base.transaction do
+      yield save_position(position)
+      yield change_stages(position:, stages_attributes:)
+      yield add_events(old_values:, position:, actor_account:)
+    end
+
+    Success(position.reload)
+  end
+
+  private
+
+  def save_position(position)
     result = Try[ActiveRecord::RecordInvalid] do
-      ActiveRecord::Base.transaction do
-        position.save!
-
-        if stages_attributes.present?
-          yield Positions::ChangeStages.new(position:, stages_attributes:).call
-        end
-
-        # TODO: create events
-      end
-      nil
+      position.save!
     end.to_result
 
     case result
     in Success(_)
-      Success(position.reload)
-    in Failure[ActiveRecord::RecordInvalid => e]
+      Success()
+    in Failure[ActiveRecord::RecordInvalid, e]
       Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
-    in Failure[:position_stage_invalid, _]
-      result
     end
+  end
+
+  def change_stages(position:, stages_attributes:)
+    return Success() if stages_attributes.blank?
+
+    yield Positions::ChangeStages.new(position:, stages_attributes:).call
+
+    Success()
+  end
+
+  def add_events(old_values:, position:, actor_account:)
+    yield add_changed_recruiter_events(old_values:, position:, actor_account:)
+    yield add_position_changed_events(old_values:, position:, actor_account:)
+
+    Success()
+  end
+
+  def add_changed_recruiter_events(old_values:, position:, actor_account:)
+    return Success() if old_values[:recruiter_id] == position.recruiter_id
+
+    if old_values[:recruiter_id].present?
+      position_recruiter_unassigned_params = {
+        actor_account:,
+        type: :position_recruiter_unassigned,
+        eventable: position,
+        changed_from: old_values[:recruiter_id]
+      }
+
+      yield Events::Add.new(params: position_recruiter_unassigned_params).call
+    end
+
+    return Success() if position.recruiter_id.blank?
+
+    position_recruiter_assigned_params = {
+      actor_account:,
+      type: :position_recruiter_assigned,
+      eventable: position,
+      changed_to: position.recruiter_id
+    }
+
+    yield Events::Add.new(params: position_recruiter_assigned_params).call
+
+    Success()
+  end
+
+  def add_position_changed_events(old_values:, position:, actor_account:)
+    eventable = position
+    type = :position_changed
+
+    if old_values[:name] != position.name
+      position_changed_params = {
+        actor_account:,
+        type:,
+        eventable:,
+        changed_field: :name,
+        changed_from: old_values[:name],
+        changed_to: position.name
+      }
+
+      yield Events::Add.new(params: position_changed_params).call
+    end
+
+    if old_values[:description] != position.description.to_s
+      position_changed_params = {
+        actor_account:,
+        type:,
+        eventable:,
+        changed_field: :description,
+        changed_from: old_values[:description].to_s,
+        changed_to: position.description.to_s
+      }
+
+      yield Events::Add.new(params: position_changed_params).call
+    end
+
+    position_collaborator_ids = position.collaborators.pluck(:collaborator_id)
+    if old_values[:collaborator_ids].sort != position_collaborator_ids.sort
+      position_changed_params = {
+        actor_account:,
+        type:,
+        eventable:,
+        changed_field: :collaborators,
+        changed_from: old_values[:collaborator_ids],
+        changed_to: position_collaborator_ids
+      }
+
+      yield Events::Add.new(params: position_changed_params).call
+    end
+
+    Success()
   end
 end

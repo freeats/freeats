@@ -133,6 +133,18 @@ CREATE TYPE public.email_message_sent_via AS ENUM (
 
 
 --
+-- Name: event_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.event_type AS ENUM (
+    'position_added',
+    'position_changed',
+    'position_recruiter_assigned',
+    'position_recruiter_unassigned'
+);
+
+
+--
 -- Name: location_type; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -1077,6 +1089,45 @@ CREATE SEQUENCE public.email_threads_id_seq
 --
 
 ALTER SEQUENCE public.email_threads_id_seq OWNED BY public.email_threads.id;
+
+
+--
+-- Name: events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.events (
+    id bigint NOT NULL,
+    type public.event_type NOT NULL,
+    performed_at timestamp without time zone DEFAULT clock_timestamp() NOT NULL,
+    actor_account_id bigint,
+    eventable_type character varying NOT NULL,
+    eventable_id integer NOT NULL,
+    changed_field character varying,
+    changed_from jsonb,
+    changed_to jsonb,
+    properties jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
 
 
 --
@@ -2035,6 +2086,13 @@ ALTER TABLE ONLY public.email_threads ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.events_id_seq'::regclass);
+
+
+--
 -- Name: location_aliases id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2377,6 +2435,14 @@ ALTER TABLE ONLY public.email_messages
 
 ALTER TABLE ONLY public.email_threads
     ADD CONSTRAINT email_threads_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
 
 
 --
@@ -2793,6 +2859,20 @@ CREATE INDEX index_email_messages_on_email_thread_id ON public.email_messages US
 --
 
 CREATE INDEX index_email_messages_on_message_id ON public.email_messages USING btree (message_id);
+
+
+--
+-- Name: index_events_on_actor_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_actor_account_id ON public.events USING btree (actor_account_id);
+
+
+--
+-- Name: index_events_on_eventable_id_and_eventable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_eventable_id_and_eventable_type ON public.events USING btree (eventable_id, eventable_type);
 
 
 --
@@ -3435,6 +3515,14 @@ ALTER TABLE ONLY public.scorecard_template_questions
 
 
 --
+-- Name: events fk_rails_ea3c6e6353; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT fk_rails_ea3c6e6353 FOREIGN KEY (actor_account_id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: location_hierarchies fk_rails_eb4e848cce; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3473,6 +3561,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240405103259'),
 ('20240404084025'),
 ('20240403070728'),
 ('20240328064406'),

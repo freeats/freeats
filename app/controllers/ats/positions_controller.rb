@@ -49,8 +49,8 @@ class ATS::PositionsController < ApplicationController
   def show
     set_side_header_predefined_options
 
-    # case @active_tab
-    # when "info"
+    case @active_tab
+    when "info"
     # when "pipeline"
     #   set_pipeline_variables
     # when "sequence_templates"
@@ -61,9 +61,10 @@ class ATS::PositionsController < ApplicationController
     #       .page(params[:page])
     #       .per(10)
     #   end
-    # when "activities"
-    #   set_activities_variables
-    # end
+    when "activities"
+      set_activities_variables
+    end
+
     render "#{@active_tab}_tab", layout: "ats/position_profile"
   end
 
@@ -333,5 +334,15 @@ class ATS::PositionsController < ApplicationController
           }
         end
       end
+  end
+
+  def set_activities_variables
+    @activities =
+      @position
+      .events
+      .includes(actor_account: :member, assigned_member: :account, unassigned_member: :account)
+      .order(performed_at: :desc)
+      .page(params[:page])
+      .per(ACTIVITIES_PAGINATION_LIMIT)
   end
 end

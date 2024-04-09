@@ -13,17 +13,46 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should assign recruiter" do
+    recruiter = members(:employee_member)
+    position = positions(:golang_position)
+
+    assert_nil position.recruiter_id
+
+    assert_difference "Event.count", 1 do
+      patch reassign_recruiter_ats_position_path(position),
+            params: { position: { recruiter_id: recruiter.id } }
+    end
+
+    assert_response :success
+
+    position.reload
+    event = Event.last
+
+    assert_equal position.recruiter_id, recruiter.id
+    assert_equal event.type, "position_recruiter_assigned"
+  end
+
   test "should reassign recruiter" do
     recruiter = members(:employee_member)
     position = positions(:ruby_position)
 
-    patch reassign_recruiter_ats_position_path(position),
-          params: { position: { recruiter_id: recruiter.id } }
+    assert position.recruiter_id
+    assert_not_equal position.recruiter_id, recruiter.id
+
+    assert_difference "Event.count", 2 do
+      patch reassign_recruiter_ats_position_path(position),
+            params: { position: { recruiter_id: recruiter.id } }
+    end
 
     assert_response :success
-    position.reload
 
-    assert_equal position.recruiter, recruiter
+    position.reload
+    events = Event.last(2)
+
+    assert_equal position.recruiter_id, recruiter.id
+    assert_equal events.pluck(:type).sort,
+                 %w[position_recruiter_assigned position_recruiter_unassigned].sort
   end
 
   test "shouldn't update a model without change_status_modal param" do
@@ -40,60 +69,60 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     new_status_reason = "other"
 
     new_status = "closed"
-    # TODO: uncomment event asserts when it will be added.
-    # assert_difference "Event.count" => 9, "Task.count" => 3 do
-    patch change_status_ats_position_path(position), params: {
-      change_status_modal: "1",
-      new_status:,
-      new_change_status_reason: new_status_reason,
-      comment:
-    }
-    # end
+
+    assert_difference "Event.count" do
+      patch change_status_ats_position_path(position), params: {
+        change_status_modal: "1",
+        new_status:,
+        new_change_status_reason: new_status_reason,
+        comment:
+      }
+    end
     assert_response :success
     position.reload
 
     assert_equal position.status, new_status
     assert_equal position.change_status_reason, new_status_reason
 
-    # Event.where(type: :position_status_changed).last.tap do |event|
-    #   assert_equal event.position_id, position.id
-    #   assert_equal event.properties["to"], new_status
-    #   assert_equal event.properties["comment"], comment
-    #   assert_equal event.properties["change_status_reason"], new_status_reason
-    # end
+    Event.where(type: :position_changed).last.tap do |event|
+      assert_equal event.eventable_id, position.id
+      assert_equal event.changed_to, new_status
+      assert_equal event.properties["comment"], comment
+      assert_equal event.properties["change_status_reason"], new_status_reason
+    end
 
     new_status = "passive"
-    # assert_difference "Event.count" do
-    patch change_status_ats_position_path(position), params: {
-      change_status_modal: "1",
-      new_status:,
-      new_change_status_reason: new_status_reason,
-      comment:
-    }
-    # end
+    assert_difference "Event.count" do
+      patch change_status_ats_position_path(position), params: {
+        change_status_modal: "1",
+        new_status:,
+        new_change_status_reason: new_status_reason,
+        comment:
+      }
+    end
     assert_response :success
     position.reload
 
     assert_equal position.status, new_status
     assert_equal position.change_status_reason, new_status_reason
 
-    # Event.where(type: :position_status_changed).last.tap do |event|
-    #   assert_equal event.type, "position_status_changed"
-    #   assert_equal event.position_id, position.id
-    #   assert_equal event.properties["to"], new_status
-    #   assert_equal event.properties["comment"], comment
-    #   assert_equal event.properties["change_status_reason"], new_status_reason
-    # end
+    Event.where(type: :position_changed).last.tap do |event|
+      assert_equal event.type, "position_changed"
+      assert_equal event.eventable_id, position.id
+      assert_equal event.changed_to, new_status
+      assert_equal event.properties["comment"], comment
+      assert_equal event.properties["change_status_reason"], new_status_reason
+    end
 
     new_status = "active"
-    # assert_difference "Event.count" => 4 do
-    patch change_status_ats_position_path(position), params: {
-      change_status_modal: "1",
-      new_status:,
-      new_change_status_reason: new_status_reason,
-      comment:
-    }
-    # end
+    assert_difference "Event.count" do
+      patch change_status_ats_position_path(position), params: {
+        change_status_modal: "1",
+        new_status:,
+        new_change_status_reason: new_status_reason,
+        comment:
+      }
+    end
 
     assert_response :success
     position.reload
@@ -101,65 +130,36 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal position.status, new_status
     assert_equal position.change_status_reason, "other"
 
-    # Event.last(4).tap do |event|
-    #   assert_equal(
-    #     event.pluck(:type).sort,
-    #     %w[position_status_changed task_added task_watcher_added task_watcher_added].sort
-    #   )
-    # end
-  end
-
-  test "should update description card and create event" do
-    position = positions(:ruby_position)
-    description = Faker::Lorem.paragraph_by_chars(number: 100)
-    # assert_difference("Event.count") do
-    patch update_card_ats_position_path(
-      position,
-      card_name: "description",
-      params: {
-        position: {
-          description:
-        }
-      }
-    )
-    # end
-    position.reload
-
-    assert_equal position.description.body.to_plain_text, description
-    # event = Event.where(type: :position_changed).last
-    #
-    # assert_equal event.actor_user_id, actor_user.id
-    # assert_equal event.position_id, position.id
-    # assert_equal event.properties["field"], "description"
+    assert_equal Event.last.type, "position_changed"
   end
 
   test "should change status to close with reason and comment and create event" do
     position = positions(:ruby_position)
     close_reason = Position::CHANGE_STATUS_REASON_LABELS.keys.sample.to_s
 
-    # assert_difference -> { Event.where(type: :position_status_changed).count } do
-    patch change_status_ats_position_path(position), params: {
-      change_status_modal: "1",
-      new_status: "closed",
-      new_change_status_reason: close_reason,
-      comment: "explanation"
-    }
-    # end
+    assert_difference -> { Event.where(type: :position_changed).count } do
+      patch change_status_ats_position_path(position), params: {
+        change_status_modal: "1",
+        new_status: "closed",
+        new_change_status_reason: close_reason,
+        comment: "explanation"
+      }
+    end
     assert_response :success
     position.reload
 
     assert_equal position.status, "closed"
     assert_equal position.change_status_reason, close_reason
 
-    # Event.where(type: :position_status_changed).last.tap do |event|
-    #   assert_equal event.position_id, position.id
-    #   assert_equal event.properties["to"], "closed"
-    #   assert_equal event.properties["change_status_reason"], close_reason
-    #   assert_equal event.properties["comment"], "explanation"
-    # end
+    Event.where(type: :position_changed).last.tap do |event|
+      assert_equal event.eventable_id, position.id
+      assert_equal event.changed_to, "closed"
+      assert_equal event.properties["change_status_reason"], close_reason
+      assert_equal event.properties["comment"], "explanation"
+    end
   end
 
-  test "should update collaborators" do
+  test "should update collaborators and create event" do
     position = positions(:ruby_position)
     params = {}
     params[:collaborator_ids] =
@@ -171,12 +171,21 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
       .pluck(:id) -
       [position.recruiter_id, params[:recruiter_id]]
 
-    patch update_side_header_ats_position_path(position), params: { position: params }
+    assert_empty position.collaborators
+
+    assert_difference "Event.count" do
+      patch update_side_header_ats_position_path(position), params: { position: params }
+    end
 
     assert_response :success
     position.reload
+    event = Event.last
 
     assert_equal position.collaborator_ids.sort, params[:collaborator_ids].sort
+    assert_equal event.type, "position_changed"
+    assert_equal event.changed_field, "collaborators"
+    assert_equal event.changed_to.sort, params[:collaborator_ids].sort
+    assert_empty event.changed_from
   end
 
   test "should add and then update position_stage" do
@@ -212,5 +221,52 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal position.reload.stages.pluck(:list_index), (1..5).to_a
     assert_equal added_stage.reload.name, new_name
+  end
+
+  test "should show position activities" do
+    sign_in accounts(:admin_account)
+    get tab_ats_position_url(positions(:ruby_position), :activities)
+
+    assert_response :success
+  end
+
+  test "should create the event about changed position name" do
+    position = positions(:ruby_position)
+    new_name = "Changed name"
+
+    assert_not_equal position.name, new_name
+
+    assert_difference "Event.count" do
+      patch update_header_ats_position_path(position), params: { position: { name: new_name } }
+    end
+
+    position.reload
+    event = Event.last
+
+    assert_equal position.name, new_name
+    assert_equal event.type, "position_changed"
+    assert_equal event.changed_field, "name"
+    assert_equal event.changed_to, new_name
+  end
+
+  test "should create the event about changed position description" do
+    position = positions(:ruby_position)
+    new_description = "Changed description"
+
+    assert_not_includes position.description.to_s, new_description
+
+    assert_difference "Event.count" do
+      patch update_card_ats_position_path(position),
+            params: { position: { description: new_description }, card_name: "description" }
+    end
+
+    position.reload
+    event = Event.last
+    html_description = "<div class=\"trix-content\">\n  #{new_description}\n</div>\n"
+
+    assert_equal position.description.to_s, html_description
+    assert_equal event.type, "position_changed"
+    assert_equal event.changed_field, "description"
+    assert_equal event.changed_to, html_description
   end
 end

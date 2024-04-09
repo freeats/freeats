@@ -10,6 +10,16 @@ class Member < ApplicationRecord
            foreign_key: :recruiter_id,
            dependent: :restrict_with_exception
   has_many :member_email_addresses, dependent: :destroy
+  has_many :assigned_events,
+           lambda { where(type: :position_recruiter_assigned) },
+           class_name: "Event",
+           inverse_of: :assigned_member,
+           dependent: :destroy
+  has_many :unassigned_events,
+           lambda { where(type: :position_recruiter_unassigned) },
+           class_name: "Event",
+           inverse_of: :unassigned_member,
+           dependent: :destroy
 
   belongs_to :account
 
