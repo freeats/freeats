@@ -107,10 +107,7 @@ module CandidateCardsHelper
              safe_join [
                link_to_with_copy_popover_button(
                  e.address,
-                 public_send(:"tab_ats_#{candidate.class.name.downcase}_path",
-                             candidate,
-                             :emails,
-                             params: { mail_to: e[:address] }),
+                 "mailto:#{e[:address]}",
                  data: { turbo_frame: "_top" },
                  class: "text-truncate"
                ),
