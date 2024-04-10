@@ -340,7 +340,21 @@ class ATS::PositionsController < ApplicationController
     @activities =
       @position
       .events
-      .includes(actor_account: :member, assigned_member: :account, unassigned_member: :account)
+      .union(
+        Event
+        .joins(<<~SQL)
+          JOIN scorecard_templates ON scorecard_templates.id = events.eventable_id
+          JOIN position_stages ON position_stages.id = scorecard_templates.position_stage_id
+        SQL
+        .where(eventable_type: "ScorecardTemplate")
+        .where(position_stages: { position_id: @position.id })
+      )
+      .includes(
+        :eventable,
+        actor_account: :member,
+        assigned_member: :account,
+        unassigned_member: :account
+      )
       .order(performed_at: :desc)
       .page(params[:page])
       .per(ACTIVITIES_PAGINATION_LIMIT)

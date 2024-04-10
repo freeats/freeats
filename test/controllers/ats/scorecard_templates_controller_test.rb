@@ -15,13 +15,21 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should update scorecard_template to became visible to interviewer" do
+  test "should update scorecard_template to became visible to interviewer and add event" do
     scorecard_template = scorecard_templates(:ruby_position_sourced_scorecard_template)
 
     assert_not scorecard_template.visible_to_interviewer
 
-    patch ats_scorecard_template_url(scorecard_template),
-          params: { scorecard_template: { visible_to_interviewer: true } }
+    assert_difference "Event.count" do
+      patch ats_scorecard_template_url(scorecard_template),
+            params: { scorecard_template: { visible_to_interviewer: true } }
+    end
+
+    new_event = Event.last
+
+    assert_equal new_event.actor_account_id, accounts(:employee_account).id
+    assert_equal new_event.type, "scorecard_template_updated"
+    assert_equal new_event.eventable_id, scorecard_template.id
 
     assert_response :redirect
     assert scorecard_template.reload.visible_to_interviewer
@@ -79,15 +87,23 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
                  [[1, "new question"], [2, questions.first.question]]
   end
 
-  test "should create new scorecard_template" do
+  test "should create new scorecard_template and add event" do
     position_stage = position_stages(:golang_position_sourced)
 
     assert_not position_stage.scorecard_template
 
-    post ats_scorecard_templates_url, params: { position_stage_id: position_stage.id }
+    assert_difference "ScorecardTemplate.count" => 1, "Event.count" => 1 do
+      post ats_scorecard_templates_url, params: { position_stage_id: position_stage.id }
+    end
 
     assert_response :redirect
     assert position_stage.reload.scorecard_template
     assert_equal position_stage.scorecard_template.title, "Sourced stage scorecard template"
+
+    new_event = Event.last
+
+    assert_equal new_event.actor_account_id, accounts(:employee_account).id
+    assert_equal new_event.type, "scorecard_template_added"
+    assert_equal new_event.eventable_id, position_stage.scorecard_template.id
   end
 end

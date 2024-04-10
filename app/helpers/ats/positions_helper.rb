@@ -38,6 +38,10 @@ module ATS::PositionsHelper
           #{event_actor_account_name_for_assignment(event:, member: event.unassigned_member)} \
           from the position
         TEXT
+      when "scorecard_template_added"
+        "#{actor_account_name} added scorecard <b>#{event.eventable.title}</b>"
+      when "scorecard_template_updated"
+        "#{actor_account_name} updated scorecard <b>#{event.eventable.title}</b>"
       end
 
     sanitize(text)

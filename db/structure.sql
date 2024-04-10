@@ -140,7 +140,9 @@ CREATE TYPE public.event_type AS ENUM (
     'position_added',
     'position_changed',
     'position_recruiter_assigned',
-    'position_recruiter_unassigned'
+    'position_recruiter_unassigned',
+    'scorecard_template_added',
+    'scorecard_template_updated'
 );
 
 
@@ -3561,6 +3563,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240410042127'),
 ('20240405103259'),
 ('20240404084025'),
 ('20240403070728'),

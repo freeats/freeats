@@ -13,11 +13,12 @@ class ATS::ScorecardTemplatesController < ApplicationController
 
   def create
     position_stage = PositionStage.find(params[:position_stage_id])
-    case ScorecardTemplates::Add.new(position_stage:).call
+    case ScorecardTemplates::Add.new(position_stage:, actor_account: current_account).call
     in Success(scorecard_template)
       redirect_to ats_scorecard_template_path(scorecard_template)
-    in Failure[:scorecard_template_invalid, e]
-      render_error e
+    in Failure[:scorecard_template_invalid, _e] |
+       Failure[:scorecard_template_not_unique, _e]
+      render_error _e, status: :unprocessable_entity
     end
   end
 
@@ -25,12 +26,16 @@ class ATS::ScorecardTemplatesController < ApplicationController
     case ScorecardTemplates::Change.new(
       scorecard_template: @scorecard_template,
       params: scorecard_template_params,
-      questions_params:
+      questions_params:,
+      actor_account: current_account
     ).call
     in Success(scorecard_template)
       redirect_to ats_scorecard_template_path(scorecard_template)
-    in Failure[:scorecard_template_invalid, e]
-      render_error e
+    in Failure[:scorecard_template_invalid, _e] |
+       Failure[:scorecard_template_not_unique, _e] |
+       Failure[:scorecard_template_question_invalid, _e] |
+       Failure[:scorecard_template_question_not_unique, _e]
+      render_error _e, status: :unprocessable_entity
     end
   end
 
