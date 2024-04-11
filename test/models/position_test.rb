@@ -11,7 +11,7 @@ class PositionTest < ActiveSupport::TestCase
       change_status_reason: :other
     }
 
-    assert_difference "Position.count" => 1, "Event.count" => 3, "PositionStage.count" => 4 do
+    assert_difference "Position.count" => 1, "Event.count" => 7, "PositionStage.count" => 4 do
       position = Positions::Add.new(params:, actor_account:).call.value!
 
       assert_equal position.name, "Ruby developer"
@@ -21,6 +21,9 @@ class PositionTest < ActiveSupport::TestCase
       position_added_event = Event.find_by(type: :position_added, eventable: position)
       position_recruiter_assigned_event = Event.find_by(type: :position_recruiter_assigned, eventable: position)
       position_changed_event = Event.find_by(type: :position_changed, eventable: position)
+
+      new_position_stages = PositionStage.where(position:)
+      position_stage_added_events = Event.where(type: :position_stage_added, eventable: new_position_stages.ids).to_a
 
       assert_equal position_added_event.actor_account_id, actor_account.id
       assert_equal position_added_event.type, "position_added"
@@ -36,16 +39,35 @@ class PositionTest < ActiveSupport::TestCase
       assert_equal position_changed_event.changed_field, "name"
       assert_equal position_changed_event.changed_to, "Ruby developer"
       assert_equal position_changed_event.eventable_id, position.id
+
+      assert_equal position_stage_added_events.count, 4
+      assert_equal position_stage_added_events.map(&:actor_account_id).uniq, [actor_account.id]
+      assert_equal position_stage_added_events.map(&:type).uniq, ["position_stage_added"]
+      assert_equal position_stage_added_events.map(&:eventable_id).sort,
+                   new_position_stages.ids.sort
+      assert_equal position_stage_added_events.map { _1.properties["name"] }.sort,
+                   Position::DEFAULT_STAGES.sort
     end
   end
 
   test "should add new position_stage and keep the correct values for position_stages list_index" do
     position = positions(:ruby_position)
+    actor_account = accounts(:admin_account)
 
     assert_equal position.stages.pluck(:list_index), (1..4).to_a
 
     stages_attributes = { "3" => { name: "New Stage" } }
-    Positions::ChangeStages.new(position:, stages_attributes:).call.value!
+    assert_difference "PositionStage.count" => 1, "Event.count" => 1 do
+      Positions::ChangeStages.new(position:, stages_attributes:, actor_account:).call.value!
+    end
+
+    new_event = Event.last
+    new_position_stage = PositionStage.last
+
+    assert_equal new_event.actor_account_id, actor_account.id
+    assert_equal new_event.type, "position_stage_added"
+    assert_equal new_event.eventable_id, new_position_stage.id
+    assert_equal new_event.properties, { "name" => new_position_stage.name }
 
     assert_equal position.reload.stages.pluck(:list_index), (1..5).to_a
   end

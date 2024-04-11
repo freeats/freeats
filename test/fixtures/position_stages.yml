@@ -33,7 +33,12 @@ golang_position_replied:
   name: Replied
   list_index: 3
 
+golang_position_verified:
+  position: golang_position
+  name: Verified
+  list_index: 4
+
 golang_position_hired:
   position: golang_position
   name: Hired
-  list_index: 4
+  list_index: 5

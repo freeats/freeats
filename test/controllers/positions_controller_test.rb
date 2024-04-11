@@ -188,39 +188,62 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_empty event.changed_from
   end
 
-  test "should add and then update position_stage" do
+  test "should add and then update position_stage with creating events" do
     position = positions(:ruby_position)
 
     assert_equal position.stages.pluck(:list_index), (1..4).to_a
 
     name = "New Stage"
-    patch update_card_ats_position_path(
-      position,
-      card_name: "pipeline",
-      params: {
-        position: {
-          stages_attributes: { "0" => { name: } }
+    assert_difference "PositionStage.count" => 1, "Event.count" => 1 do
+      patch update_card_ats_position_path(
+        position,
+        card_name: "pipeline",
+        params: {
+          position: {
+            stages_attributes: { "0" => { name: } }
+          }
         }
-      }
-    )
+      )
+    end
 
     assert_equal position.reload.stages.pluck(:list_index), (1..5).to_a
 
     added_stage = position.stages.find_by(name:)
 
     new_name = "New Stage Changed Name"
-    patch update_card_ats_position_path(
-      position,
-      card_name: "pipeline",
-      params: {
-        position: {
-          stages_attributes: { "0" => { name: new_name, id: added_stage.id } }
-        }
-      }
-    )
+    assert_no_difference "PositionStage.count" do
+      assert_difference "Event.count" do
+        patch update_card_ats_position_path(
+          position,
+          card_name: "pipeline",
+          params: {
+            position: {
+              stages_attributes: { "0" => { name: new_name, id: added_stage.id } }
+            }
+          }
+        )
+      end
+    end
 
     assert_equal position.reload.stages.pluck(:list_index), (1..5).to_a
     assert_equal added_stage.reload.name, new_name
+  end
+
+  test "should not create event about changed position stage if nothing changed" do
+    position = positions(:golang_position)
+    position_stage = position_stages(:golang_position_verified)
+
+    assert_no_difference "Event.count" do
+      patch update_card_ats_position_path(
+        position,
+        card_name: "pipeline",
+        params: {
+          position: {
+            stages_attributes: { "0" => { name: position_stage.name, id: position_stage.id } }
+          }
+        }
+      )
+    end
   end
 
   test "should show position activities" do

@@ -19,6 +19,8 @@ class Event < ApplicationRecord
     position_changed
     position_recruiter_assigned
     position_recruiter_unassigned
+    position_stage_added
+    position_stage_changed
     scorecard_template_added
     scorecard_template_updated
   ].index_with(&:to_s)

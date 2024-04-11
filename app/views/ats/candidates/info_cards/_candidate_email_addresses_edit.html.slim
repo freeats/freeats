@@ -8,7 +8,7 @@
                   array_fields_sortable_value: true }
   - field_collection = candidate.candidate_email_addresses + [CandidateEmailAddress.new]
   = form.fields_for(:candidate_email_addresses, field_collection) do |address_form|
-    .sortable-unit [id="candidate_emails#{address_form.options[:child_index]}"
+    .array-unit [id="candidate_emails#{address_form.options[:child_index]}"
       data-update-requirement-attribute-for-select-field-target="form"
       data-controller="update-requirement-attribute-for-select-field"]
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
@@ -30,7 +30,7 @@
             data-action="click->array-fields#deleteField"
             data-array-fields-block-id-param="candidate_emails#{address_form.options[:child_index]}"]
           i.fas.fa-trash-alt
-  .sortable-unit [id="candidate_emails_hidden" hidden="true"
+  .array-unit [id="candidate_emails_hidden" hidden="true"
     data-update-requirement-attribute-for-select-field-target="form"
     data-controller="update-requirement-attribute-for-select-field"]
     = form.fields_for(:candidate_email_addresses, CandidateEmailAddress.new, child_index: "id") do |address_form|

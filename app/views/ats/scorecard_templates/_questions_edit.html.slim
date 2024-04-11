@@ -15,7 +15,7 @@ ruby:
     order_field_collection \
   ) do |questions_form|
     - index = questions_form.index
-    .sortable-unit id="#{klass_name}_questions#{index}"
+    .array-unit id="#{klass_name}_questions#{index}"
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
         .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
@@ -32,7 +32,7 @@ ruby:
             data-action="click->array-fields#deleteField"
             data-array-fields-block-id-param="#{klass_name}_questions#{index}"]
           i.fas.fa-trash-alt
-  .sortable-unit id="#{klass_name}_questions_hidden" hidden="true"
+  .array-unit id="#{klass_name}_questions_hidden" hidden="true"
     = form.fields_for( \
       :scorecard_template_questions,
       ScorecardTemplateQuestion.new,

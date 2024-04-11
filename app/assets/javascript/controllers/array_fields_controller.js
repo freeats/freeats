@@ -20,7 +20,7 @@ export default class extends Controller {
   addField() {
     const pluralFieldName = this.#pluralizeFieldName(this.fieldNameValue);
     const fieldTemplate = document.getElementById(`${this.classNameValue}_${pluralFieldName}_hidden`);
-    const fieldIds = [...this.element.querySelectorAll(`.sortable-unit:not(#${fieldTemplate.id})`)]
+    const fieldIds = [...this.element.querySelectorAll(`.array-unit:not(#${fieldTemplate.id})`)]
       .map((el) => +el.id.slice(`${this.classNameValue}_${pluralFieldName}`.length));
     const id = fieldIds.length ? Math.max(...fieldIds) + 1 : 1;
 

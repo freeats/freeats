@@ -18,7 +18,7 @@ class Positions::Add
 
     ActiveRecord::Base.transaction do
       yield save_position(position)
-      yield add_default_stages(position)
+      yield add_default_stages(position, actor_account:)
       yield add_events(position:, actor_account:)
     end
 
@@ -40,10 +40,10 @@ class Positions::Add
     end
   end
 
-  def add_default_stages(position)
+  def add_default_stages(position, actor_account:)
     Position::DEFAULT_STAGES.each.with_index(1) do |name, index|
       params = { position:, name:, list_index: index }
-      yield PositionStages::Add.new(params:).call
+      yield PositionStages::Add.new(params:, actor_account:).call
     end
 
     Success()

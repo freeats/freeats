@@ -9,8 +9,7 @@ class Positions::Change
       name?: Types::Strict::String,
       recruiter_id?: Types::Strict::String.optional,
       collaborator_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
-      description?: Types::Strict::String,
-      stages_attributes?: Types::Strict::Hash
+      description?: Types::Strict::String
     ).strict
     option :actor_account, Types::Instance(Account)
   end
@@ -23,13 +22,10 @@ class Positions::Change
       collaborator_ids: position.collaborators.pluck(:collaborator_id)
     }
 
-    stages_attributes = params.delete(:stages_attributes)
-
     position.assign_attributes(params)
 
     ActiveRecord::Base.transaction do
       yield save_position(position)
-      yield change_stages(position:, stages_attributes:)
       yield add_events(old_values:, position:, actor_account:)
     end
 
@@ -49,14 +45,6 @@ class Positions::Change
     in Failure[ActiveRecord::RecordInvalid, e]
       Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
     end
-  end
-
-  def change_stages(position:, stages_attributes:)
-    return Success() if stages_attributes.blank?
-
-    yield Positions::ChangeStages.new(position:, stages_attributes:).call
-
-    Success()
   end
 
   def add_events(old_values:, position:, actor_account:)

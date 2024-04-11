@@ -3,23 +3,21 @@
 module ATS::PositionsHelper
   def ats_position_display_activity(event)
     actor_account_name = compose_actor_account_name(event)
+    to = event.changed_to
+    from = event.changed_from
+    field = event.changed_field&.humanize(capitalize: false)
 
-    text =
+    text = "#{actor_account_name} "
+    text <<
       case event.type
       when "position_added"
-        "#{actor_account_name} added the position"
+        "added the position"
       when "position_changed"
-        to = event.changed_to
-        from = event.changed_from
-        field = event.changed_field.humanize(capitalize: false)
-
         if field == "collaborators"
           to = Member.joins(:account).where(id: to).pluck("accounts.name").join(", ")
           from = Member.joins(:account).where(id: from).pluck("accounts.name").join(", ")
         end
 
-        message = "#{actor_account_name} "
-        message <<
         if to.present? && from.present?
           "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
         elsif to.present?
@@ -29,15 +27,19 @@ module ATS::PositionsHelper
         end
       when "position_recruiter_assigned"
         <<~TEXT
-          #{actor_account_name} assigned the position \
+          assigned the position \
           to #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)}
         TEXT
       when "position_recruiter_unassigned"
         <<~TEXT
-          #{actor_account_name} unassigned \
+          unassigned \
           #{event_actor_account_name_for_assignment(event:, member: event.unassigned_member)} \
           from the position
         TEXT
+      when "position_stage_added"
+        "added stage <b>#{event.properties['name']}</b>"
+      when "position_stage_changed"
+        "changed stage from <b>#{from}</b> to <b>#{to}</b>"
       when "scorecard_template_added"
         "#{actor_account_name} added scorecard <b>#{event.eventable.title}</b>"
       when "scorecard_template_updated"

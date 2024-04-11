@@ -192,11 +192,23 @@ class ATS::PositionsController < ApplicationController
     card_name = params[:card_name]
     return unless card_name.in?(INFO_CARDS)
 
-    case Positions::Change.new(
-      position: @position,
-      params: position_params.to_h.deep_symbolize_keys,
-      actor_account: current_account
-    ).call
+    result =
+      case card_name
+      when "pipeline"
+        Positions::ChangeStages.new(
+          position: @position,
+          stages_attributes: position_params[:stages_attributes].to_h.deep_symbolize_keys,
+          actor_account: current_account
+        ).call
+      else
+        Positions::Change.new(
+          position: @position,
+          params: position_params.to_h.deep_symbolize_keys,
+          actor_account: current_account
+        ).call
+      end
+
+    case result
     in Failure[:position_invalid, _error] | Failure[:position_stage_invalid, _error]
       render_error _error, status: :unprocessable_entity
     in Success[_]
@@ -347,6 +359,14 @@ class ATS::PositionsController < ApplicationController
           JOIN position_stages ON position_stages.id = scorecard_templates.position_stage_id
         SQL
         .where(eventable_type: "ScorecardTemplate")
+        .where(position_stages: { position_id: @position.id })
+      )
+      .union(
+        Event
+        .joins(<<~SQL)
+          JOIN position_stages ON position_stages.id = events.eventable_id
+        SQL
+        .where(eventable_type: "PositionStage")
         .where(position_stages: { position_id: @position.id })
       )
       .includes(
