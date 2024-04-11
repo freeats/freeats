@@ -5,6 +5,10 @@ class Member < ApplicationRecord
                           class_name: "Position",
                           foreign_key: :collaborator_id,
                           join_table: :positions_collaborators
+  has_and_belongs_to_many :hiring_positions,
+                          class_name: "Position",
+                          foreign_key: :hiring_manager_id,
+                          join_table: :positions_hiring_managers
   has_many :positions,
            inverse_of: :recruiter,
            foreign_key: :recruiter_id,

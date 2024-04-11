@@ -1472,6 +1472,16 @@ CREATE TABLE public.positions_collaborators (
 
 
 --
+-- Name: positions_hiring_managers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.positions_hiring_managers (
+    position_id bigint NOT NULL,
+    hiring_manager_id bigint NOT NULL
+);
+
+
+--
 -- Name: positions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2647,6 +2657,13 @@ CREATE UNIQUE INDEX idx_on_collaborator_id_position_id_d61c6081fc ON public.posi
 
 
 --
+-- Name: idx_on_position_id_hiring_manager_id_39a4bc0c27; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_position_id_hiring_manager_id_39a4bc0c27 ON public.positions_hiring_managers USING btree (position_id, hiring_manager_id);
+
+
+--
 -- Name: idx_on_scorecard_template_id_list_index_625d06ef82; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3309,6 +3326,14 @@ ALTER TABLE ONLY public.candidates
 
 
 --
+-- Name: positions_hiring_managers fk_rails_28b240935e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.positions_hiring_managers
+    ADD CONSTRAINT fk_rails_28b240935e FOREIGN KEY (position_id) REFERENCES public.positions(id);
+
+
+--
 -- Name: positions fk_rails_2a3f3cea27; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3370,6 +3395,14 @@ ALTER TABLE ONLY public.placements
 
 ALTER TABLE ONLY public.positions_collaborators
     ADD CONSTRAINT fk_rails_7ef0cdb0c5 FOREIGN KEY (position_id) REFERENCES public.positions(id);
+
+
+--
+-- Name: positions_hiring_managers fk_rails_800fb5ba44; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.positions_hiring_managers
+    ADD CONSTRAINT fk_rails_800fb5ba44 FOREIGN KEY (hiring_manager_id) REFERENCES public.members(id);
 
 
 --
@@ -3563,6 +3596,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240411061423'),
 ('20240410042127'),
 ('20240405103259'),
 ('20240404084025'),
