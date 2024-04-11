@@ -16,12 +16,18 @@ class ScorecardTemplates::Change
   end
 
   def call
+    old_values = {
+      visible_to_interviewer: scorecard_template.visible_to_interviewer,
+      title: scorecard_template.title,
+      questions_params: existing_questions_params(scorecard_template)
+    }
+
     scorecard_template.assign_attributes(params)
 
     ActiveRecord::Base.transaction do
       yield save_scorecard_template(scorecard_template)
       yield change_scorecard_template_questions(scorecard_template:, questions_params:)
-      yield add_event(scorecard_template:, actor_account:)
+      yield add_event(old_values:, scorecard_template:, actor_account:)
     end
 
     Success(scorecard_template)
@@ -57,10 +63,14 @@ class ScorecardTemplates::Change
       ).call
     end
 
+    scorecard_template.reload
+
     Success()
   end
 
-  def add_event(scorecard_template:, actor_account:)
+  def add_event(old_values:, scorecard_template:, actor_account:)
+    return Success() unless scorecard_template_changed?(old_values:, scorecard_template:)
+
     scorecard_template_updated_params = {
       actor_account:,
       type: :scorecard_template_updated,
@@ -70,5 +80,17 @@ class ScorecardTemplates::Change
     yield Events::Add.new(params: scorecard_template_updated_params).call
 
     Success()
+  end
+
+  def scorecard_template_changed?(old_values:, scorecard_template:)
+    old_values[:visible_to_interviewer] != scorecard_template.visible_to_interviewer ||
+      old_values[:title] != scorecard_template.title ||
+      old_values[:questions_params] != existing_questions_params(scorecard_template)
+  end
+
+  def existing_questions_params(scorecard_template)
+    scorecard_template.scorecard_template_questions.map do |question|
+      { question: question.question, index: question.list_index }
+    end
   end
 end

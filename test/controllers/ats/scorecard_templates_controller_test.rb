@@ -35,6 +35,22 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
     assert scorecard_template.reload.visible_to_interviewer
   end
 
+  test "should not create event if scorecard_template was not changed" do
+    scorecard_template = scorecard_templates(:ruby_position_sourced_scorecard_template)
+
+    assert_empty scorecard_template.scorecard_template_questions
+
+    params = { scorecard_template: {
+      visible_to_interviewer: scorecard_template.visible_to_interviewer,
+      title: scorecard_template.title,
+      scorecard_template_questions_attributes: {}
+    } }
+
+    assert_no_difference "Event.count" do
+      patch ats_scorecard_template_url(scorecard_template), params:
+    end
+  end
+
   test "should update scorecard_template title" do
     scorecard_template = scorecard_templates(:ruby_position_sourced_scorecard_template)
     new_title = "new title"
