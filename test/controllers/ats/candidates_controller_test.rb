@@ -249,11 +249,24 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
   test "should update profile header card" do
     candidate = candidates(:jane)
 
+    old_alternative_names = candidate.candidate_alternative_names.pluck(:name)
+    new_alternative_names = %w[name1 name2 name3]
+    # rubocop:disable Lint/SymbolConversion
+    candidate_alternative_names_attributes =
+      {
+        "0": { "name": "name1" },
+        "1": { "name": "name2" },
+        "2": { "name": "name3" },
+        "id": { "name": "" }
+      }
+    # rubocop:enable Lint/SymbolConversion
+
     assert_equal candidate.full_name, "Jane Doe"
     assert_empty candidate.headline
     assert_not candidate.company
     assert_not candidate.blacklisted
     assert_equal candidate.location, locations(:moscow_city)
+    assert_not_equal old_alternative_names, new_alternative_names
 
     patch(
       update_header_ats_candidate_path(candidate),
@@ -263,7 +276,8 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
           headline: "new headline",
           company: "New awesome company",
           blacklisted: true,
-          location_id: locations(:valencia_city).id
+          location_id: locations(:valencia_city).id,
+          candidate_alternative_names_attributes:
         }
       }
     )
@@ -276,6 +290,8 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_equal candidate.company, "New awesome company"
     assert candidate.blacklisted
     assert_equal candidate.location, locations(:valencia_city)
+    assert_equal candidate.candidate_alternative_names.pluck(:name).sort,
+                 new_alternative_names.sort
   end
 
   test "should update profile card contact_info" do

@@ -34,6 +34,7 @@ class Candidate < ApplicationRecord
   accepts_nested_attributes_for :candidate_email_addresses, allow_destroy: true
   accepts_nested_attributes_for :candidate_phones, allow_destroy: true
   accepts_nested_attributes_for :candidate_links, allow_destroy: true
+  accepts_nested_attributes_for :candidate_alternative_names, allow_destroy: true
 
   has_many_attached :files
   has_rich_text :cover_letter
@@ -149,11 +150,16 @@ class Candidate < ApplicationRecord
   end
 
   def change(params)
-    case Candidates::Change.new(candidate: self, params: params.to_h).call
+    case Candidates::Change.new(
+      candidate: self,
+      params: params.to_h.deep_symbolize_keys
+    ).call
     in Success()
       reload
       true
-    in Failure("record_invalid")
+    in Failure[:candidate_invalid, _e] |
+       Failure[:alternative_name_invalid, _e] |
+       Failure[:alternative_name_not_unique, _e]
       false
     end
   end

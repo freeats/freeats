@@ -1,0 +1,51 @@
+/# locals: (candidate:, pattern: nil, form:)
+
+= tag.div id: "candidate-alternative-names",
+          data: { controller: "array-fields",
+                  array_fields_class_name_value: "candidate",
+                  array_fields_field_name_value: "alternative_name",
+                  array_fields_sortable_value: false }
+  - field_collection = candidate.candidate_alternative_names + [CandidateAlternativeName.new]
+  = form.fields_for(:candidate_alternative_names, field_collection) do |address_form|
+    div [id="candidate_alternative_names#{address_form.options[:child_index]}"
+      data-update-requirement-attribute-for-select-field-target="form"
+      data-controller="update-requirement-attribute-for-select-field"]
+      .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.mb-2
+        .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
+          = render TextInputComponent.new(address_form, method: :name, size: :small,
+                                          placeholder: "Alternative name", pattern:,
+                                          "data-update-requirement-attribute-for-select-field-target": "mainField")
+            = address_form
+            - if address_form.object.id.present?
+              = address_form.hidden_field(:id)
+        button.btn.btn-sm.text-secondary.border-0.shadow-none.align-self-start.pe-0[
+            type="button"
+            class="candidate-delete-alternative_name-button"
+            id="candidate_delete_alternative_name_button#{address_form.options[:child_index]}"
+            style="font-size: 1.25rem;"
+            data-action="click->array-fields#deleteField"
+            data-array-fields-block-id-param="candidate_alternative_names#{address_form.options[:child_index]}"]
+          i.fas.fa-trash-alt
+  div [id="candidate_alternative_names_hidden" hidden="true"
+    data-update-requirement-attribute-for-select-field-target="form"
+    data-controller="update-requirement-attribute-for-select-field"]
+    = form.fields_for(:candidate_alternative_names, CandidateAlternativeName.new, child_index: "id") do |address_form|
+      .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.mb-2
+        .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
+          = render TextInputComponent.new(address_form, method: :name, size: :small,
+                                          pattern:, placeholder: "Alternative name",
+                                          "data-update-requirement-attribute-for-select-field-target": "mainField")
+        button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
+            type="button"
+            class="candidate-delete-alternative_name-button"
+            id="candidate_delete_alternative_name_button"
+            style="font-size: 1.25rem;"
+            data-action="click->array-fields#deleteField"
+            data-array-fields-block-id-param="candidate_alternative_names"]
+          i.fas.fa-trash-alt
+  = render ButtonComponent.new(variant: :cancel,
+                               size: :tiny,
+                               type: :button,
+                               id: "candidate_add_alternative_name_button",
+                               data: { action: "click->array-fields#addField" })
+    | Add

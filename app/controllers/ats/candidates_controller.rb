@@ -104,15 +104,24 @@ class ATS::CandidatesController < ApplicationController
   end
 
   def update_header
-    @candidate.change(candidate_params)
-    render_turbo_stream(
-      [
-        turbo_stream.replace(
-          :turbo_header_section,
-          partial: "ats/candidates/header_show"
-        )
-      ]
-    )
+    case Candidates::Change.new(
+      candidate: @candidate,
+      params: candidate_params.to_h.deep_symbolize_keys
+    ).call
+    in Success()
+      render_turbo_stream(
+        [
+          turbo_stream.replace(
+            :turbo_header_section,
+            partial: "ats/candidates/header_show"
+          )
+        ]
+      )
+    in Failure[:candidate_invalid, _e] |
+       Failure[:alternative_name_invalid, _e] |
+       Failure[:alternative_name_not_unique, _e]
+      render_error _e, status: :unprocessable_entity
+    end
   end
 
   def show_card
@@ -314,6 +323,16 @@ class ATS::CandidatesController < ApplicationController
       )[:candidate_links_attributes]
 
     @candidate_params[:links] = link_params.values.filter { _1[:url].present? } if link_params
+
+    alternative_name_params =
+      params[:candidate].permit(
+        candidate_alternative_names_attributes: :name
+      )[:candidate_alternative_names_attributes]
+
+    if alternative_name_params
+      @candidate_params[:alternative_names] =
+        alternative_name_params.values.filter { _1[:name].present? }
+    end
 
     @candidate_params
   end
