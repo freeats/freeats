@@ -9,12 +9,39 @@ class ATS::PlacementsController < ApplicationController
 
   def create
     case Placements::Add.new(
-      candidate_id: params[:candidate_id],
-      position_id: params.require(:placement_position_id),
+      params: placement_params.to_h.deep_symbolize_keys,
+      create_duplicate_placement: params["placement_already_exists_modal"] == "1",
       actor_account: current_account
     ).call
     in Success[placement]
       render_placements_notes_panel(placement)
+    in Failure[:placement_already_exists, placement]
+      partial_name = "placement_already_exists_modal"
+      modal_render_options = {
+        partial: "ats/candidates/#{partial_name}",
+        layout: "modal",
+        locals: {
+          modal_id: partial_name.dasherize,
+          form_options: {
+            url: ats_candidate_placements_path(placement.candidate),
+            method: :post
+          },
+          hidden_fields: {
+            partial_name => "1",
+            candidate_id: placement.candidate_id,
+            position_id: placement.position_id
+          },
+          modal_size: "modal-lg",
+          placement:,
+          candidate_name: placement.candidate.full_name,
+          position_name: placement.position.name,
+          # TODO: use placement added event
+          date_when_assigned: placement.created_at,
+          stage: placement.stage,
+          reason: placement.position.change_status_reason
+        }
+      }
+      render(modal_render_options)
     in Failure[:placement_invalid, error]
       render_error error, status: :unprocessable_entity
     end
@@ -94,5 +121,18 @@ class ATS::PlacementsController < ApplicationController
         turbo_stream.replace("turbo_placements_notes_panel", partial:, locals:)
       ]
     )
+  end
+
+  def placement_params
+    return @placement_params if @placement_params.present?
+
+    @placement_params =
+      params
+      .permit(
+        :position_id,
+        :candidate_id
+      )
+
+    @placement_params
   end
 end

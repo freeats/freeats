@@ -2,10 +2,11 @@
 
 .col-12
   = form_with url: ats_candidate_placements_path(candidate),
+              data: { turbo_frame: :turbo_modal_window },
               id: "form-add-placement"
     .row.my-4
       .col
-        = select_tag :placement_position_id,
+        = select_tag :position_id,
                      "",
                      class: "form-control",
                      data: { "placements-notes-panel-target" => "addPlacementAutocomplete" },

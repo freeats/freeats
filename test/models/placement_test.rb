@@ -3,18 +3,56 @@
 require "test_helper"
 
 class PlacementTest < ActiveSupport::TestCase
+  include Dry::Monads[:result]
+
   test "should create placement" do
-    candidate = candidates(:john)
+    candidate = candidates(:jane)
     position = positions(:ruby_position)
     sourced_position_stage = position_stages(:ruby_position_sourced)
 
     placement = Placements::Add.new(
-      candidate_id: candidate.id,
-      position_id: position.id,
+      params: {
+        candidate_id: candidate.id,
+        position_id: position.id
+      },
       actor_account: accounts(:admin_account)
     ).call.value!
 
     assert_equal placement.position_stage_id, sourced_position_stage.id
+  end
+
+  test "shouldn't create placement if already exists and not allowed" do
+    candidate = candidates(:john)
+    position = positions(:ruby_position)
+
+    placement = placements(:john_ruby_hired)
+
+    result = Placements::Add.new(
+      params: {
+        candidate_id: candidate.id,
+        position_id: position.id
+      },
+      actor_account: accounts(:admin_account)
+    ).call
+
+    assert_equal result, Failure[:placement_already_exists, placement]
+  end
+
+  test "should create placement if already exists and allowed" do
+    candidate = candidates(:john)
+    position = positions(:ruby_position)
+    sourced_position_stage = position_stages(:ruby_position_sourced)
+
+    result = Placements::Add.new(
+      params: {
+        candidate_id: candidate.id,
+        position_id: position.id
+      },
+      create_duplicate_placement: true,
+      actor_account: accounts(:admin_account)
+    ).call.value!
+
+    assert_equal result.position_stage_id, sourced_position_stage.id
   end
 
   test "should change stage" do
