@@ -365,6 +365,26 @@ class ATS::CandidatesController < ApplicationController
     # warning: MERGED_WARNING
   end
 
+  def suggested_members_names_for(active_members)
+    member_names = active_members.map(&:name)
+    first_results = []
+
+    if @assigned_recruiter && @assigned_recruiter != current_member
+      first_results << member_names.delete(@assigned_recruiter.name)
+    end
+
+    # Users who already made a note to the candidate.
+    @candidate
+      .note_threads
+      .visible_to(current_member)
+      .includes(notes: :member)
+      .flat_map(&:notes)
+      .map { |note| note.member.name }
+      .each { |name| first_results << member_names.delete(name) }
+
+    first_results.compact + member_names
+  end
+
   def render_candidate_files(candidate)
     render_turbo_stream(
       turbo_stream.update(
@@ -380,5 +400,16 @@ class ATS::CandidatesController < ApplicationController
 
     @irrelevant_placements = all_placements.filter(&:disqualified?)
     @relevant_placements = all_placements - @irrelevant_placements
+
+    @all_active_members = Member.active.to_a
+    @suggested_names = suggested_members_names_for(@all_active_members)
+    @note_threads =
+      NoteThread
+      .includes(notes: %i[member reacted_members])
+      .preload(:members)
+      .where(notable: @candidate)
+      .visible_to(current_member)
+      .sort_by { _1.notes.first }
+      .reverse
   end
 end

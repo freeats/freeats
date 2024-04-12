@@ -35,33 +35,9 @@
     height: 28px;
     padding: 0;
   }
+}
 
-  .notes-full-icon {
-    @extend %fa-icon;
-    @extend .fa-light;
-    &:before {
-      content: fa-content($fa-var-message-lines);
-      font-size: large;
-    }
-  }
-
-  .note-presence-icon {
-    &:before {
-      width: 1.25rem !important;
-      height: 1.25rem;
-      vertical-align: middle;
-    }
-  }
-
-  .notes-empty-icon {
-    @extend %fa-icon;
-    @extend .fa-light;
-    &:before {
-      content: fa-content($fa-var-message);
-      font-size: large;
-    }
-  }
-
+#notes {
   .notes-toggle {
     border: none;
     box-shadow: none;
@@ -71,5 +47,11 @@
       border: none;
       box-shadow: none;
     }
+  }
+}
+
+#notes .card {
+  .card-title {
+    font-size: 0.875rem;
   }
 }

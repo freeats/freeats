@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Member < ApplicationRecord
+  has_and_belongs_to_many :reacted_notes,
+                          class_name: "Note",
+                          join_table: :note_reactions
+  has_and_belongs_to_many :note_threads
   has_and_belongs_to_many :collaborator_positions,
                           class_name: "Position",
                           foreign_key: :collaborator_id,
@@ -14,6 +18,7 @@ class Member < ApplicationRecord
            foreign_key: :recruiter_id,
            dependent: :restrict_with_exception
   has_many :member_email_addresses, dependent: :destroy
+  has_many :notes, dependent: :destroy
   has_many :assigned_events,
            lambda { where(type: :position_recruiter_assigned) },
            class_name: "Event",
@@ -35,6 +40,10 @@ class Member < ApplicationRecord
   scope :active, -> { where.not(access_level: :inactive) }
   scope :rails_admin_search, ->(query) { joins(:account).where(accounts: { email: query.strip }) }
 
+  scope :mentioned_in, lambda { |text|
+    joins(:account).where(accounts: { name: text.scan(/\B@(\p{L}+\s\p{L}+)/).flatten })
+  }
+
   def active?
     !inactive?
   end
@@ -52,5 +61,9 @@ class Member < ApplicationRecord
 
   def name
     account.name
+  end
+
+  def reacted_to_note?(note)
+    reacted_notes.find { _1.id == note.id }
   end
 end

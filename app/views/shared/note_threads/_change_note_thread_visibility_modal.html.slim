@@ -1,0 +1,47 @@
+/# locals: (thread:, all_active_members:, modal_id:, form_options:)
+
+ruby:
+  all_members = [
+    current_member,
+    *thread.mentioned_members,
+    *thread.members,
+    *all_active_members
+  ].uniq.map { |member| [member.account.name, member.id] }
+  unchangeable_members = [current_member, *thread.participants, *thread.mentioned_members].uniq.map(&:id)
+  selected_members = [*unchangeable_members, *thread.members.map(&:id)]
+
+- content_for :title do
+  | Change note thread visibility
+
+- content_for :body do
+  .row
+    .col
+      = radio_button_tag "note_thread[hidden]", true, true, required: true,
+                         id: "note_thread_#{thread.id}_hidden_true"
+      =< label_tag "note_thread[hidden]",
+                   "Only the selected members will see this thread",
+                   class: "font-body ms-2",
+                   for: "note_thread_#{thread.id}_hidden_true"
+  .row.me-6.mb-3 style="margin-left: 11px;"
+    .col
+      = select_tag "note_thread[members]",
+                    options_for_select(all_members, selected: selected_members, disabled: unchangeable_members),
+                    include_blank: false,
+                    class: "form-control select-picker members-select-picker",
+                    multiple: true,
+                    data: { live_search: true,
+                            note_thread_target: "selectPicker" }
+  .row
+    .col
+      = radio_button_tag "note_thread[hidden]", false, false, required: true,
+                         id: "note_thread_#{thread.id}_hidden_false"
+      =< label_tag "note_thread[hidden]",
+                   "Visible to all members",
+                   class: "font-body ms-2",
+                   for: "note_thread_#{thread.id}_hidden_false"
+
+- content_for :footer
+  = render ButtonComponent.new(size: :small, variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
+    | Cancel
+  = render ButtonComponent.new(size: :small)
+    | Confirm

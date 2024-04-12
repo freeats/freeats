@@ -1,0 +1,28 @@
+/# locals: (note:, reacted_names:, member_react: false)
+
+ruby:
+  liked_members = reacted_names.join("<br>")
+  unpressed_like_tooltip = liked_members.empty? ? "Like" : liked_members
+  add_reaction_url = add_reaction_note_path(note)
+  remove_reaction_url = remove_reaction_note_path(note)
+
+= turbo_frame_tag "note_reaction_#{note.id}"
+  - if member_react
+    span data-note-reactions-target="iconReaction"
+      = form_with url: remove_reaction_url, class: "d-inline-block form-reaction",
+                  data: { action: "turbo:submit-start->note-reactions#hideTooltip" } do |form|
+        = form.button class: "btn btn-sm btn-light ms-2", title: liked_members,
+                      data: { bs_toggle: "tooltip", bs_html: true }
+          i.fas.fa-thumbs-up
+          span.note-reactions-count.ms-1
+            = reacted_names.count
+  - else
+    span data-note-reactions-target="iconReaction"
+      = form_with url: add_reaction_url,
+                  class: "d-inline-block form-reaction",
+                  data: { action: "turbo:submit-start->note-reactions#hideTooltip" } do |form|
+        = form.button class: "btn btn-sm btn-light ms-2", title: unpressed_like_tooltip,
+                      data: { bs_toggle: "tooltip", bs_html: true }
+          i.fal.fa-thumbs-up
+          span.note-reactions-count.ms-1
+            = reacted_names.count

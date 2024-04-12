@@ -1,0 +1,32 @@
+/# locals: (note_thread:, all_active_members: nil, expanded: false, hide_visibility_controls: false)
+
+ruby:
+  thread = note_thread
+  thread_notes = thread.notes.sort_by(&:created_at).to_a
+
+.note-thread id=dom_id(thread) data-controller="note-thread"
+  hr
+  ul.list-group.list-group-flush
+    .card class=("private-thread" if thread.hidden)
+      - if thread_notes.size.positive?
+        = render "shared/notes/note", note: thread_notes.first, thread:,
+                                      all_active_members:,
+                                      hide_visibility_controls:
+      - if (other_thread_notes_size = thread_notes.size - 1).positive?
+        .collapse [class="#{'show' if expanded}" id="other-thread-notes-thread-#{thread.id}"
+            data-note-thread-target="collapsedNotes"]
+          - thread_notes[1..].each do |thread_note|
+            = render "shared/notes/note", note: thread_note,
+                                          thread:,
+                                          show_reply: expanded,
+                                          hide_visibility_controls:
+        = button_tag( \
+            class: "btn btn-link thread-collapse-button align-self-start toggle-chevron-content " \
+            "px-0 pb-0 pt-2", data: { bs_toggle: "collapse", bs_target: "#other-thread-notes-thread-#{thread.id}",
+            note_thread_target: "collapseButton" }, type: "button", aria: { expanded: expanded.to_s,
+            controls: "other-thread-notes-thread-#{thread.id}" }) do
+            span #{pluralize(other_thread_notes_size, 'reply')}
+            span.icon-chevron-show.ms-2 class="#{'hidden' if expanded}" data-note-thread-target="collapsedStateIcon"
+              i.far.fa-chevron-down
+            span.icon-chevron-hide.ms-2 class="#{'hidden' unless expanded}" data-note-thread-target="collapsedStateIcon"
+              i.far.fa-chevron-up

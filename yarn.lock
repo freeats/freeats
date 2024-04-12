@@ -1742,6 +1742,11 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
+tributejs@5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/tributejs/-/tributejs-5.1.0.tgz#cadfb2d46958b70d7540db70b3d269478dc89b9a"
+  integrity sha512-ABoVJqkdQccDduEuXfh2Ur9m0kcUmh+T7kIy2U9jU5v5qRtKnVC0/CnvCkEHoFx3zYSUFZOtB09xz7OzdTxCRw==
+
 trix@^2.0.10:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/trix/-/trix-2.0.10.tgz#43f1ff7a94c42f708bd2bad3a2783147c0583698"

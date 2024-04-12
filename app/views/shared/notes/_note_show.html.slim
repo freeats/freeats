@@ -1,0 +1,85 @@
+/# locals: (note:, thread:, all_active_members: nil, hide_visibility_controls: false)
+
+ruby:
+  is_first_note = note == thread.notes.min_by(&:created_at)
+  visible_members = thread.members.map { _1.account.name }.join("<br>")
+  # rubocop:disable Lint/UselessAssignment
+  visibility_tooltip_title = thread.hidden? ? "Visible to:<br>#{visible_members}" : "Change visibility"
+  # rubocop:enable Lint/UselessAssignment
+  # TODO: use policy
+  # change_visibility = "disabled" unless allowed_to?(:update?, thread, with: NoteThreadPolicy)
+  change_visibility = ""
+  # TODO: use policy
+  allow ||= true
+
+= turbo_frame_tag dom_id(note, "turbo"), target: "_top"
+  .tab-pane.note-show id="note-show-#{note.id}"
+    .card-title.d-flex.align-items-center
+      = picture_avatar_icon note.member.account.avatar, {}, class: "small-avatar-thumbnail"
+      .col
+        .ms-2
+          = note.member.account.name
+        - if note.updated_at - note.created_at > 5.minutes
+          span.text-secondary.ms-2 [data-bs-toggle="tooltip"
+              title=note.updated_at.to_fs(:datetime_full)]
+            | Edited #{short_time_ago_in_words(note.updated_at)} ago
+        - else
+          / TODO: use events
+          / span.text-secondary.ms-2 [data-bs-toggle="tooltip"
+          /   title=note.creation_event.performed_at.to_fs(:datetime_full)]
+          /   | #{short_time_ago_in_words(note.creation_event.performed_at)} ago
+          span.text-secondary.ms-2 [data-bs-toggle="tooltip"
+            title=note.created_at.to_fs(:datetime_full)]
+            | #{short_time_ago_in_words(note.created_at)} ago
+      .d-flex.align-items-right.ms-auto
+        - if is_first_note && (allow || allowed_to?(:reply?, context: { note_thread: thread }, with: NotePolicy))
+          - unless hide_visibility_controls
+            span data-bs-toggle="tooltip" data-bs-title=visibility_tooltip_title data-bs-html="true"
+              = link_to change_visibility_modal_note_thread_path(thread, all_active_members:),
+                      class: "btn btn-sm btn-light #{change_visibility}",
+                      data: { turbo_frame: :turbo_modal_window }
+                - if thread.hidden
+                  i.fal.fa-eye-slash
+                - else
+                  i.fal.fa-eye
+          = link_to "#note-thread-reply-#{thread.id}", class: "btn btn-light btn-sm note-button-reply ms-2",
+                    title: "Reply", data: { action: "click->note-thread#showReplyTab", bs_toggle: "tooltip" } do
+            i.fal.fa-reply
+        - if allow || allowed_to?(:toggle_reaction?, note)
+          = render "shared/notes/note_reaction",
+                    note:,
+                    reacted_names: note.reacted_member_names(current_member),
+                    member_react: current_member.reacted_to_note?(note)
+        span.ms-2 data-bs-toggle="tooltip" title="More"
+          button.btn.btn-light.btn-sm [aria-expanded="false" aria-haspopup="true"
+                                            data-bs-toggle="dropdown" type="button"]
+            i.far.fa-ellipsis-h
+          ul.dropdown-menu.dropdown-menu-end
+            li
+              button.btn.btn-sm.dropdown-item [type="button"
+                data-controller="copy-to-clipboard"
+                data-clipboard-text=note.url data-bs-title="Copied!" data-bs-trigger="manual"]
+                i.fal.fa-link.fa-fw
+                span.ms-2 Copy link
+            - if allow || allowed_to?(:show_edit_view?, note)
+              li = link_to show_edit_view_note_path(note, render_time: Time.zone.now),
+                           class: "btn btn-sm dropdown-item",
+                           data: { turbo_frame: dom_id(note, "turbo") }
+                i.fal.fa-pencil-alt.fa-fw
+                span.ms-2 Edit
+            - if allow || allowed_to?(:destroy?, note)
+              li = form_with url: note_path(note), method: :delete,
+                             data: { action: "submit->candidate-notes#removeNoteCallback" } do |form|
+                = hidden_field_tag "render_time", Time.zone.now
+                = form.button(class: "btn btn-sm dropdown-item",
+                              data: { \
+                                toggle: "hub-confirmation",
+                                title: "Remove note?",
+                                btn_cancel_label: "Cancel",
+                                btn_ok_label: "Remove",
+                                btn_ok_class: "btn btn-danger btn-small" \
+                                } \
+                              )
+                  i.fal.fa-trash-alt.fa-fw
+                  span.ms-2 Remove
+    = preformatted_plain_format(note.text)

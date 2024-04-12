@@ -87,6 +87,14 @@
            locals: { candidate: @candidate,
                      relevant_placements: @relevant_placements,
                      irrelevant_placements: @irrelevant_placements }
+  hr
+    = render partial: "ats/candidates/notes_panel",
+            locals: { all_active_members: @all_active_members,
+                      suggested_names: @suggested_names,
+                      note_threads: @note_threads,
+                      additional_create_param_input: \
+                        hidden_field_tag("note[note_thread][candidate_id]", @candidate.id),
+                      hide_visibility_controls: false }
 
 / SIDE INFO END
 

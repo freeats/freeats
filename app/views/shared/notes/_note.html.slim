@@ -1,0 +1,35 @@
+/# locals: (note:, thread:, show_reply: false, all_active_members: nil, hide_visibility_controls: false)
+
+- is_last_note = note == thread.notes.max_by(&:created_at)
+
+li.list-group-item.note id="note-#{note.id}" data-controller="note-reactions"
+  .card-body.tab-content
+    = render "shared/notes/note_show", note:, thread:, all_active_members:, hide_visibility_controls:
+    /! REPLY
+    - if is_last_note
+      .tab-pane.note-thread-reply [class="#{'active' if show_reply}"
+          id="note-thread-reply-#{thread.id}" data-note-thread-target="replyTab"]
+        .mt-3 data-controller="notes"
+          = form_with model: Note.new, url: reply_notes_path, html: { class: "note-form" },
+              data: { action: "input->notes#storeNoteForm " \
+                              "turbo:submit-end->notes#clearNoteForm",
+                      notes_target: "noteForm" } do |form|
+            .card-text
+              = hidden_field_tag "note[note_thread][id]", thread.id, id: "thread-reply-hidden-#{thread.id}"
+              = hidden_field_tag "render_time", Time.zone.now
+              = form.text_area(:text, class: "form-control enter-turbo-submit note-textarea", rows: 4,
+                               placeholder: "Reply...", required: true, id: "textarea-thread-reply-#{note.id}",
+                               data: { notes_target: "noteTextArea" })
+              .d-flex.justify-content-end.gap-2.mt-3
+                = render ButtonComponent.new(variant: :cancel,
+                                             size: :tiny,
+                                             type: :button,
+                                             data: { action: "click->note-thread#cancelReply " \
+                                                             "click->notes#resetNoteForm" })
+                  | Cancel
+                = render ButtonComponent.new(size: :tiny,
+                                             data: { bs_toggle: "tooltip",
+                                                     bs_title: "Ctrl + Enter",
+                                                     bs_placement: "top",
+                                                     notes_target: "shortcut" })
+                  | Send

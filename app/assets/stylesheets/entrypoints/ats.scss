@@ -4,6 +4,8 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 @import "../src/shared/variables";
 @import "../src/shared/colors";
 @import "bootstrap/scss/bootstrap";
+@import "tributejs/dist/tribute";
+@import "bootstrap-select/sass/bootstrap-select";
 
 // Custom component styles
 @import "../src/shared/components";

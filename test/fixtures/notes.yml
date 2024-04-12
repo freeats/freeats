@@ -1,0 +1,32 @@
+one:
+  text: short note
+  note_thread: thread_one
+  member: admin_member
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 1.day.ago %>
+
+two:
+  text: |
+    @Dmitry Matveyev
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+    Long note note long note note long note note long note
+  member: admin_member
+  note_thread: thread_two
+
+three:
+  text: reply
+  member: interviewer_member
+  note_thread: thread_one

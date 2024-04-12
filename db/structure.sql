@@ -1315,6 +1315,26 @@ ALTER SEQUENCE public.members_id_seq OWNED BY public.members.id;
 
 
 --
+-- Name: members_note_threads; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.members_note_threads (
+    note_thread_id bigint NOT NULL,
+    member_id bigint NOT NULL
+);
+
+
+--
+-- Name: note_reactions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.note_reactions (
+    member_id bigint NOT NULL,
+    note_id bigint NOT NULL
+);
+
+
+--
 -- Name: note_threads; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1356,7 +1376,8 @@ CREATE TABLE public.notes (
     text text DEFAULT ''::text NOT NULL,
     note_thread_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    member_id bigint NOT NULL
 );
 
 
@@ -3009,6 +3030,20 @@ CREATE INDEX index_member_email_addresses_on_member_id ON public.member_email_ad
 
 
 --
+-- Name: index_members_note_threads_on_member_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_members_note_threads_on_member_id ON public.members_note_threads USING btree (member_id);
+
+
+--
+-- Name: index_members_note_threads_on_note_thread_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_members_note_threads_on_note_thread_id ON public.members_note_threads USING btree (note_thread_id);
+
+
+--
 -- Name: index_members_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3016,10 +3051,24 @@ CREATE INDEX index_members_on_account_id ON public.members USING btree (account_
 
 
 --
+-- Name: index_note_reactions_on_note_id_and_member_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_note_reactions_on_note_id_and_member_id ON public.note_reactions USING btree (note_id, member_id);
+
+
+--
 -- Name: index_note_threads_on_notable; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_note_threads_on_notable ON public.note_threads USING btree (notable_type, notable_id);
+
+
+--
+-- Name: index_notes_on_member_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notes_on_member_id ON public.notes USING btree (member_id);
 
 
 --
@@ -3384,6 +3433,14 @@ ALTER TABLE ONLY public.member_email_addresses
 
 
 --
+-- Name: notes fk_rails_556b0a09d2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notes
+    ADD CONSTRAINT fk_rails_556b0a09d2 FOREIGN KEY (member_id) REFERENCES public.members(id);
+
+
+--
 -- Name: placements fk_rails_7be786382b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3602,6 +3659,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240410042127'),
 ('20240409052033'),
 ('20240405103259'),
+('20240404155739'),
+('20240404153834'),
+('20240404145104'),
 ('20240404084025'),
 ('20240403070728'),
 ('20240328064406'),

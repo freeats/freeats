@@ -14,6 +14,7 @@ import '@hotwired/turbo-rails';
 import "../controllers";
 import 'bootstrap';
 import 'trix';
+import 'tributejs';
 
 // Taken from configuring jquery-ui download page https://jqueryui.com/download/ when toggling
 // only "sortable" and "datepicker".

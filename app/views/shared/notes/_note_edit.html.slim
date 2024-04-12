@@ -1,0 +1,25 @@
+/# locals: (note:, render_time:)
+
+= turbo_frame_tag dom_id(note, "turbo")
+  .tab-pane.note-edit id="note-edit-#{note.id}"
+    div data-controller="notes"
+      = form_with model: note, url: note_path(note), method: :patch, html: { class: "note-form" },
+                  data: { action: "input->notes#storeNoteForm turbo:submit-end->notes#clearNoteForm",
+                          notes_target: "noteForm" } do |form|
+        = hidden_field_tag "render_time", render_time
+        .card-title
+          = picture_avatar_icon note.member.account.avatar, {}, class: "small-avatar-thumbnail"
+          span.ms-2 = note.member.account.name
+        = form.text_area(:text, class: "form-control enter-turbo-submit note-textarea", rows: 4,
+                         placeholder: "Edit...", required: true, id: "textarea-edit-#{note.id}",
+                         data: { notes_target: "noteTextArea" })
+        .d-flex.justify-content-end.gap-2.mt-3
+          = render ButtonLinkComponent.new(show_show_view_note_path(note),
+                                           variant: :cancel,
+                                           size: :tiny,
+                                           type: :button,
+                                           data: { action: "click->notes#resetNoteForm",
+                                                   turbo_frame: dom_id(note, "turbo") })
+            | Cancel
+          = render ButtonComponent.new(size: :tiny)
+            | Save

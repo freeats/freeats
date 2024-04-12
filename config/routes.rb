@@ -79,6 +79,18 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :notes, only: %i[create update destroy] do
+    post :add_reaction, on: :member
+    post :remove_reaction, on: :member
+    get :show_edit_view, on: :member
+    get :show_show_view, on: :member
+    post :reply, on: :collection
+  end
+
+  resources :note_threads, only: :update do
+    get :change_visibility_modal, on: :member
+  end
+
   # rubocop:disable Style/SymbolProc
   constraints(Rodauth::Rails.authenticate { |rodauth| rodauth.admin? }) do
     mount RailsAdmin::Engine => "admin", as: "rails_admin"

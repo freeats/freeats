@@ -325,3 +325,9 @@ h1 {
 .card-body ul {
   margin-bottom: 0px;
 }
+
+.filter-option {
+  .filter-option-inner-inner {
+    @extend .text-truncate;
+  }
+}

@@ -388,6 +388,7 @@ GEM
     request_store (1.6.0)
       rack (>= 1.4)
     rexml (3.2.6)
+    rinku (2.0.6)
     roda (3.78.0)
       rack
     rodauth (2.33.0)
@@ -557,6 +558,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (~> 7.1.0)
   rails_admin (~> 3.0)
+  rinku
   rodauth-model
   rodauth-omniauth
   rodauth-rails
