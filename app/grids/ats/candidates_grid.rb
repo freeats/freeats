@@ -23,6 +23,7 @@ class ATS::CandidatesGrid
   scope do
     Candidate
       .not_merged
+      .with_attached_avatar
       .select(SELECTED_FIELDS)
   end
 
