@@ -18,7 +18,8 @@
             - if stage.scorecard_template.visible_to_interviewer
               |< (visible to interviewer)
           - else
-            - form_with url: ats_scorecard_templates_path do |f|
-              = f.hidden_field :position_stage_id, value: stage.id
-              = render ButtonComponent.new(type: :submit, size: :small, variant: :cancel, data: { turbo: false })
-                | Add scorecard template
+            = render ButtonLinkComponent.new( \
+                new_ats_scorecard_template_path(position_stage_id: stage.id),
+                type: :submit, size: :small, variant: :cancel, data: { turbo: false } \
+              )
+              | Add scorecard template

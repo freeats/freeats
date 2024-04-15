@@ -7,6 +7,21 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
     sign_in accounts(:employee_account)
   end
 
+  test "should compose the new scorecard_template" do
+    position_stage = position_stages(:ruby_position_contacted)
+
+    assert_no_difference "ScorecardTemplate.count" do
+      get new_ats_scorecard_template_path(position_stage_id: position_stage.id)
+    end
+
+    assert_response :success
+
+    doc = Nokogiri::HTML::Document.parse(response.body)
+
+    assert_equal doc.at_css("#scorecard_template_position_stage_id").attr(:value), position_stage.id.to_s
+    assert_equal doc.at_css("#scorecard_template_title").attr(:value), "Contacted stage scorecard template"
+  end
+
   test "should get show" do
     scorecard_template = scorecard_templates(:ruby_position_contacted_scorecard_template)
 
@@ -103,23 +118,38 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
                  [[1, "new question"], [2, questions.first.question]]
   end
 
-  test "should create new scorecard_template and add event" do
+  test "should create new scorecard_template with question and add event" do
     position_stage = position_stages(:golang_position_sourced)
 
     assert_not position_stage.scorecard_template
 
-    assert_difference "ScorecardTemplate.count" => 1, "Event.count" => 1 do
-      post ats_scorecard_templates_url, params: { position_stage_id: position_stage.id }
+    params = { scorecard_template: {
+      title: "Sourced stage scorecard template",
+      position_stage_id: position_stage.id,
+      visible_to_interviewer: true,
+      scorecard_template_questions_attributes: { "0": { question: "How was the candidate's communication?" } }
+    } }
+    assert_difference "ScorecardTemplate.count" => 1, "Event.count" => 1, "ScorecardTemplateQuestion.count" => 1 do
+      post ats_scorecard_templates_url, params:
     end
 
     assert_response :redirect
-    assert position_stage.reload.scorecard_template
-    assert_equal position_stage.scorecard_template.title, "Sourced stage scorecard template"
+
+    scorecard_template = ScorecardTemplate.last
+    scorecard_template_question = ScorecardTemplateQuestion.last
+
+    assert_equal scorecard_template.position_stage_id, position_stage.id
+    assert_equal scorecard_template.title, params[:scorecard_template][:title]
+    assert_equal scorecard_template.visible_to_interviewer, true
+
+    assert_equal scorecard_template_question.scorecard_template_id, scorecard_template.id
+    assert_equal scorecard_template_question.question,
+                 params[:scorecard_template][:scorecard_template_questions_attributes].values.first[:question]
 
     new_event = Event.last
 
     assert_equal new_event.actor_account_id, accounts(:employee_account).id
     assert_equal new_event.type, "scorecard_template_added"
-    assert_equal new_event.eventable_id, position_stage.scorecard_template.id
+    assert_equal new_event.eventable_id, scorecard_template.id
   end
 end

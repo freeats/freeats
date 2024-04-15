@@ -9,15 +9,27 @@ class ATS::ScorecardTemplatesController < ApplicationController
 
   def show; end
 
+  def new
+    case ScorecardTemplates::New.new(position_stage_id: params[:position_stage_id]).call
+    in Success(scorecard_template)
+      @scorecard_template = scorecard_template
+    end
+  end
+
   def edit; end
 
   def create
-    position_stage = PositionStage.find(params[:position_stage_id])
-    case ScorecardTemplates::Add.new(position_stage:, actor_account: current_account).call
+    case ScorecardTemplates::Add.new(
+      params: scorecard_template_params,
+      questions_params:,
+      actor_account: current_account
+    ).call
     in Success(scorecard_template)
       redirect_to ats_scorecard_template_path(scorecard_template)
     in Failure[:scorecard_template_invalid, _e] |
-       Failure[:scorecard_template_not_unique, _e]
+       Failure[:scorecard_template_not_unique, _e] |
+       Failure[:scorecard_template_question_invalid, _e] |
+       Failure[:scorecard_template_question_not_unique, _e]
       render_error _e, status: :unprocessable_entity
     end
   end
@@ -47,17 +59,21 @@ class ATS::ScorecardTemplatesController < ApplicationController
       .permit(
         :title,
         :visible_to_interviewer,
-        scorecard_template_questions_attributes: [:question]
+        :position_stage_id
       )
       .to_h
       .deep_symbolize_keys
   end
 
   def questions_params
-    scorecard_template_params
-    .[](:scorecard_template_questions_attributes)
+    params
+      .require(:scorecard_template)
+      .permit(scorecard_template_questions_attributes: [:question])
+      .[](:scorecard_template_questions_attributes)
       .to_h
-      .filter_map do |_index, hash|
+      .deep_symbolize_keys
+      .values
+      .filter_map do |hash|
       next if hash[:question].blank?
 
       hash
