@@ -137,6 +137,11 @@ CREATE TYPE public.email_message_sent_via AS ENUM (
 --
 
 CREATE TYPE public.event_type AS ENUM (
+    'candidate_added',
+    'candidate_changed',
+    'candidate_merged',
+    'candidate_recruiter_assigned',
+    'candidate_recruiter_unassigned',
     'position_added',
     'position_changed',
     'position_recruiter_assigned',
@@ -3656,6 +3661,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240415091326'),
 ('20240415070643'),
 ('20240411061423'),
 ('20240410042127'),

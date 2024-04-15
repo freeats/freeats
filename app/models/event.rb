@@ -15,6 +15,11 @@ class Event < ApplicationRecord
              inverse_of: :unassigned_events
 
   enum type: %i[
+    candidate_added
+    candidate_changed
+    candidate_merged
+    candidate_recruiter_assigned
+    candidate_recruiter_unassigned
     position_added
     position_changed
     position_recruiter_assigned
