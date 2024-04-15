@@ -181,6 +181,7 @@ CREATE TYPE public.member_access_level AS ENUM (
 CREATE TYPE public.placement_status AS ENUM (
     'qualified',
     'reserved',
+    'availability',
     'location',
     'no_reply',
     'not_interested',
@@ -3655,6 +3656,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240415070643'),
 ('20240411061423'),
 ('20240410042127'),
 ('20240409052033'),

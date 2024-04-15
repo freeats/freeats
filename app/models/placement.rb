@@ -2,7 +2,7 @@
 
 class Placement < ApplicationRecord
   MANUAL_DISQUALIFY_STATUSES =
-    %w[team_fit remote_only location no_reply not_interested workload other_offer
+    %w[availability team_fit remote_only location no_reply not_interested workload other_offer
        overpriced overqualified underqualified position_closed other].freeze
   has_many :scorecards, dependent: :restrict_with_exception
   belongs_to :position
@@ -12,6 +12,7 @@ class Placement < ApplicationRecord
   enum status: %i[
     qualified
     reserved
+    availability
     location
     no_reply
     not_interested

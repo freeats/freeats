@@ -74,27 +74,29 @@ en:
   ats:
     placements:
       disqualify_statuses:
+        availability: >-
+          The candidate is not available for new opportunities at the moment.
         team_fit: >-
           There was a mismatch with the team culture.
         remote_only: >-
           The candidate prefers only remote work.
         location: >-
-          The candidate is not interested in relocating or is in a location from which we don't consider candidates.
+          The candidate is not interested in our office locations.
         no_reply: >-
           The candidate didn't reply to the first message or stopped replying afterwards.
         not_interested: >-
-          The candidate wasn't interested due to tech used, conditions, availability or without specifying reason.
+          The candidate wasn't interested due to an unspecified reason.
         workload: >-
           The candidate's availability didn't match with position requirements.
         other_offer: >-
           The candidate accepted another offer, a counteroffer from the current employer or decided to pursue another career path.
         overpriced: >-
-          The candidate's salary expectations are higher than what can be offered given their level of experience.
+          The candidate's salary expectations are higher than what can be offered.
         overqualified: >-
-          The candidate has far more experience than is needed.
+          The candidate has more experience than needed for the position or they are interested in higher positions.
         underqualified: >-
           The candidate didn't have the required skills or level of experience needed.
         position_closed: >-
           The position was closed.
         other: >-
-          The candidate was rejected for some other reason or the reason is not known.
+          The candidate was rejected for some other reason.
