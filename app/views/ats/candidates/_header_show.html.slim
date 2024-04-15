@@ -44,13 +44,8 @@ ruby:
         ruby:
           candidate_headline = @candidate.headline
           company = @candidate.company
-          arr_to_clamp = if candidate_headline&.downcase&.include?(company&.to_s&.downcase)
-                           [candidate_headline]
-                         else
-                           [candidate_headline, company]
-                         end
           # That regexp is for fixing a long solid headline.
-          text_to_clamp = candidate_turn_array_to_string_with_line_breakers(arr_to_clamp)
+          text_to_clamp = candidate_turn_array_to_string_with_line_breakers([candidate_headline, company])
         = text_to_clamp
         / = clamp_text text_to_clamp, { inline_expand_button: true },
                      html_options: { class: "mt-2 font-body overflow-hidden" },

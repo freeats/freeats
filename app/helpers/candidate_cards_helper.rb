@@ -24,7 +24,7 @@ module CandidateCardsHelper
   def candidate_turn_array_to_string_with_line_breakers(array)
     array.filter(&:present?)
          .join(", ")
-         .gsub(/([\[+`;,{-~])/) { "#{Regexp.last_match(1)}&#8203;" }
+         .gsub(/([\[+`;,{-~])/) { Regexp.last_match(1).to_s }
   end
 
   def candidate_card_contact_info_has_data?(candidate)
