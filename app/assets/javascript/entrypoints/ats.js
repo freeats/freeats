@@ -11,10 +11,12 @@ import "../src/shared/bootstrap_activators";
 import '../src/shared/global_jquery_loader';
 import '../src/shared/modal_remover';
 import '@hotwired/turbo-rails';
-import "../controllers";
 import 'bootstrap';
 import 'trix';
 import 'tributejs';
+
+import '../controllers';
+import '../src/ats';
 
 // Taken from configuring jquery-ui download page https://jqueryui.com/download/ when toggling
 // only "sortable" and "datepicker".

@@ -12,6 +12,8 @@ class Placements::ChangeStage
   def call
     placement.position_stage = placement.position.stages.find_by(name: new_stage)
 
+    return Failure[:new_stage_invalid, "Cannot find stage."] if placement.position_stage.blank?
+
     result = Try[ActiveRecord::RecordInvalid] do
       ActiveRecord::Base.transaction do
         placement.save!

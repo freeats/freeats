@@ -60,8 +60,10 @@ class ATS::PlacementsController < ApplicationController
   end
 
   def change_stage
+    old_stage = @placement.stage
     new_stage = params.require(:stage)
-    return unless new_stage.in?(@placement.stages)
+
+    position_pipeline_card = params[:position_pipeline_card] == "true"
 
     case Placements::ChangeStage.new(
       new_stage:,
@@ -69,14 +71,21 @@ class ATS::PlacementsController < ApplicationController
       actor_account: current_account
     ).call
     in Success(placement)
-      render_placements_notes_panel(placement)
-    in Failure[:placement_invalid, error]
-      render_error error
+      if position_pipeline_card
+        render_pipeline_card_on_change_stage(old_stage:, new_stage:)
+      else
+        render_placements_notes_panel(placement)
+      end
+    in Failure[:placement_invalid, _e] | Failure[:new_stage_invalid, _e]
+      render_error _e
     end
   end
 
   def change_status
+    old_status = @placement.status
     new_status = params.require(:status)
+
+    position_pipeline_card = params[:position_pipeline_card] == "true"
 
     case Placements::ChangeStatus.new(
       new_status:,
@@ -84,10 +93,35 @@ class ATS::PlacementsController < ApplicationController
       actor_account: current_account
     ).call
     in Success(placement)
-      render_placements_notes_panel(placement)
+      if position_pipeline_card
+        render_pipeline_card_on_change_status(placement:, old_status:, new_status:)
+      else
+        render_placements_notes_panel(placement)
+      end
     in Failure[:placement_invalid, error]
       render_error error
     end
+  end
+
+  def fetch_pipeline_placements
+    position = Position.find(params[:position_id])
+    placements = position.placements
+    placements =
+      case params[:pipeline_tab]
+      when "reserved"
+        placements.where(status: :reserved)
+      when "disqualified"
+        placements.where.not(status: %i[reserved qualified])
+      else
+        placements.where(status: :qualified)
+      end
+    fetched_placements = placements.where(stage: params[:stage])
+                                   .join_last_placement_added_or_changed_event
+                                   .order("events.performed_at DESC")
+                                   .offset(params[:offset])
+                                   .limit(params[:limit])
+
+    render partial: "ats/placements/placement_pipeline_card", collection: fetched_placements
   end
 
   private
@@ -105,6 +139,81 @@ class ATS::PlacementsController < ApplicationController
     @relevant_placements = all_placements - @irrelevant_placements
   end
   # rubocop:enable Naming/AccessorMethodName
+
+  def render_pipeline_card_on_change_status(placement:, old_status:, new_status:)
+    total_placements = placement.position.total_placements
+    status_count = lambda do |placement_status|
+      case placement_status
+      when "qualified"
+        total_placements.where(status: :qualified).count
+      when "reserved"
+        total_placements.where(status: :reserved).count
+      else
+        total_placements.where.not(status: %i[qualified reserved]).count
+      end
+    end
+
+    placement_dom_id = ActionView::RecordIdentifier.dom_id(placement)
+    current_status_type = %w[qualified reserved].exclude?(new_status) ? "disqualified" : new_status
+    current_status_count = status_count.call(new_status)
+    old_status_count = status_count.call(old_status)
+    old_status_type =
+      %w[qualified reserved].exclude?(old_status) ? "disqualified" : old_status
+    render_placements = [
+      turbo_stream.remove(placement_dom_id),
+      turbo_stream.update(
+        "turbo_position_pipeline_#{current_status_type}_status_counter",
+        current_status_count
+      ),
+      turbo_stream.update(
+        "turbo_position_pipeline_#{current_status_type}_mobile_status_counter",
+        current_status_count
+      ),
+      turbo_stream.update(
+        "turbo_position_pipeline_#{old_status_type}_status_counter",
+        old_status_count
+      ),
+      turbo_stream.update(
+        "turbo_position_pipeline_#{old_status_type}_mobile_status_counter",
+        old_status_count
+      ),
+      turbo_stream.update_all( # rubocop:disable Rails::SkipsModelValidations
+        ".turbo_position_pipeline_#{placement.stage}_stage_counter",
+        stage_count(placement.stage, old_status)
+      )
+    ]
+
+    render_turbo_stream(render_placements)
+  end
+
+  def render_pipeline_card_on_change_stage(old_stage:, new_stage:)
+    placement_old_dom_id = ActionView::RecordIdentifier.dom_id(@placement)
+    placements_dom_id = "turbo_#{new_stage}_stage_placements"
+    placements_partial = "ats/placements/placement_pipeline_card"
+    placements_locals = { placement_pipeline_card: @placement }
+
+    # rubocop:disable Rails/SkipsModelValidations
+    render_placements =
+      [
+        turbo_stream.remove(placement_old_dom_id),
+        turbo_stream.prepend(
+          placements_dom_id,
+          partial: placements_partial,
+          locals: placements_locals
+        ),
+        turbo_stream.update_all(
+          ".turbo_position_pipeline_#{old_stage}_stage_counter",
+          stage_count(old_stage, @placement.status)
+        ),
+        turbo_stream.update_all(
+          ".turbo_position_pipeline_#{new_stage}_stage_counter",
+          stage_count(new_stage, @placement.status)
+        )
+      ]
+    # rubocop:enable Rails/SkipsModelValidations
+
+    render_turbo_stream([*render_placements])
+  end
 
   def render_placements_notes_panel(placement)
     set_placements_variables(placement)
@@ -134,5 +243,31 @@ class ATS::PlacementsController < ApplicationController
       )
 
     @placement_params
+  end
+
+  def stage_count(placement_stage, placement_status)
+    query =
+      @placement
+      .position
+      .placements
+      .joins(:position_stage)
+      .where(position_stage: { name: placement_stage })
+
+    query =
+      if placement_status.in?(%w[qualified reserved])
+        query.where(status: placement_status)
+      else
+        query.where.not(status: %w[qualified reserved])
+      end
+
+    count =
+      query
+      # .join_last_placement_added_or_changed_event
+      # .order("events.performed_at DESC")
+      .group_by(&:stage)[placement_stage]&.size
+
+    count ||= 0
+
+    count
   end
 end

@@ -50,17 +50,8 @@ class ATS::PositionsController < ApplicationController
     set_side_header_predefined_options
 
     case @active_tab
-    when "info"
-    # when "pipeline"
-    #   set_pipeline_variables
-    # when "sequence_templates"
-    #   @sequence_templates_grid = ATS::SequenceTemplatesGrid.new do |scope|
-    #     scope
-    #       .where(sequence_templateable: @position)
-    #       .order(:name)
-    #       .page(params[:page])
-    #       .per(10)
-    #   end
+    when "pipeline"
+      set_pipeline_variables
     when "activities"
       set_activities_variables
     end
@@ -346,6 +337,40 @@ class ATS::PositionsController < ApplicationController
           }
         end
       end
+  end
+
+  def set_pipeline_variables
+    @placement_limit = BATCH_SIZE_OF_PLACEMENTS_PER_COLUMN
+    total_placements = placements =
+      if params[:assigned_only]
+        @position.total_placements(recruiter_id: current_member.id)
+      else
+        @position.total_placements
+      end
+    placements =
+      case params[:pipeline_tab]
+      when "reserved"
+        placements.where(status: :reserved)
+      when "disqualified"
+        placements.where.not(status: %i[reserved qualified])
+      else
+        placements.where(status: :qualified)
+      end
+
+    @stages = @position.stages.order(:list_index).pluck(:name)
+    @grouped_placements = {}
+    @stages.each { |stage| @grouped_placements[stage] = { count: 0, placements: [] } }
+    placements
+      # TODO: uncomment if events have been added.
+      # .join_last_placement_added_or_changed_event
+      # .order("events.performed_at DESC")
+      .group_by(&:stage).each do |stage, stage_placements|
+      @grouped_placements[stage][:count] = stage_placements.size
+      @grouped_placements[stage][:placements] = stage_placements.first(@placement_limit)
+    end
+    @qualified_count = total_placements.where(status: :qualified).count
+    @reserved_count = total_placements.where(status: :reserved).count
+    @disqualified_count = total_placements.where.not(status: %i[qualified reserved]).count
   end
 
   def set_activities_variables

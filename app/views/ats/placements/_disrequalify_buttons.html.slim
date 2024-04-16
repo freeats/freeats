@@ -1,12 +1,7 @@
-ruby:
-  data_display_static ||= false
-  disqualify_text ||= false
-  requalify_text ||= false
-  tooltip ||= false
-  position_pipeline_card ||= false
+/# locals: (placement:, data_display_static: false, disqualify_text: false, requalify_text: false, tooltip: false, position_pipeline_card: false)
 
 - unless placement.qualified?
-  = button_to change_status_ats_placement_path(placement),
+  = button_to change_status_ats_placement_path(placement, position_pipeline_card:),
               class: "btn btn-light placement-button placement-dropdown-toggle",
               name: "status", value: "qualified",
               form_class: "d-inline-block",
@@ -34,7 +29,7 @@ ruby:
   ul.dropdown-menu.dropdown-menu-end
     - Placement::MANUAL_DISQUALIFY_STATUSES.each do |status|
       li
-        = form_with url: change_status_ats_placement_path(placement) do |form|
+        = form_with url: change_status_ats_placement_path(placement, position_pipeline_card:) do |form|
           ruby:
             tooltip_hash, button_attr =
               if tooltip

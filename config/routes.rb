@@ -53,6 +53,7 @@ Rails.application.routes.draw do
       get :show_card, on: :member
       get :edit_card, on: :member
       patch :update_card, to: "positions#update_card", on: :member
+      get :fetch_pipeline_placements, to: "placements#fetch_pipeline_placements"
     end
 
     resources :scorecard_templates, only: %i[new create show edit update]

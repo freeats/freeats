@@ -48,6 +48,7 @@ class Position < ApplicationRecord
            inverse_of: :position,
            class_name: "PositionStage",
            dependent: :destroy
+  has_many :placements, dependent: :destroy
 
   has_many :events, as: :eventable, dependent: :destroy
 
@@ -71,6 +72,22 @@ class Position < ApplicationRecord
   validate :collaborators_access_level
 
   strip_attributes collapse_spaces: true, allow_empty: true, only: :name
+
+  scope :join_last_placement_added_or_changed_event, lambda {
+    joins(
+      <<~SQL
+        LEFT JOIN events ON events.id = (
+          SELECT id
+          FROM events
+          WHERE events.placement_id = placements.id AND
+                (events.type = 'placement_stage_changed' OR
+                 events.type = 'placement_added')
+          ORDER BY events.performed_at DESC
+          LIMIT 1
+        )
+      SQL
+    )
+  }
 
   def self.color_codes_table
     positions = Position.arel_table
@@ -110,6 +127,12 @@ class Position < ApplicationRecord
 
   def warnings
     @warnings ||= ActiveModel::Errors.new(self)
+  end
+
+  def total_placements(recruiter_id: nil)
+    result = placements.includes(:candidate)
+
+    recruiter_id.present? ? result.where(candidates: { recruiter_id: }) : result
   end
 
   private

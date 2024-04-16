@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import { Tooltip } from 'bootstrap';
-import removeTooltips from './tooltips';
+import { removeTooltips } from './tooltips';
 
 $(document).on(
   'turbo:load',

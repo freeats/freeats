@@ -1,6 +1,6 @@
-/# locals: (placement:, with_text: false, with_forward_button: false, square_button: false, dropdown_item: false)
+/# locals: (placement:, dropdown_item: false, with_text: false, with_forward_button: false, square_button: false, position_pipeline_card: false)
 
-= form_with url: change_stage_ats_placement_path(placement),
+= form_with url: change_stage_ats_placement_path(placement, position_pipeline_card:),
             data: { turbo_frame: :turbo_modal_window },
             class: ("d-inline-block" unless dropdown_item)
   - if with_forward_button && placement.next_stage.present?

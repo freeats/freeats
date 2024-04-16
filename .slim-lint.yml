@@ -3,6 +3,8 @@ linters:
     max: 120
     exclude:
       - "app/views/errors/**/*.slim"
+      - "app/views/ats/placements/_disrequalify_buttons.html.slim"
+      - "app/views/ats/placements/_change_stage_buttons.html.slim"
   FileLength:
     enabled: false
   RuboCop:
