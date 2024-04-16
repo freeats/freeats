@@ -41,9 +41,9 @@ module ATS::PositionsHelper
       when "position_stage_changed"
         "changed stage from <b>#{from}</b> to <b>#{to}</b>"
       when "scorecard_template_added"
-        "#{actor_account_name} added scorecard <b>#{event.eventable.title}</b>"
+        "added scorecard <b>#{event.eventable.title}</b>"
       when "scorecard_template_updated"
-        "#{actor_account_name} updated scorecard <b>#{event.eventable.title}</b>"
+        "updated scorecard <b>#{event.eventable.title}</b>"
       end
 
     sanitize(text)
