@@ -6,6 +6,7 @@ class ATS::CandidatesController < ApplicationController
 
   layout "ats/application"
 
+  ACTIVITIES_PAGINATION_LIMIT = 25
   TABS = %w[Info Emails Scorecards Files Activities].freeze
   INFO_CARDS =
     {
@@ -54,9 +55,20 @@ class ATS::CandidatesController < ApplicationController
         when "files"
           @all_files = @candidate.all_files
         when "activities"
-          # activities
-          # else
-          # something is wrong
+          @all_activities = Event.where(eventable: @candidate).order(performed_at: :desc)
+
+          if params[:event]
+            redirect_to tab_ats_candidate_path(@candidate, :activities,
+                                               page: page_of_activity(params[:event]),
+                                               anchor: "event-#{params[:event]}")
+            return
+          end
+
+          @all_activities =
+            @all_activities
+            .includes(actor_account: :member)
+            .page(params[:page])
+            .per(ACTIVITIES_PAGINATION_LIMIT)
         end
         render "#{@active_tab}_tab", layout: "ats/profile"
       end
@@ -411,5 +423,10 @@ class ATS::CandidatesController < ApplicationController
       .visible_to(current_member)
       .sort_by { _1.notes.first }
       .reverse
+  end
+
+  def page_of_activity(event_id)
+    num_of_activity = @all_activities.index { |activity| activity.id == event_id.to_i }.to_i + 1
+    (num_of_activity.to_f / ACTIVITIES_PAGINATION_LIMIT).ceil
   end
 end

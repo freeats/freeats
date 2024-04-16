@@ -137,6 +137,8 @@ CREATE TYPE public.email_message_sent_via AS ENUM (
 --
 
 CREATE TYPE public.event_type AS ENUM (
+    'active_storage_attachment_added',
+    'active_storage_attachment_removed',
     'candidate_added',
     'candidate_changed',
     'candidate_merged',

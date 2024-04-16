@@ -27,6 +27,7 @@ class Candidate < ApplicationRecord
            inverse_of: :candidate,
            foreign_key: :candidate_id
   has_many :note_threads, as: :notable, dependent: :destroy
+  has_many :events, as: :eventable, dependent: :destroy
 
   belongs_to :candidate_source, optional: true
   belongs_to :location, optional: true

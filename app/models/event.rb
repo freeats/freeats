@@ -15,6 +15,8 @@ class Event < ApplicationRecord
              inverse_of: :unassigned_events
 
   enum type: %i[
+    active_storage_attachment_added
+    active_storage_attachment_removed
     candidate_added
     candidate_changed
     candidate_merged

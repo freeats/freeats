@@ -20,12 +20,12 @@ class Member < ApplicationRecord
   has_many :member_email_addresses, dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :assigned_events,
-           lambda { where(type: :position_recruiter_assigned) },
+           lambda { where(type: %i[position_recruiter_assigned candidate_recruiter_assigned]) },
            class_name: "Event",
            inverse_of: :assigned_member,
            dependent: :destroy
   has_many :unassigned_events,
-           lambda { where(type: :position_recruiter_unassigned) },
+           lambda { where(type: %i[position_recruiter_unassigned candidate_recruiter_unassigned]) },
            class_name: "Event",
            inverse_of: :unassigned_member,
            dependent: :destroy
