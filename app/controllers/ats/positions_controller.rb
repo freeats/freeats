@@ -138,6 +138,7 @@ class ATS::PositionsController < ApplicationController
         target_model: @position,
         target_url: reassign_recruiter_ats_position_path(@position),
         input_button_name: "position[recruiter_id]",
+        unassignment_label: "Unassign recruiter",
         mobile: params[:mobile]
       }
       # rubocop:disable Rails/SkipsModelValidations
