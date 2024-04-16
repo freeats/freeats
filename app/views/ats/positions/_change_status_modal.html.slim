@@ -3,23 +3,23 @@
 - content_for :title
   | Change status to #{new_status.humanize}?
 - content_for :body
-  = render LabeledComponent.new(class: "mb-2",
-                                left_layout_class: "col-2",
-                                right_layout_class: "col-10") do |c|
-    - c.with_label("Reason", size: :small, for_field: :new_change_status_reason)
-    #position-status-select
-      = render SingleSelectComponent.new( \
-          "new_change_status_reason",
-          size: :small,
-          placeholder: "Select reason",
-          required: true,
-          local: { options: options_for_select } \
-        )
-
-  = render LabeledComponent.new(left_layout_class: "col-2",
-                                right_layout_class: "col-10") do |c|
-    - c.with_label("Comment", size: :small, for_field: "position-status-comment")
-    textarea.form-control#position-status-comment placeholder="Comment" rows="5" name="comment" required=true
+  div data-controller="position-change-status-modal"
+    = render LabeledComponent.new(class: "mb-2",
+                                  left_layout_class: "col-2",
+                                  right_layout_class: "col-10") do |c|
+      - c.with_label("Reason", size: :small, for_field: :new_change_status_reason)
+      = select_tag :new_change_status_reason,
+                   options_for_select(options_for_select),
+                   include_blank: true,
+                   class: "form-select",
+                   placeholder: "Select reason",
+                   required: true,
+                   data: { action: "change->position-change-status-modal#toggleRequired" }
+    = render LabeledComponent.new(left_layout_class: "col-2",
+                                  right_layout_class: "col-10") do |c|
+      - c.with_label("Comment", size: :small, for_field: "position-status-comment")
+      textarea#position-status-comment.form-control [data-position-change-status-modal-target="comment"
+                                                     placeholder="Comment" rows="5" name="comment"]
 
 - content_for :footer
   = render ButtonComponent.new(size: :small, variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
