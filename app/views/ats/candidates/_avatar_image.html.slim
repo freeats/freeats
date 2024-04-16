@@ -4,8 +4,8 @@
 .profile-avatar.img-thumbnail class=("profile-avatar-edit float-md-end" if is_form)
   - if candidate.avatar.attached?
     = image_tag candidate.avatar.variant(:medium)
-    - if !is_form && candidate.blacklisted
-      .profile-avatar-overlay.alert-danger Blacklisted
   - else
     = link_to image_tag(ApplicationController.helpers.asset_path("icons/user.png")),
               ApplicationController.helpers.asset_path("icons/user.png")
+  - if !is_form && candidate.blacklisted
+      .profile-avatar-overlay.alert-danger Blacklisted
