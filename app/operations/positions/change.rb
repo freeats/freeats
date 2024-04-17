@@ -9,6 +9,7 @@ class Positions::Change
       name?: Types::Strict::String,
       recruiter_id?: Types::Strict::String.optional,
       collaborator_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
+      hiring_manager_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
       description?: Types::Strict::String
     ).strict
     option :actor_account, Types::Instance(Account)
@@ -19,7 +20,8 @@ class Positions::Change
       name: position.name,
       recruiter_id: position.recruiter_id,
       description: position.description.to_s,
-      collaborator_ids: position.collaborators.pluck(:collaborator_id)
+      collaborator_ids: position.collaborators.pluck(:collaborator_id),
+      hiring_manager_ids: position.hiring_managers.pluck(:hiring_manager_id)
     }
 
     position.assign_attributes(params)
@@ -121,6 +123,20 @@ class Positions::Change
         changed_field: :collaborators,
         changed_from: old_values[:collaborator_ids],
         changed_to: position_collaborator_ids
+      }
+
+      yield Events::Add.new(params: position_changed_params).call
+    end
+
+    position_hiring_manager_ids = position.hiring_managers.pluck(:hiring_manager_id)
+    if old_values[:hiring_manager_ids].sort != position_hiring_manager_ids.sort
+      position_changed_params = {
+        actor_account:,
+        type:,
+        eventable:,
+        changed_field: :hiring_managers,
+        changed_from: old_values[:hiring_manager_ids],
+        changed_to: position_hiring_manager_ids
       }
 
       yield Events::Add.new(params: position_changed_params).call

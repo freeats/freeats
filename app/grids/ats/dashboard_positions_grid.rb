@@ -58,4 +58,12 @@ class ATS::DashboardPositionsGrid
   ) do |model|
     model.collaborators.map(&:name).join(", ")
   end
+
+  column(
+    :hiring_managers,
+    html: true,
+    preload: { hiring_managers: :account }
+  ) do |model|
+    model.hiring_managers.map(&:name).join(", ")
+  end
 end

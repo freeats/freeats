@@ -3,6 +3,7 @@
 ruby:
   changed_data = { deferred_selectize_persistent_dropdown_target: "changedField" }
   collaborators_data = changed_data if changed_field == "collaborator_ids"
+  hiring_managers_data = changed_data if changed_field == "hiring_managers_ids"
 
 / Dropdowns inside the side header are hidden for a moment during clicking tabs and all content below are jumping,
 / so min-height here
@@ -38,4 +39,23 @@ ruby:
             include_hidden: true,
             local: { options: @options_for_collaborators },
             data: collaborators_data \
+          )
+
+  = render LabeledComponent.new(class: "mb-2",
+                                left_layout_class: "col-3", right_layout_class: "col-9",
+                                left_class: "text-truncate") do |c|
+    - c.with_label("Hiring managers", size: :small, class: "text-gray-600", for_field: "position_hiring_managers_ids")
+    div [data-bs-toggle=("tooltip" if @position.hiring_managers.present?)
+         data-bs-title=(@position.hiring_managers.map { _1.account.name }).join(", ")]
+      = form_with model: [:ats, @position],
+                  url: update_side_header_ats_position_path(@position),
+                  local: true,
+                  class: "turbo-instant-submit" do |form|
+        = render MultipleSelectComponent.new( \
+            form,
+            method: :hiring_manager_ids,
+            size: :small,
+            include_hidden: true,
+            local: { options: @options_for_hiring_managers },
+            data: hiring_managers_data \
           )

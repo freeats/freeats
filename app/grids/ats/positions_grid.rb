@@ -40,7 +40,7 @@ class ATS::PositionsGrid
     select: lambda {
       Member
         .joins(:account)
-        .active
+        .where(access_level: Position::RECRUITER_ACCESS_LEVEL)
         .or(
           Member.where(
             <<~SQL
@@ -63,11 +63,61 @@ class ATS::PositionsGrid
   filter(
     :collaborators,
     :enum,
-    select: -> { Member.joins(:account).active.order("accounts.name").pluck("accounts.name", :id) },
+    select: -> {
+      Member
+        .joins(:account)
+        .where(access_level: Position::COLLABORATORS_ACCESS_LEVEL)
+        .or(
+          Member
+            .where(
+              <<~SQL
+                EXISTS(
+                  SELECT 1
+                  FROM positions_collaborators
+                  JOIN positions ON positions_collaborators.position_id = positions.id
+                  WHERE positions_collaborators.collaborator_id = members.id
+                  AND positions.status != 'closed'
+                )
+              SQL
+            )
+        )
+        .order("accounts.name")
+        .pluck("accounts.name", :id)
+    },
     include_blank: "Collaborator",
     placeholder: "Collaborator"
   ) do |collaborator_id|
     joins(:collaborators).where(positions_collaborators: { collaborator_id: })
+  end
+
+  filter(
+    :hiring_managers,
+    :enum,
+    select: -> {
+      Member
+        .joins(:account)
+        .where(access_level: Position::HIRING_MANAGERS_ACCESS_LEVEL)
+        .or(
+          Member
+            .where(
+              <<~SQL
+                EXISTS(
+                  SELECT 1
+                  FROM positions_hiring_managers
+                  JOIN positions ON positions_hiring_managers.position_id = positions.id
+                  WHERE positions_hiring_managers.hiring_manager_id = members.id
+                  AND positions.status != 'closed'
+                )
+              SQL
+            )
+        )
+        .order("accounts.name")
+        .pluck("accounts.name", :id)
+    },
+    include_blank: "Hiring manager",
+    placeholder: "Hiring manager"
+  ) do |hiring_manager_id|
+    joins(:hiring_managers).where(positions_hiring_managers: { hiring_manager_id: })
   end
 
   #
@@ -107,6 +157,16 @@ class ATS::PositionsGrid
   ) do |model|
     model.collaborators.map do |collaborator|
       collaborator.account.name
+    end.join(", ")
+  end
+
+  column(
+    :hiring_managers,
+    html: true,
+    preload: { hiring_managers: :account }
+  ) do |model|
+    model.hiring_managers.map do |hiring_manager|
+      hiring_manager.account.name
     end.join(", ")
   end
 end

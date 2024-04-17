@@ -32,6 +32,7 @@ class Position < ApplicationRecord
 
   RECRUITER_ACCESS_LEVEL = %w[admin employee].freeze
   COLLABORATORS_ACCESS_LEVEL = %w[admin employee].freeze
+  HIRING_MANAGERS_ACCESS_LEVEL = %w[admin employee hiring_manager].freeze
 
   has_and_belongs_to_many :collaborators,
                           class_name: "Member",
@@ -70,6 +71,7 @@ class Position < ApplicationRecord
 
   validate :recruiter_access_level
   validate :collaborators_access_level
+  validate :hiring_managers_access_level
 
   strip_attributes collapse_spaces: true, allow_empty: true, only: :name
 
@@ -160,6 +162,20 @@ class Position < ApplicationRecord
     errors.add(
       :base,
       "Collaborators must be #{Position::COLLABORATORS_ACCESS_LEVEL.join(' or ')}"
+    )
+  end
+
+  def hiring_managers_access_level
+    if hiring_managers.blank? ||
+       hiring_managers.all? do |c|
+         c.access_level.in?([*Position::HIRING_MANAGERS_ACCESS_LEVEL, "inactive"])
+       end
+      return
+    end
+
+    errors.add(
+      :base,
+      "Hiring managers must be #{Position::HIRING_MANAGERS_ACCESS_LEVEL.join(' or ')}"
     )
   end
 end

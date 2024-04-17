@@ -13,17 +13,10 @@ module ATS::PositionsHelper
       when "position_added"
         "added the position"
       when "position_changed"
-        if field == "collaborators"
-          to = Member.joins(:account).where(id: to).pluck("accounts.name").join(", ")
-          from = Member.joins(:account).where(id: from).pluck("accounts.name").join(", ")
-        end
-
-        if to.present? && from.present?
-          "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
-        elsif to.present?
-          "added #{field} <b>#{to}</b>"
-        elsif from.present?
-          "removed #{field} <b>#{from}</b>"
+        if field.in?(["collaborators", "hiring managers"])
+          assigned_and_unassigned_message(field, from, to)
+        else
+          from_and_to_message(field, from, to)
         end
       when "position_recruiter_assigned"
         <<~TEXT
@@ -132,5 +125,30 @@ module ATS::PositionsHelper
 
   def change_status_reason_tooltip_text(position)
     Position::CHANGE_STATUS_REASON_LABELS[position.change_status_reason&.to_sym]&.downcase
+  end
+
+  def assigned_and_unassigned_message(field, from, to)
+    to = Member.joins(:account).where(id: to).pluck("accounts.name")
+    from = Member.joins(:account).where(id: from).pluck("accounts.name")
+    assigned = (to - from).join(", ")
+    unassigned = (from - to).join(", ")
+
+    if assigned.present? && unassigned.present?
+      "assigned <b>#{assigned}</b> and unassigned <b>#{unassigned}</b> as #{field}"
+    elsif assigned.present?
+      "assigned <b>#{assigned}</b> as #{field}"
+    elsif unassigned.present?
+      "unassigned <b>#{unassigned}</b> as #{field}"
+    end
+  end
+
+  def from_and_to_message(field, from, to)
+    if to.present? && from.present?
+      "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
+    elsif to.present?
+      "added #{field} <b>#{to}</b>"
+    elsif from.present?
+      "removed #{field} <b>#{from}</b>"
+    end
   end
 end

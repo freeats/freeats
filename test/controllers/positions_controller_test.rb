@@ -188,6 +188,35 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_empty event.changed_from
   end
 
+  test "should update hiring managers and create event" do
+    position = positions(:ruby_position)
+    params = {}
+    params[:hiring_manager_ids] =
+      Member
+      .where(access_level: Position::HIRING_MANAGERS_ACCESS_LEVEL)
+      .where.not(id: position.recruiter_id)
+      .order("random()")
+      .first(3)
+      .pluck(:id) -
+      [position.recruiter_id, params[:recruiter_id]]
+
+    assert_empty position.hiring_managers
+
+    assert_difference "Event.count" do
+      patch update_side_header_ats_position_path(position), params: { position: params }
+    end
+
+    assert_response :success
+    position.reload
+    event = Event.last
+
+    assert_equal position.hiring_manager_ids.sort, params[:hiring_manager_ids].sort
+    assert_equal event.type, "position_changed"
+    assert_equal event.changed_field, "hiring_managers"
+    assert_equal event.changed_to.sort, params[:hiring_manager_ids].sort
+    assert_empty event.changed_from
+  end
+
   test "should add and then update position_stage with creating events" do
     position = positions(:ruby_position)
 
