@@ -100,6 +100,72 @@ class Candidate < ApplicationRecord
       .where("candidate_email_addresses.address = ANY (ARRAY[?])", emails_array)
   end
 
+  def self.duplicates_by_emails_links_and_phones(emails:, links:, phones:)
+    join_same_addresses_and_links_query = <<~SQL
+      JOIN (
+        SELECT
+          candidates.id,
+          array_agg(intersection.same_addresses) AS same_addresses,
+          array_agg(intersection.same_links) AS same_links,
+          array_agg(intersection.same_phones) AS same_phones
+        FROM candidates
+        JOIN (
+          SELECT
+            candidates.id,
+            candidate_email_addresses.address AS same_addresses,
+            NULL AS same_links,
+            NULL AS same_phones
+          FROM candidates
+          LEFT JOIN candidate_email_addresses ON candidate_email_addresses.candidate_id = candidates.id
+          WHERE candidate_email_addresses.address IN (SELECT unnest(array[:addresses]::citext[]))
+            AND status != 'invalid'
+
+          UNION
+
+          SELECT
+            candidates.id,
+            NULL AS same_addresses,
+            candidate_links.url as same_links,
+            NULL AS same_phones
+          FROM candidates
+          LEFT JOIN candidate_links ON candidate_links.candidate_id = candidates.id
+          WHERE candidate_links.url IN (SELECT unnest(array[:links]::varchar[]))
+
+          UNION
+
+          SELECT
+            candidates.id,
+            NULL AS same_addresses,
+            NULL AS same_links,
+            candidate_phones.phone AS same_phones
+          FROM candidates
+          LEFT JOIN candidate_phones ON candidate_phones.candidate_id = candidates.id
+          WHERE candidate_phones.phone IN (SELECT unnest(array[:phones]::varchar[]))
+            AND status != 'invalid'
+            AND (type IS NULL OR type = 'personal')
+        ) AS intersection ON candidates.id = intersection.id
+        GROUP BY candidates.id
+      ) AS candidates_with_intersections ON candidates.id = candidates_with_intersections.id
+    SQL
+
+    select(
+      "candidates.*",
+      "candidates_with_intersections.same_addresses",
+      "candidates_with_intersections.same_links",
+      "candidates_with_intersections.same_phones"
+    )
+      .joins(
+        sanitize_sql_for_conditions(
+          [
+            join_same_addresses_and_links_query,
+            { addresses: emails,
+              links:,
+              phones: }
+          ]
+        )
+      )
+  end
+
   def candidate_emails
     candidate_email_addresses.pluck(:address)
   end
@@ -166,7 +232,24 @@ class Candidate < ApplicationRecord
     end
   end
 
-  def sorted_links
+  def sorted_links(status: nil)
+    domains = AccountLink::DOMAINS
+    social_links = []
+    other_links = []
+    links_array = links(status:)
+    links_array.each do |link|
+      if domains[link]
+        index = domains.values.find_index { |k, _| k == domains[link] }
+        social_links << [index, link]
+      else
+        other_links << link
+      end
+    end
+    social_links.sort!.each(&:shift).flatten!
+    [social_links, other_links]
+  end
+
+  def sorted_candidate_links
     domains = AccountLink::DOMAINS
     sorted_links = candidate_links.to_a
     sorted_links&.sort_by do |link|
@@ -332,5 +415,69 @@ class Candidate < ApplicationRecord
 
   def all_files
     files.joins(:blob).order(id: :desc)
+  end
+
+  def duplicates_for_merge_dialog
+    not_merged_duplicates
+      .unscope(:select)
+      .select(
+        "candidates.id",
+        "candidates.full_name",
+        "candidates_with_intersections.same_addresses",
+        "candidates_with_intersections.same_links",
+        "candidates_with_intersections.same_phones"
+      ).to_a
+  end
+
+  def not_merged_duplicates
+    duplicates.where(merged_to: nil)
+  end
+
+  def merged_duplicates
+    merged_duplicates_sql = <<~SQL
+      WITH RECURSIVE t(id) AS (
+        SELECT id FROM candidates WHERE merged_to = ?
+        UNION
+        SELECT candidates.id FROM candidates, t WHERE merged_to = t.id
+      )
+      SELECT t.id FROM t;
+    SQL
+    merged_duplicate_ids = self.class.find_by_sql(
+      self.class.sanitize_sql_for_conditions([merged_duplicates_sql, id])
+    ).map(&:id)
+    self.class.where(id: merged_duplicate_ids)
+  end
+
+  def duplicates
+    self
+      .class
+      .duplicates_by_emails_links_and_phones(
+        emails: all_emails(status: %i[current outdated]),
+        links: sorted_links.first,
+        phones: all_phones(status: %i[current outdated], type: [:personal, nil])
+      )
+      .where.not(id:)
+  end
+
+  def all_emails(status: nil, type: nil)
+    status = { status: } if status
+    type = { type: } if type
+    candidate_email_addresses
+      .where(status)
+      .where(type)
+      .order(:list_index)
+      .pluck(:address)
+      .uniq
+  end
+
+  def all_phones(status: nil, type: nil)
+    status = { status: } if status
+    type = { type: } if type
+    candidate_phones
+      .where(status)
+      .where(type)
+      .order(:list_index)
+      .pluck(:phone)
+      .uniq
   end
 end

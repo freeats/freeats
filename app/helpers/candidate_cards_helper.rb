@@ -122,7 +122,7 @@ module CandidateCardsHelper
   def candidate_card_beautiful_links(candidate)
     return if candidate.candidate_links.blank?
 
-    beautiful_links = candidate.sorted_links.map do |link|
+    beautiful_links = candidate.sorted_candidate_links.map do |link|
       if link.status == "current"
         account_link_display(link.url)
       else
