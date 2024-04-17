@@ -104,7 +104,7 @@ Rails.application.routes.draw do
   end
 
   constraints(Rodauth::Rails.authenticate { |rodauth| rodauth.admin? || rodauth.employee? }) do
-    mount Blazer::Engine, at: "blazer"
+    mount Blazer::Engine, at: "stats"
   end
   # rubocop:enable Style/SymbolProc
 end
