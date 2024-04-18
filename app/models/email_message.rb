@@ -1,7 +1,22 @@
 # frozen_string_literal: true
 
 class EmailMessage < ApplicationRecord
+  MAIL_SERVICE_ADDRESSES = %w[
+    mailer-daemon@googlemail.com
+    mailer-daemon@yahoo.com
+    mailer-daemon@kapsi.fi
+    notifications@gitflow.com
+    notification@slack.com
+    notifications@mixmax.com
+    postmaster@outlook.com
+    noreply@clickup.com
+    noreply@hh.ru
+    noreply@calamari.io
+    noreply@github.com
+  ].freeze
+
   has_many :email_message_addresses, dependent: :destroy
+  has_many :events, as: :eventable, dependent: :destroy
 
   belongs_to :email_thread
 

@@ -48,6 +48,18 @@ class Member < ApplicationRecord
     joins(:account).where(accounts: { name: text.scan(/\B@(\p{L}+\s\p{L}+)/).flatten })
   }
 
+  def self.find_by_email(email)
+    joins(:account).find_by(account: { email: })
+  end
+
+  def self.imap_accounts
+    includes(:email_addresses)
+      .where.not(email_addresses: { refresh_token: "" })
+      .map(&:email_addresses)
+      .flatten
+      .map(&:imap_account)
+  end
+
   def active?
     !inactive?
   end

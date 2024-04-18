@@ -47,7 +47,7 @@ class Candidate < ApplicationRecord
 
   scope :with_emails, lambda { |emails|
     not_merged
-      .left_outer_joins(:email_addresses)
+      .left_outer_joins(:candidate_email_addresses)
       .where(
         <<~SQL,
           candidate_email_addresses.address IN
@@ -415,6 +415,26 @@ class Candidate < ApplicationRecord
 
   def all_files
     files.joins(:blob).order(id: :desc)
+  end
+
+  def stop_sequences(
+    with_status: :stopped,
+    with_exited_at: Time.zone.now,
+    actor_user: nil,
+    properties: {}
+  )
+    stopped_sequences = []
+    transaction do
+      Sequence.to_stop(all_emails).each do |sequence|
+        stopped_sequences << sequence if sequence.stop(
+          with_status:,
+          with_exited_at:,
+          actor_user:,
+          properties:
+        )
+      end
+    end
+    stopped_sequences
   end
 
   def duplicates_for_merge_dialog

@@ -195,6 +195,15 @@ GEM
       i18n (>= 0.7)
       multi_json
       request_store (>= 1.0)
+    google-cloud-env (2.1.1)
+      faraday (>= 1.0, < 3.a)
+    googleauth (1.11.0)
+      faraday (>= 1.0, < 3.a)
+      google-cloud-env (~> 2.1)
+      jwt (>= 1.4, < 3.0)
+      multi_json (~> 1.11)
+      os (>= 0.9, < 2.0)
+      signet (>= 0.16, < 2.a)
     hashie (5.0.0)
     htmlbeautifier (1.4.3)
     htmlentities (4.3.4)
@@ -315,6 +324,7 @@ GEM
     omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
       omniauth (~> 2.0)
+    os (1.1.4)
     parallel (1.24.0)
     parser (3.3.0.5)
       ast (~> 2.4.1)
@@ -548,6 +558,7 @@ DEPENDENCIES
   faker
   faraday
   gon
+  googleauth
   hashie
   image_processing
   inline_svg
