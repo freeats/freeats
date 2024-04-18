@@ -1,0 +1,12 @@
+h1 style="font-size: 24px;"
+  | Profile
+
+ul class="list-reset mb-4"
+  - @email_addresses.each do |email_address|
+    li class="mb-2"
+      span = email_address[:address]
+      span class="text-secondary"
+        =< email_address[:token_present] ? "(linked)" : "(token blank)"
+
+= render ButtonLinkComponent.new(@link_gmail_uri)
+  | Link email

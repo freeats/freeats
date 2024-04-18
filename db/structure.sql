@@ -3031,6 +3031,13 @@ CREATE INDEX index_locations_on_type ON public.locations USING btree (type);
 
 
 --
+-- Name: index_member_email_addresses_on_address; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_member_email_addresses_on_address ON public.member_email_addresses USING btree (address);
+
+
+--
 -- Name: index_member_email_addresses_on_member_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3663,6 +3670,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240416053719'),
 ('20240415091326'),
 ('20240415070643'),
 ('20240411061423'),

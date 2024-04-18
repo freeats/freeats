@@ -261,32 +261,71 @@ access to email and not keeping any tokens for offline actions. In order
 to set up this system, the following actions should be performed:
 
 1. Go to <https://console.developers.google.com/>.
-2. Select your project (or create it) in the upper left corner.
-3. Go to "OAuth consent screen" tab.
-4. Choose to create a new consent screen.
-5. Assuming you own a Gmail domain for you company, choose "internal" type.
+1. Select your project (or create it) in the upper left corner.
+1. Go to "OAuth consent screen" tab.
+1. Assuming you own a Gmail domain for you company, choose "internal" type.
    This will avoid any reviews from Google and you won't need to write
    documents on data policy and privacy.
-6. Record your Gmail domain there, links to documents can be any links to
+1. Record your Gmail domain there, links to documents can be any links to
    the deployed instance, no one checks them.
-7. Save and next.
-8. In "Scopes" choose only email scope.
-9. Finish setting the consent screen.
-10. Go to "Credentials" tab.
-11. Click "Create credentials" -> "OAuth client ID".
-12. In "Application type" choose "Web application".
-13. Under "Authorized redirect URIs" add a new item and, if your website is
-    deployed at `example.com`, the URI should be
-    `https://example.com/auth/google_oauth2/callback`.
-14. Fill all necessary fields and save it.
-15. Save "Client ID" and "Client secret" for further use. You can later download
-    it again, it will not be lost.
-16. Open a terminal and go to the project root, e.g. `cd projects/ats`.
-17. Open production credentials with `rails credentials:edit -e production`.
-18. Fill in the keys `client_id` and `client_secret` in `google_oauth`.
-19. Close and save it.
+1. Save and next.
+1. In "Scopes" choose "Add or remove scopes" and choose only email scope
+   `.../auth/userinfo.email`.
+1. Finish setting the consent screen.
+1. Go to "Credentials" tab.
+1. Click "Create credentials" -> "OAuth client ID".
+1. In "Application type" choose "Web application".
+1. Under "Authorized redirect URIs" add a new item and, if your website is
+   deployed at `example.com`, the URI should be
+   `https://example.com/auth/google_oauth2/callback`.
+1. Fill all necessary fields and save it.
+1. Save "Client ID" and "Client secret" for further use.
+1. Open a terminal and go to the project root, e.g. `cd projects/ats`.
+1. Open production credentials with `rails credentials:edit -e production`.
+1. Fill in the keys `client_id` and `client_secret` in `google_oauth`.
+1. Close and save it.
 
-Now everything should work.
+Now you should be able to log in into the application.
+
+### Gmail integration
+
+Application uses Gmail integration for synchronizing email messages.
+The user can choose which emails he/she wants to synchronize. For this to
+work we need to set up a Google OAuth integration (similar to authentication).
+In order to set up this system, the following actions should be performed:
+
+1. Go to <https://console.developers.google.com/>.
+1. Create new project in the upper left corner. If you have a project set up
+   for authentication, this will require another project. Separate projects will
+   be used for authentication and email synchronization because they require
+   different permissions.
+1. Go to "Enabled APIs & services", click "Enable APIs and services".
+1. In the search bar find "Gmail".
+1. Click "Enable".
+1. Go to "OAuth consent screen" tab.
+1. Assuming you own a Gmail domain for you company, choose "internal" type.
+   This will avoid any reviews from Google and you won't need to write
+   documents on data policy and privacy.
+1. Record your Gmail domain there, links to documents can be any links to
+   the deployed instance, no one checks them.
+1. Save and next.
+1. In "Scopes" choose "Add or remove scopes" and choose full email access
+   `https://mail.google.com/`.
+1. Finish setting the consent screen.
+1. Go to "Credentials" tab.
+1. Click "Create credentials" -> "OAuth client ID".
+1. In "Application type" choose "Web application".
+1. Under "Authorized redirect URIs" add a new item and, if your website is
+   deployed at `example.com`, the URI should be
+   `https://example.com/ats/profile/link-email`.
+1. Fill all necessary fields and save it.
+1. Save "Client ID" and "Client secret" for further use.
+1. Open a terminal and go to the project root, e.g. `cd projects/ats`.
+1. Open production credentials with `rails credentials:edit -e production`.
+1. Fill in the keys `client_id` and `client_secret` in `gmail_linking`.
+1. Close and save it.
+
+Now you should be able to link emails.
 
 ## Administration
 

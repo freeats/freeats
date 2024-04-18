@@ -17,7 +17,7 @@ class Member < ApplicationRecord
            inverse_of: :recruiter,
            foreign_key: :recruiter_id,
            dependent: :restrict_with_exception
-  has_many :member_email_addresses, dependent: :destroy
+  has_many :email_addresses, dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :assigned_events,
            lambda { where(type: %i[position_recruiter_assigned candidate_recruiter_assigned]) },

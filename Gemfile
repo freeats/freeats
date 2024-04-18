@@ -17,6 +17,7 @@ gem "dry-initializer"
 gem "dry-logger"
 gem "dry-monads"
 gem "dry-schema"
+gem "faraday"
 gem "gon"
 gem "hashie"
 gem "image_processing"
@@ -46,6 +47,10 @@ gem "strip_attributes"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "view_component", "~> 3.0"
+
+group :production, :development, :staging do
+  gem "signet"
+end
 
 group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]

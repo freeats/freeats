@@ -8,10 +8,6 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   namespace :ats do
-    resource :lookbook, only: [], controller: "lookbook" do
-      get :fetch_options_for_select_component_preview
-    end
-
     resources :candidates, except: %i[show edit] do
       get "/", to: redirect("/ats/candidates/%{id}/info"), on: :member, id: /\d+/
       get :show_card, on: :member
@@ -58,6 +54,14 @@ Rails.application.routes.draw do
 
     resources :scorecard_templates, only: %i[new create show edit update]
     resources :scorecards, only: %i[new create show edit update]
+
+    resource :profile, only: %i[show] do
+      get :link_gmail, path: "link-gmail"
+    end
+
+    resource :lookbook, only: [], controller: "lookbook" do
+      get :fetch_options_for_select_component_preview
+    end
   end
 
   namespace :api, defaults: { format: "json" } do

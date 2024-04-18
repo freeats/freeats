@@ -1,4 +1,7 @@
 #alerts.font-medium
+  - if @email_blank_tokens_alert.present?
+    .notification.alert-danger role="alert"
+      = sanitize @email_blank_tokens_alert, attributes: %w[href rel target]
   - if alert.present?
     .notification.alert-danger role="alert"
       = sanitize Array(alert).join("<br>"), attributes: %w[href rel target]

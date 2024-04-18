@@ -150,6 +150,12 @@ Rails/Pluck:
   Enabled: false
 Rails/I18nLocaleTexts:
   Enabled: false
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test
+    - staging
 Minitest/LiteralAsExpectedArgument:
   Enabled: true
 Style/MultilineBlockChain:

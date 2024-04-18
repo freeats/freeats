@@ -3,6 +3,8 @@
 class ApplicationController < ActionController::Base
   include ErrorHandler
 
+  before_action :check_gmail_blank_tokens
+
   add_flash_types :warning
 
   private
@@ -35,4 +37,19 @@ class ApplicationController < ActionController::Base
     @current_member ||= current_account&.member
   end
   helper_method :current_account, :current_member
+
+  def check_gmail_blank_tokens
+    return unless current_member
+
+    addresses =
+      current_member
+      .email_addresses
+      .where(refresh_token: "")
+      .order(:address)
+      .pluck(:address)
+    return if addresses.blank?
+
+    @email_blank_tokens_alert =
+      %(Please link #{addresses.to_sentence} emails at <a href="#{ats_profile_path}">profile</a>.)
+  end
 end

@@ -45,8 +45,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
         ul.navbar-nav.gap-1
           li.dropdown-divider.my-2 role="separator"
           li.nav-item
-            / TODO: Replace with the correct path
-            = link_to "Profile", "/",
+            = link_to "Profile", ats_profile_path,
                       class: "nav-link #{'nav-link-selected' if is_ats_profile}"
           li.nav-item
             = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
@@ -58,8 +57,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
           = picture_avatar_icon current_account.avatar, {},
             class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo"
         ul.dropdown-menu.dropdown-menu-end
-          / TODO: Replace with the correct path
-          li = link_to "Profile", "/",
+          li = link_to "Profile", ats_profile_path,
                       class: "dropdown-item #{'nav-link-selected' if is_ats_profile}"
           li
             = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",

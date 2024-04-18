@@ -17,6 +17,8 @@ module ActiveSupport
     # otherwise we got an error when trying to compose url for the file.
     ActiveSupport.on_load(:action_controller) { include ActiveStorage::SetCurrent }
 
+    Faraday.default_adapter = :test
+
     def sign_in(account)
       post("/test-environment-only/please-login", params: { email: account.email })
     end

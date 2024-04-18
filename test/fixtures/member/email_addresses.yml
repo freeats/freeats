@@ -4,3 +4,7 @@ admin_first_email_address:
   token: dummy
   refresh_token: dummy
   last_email_synchronization_uid: 1712128953
+
+admin_second_email_address:
+  member: admin_member
+  address: admin.second@admin.com
