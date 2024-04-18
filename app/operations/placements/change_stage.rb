@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Placements::ChangeStage
-  include Dry::Monads[:result, :try]
+  include Dry::Monads[:result, :do, :try]
 
   include Dry::Initializer.define -> do
     option :new_stage, Types::Strict::String
@@ -10,15 +10,36 @@ class Placements::ChangeStage
   end
 
   def call
+    old_stage = placement.stage
+
+    return Success(placement) if old_stage == new_stage
+
     placement.position_stage = placement.position.stages.find_by(name: new_stage)
 
     return Failure[:new_stage_invalid, "Cannot find stage."] if placement.position_stage.blank?
 
+    placement_changed_params = {
+      actor_account:,
+      type: :placement_changed,
+      eventable: placement,
+      changed_field: :stage,
+      changed_from: old_stage,
+      changed_to: new_stage
+    }
+
+    ActiveRecord::Base.transaction do
+      yield save_placement(placement)
+      yield Events::Add.new(params: placement_changed_params).call
+    end
+
+    Success(placement)
+  end
+
+  private
+
+  def save_placement(placement)
     result = Try[ActiveRecord::RecordInvalid] do
-      ActiveRecord::Base.transaction do
-        placement.save!
-        # TODO: create events
-      end
+      placement.save!
     end.to_result
 
     case result

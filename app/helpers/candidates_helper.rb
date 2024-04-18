@@ -10,14 +10,16 @@ module CandidatesHelper
   end
 
   def candidate_display_activity(event)
-    actor_name = event.actor_account.name
+    actor_account_name = compose_actor_account_name(event)
 
-    text =
+    text = "#{actor_account_name} "
+
+    text <<
       case event.type
       when "candidate_added"
-        "#{actor_name} added the candidate"
+        "added the candidate"
       when "candidate_changed"
-        message = "#{actor_name} "
+        message = ""
         to = event.changed_to
         from = event.changed_from
         field = event.changed_field
@@ -33,27 +35,56 @@ module CandidatesHelper
           message << "#{to ? 'added' : 'removed'} <b>Don't contact</b> status"
         else
           message <<
-            if to.present? && from.present?
-              "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
-            elsif to.present?
-              "added <b>#{to}</b> #{field}"
-            elsif from.present?
-              "removed <b>#{from}</b> #{field}"
-            end
+          if to.present? && from.present?
+            "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
+          elsif to.present?
+            "added <b>#{to}</b> #{field}"
+          elsif from.present?
+            "removed <b>#{from}</b> #{field}"
+          end
         end
         message
       when "candidate_recruiter_assigned"
         <<~TEXT
-          #{actor_name} assigned the candidate \
-          to #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)}
+          assigned the candidate to
+          #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)}
         TEXT
       when "candidate_recruiter_unassigned"
         <<~TEXT
-          #{actor_name} unassigned \
-          #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)} \
+          unassigned
+          #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)}
           from the candidate
         TEXT
+      when "placement_added"
+        position = event.eventable.position
+        "assigned the candidate to #{link_to(position.name, tab_ats_position_url(position))}"
+      when "placement_changed"
+        placement_changed_text(event)
       end
     sanitize(text)
+  end
+
+  private
+
+  def placement_changed_text(event)
+    position = event.eventable.position
+    position_link = link_to(position.name, tab_ats_position_url(position))
+
+    case event.changed_field
+    when "status"
+      case event.changed_to
+      when "qualified"
+        "requalified the candidate on #{position_link}"
+      when "reserved"
+        "reserved the candidate on #{position_link}"
+      else
+        <<~TEXT
+          disqualified the candidate on #{position_link}
+          with reason <b>#{event.changed_to.humanize}</b>
+        TEXT
+      end
+    when "stage"
+      "moved the candidate to stage <b>#{event.changed_to.humanize}</b> on #{position_link}"
+    end
   end
 end

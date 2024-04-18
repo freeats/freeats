@@ -35,7 +35,7 @@ class Positions::Add
     case result
     in Success(_)
       Success(position)
-    in Failure[ActiveRecord::RecordInvalid, e]
+    in Failure[ActiveRecord::RecordInvalid => e]
       Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
     end
   end

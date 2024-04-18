@@ -55,7 +55,15 @@ class ATS::CandidatesController < ApplicationController
         when "files"
           @all_files = @candidate.all_files
         when "activities"
-          @all_activities = Event.where(eventable: @candidate).order(performed_at: :desc)
+          @all_activities =
+            @candidate
+            .events
+            .union(
+              Event
+              .where(eventable_type: "Placement")
+              .where(eventable_id: @candidate.placements.ids)
+            )
+            .order(performed_at: :desc)
 
           if params[:event]
             redirect_to tab_ats_candidate_path(@candidate, :activities,
@@ -66,7 +74,10 @@ class ATS::CandidatesController < ApplicationController
 
           @all_activities =
             @all_activities
-            .includes(actor_account: :member)
+            .includes(
+              :eventable,
+              actor_account: :member
+            )
             .page(params[:page])
             .per(ACTIVITIES_PAGINATION_LIMIT)
         end

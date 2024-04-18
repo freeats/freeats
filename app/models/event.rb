@@ -22,6 +22,8 @@ class Event < ApplicationRecord
     candidate_merged
     candidate_recruiter_assigned
     candidate_recruiter_unassigned
+    placement_added
+    placement_changed
     position_added
     position_changed
     position_recruiter_assigned

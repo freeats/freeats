@@ -51,7 +51,7 @@ class Positions::ChangeStatus
     case result
     in Success(_)
       Success()
-    in Failure[ActiveRecord::RecordInvalid, e]
+    in Failure[ActiveRecord::RecordInvalid => e]
       Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
     end
   end

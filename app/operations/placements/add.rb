@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Placements::Add
-  include Dry::Monads[:result, :try]
+  include Dry::Monads[:result, :do, :try]
 
   include Dry::Initializer.define -> do
     option :params, Types::Strict::Hash.schema(
@@ -35,10 +35,19 @@ class Placements::Add
       end
     end
 
+    ActiveRecord::Base.transaction do
+      yield save_placement(placement)
+      yield add_event(placement:, actor_account:)
+    end
+
+    Success(placement.reload)
+  end
+
+  private
+
+  def save_placement(placement)
     result = Try[ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique] do
       placement.save!
-
-      # TODO: add events
     end.to_result
 
     case result
@@ -49,5 +58,17 @@ class Placements::Add
     in Failure[ActiveRecord::RecordNotUnique => e]
       Failure[:placement_not_unique, placement.errors.full_messages.presence || e.to_s]
     end
+  end
+
+  def add_event(placement:, actor_account:)
+    placement_added_params = {
+      actor_account:,
+      type: :placement_added,
+      eventable: placement
+    }
+
+    yield Events::Add.new(params: placement_added_params).call
+
+    Success()
   end
 end

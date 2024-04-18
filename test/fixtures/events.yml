@@ -8,3 +8,39 @@ ruby_position_recruiter_assigned:
   actor_account: admin_account
   eventable: ruby_position (Position)
   changed_to: <%= ActiveRecord::FixtureSet.identify(:admin_member) %>
+
+sam_ruby_replied_placement_added:
+  type: :placement_added
+  actor_account: admin_account
+  eventable: sam_ruby_replied (Placement)
+  performed_at: <%= 1.week.ago %>
+
+sam_ruby_contacted_placement_added:
+  type: :placement_added
+  actor_account: admin_account
+  eventable: sam_ruby_contacted (Placement)
+  performed_at: <%= 1.week.ago %>
+
+sam_golang_sourced_placement_added:
+  type: :placement_added
+  actor_account: admin_account
+  eventable: sam_golang_sourced (Placement)
+  performed_at: <%= 1.week.ago %>
+
+sam_golang_replied_placement_added:
+  type: :placement_added
+  actor_account: admin_account
+  eventable: sam_golang_replied (Placement)
+  performed_at: <%= 1.week.ago %>
+
+john_ruby_hired_placement_added:
+  type: :placement_added
+  actor_account: admin_account
+  eventable: john_ruby_hired (Placement)
+  performed_at: <%= 1.week.ago %>
+
+ivan_golang_sourced_placement_added:
+  type: :placement_added
+  actor_account: admin_account
+  eventable: ivan_golang_sourced (Placement)
+  performed_at: <%= 1.week.ago %>

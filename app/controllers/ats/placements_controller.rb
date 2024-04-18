@@ -35,8 +35,7 @@ class ATS::PlacementsController < ApplicationController
           placement:,
           candidate_name: placement.candidate.full_name,
           position_name: placement.position.name,
-          # TODO: use placement added event
-          date_when_assigned: placement.created_at,
+          date_when_assigned: placement.added_event.performed_at,
           stage: placement.stage,
           reason: placement.position.change_status_reason
         }

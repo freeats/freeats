@@ -4,7 +4,16 @@ class Placement < ApplicationRecord
   MANUAL_DISQUALIFY_STATUSES =
     %w[availability team_fit remote_only location no_reply not_interested workload other_offer
        overpriced overqualified underqualified position_closed other].freeze
+  has_many :events, as: :eventable, dependent: :destroy
   has_many :scorecards, dependent: :restrict_with_exception
+
+  has_one :added_event,
+          -> { where(type: "placement_added") },
+          class_name: "Event",
+          foreign_key: :eventable_id,
+          inverse_of: false,
+          dependent: :destroy
+
   belongs_to :position
   belongs_to :position_stage
   belongs_to :candidate
