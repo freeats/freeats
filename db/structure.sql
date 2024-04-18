@@ -1534,6 +1534,16 @@ ALTER SEQUENCE public.positions_id_seq OWNED BY public.positions.id;
 
 
 --
+-- Name: positions_interviewers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.positions_interviewers (
+    position_id bigint NOT NULL,
+    interviewer_id bigint NOT NULL
+);
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3145,6 +3155,13 @@ CREATE UNIQUE INDEX index_position_stages_on_position_id_and_name ON public.posi
 
 
 --
+-- Name: index_positions_interviewers_on_position_id_and_interviewer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_positions_interviewers_on_position_id_and_interviewer_id ON public.positions_interviewers USING btree (position_id, interviewer_id);
+
+
+--
 -- Name: index_positions_on_recruiter_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3426,6 +3443,14 @@ ALTER TABLE ONLY public.solid_queue_failed_executions
 
 
 --
+-- Name: positions_interviewers fk_rails_4094d59edc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.positions_interviewers
+    ADD CONSTRAINT fk_rails_4094d59edc FOREIGN KEY (position_id) REFERENCES public.positions(id);
+
+
+--
 -- Name: notes fk_rails_4a1d11a9b2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3455,6 +3480,14 @@ ALTER TABLE ONLY public.member_email_addresses
 
 ALTER TABLE ONLY public.notes
     ADD CONSTRAINT fk_rails_556b0a09d2 FOREIGN KEY (member_id) REFERENCES public.members(id);
+
+
+--
+-- Name: positions_interviewers fk_rails_6879654d6e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.positions_interviewers
+    ADD CONSTRAINT fk_rails_6879654d6e FOREIGN KEY (interviewer_id) REFERENCES public.members(id);
 
 
 --
@@ -3672,6 +3705,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240417151916'),
 ('20240416104851'),
 ('20240416053719'),
 ('20240415091326'),

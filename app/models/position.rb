@@ -33,6 +33,7 @@ class Position < ApplicationRecord
   RECRUITER_ACCESS_LEVEL = %w[admin employee].freeze
   COLLABORATORS_ACCESS_LEVEL = %w[admin employee].freeze
   HIRING_MANAGERS_ACCESS_LEVEL = %w[admin employee hiring_manager].freeze
+  INTERVIEWERS_ACCESS_LEVEL = %w[admin employee interviewer].freeze
 
   has_and_belongs_to_many :collaborators,
                           class_name: "Member",
@@ -43,6 +44,11 @@ class Position < ApplicationRecord
                           class_name: "Member",
                           association_foreign_key: :hiring_manager_id,
                           join_table: :positions_hiring_managers
+
+  has_and_belongs_to_many :interviewers,
+                          class_name: "Member",
+                          association_foreign_key: :interviewer_id,
+                          join_table: :positions_interviewers
 
   has_many :stages,
            -> { order(:list_index) },
@@ -72,6 +78,7 @@ class Position < ApplicationRecord
   validate :recruiter_access_level
   validate :collaborators_access_level
   validate :hiring_managers_access_level
+  validate :interviewers_access_level
 
   strip_attributes collapse_spaces: true, allow_empty: true, only: :name
 
@@ -176,6 +183,20 @@ class Position < ApplicationRecord
     errors.add(
       :base,
       "Hiring managers must be #{Position::HIRING_MANAGERS_ACCESS_LEVEL.join(' or ')}"
+    )
+  end
+
+  def interviewers_access_level
+    if interviewers.blank? ||
+       interviewers.all? do |c|
+         c.access_level.in?([*Position::INTERVIEWERS_ACCESS_LEVEL, "inactive"])
+       end
+      return
+    end
+
+    errors.add(
+      :base,
+      "Interviewers must be #{Position::INTERVIEWERS_ACCESS_LEVEL.join(' or ')}"
     )
   end
 end

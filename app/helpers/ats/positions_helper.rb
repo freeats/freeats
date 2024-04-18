@@ -13,7 +13,7 @@ module ATS::PositionsHelper
       when "position_added"
         "added the position"
       when "position_changed"
-        if field.in?(["collaborators", "hiring managers"])
+        if field.in?(["collaborators", "hiring managers", "interviewers"])
           assigned_and_unassigned_message(field, from, to)
         else
           from_and_to_message(field, from, to)

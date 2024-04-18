@@ -299,7 +299,8 @@ class ATS::PositionsController < ApplicationController
             :description,
             stages_attributes: {},
             collaborator_ids: [],
-            hiring_manager_ids: []
+            hiring_manager_ids: [],
+            interviewer_ids: []
           )
   end
 
@@ -350,6 +351,20 @@ class ATS::PositionsController < ApplicationController
             text: member.account.name,
             value: member.id,
             selected: @position.hiring_manager_ids&.include?(member.id)
+          }
+        end
+      end
+
+    @options_for_interviewers =
+      Member
+      .includes(:account)
+      .where(access_level: Position::INTERVIEWERS_ACCESS_LEVEL)
+      .filter_map do |member|
+        if member.id != @position.recruiter_id
+          {
+            text: member.account.name,
+            value: member.id,
+            selected: @position.interviewer_ids&.include?(member.id)
           }
         end
       end
