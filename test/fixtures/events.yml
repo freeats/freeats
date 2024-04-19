@@ -44,3 +44,15 @@ ivan_golang_sourced_placement_added:
   actor_account: admin_account
   eventable: ivan_golang_sourced (Placement)
   performed_at: <%= 1.week.ago %>
+
+ruby_position_contacted_scorecard_added:
+  type: :scorecard_added
+  actor_account: admin_account
+  eventable: ruby_position_contacted_scorecard (Scorecard)
+  performed_at: <%= 1.week.ago %>
+
+ruby_position_replied_scorecard_added:
+  type: :scorecard_added
+  actor_account: admin_account
+  eventable: ruby_position_replied_scorecard (Scorecard)
+  performed_at: <%= 1.week.ago %>

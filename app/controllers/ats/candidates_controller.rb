@@ -63,6 +63,14 @@ class ATS::CandidatesController < ApplicationController
               .where(eventable_type: "Placement")
               .where(eventable_id: @candidate.placements.ids)
             )
+            .union(
+              Event
+              .where(eventable_type: "Scorecard")
+              .where(
+                eventable_id:
+                  @candidate.placements.extract_associated(:scorecards).flatten.pluck(:id)
+              )
+            )
             .order(performed_at: :desc)
 
           if params[:event]

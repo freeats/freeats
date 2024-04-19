@@ -27,7 +27,8 @@ class ATS::ScorecardsController < ApplicationController
 
     case Scorecards::Add.new(
       params: scorecard_params,
-      questions_params:
+      questions_params:,
+      actor_account: current_account
     ).call
     in Success(scorecard)
       redirect_to ats_scorecard_path(scorecard)
@@ -46,7 +47,8 @@ class ATS::ScorecardsController < ApplicationController
     case Scorecards::Change.new(
       scorecard: @scorecard,
       params: scorecard_params,
-      questions_params:
+      questions_params:,
+      actor_account: current_account
     ).call
     in Success(scorecard)
       redirect_to ats_scorecard_path(scorecard)
