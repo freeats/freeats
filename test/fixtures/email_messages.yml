@@ -9,3 +9,15 @@ john_msg1:
   html_body: |-
     <%= File.read(Rails.root.join("test/fixtures/files/john_msg1.html")).gsub("\n", "\n    ") %>
   plain_mime_type: text/plain
+
+john_msg2:
+  email_thread: john
+  message_id: <c1c8df1e-db3c-0211-872b-fcf6f6cb3215@mixmax.com>
+  in_reply_to: <c1c8df1e-db3c-0211-872b-fcf6f6cb3214@mixmax.com>
+  timestamp: 1533080757
+  subject: "Second message"
+  plain_body: |-
+    <%= File.read(Rails.root.join("test/fixtures/files/john_msg1.txt")).gsub("\n", "\n    ") %>
+  html_body: |-
+    <%= File.read(Rails.root.join("test/fixtures/files/john_msg1.html")).gsub("\n", "\n    ") %>
+  plain_mime_type: text/plain

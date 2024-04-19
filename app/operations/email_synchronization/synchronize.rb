@@ -32,7 +32,8 @@ class EmailSynchronization::Synchronize
       end
     end
 
-    Member.postprocess_imap_accounts(imap_accounts)
+    Member::EmailAddress.postprocess_imap_accounts(imap_accounts)
+
     Success()
   end
 

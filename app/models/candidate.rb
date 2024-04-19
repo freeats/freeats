@@ -500,4 +500,16 @@ class Candidate < ApplicationRecord
       .pluck(:phone)
       .uniq
   end
+
+  def synchronize_email_messages(addresses = [], now: false, queue: :sync_emails)
+    return if queue == :scraping_processing
+
+    (addresses.presence || all_emails).each do |address|
+      if now
+        SynchronizeEmailMessagesForEmailJob.set(queue:).perform_now(address)
+      else
+        SynchronizeEmailMessagesForEmailJob.set(queue:).perform_later(address)
+      end
+    end
+  end
 end

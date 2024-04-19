@@ -30,7 +30,7 @@
 
   - tab_labels[:emails] = capture
     | Emails
-    / - if @email_count.positive?
+    - if @email_count.positive?
       | &nbsp;
       span.badge.bg-secondary = @email_count
 

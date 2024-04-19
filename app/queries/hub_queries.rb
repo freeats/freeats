@@ -43,6 +43,21 @@ class HubQueries
       end
     end
 
+    def last_messages_of_each_thread(email_thread_ids:, per_page: 25, page: 1, includes: {})
+      return { records: [], total_count: 0 } if email_thread_ids.blank?
+
+      parameters = { thread_ids: Array(email_thread_ids), per_page:, page: }
+      sql = extract_query("last_messages_of_each_thread")
+      sql, binds = inject_variables(sql, parameters)
+
+      records = EmailMessage.find_by_sql(sql, binds)
+      ActiveRecord::Associations::Preloader.new(records:, associations: includes).call
+
+      total_count = email_thread_ids.size
+
+      { records:, total_count: }
+    end
+
     private
 
     def inject_variables(sql, parameters)

@@ -34,6 +34,8 @@ class Event < ApplicationRecord
     scorecard_updated
     scorecard_template_added
     scorecard_template_updated
+    email_sent
+    email_received
   ].index_with(&:to_s)
 
   self.inheritance_column = nil

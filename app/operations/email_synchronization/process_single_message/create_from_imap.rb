@@ -8,12 +8,10 @@ class EmailSynchronization::ProcessSingleMessage::CreateFromImap
     option :email_thread_id, Types::Coercible::Integer
     option :message_member, Types::Instance(EmailSynchronization::MessageMember)
     option :sent_via, Types::Symbol.enum(:gmail, :hub_compose, :hub_reply, :hub_sequence)
-    option :email_template_id, Types::Coercible::Integer.optional, default: proc {}
   end
 
   def call
     email_message = EmailMessage.create!(
-      gmail_history_id: 0,
       email_thread_id:,
       timestamp: message.timestamp,
       subject: message.subject,
@@ -21,13 +19,9 @@ class EmailSynchronization::ProcessSingleMessage::CreateFromImap
       plain_mime_type: message.plain_mime_type,
       html_body: message.html_body,
       sent_via:,
-      email_template_id:,
       message_id: message.message_id,
       in_reply_to: message.in_reply_to || "",
       references: message.references || [],
-      in_reply_to_header: "",
-      references_header: "",
-      message_id_header: "",
       autoreply_headers: message.autoreply_headers || {}
     )
 

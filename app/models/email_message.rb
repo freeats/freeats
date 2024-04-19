@@ -14,6 +14,12 @@ class EmailMessage < ApplicationRecord
     noreply@calamari.io
     noreply@github.com
   ].freeze
+  DAEMON_USERNAMES = %w[
+    mailer-daemon
+    postmaster
+    postmester
+    microsoftexchange
+  ].freeze
 
   has_many :email_message_addresses, dependent: :destroy
   has_many :events, as: :eventable, dependent: :destroy
@@ -148,6 +154,24 @@ class EmailMessage < ApplicationRecord
     )
   end
 
+  def sender_avatar_url(hashed_avatars, sender_emails)
+    if hashed_avatars.key?(sender_emails.first)
+      hashed_avatars[sender_emails.first]
+    else
+      candidate =
+        Candidate
+        .joins(:candidate_email_addresses)
+        .find_by(
+          merged_to: nil,
+          candidate_email_addresses: { address: sender_emails.first }
+        )
+
+      hashed_avatars[sender_emails.first] = candidate.avatar.variant(:medium) if candidate.present?
+    end
+
+    hashed_avatars[sender_emails.first]
+  end
+
   def sanitized_body(hide_quote: true)
     if html_body.present?
       doc = Nokogiri::HTML(html_body)
@@ -260,5 +284,21 @@ class EmailMessage < ApplicationRecord
         thread_emails = email_thread.email_message_addresses.pluck(:address)
         Candidate.with_emails(thread_emails)
       end
+  end
+
+  def url(object_id, controller_name)
+    path_params = {
+      id: object_id,
+      tab: "emails",
+      host: ENV.fetch("HOST_URL", "localhost:3000"),
+      protocol: ATS::Application.config.force_ssl ? "https" : "http",
+      email_message_id: id
+    }
+    case controller_name
+    when "candidates"
+      Rails.application.routes.url_helpers.tab_ats_candidate_url(**path_params)
+    else
+      raise "Unsupported model"
+    end
   end
 end

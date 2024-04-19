@@ -7,6 +7,7 @@ class ATS::CandidatesController < ApplicationController
   layout "ats/application"
 
   ACTIVITIES_PAGINATION_LIMIT = 25
+  DEFAULT_TAB_PAGINATION_LIMIT = 10
   TABS = %w[Info Emails Scorecards Files Activities].freeze
   INFO_CARDS =
     {
@@ -20,7 +21,7 @@ class ATS::CandidatesController < ApplicationController
                                          show_card edit_card update_card remove_avatar
                                          upload_file change_cv_status delete_file
                                          delete_cv_file download_cv_file upload_cv_file
-                                         assign_recruiter]
+                                         assign_recruiter synchronize_email_messages]
 
   def index
     @candidates_grid = ATS::CandidatesGrid.new(
@@ -45,7 +46,32 @@ class ATS::CandidatesController < ApplicationController
         when "info"
           # info
         when "emails"
-          # emails
+          candidate_emails = @candidate.all_emails
+          @hashed_avatars = {}
+          @single_message = params[:email_message_id].present?
+          @ordered_candidate_email_threads =
+            if @single_message
+              EmailMessage.with_addresses.where(id: params[:email_message_id])
+            else
+              result = HubQueries.last_messages_of_each_thread(
+                email_thread_ids:
+                  EmailThread.get_threads_with_addresses(
+                    email_address: candidate_emails
+                  ).ids,
+                includes: %i[events email_thread],
+                per_page: DEFAULT_TAB_PAGINATION_LIMIT,
+                page: params[:page]
+              )
+              Kaminari
+                .paginate_array(result[:records], total_count: result[:total_count])
+                .page(params[:page])
+                .per(DEFAULT_TAB_PAGINATION_LIMIT)
+            end
+          @specified_mail_to = params[:mail_to]
+          @mail_to_address = @candidate.all_emails(status: :current, type: :personal).first
+          # TODO: uncomment after adding sequences.
+          # @running_sequences = Sequence.where(to: candidate_emails, status: :running)
+          @running_sequences = []
         when "scorecards"
           @placements_with_scorecard_templates =
             @candidate
@@ -301,6 +327,12 @@ class ATS::CandidatesController < ApplicationController
               disposition: :attachment
   end
 
+  def synchronize_email_messages
+    @candidate.synchronize_email_messages
+    redirect_to tab_ats_candidate_path(@candidate.id, "emails"),
+                notice: "Started synchronizing emails. Please check back in a few minutes."
+  end
+
   private
 
   def candidate_params
@@ -377,6 +409,11 @@ class ATS::CandidatesController < ApplicationController
         @tabs.keys.first
       end
     @assigned_recruiter = @candidate.recruiter
+    @email_count =
+      EmailMessage.where(
+        email_thread_id:
+          EmailThread.get_threads_with_addresses(email_address: @candidate.all_emails).select(:id)
+      ).count
     set_placements_variables
   end
 

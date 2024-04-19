@@ -142,6 +142,12 @@ Naming/MethodParameterName:
 Naming/VariableNumber:
   AllowedIdentifiers: [render_401, render_404, render_422, render_500]
 
+Rails/DynamicFindBy:
+  AllowedMethods:
+    - find_by_sql
+    - find_by_name
+    - find_by_address
+
 Rails:
   Enabled: true
 Rails/Delegate:

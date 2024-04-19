@@ -1,11 +1,23 @@
-john_to:
+john_msg1_to:
   field: to
   address: john@gmail.com
   position: 1
   email_message: john_msg1
 
-john_from:
+john_msg1_from:
   field: from
   address: oleg@toughbyte.com
   position: 1
   email_message: john_msg1
+
+john_msg2_to:
+  field: to
+  address: oleg@toughbyte.com
+  position: 1
+  email_message: john_msg2
+
+john_msg2_from:
+  field: from
+  address: john@gmail.com
+  position: 1
+  email_message: john_msg2

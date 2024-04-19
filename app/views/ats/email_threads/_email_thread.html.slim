@@ -1,0 +1,36 @@
+/# locals: (hashed_avatars:, candidate_ids:, single_message: false, email_thread:, disabled_reason:, controller_name:)
+/ candidate_ids - a comma-separated list of person IDs; used to be passed to compose form request
+/                and for fetching all emails of the thread.
+/ controller_name - string; name of the controller that renders this partial
+/ single_message - boolean; needed to check the rendering of the load button of the thread messages
+/ email_thread is not a EmailThread instance, it is an instance of EmailMessage model but
+/ with other fields fetched with raw SQL to allow query optimizations.
+ruby:
+  thread = email_thread
+  message_params = {
+    hashed_avatars:, candidate_ids:, controller_name:
+  }
+  thread_with_multiple_messages = !single_message && thread.total_messages_count > 1
+
+div id=dom_id(thread, :turbo)
+  .card.mt-3
+    .card-header
+      .card-title.mb-0.d-flex.align-items-center
+        .flex-grow-1
+          = thread.subject
+    .email-body
+      ul.list-group.list-group-flush
+        div id=(dom_id(thread.email_thread) if thread.email_thread)
+          - message = thread
+          = render message, **message_params
+          - if thread_with_multiple_messages
+            = button_to fetch_messages_ats_email_thread_path,
+                        params: { \
+                          email_thread_id: thread.email_thread_id,
+                          candidate_ids:,
+                          controller_name: \
+                        },
+                        method: :get,
+                        class: "list-group-item list-group-item-action text-center text-secondary",
+                        data: { turbo_submits_with: "Loading..." }
+              'Load #{PrettyNumberComponent.new(thread.total_messages_count - 1, object: "more message").call}

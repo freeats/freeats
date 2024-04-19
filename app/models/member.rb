@@ -47,9 +47,15 @@ class Member < ApplicationRecord
   scope :mentioned_in, lambda { |text|
     joins(:account).where(accounts: { name: text.scan(/\B@(\p{L}+\s\p{L}+)/).flatten })
   }
+  scope :with_email, lambda {
+    active.includes(user: :identities).where(users: { identities: { provider: "toughbyte" } })
+  }
 
-  def self.find_by_email(email)
-    joins(:account).find_by(account: { email: })
+  def self.find_by_address(address)
+    joins(:account, :email_addresses)
+      .where(account: { email: address })
+      .where(email_addresses: { address: })
+      .first
   end
 
   def self.imap_accounts
@@ -81,5 +87,9 @@ class Member < ApplicationRecord
 
   def reacted_to_note?(note)
     reacted_notes.find { _1.id == note.id }
+  end
+
+  def any_email_service_linked?
+    email_addresses.where.not(refresh_token: "").exists?
   end
 end

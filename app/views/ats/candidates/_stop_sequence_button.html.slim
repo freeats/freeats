@@ -1,0 +1,24 @@
+/# locals(object:, running_sequences:)
+
+#turbo_stop_sequence_button
+  - if running_sequences.present?
+    ruby:
+      list_of_sequences = running_sequences.map { "<li>#{_1.name}</li>" }.join
+      content = ["These sequences will be stopped for <b>#{object.name}</b>:",
+                 "<ul> #{list_of_sequences} </ul>"].join("\n")
+
+    = form_with url: stop_sequences_ats_candidate_path(object)
+      = render ButtonComponent.new(size: :small,
+                                   data: { \
+                                     toggle: "ats-confirmation",
+                                     title: "Stop sequences?",
+                                     content:,
+                                     btn_cancel_label: "Cancel",
+                                     btn_ok_label: "Stop" \
+                                   })
+        | Stop #{"sequence".pluralize(running_sequences.size)}
+  - else
+    span.d-inline-block [data-bs-toggle="tooltip"
+        title="No sequences running for any of the emails associated with the candidate"]
+      = render ButtonComponent.new(size: :small, disabled: true)
+        | Stop sequences

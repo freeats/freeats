@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       delete :delete_cv_file, on: :member
       patch :change_cv_status, on: :member
       get :download_cv_file, on: :member
+      post :stop_sequences, on: :member
+      post :synchronize_email_messages, on: :member
       get ":tab", to: "candidates#show", on: :member,
                   tab: /info|emails|scorecards|files|activities/, as: "tab"
 
@@ -61,6 +63,10 @@ Rails.application.routes.draw do
 
     resource :lookbook, only: [], controller: "lookbook" do
       get :fetch_options_for_select_component_preview
+    end
+
+    resources :email_threads, only: [] do
+      get :fetch_messages, on: :member
     end
   end
 

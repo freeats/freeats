@@ -92,11 +92,11 @@ class EmailSynchronization::ProcessSingleMessage
   end
 
   def find_member(message)
-    if (member = Member.find_by(email: message.clean_from_emails))
+    if (member = Member.find_by_address(message.clean_from_emails))
       Success(EmailSynchronization::MessageMember.new(field: :from, member:))
-    elsif (member = Member.find_by(email: message.clean_to_emails))
+    elsif (member = Member.find_by_address(message.clean_to_emails))
       Success(EmailSynchronization::MessageMember.new(field: :to, member:))
-    elsif Member.find_by(email: message.clean_cc_emails + message.clean_bcc_emails)
+    elsif Member.find_by_address(message.clean_cc_emails + message.clean_bcc_emails)
       # Receiving email requires the recruiter to answer this email and we have business logic which
       # creates tasks if there was no reply. For now we only consider "receiving" when the email
       # is sent directly to the recruiter via the "to" field.
@@ -107,7 +107,7 @@ class EmailSynchronization::ProcessSingleMessage
   end
 
   def find_existing_email_thread_if_present(message)
-    case EmailThreading::FindExistingEmailThread.new(gmail_message: message).call
+    case EmailThreading::FindExistingEmailThread.new(imap_message: message).call
     in Success(thread)
       Success(thread)
     in Failure(:thread_not_found)

@@ -23,6 +23,20 @@ module Gmail::Auth
       [client.access_token, client.refresh_token]
     end
 
+    def with_tokens(access_token, refresh_token)
+      Signet::OAuth2::Client.new(
+        authorization_uri: "https://accounts.google.com/o/oauth2/auth",
+        token_credential_uri: "https://oauth2.googleapis.com/token",
+        client_id: Rails.application.credentials.gmail_linking.client_id!,
+        client_secret: Rails.application.credentials.gmail_linking.client_secret!,
+        scope: <<~TEXT,
+          https://mail.google.com
+        TEXT
+        access_token:,
+        refresh_token:
+      )
+    end
+
     private
 
     def signet_client

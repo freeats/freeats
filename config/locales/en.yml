@@ -100,3 +100,8 @@ en:
           The position was closed.
         other: >-
           The candidate was rejected for some other reason.
+    profiles:
+      emails_tab:
+        compose_button_disabled_tooltip:
+          email_not_linked: Email is not linked in Profile
+          candidate_no_emails: Candidate doesn't have emails with status Current and type Personal

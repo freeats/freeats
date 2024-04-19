@@ -155,7 +155,9 @@ CREATE TYPE public.event_type AS ENUM (
     'scorecard_added',
     'scorecard_updated',
     'scorecard_template_added',
-    'scorecard_template_updated'
+    'scorecard_template_updated',
+    'email_sent',
+    'email_received'
 );
 
 
@@ -3707,6 +3709,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240419091633'),
 ('20240418121526'),
 ('20240417151916'),
 ('20240416104851'),
