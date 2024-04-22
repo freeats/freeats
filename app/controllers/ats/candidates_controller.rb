@@ -2,7 +2,6 @@
 
 class ATS::CandidatesController < ApplicationController
   include Dry::Monads[:result]
-  # TODO: add authorization
 
   layout "ats/application"
 
@@ -22,6 +21,13 @@ class ATS::CandidatesController < ApplicationController
                                          upload_file change_cv_status delete_file
                                          delete_cv_file download_cv_file upload_cv_file
                                          assign_recruiter synchronize_email_messages]
+  before_action :authorize!, only: %i[create new index]
+  before_action -> { authorize!(@candidate) },
+                only: %i[show show_header edit_header update_header
+                         show_card edit_card update_card remove_avatar
+                         upload_file change_cv_status delete_file
+                         delete_cv_file download_cv_file upload_cv_file
+                         assign_recruiter synchronize_email_messages]
 
   def index
     @candidates_grid = ATS::CandidatesGrid.new(

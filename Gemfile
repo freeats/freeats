@@ -4,6 +4,7 @@ source "https://rubygems.org"
 
 ruby file: ".ruby-version"
 
+gem "action_policy"
 gem "active_record_union"
 # TODO: remove version restriction after fixing URL validation in the gem
 # https://github.com/sporkmonger/addressable/issues/511

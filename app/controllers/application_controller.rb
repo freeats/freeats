@@ -4,8 +4,11 @@ class ApplicationController < ActionController::Base
   include ErrorHandler
 
   before_action :check_gmail_blank_tokens
+  rescue_from ActionPolicy::Unauthorized, with: :user_not_authorized
 
   add_flash_types :warning
+
+  authorize :member, through: :current_member
 
   private
 
@@ -29,6 +32,26 @@ class ApplicationController < ActionController::Base
     render turbo_stream: stream_array, status:
   end
 
+  def user_not_authorized
+    respond_to do |format|
+      format.html do
+        unless current_member&.active?
+          redirect_to login_url
+          return
+        end
+
+        redirect_back fallback_location: root_url,
+                      alert: "You are not allowed to perform this action."
+      end
+      format.json do
+        render_error "You are not allowed to perform this action.", status: :forbidden
+      end
+      format.turbo_stream do
+        render_error "You are not allowed to perform this action.", status: :forbidden
+      end
+    end
+  end
+
   def current_account
     rodauth.rails_account
   end
@@ -36,7 +59,13 @@ class ApplicationController < ActionController::Base
   def current_member
     @current_member ||= current_account&.member
   end
-  helper_method :current_account, :current_member
+
+  # Dummy method for action_policy, shouldn't be used anywhere.
+  def current_user
+    current_account
+  end
+
+  helper_method :current_account, :current_member, :current_user
 
   def check_gmail_blank_tokens
     return unless current_member

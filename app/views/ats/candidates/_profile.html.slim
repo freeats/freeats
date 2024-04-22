@@ -48,18 +48,22 @@
     li.nav-item
       = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
                 class: "nav-link #{'active' if @active_tab == 'info'}"
-    li.nav-item
-      = link_to tab_labels[:emails], tab_ats_candidate_path(@candidate, :emails),
-                class: "nav-link #{'active' if @active_tab == 'emails'}"
-    li.nav-item
-      = link_to tab_labels[:scorecards], tab_ats_candidate_path(@candidate, :scorecards),
-                class: "nav-link #{'active' if @active_tab == 'scorecards'}"
-    li.nav-item
-      = link_to tab_labels[:files], tab_ats_candidate_path(@candidate, :files),
-                class: "nav-link #{'active' if @active_tab == 'files'}"
-    li.nav-item
-      = link_to tab_labels[:activities], tab_ats_candidate_path(@candidate, :activities),
-                class: "nav-link #{'active' if @active_tab == 'activities'}"
+    - if allowed_to?(:show_emails?, @candidate)
+      li.nav-item
+        = link_to tab_labels[:emails], tab_ats_candidate_path(@candidate, :emails),
+                  class: "nav-link #{'active' if @active_tab == 'emails'}"
+    - if allowed_to?(:show_scorecards?, @candidate)
+      li.nav-item
+        = link_to tab_labels[:scorecards], tab_ats_candidate_path(@candidate, :scorecards),
+                  class: "nav-link #{'active' if @active_tab == 'scorecards'}"
+    - if allowed_to?(:show_files?, @candidate)
+      li.nav-item
+        = link_to tab_labels[:files], tab_ats_candidate_path(@candidate, :files),
+                  class: "nav-link #{'active' if @active_tab == 'files'}"
+    - if allowed_to?(:show_activities?, @candidate)
+      li.nav-item
+        = link_to tab_labels[:activities], tab_ats_candidate_path(@candidate, :activities),
+                  class: "nav-link #{'active' if @active_tab == 'activities'}"
   .d-md-none.dropdown.w-100.profile-mobile-nav
     button.btn.form-control.d-flex.align-items-center.text-dark.dropdown-toggle.w-100.px-3[
         id="dropdownNavLink" data-bs-toggle="dropdown"]
@@ -67,14 +71,18 @@
     ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
       li = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
                    class: "dropdown-item #{'active' if @active_tab == 'info'}"
-      li = link_to tab_labels[:emails], tab_ats_candidate_path(@candidate, :emails),
-                   class: "dropdown-item #{'active' if @active_tab == 'emails'}"
-      li = link_to tab_labels[:scorecards], tab_ats_candidate_path(@candidate, :scorecards),
-                   class: "dropdown-item #{'active' if @active_tab == 'scorecards'}"
-      li = link_to tab_labels[:files], tab_ats_candidate_path(@candidate, :files),
-                   class: "dropdown-item #{'active' if @active_tab == 'files'}"
-      li = link_to tab_labels[:activities], tab_ats_candidate_path(@candidate, :activities),
-                   class: "dropdown-item #{'active' if @active_tab == 'activities'}"
+      - if allowed_to?(:show_emails?, @candidate)
+        li = link_to tab_labels[:emails], tab_ats_candidate_path(@candidate, :emails),
+                     class: "dropdown-item #{'active' if @active_tab == 'emails'}"
+      - if allowed_to?(:show_scorecards?, @candidate)
+        li = link_to tab_labels[:scorecards], tab_ats_candidate_path(@candidate, :scorecards),
+                     class: "dropdown-item #{'active' if @active_tab == 'scorecards'}"
+      - if allowed_to?(:show_files?, @candidate)
+        li = link_to tab_labels[:files], tab_ats_candidate_path(@candidate, :files),
+                     class: "dropdown-item #{'active' if @active_tab == 'files'}"
+      - if allowed_to?(:show_activities?, @candidate)
+        li = link_to tab_labels[:activities], tab_ats_candidate_path(@candidate, :activities),
+                     class: "dropdown-item #{'active' if @active_tab == 'activities'}"
 
 / TABS LIST END
 
