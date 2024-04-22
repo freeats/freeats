@@ -8,8 +8,6 @@ class AddEventsToEventType < ActiveRecord::Migration[7.1]
       ALTER TYPE event_type ADD VALUE 'candidate_merged' BEFORE 'position_added';
       ALTER TYPE event_type ADD VALUE 'candidate_recruiter_assigned' BEFORE 'position_added';
       ALTER TYPE event_type ADD VALUE 'candidate_recruiter_unassigned' BEFORE 'position_added';
-      ALTER TYPE event_type ADD VALUE 'active_storage_attachment_added' BEFORE 'candidate_added';
-      ALTER TYPE event_type ADD VALUE 'active_storage_attachment_removed' BEFORE 'candidate_added';
     SQL
   end
 end

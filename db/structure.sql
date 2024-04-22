@@ -3709,6 +3709,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240422114747'),
 ('20240419091633'),
 ('20240418121526'),
 ('20240418070256'),
