@@ -19,7 +19,8 @@ module CandidatesHelper
       when "candidate_added"
         "added the candidate"
       when "candidate_changed"
-        message = ""
+        # Otherwise the string is frozen and returns error upon calling <<
+        message = +""
         to = event.changed_to
         from = event.changed_from
         field = event.changed_field
@@ -52,9 +53,13 @@ module CandidatesHelper
       when "candidate_recruiter_unassigned"
         <<~TEXT
           unassigned
-          #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)}
+          #{event_actor_account_name_for_assignment(event:, member: event.unassigned_member)}
           from the candidate
         TEXT
+      when "active_storage_attachment_added"
+        "added file <b>#{event.properties['name']}</b>"
+      when "active_storage_attachment_removed"
+        "removed file <b>#{event.properties['name']}</b>"
       when "placement_added"
         position = event.eventable.position
         "assigned the candidate to #{link_to(position.name, tab_ats_position_url(position))}"

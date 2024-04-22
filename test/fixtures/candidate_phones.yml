@@ -1,6 +1,6 @@
 john_phone:
   candidate: john
-  phone: +79801239890
+  phone: "+79801239890"
   type: personal
   source: linkedin
   status: current
@@ -8,7 +8,7 @@ john_phone:
 
 jane_phone:
   candidate: jane
-  phone: +79801231480
+  phone: "+79801231480"
   type: work
   source: other
   status: current

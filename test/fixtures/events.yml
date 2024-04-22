@@ -45,6 +45,14 @@ ivan_golang_sourced_placement_added:
   eventable: ivan_golang_sourced (Placement)
   performed_at: <%= 1.week.ago %>
 
+jane_empty_pdf_attachment_added:
+  type: :active_storage_attachment_added
+  actor_account: admin_account
+  eventable: empty_file_jane_attachment (ActiveStorage::Attachment)
+  performed_at: <%= 1.day.ago %>
+  properties:
+    name: "empty.pdf"
+
 ruby_position_contacted_scorecard_added:
   type: :scorecard_added
   actor_account: admin_account

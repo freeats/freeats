@@ -386,7 +386,7 @@ class Candidate < ApplicationRecord
 
   def emails(status: nil)
     status = { status: } if status
-    candidate_email_addresses.where(status).pluck(:url).uniq
+    candidate_email_addresses.where(status).pluck(:address).uniq
   end
 
   def emails=(new_email_addresses)

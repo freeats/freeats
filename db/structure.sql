@@ -971,7 +971,7 @@ CREATE TABLE public.candidates (
     recruiter_id bigint,
     location_id bigint,
     full_name character varying NOT NULL,
-    company character varying,
+    company character varying DEFAULT ''::character varying NOT NULL,
     merged_to integer,
     last_activity_at timestamp without time zone DEFAULT clock_timestamp() NOT NULL,
     blacklisted boolean DEFAULT false NOT NULL,
@@ -3711,6 +3711,7 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240419091633'),
 ('20240418121526'),
+('20240418070256'),
 ('20240417151916'),
 ('20240416104851'),
 ('20240416053719'),

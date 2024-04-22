@@ -5,13 +5,16 @@ class Events::Add
 
   include Dry::Initializer.define -> do
     option :params, Types::Strict::Hash.schema(
-      actor_account: Types::Instance(Account),
-      eventable: Types::Instance(ApplicationRecord),
+      actor_account: Types::Instance(Account).optional,
+      eventable: Types::Instance(ApplicationRecord) | Types::Instance(ActiveStorage::Attachment),
       type: Types::Symbol.enum(*Event.types.keys.map(&:to_sym)),
-      changed_to?: Types::Strict::Integer | Types::Strict::String | Types::Strict::Array,
-      changed_from?: Types::Strict::Integer | Types::Strict::String | Types::Strict::Array,
-      changed_field?: Types::Strict::Symbol,
-      properties?: Types::Strict::Hash
+      changed_to?: Types::Strict::Integer | Types::Strict::String |
+                   Types::Strict::Bool | Types::Strict::Array.optional,
+      changed_from?: Types::Strict::Integer | Types::Strict::String |
+                     Types::Strict::Bool | Types::Strict::Array.optional,
+      changed_field?: Types::Strict::Symbol | Types::Strict::String,
+      properties?: Types::Strict::Hash.optional,
+      performed_at?: Types::Strict::DateTime.optional
     )
   end
 

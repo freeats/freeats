@@ -45,7 +45,9 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
   test "should create candidate" do
     full_name = "Bernard Smith"
     assert_difference "Candidate.count" do
-      post ats_candidates_path, params: { candidate: { full_name: } }
+      assert_difference "Event.where(type: 'candidate_added').count" do
+        post ats_candidates_path, params: { candidate: { full_name: } }
+      end
     end
 
     new_candidate = Candidate.order(:created_at).last
@@ -56,7 +58,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_equal flash[:notice], "Candidate was successfully created."
   end
 
-  test "should not create candidate" do
+  test "should not create candidate if full_name is blank" do
     assert_no_difference "Candidate.count" do
       post ats_candidates_path, params: { candidate: { full_name: "" } }
     end
@@ -99,14 +101,16 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_nil candidate.avatar.variant(:medium)
   end
 
-  test "should assign and remove file" do
+  test "should assign and remove file and create events" do
     file = fixture_file_upload("app/assets/images/icons/user.png", "image/png")
     candidate = candidates(:john)
 
     assert_not candidate.files.attached?
 
-    assert_difference "ActiveStorage::Blob.count", 1 do
-      post upload_file_ats_candidate_path(candidate), params: { candidate: { file: } }
+    assert_difference "ActiveStorage::Blob.count" do
+      assert_difference "Event.where(type: 'active_storage_attachment_added').count" do
+        post upload_file_ats_candidate_path(candidate), params: { candidate: { file: } }
+      end
     end
 
     candidate.reload
@@ -114,7 +118,9 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_predicate candidate.files, :attached?
     assert_match(%r{uploads/candidate/#{candidate.id}/.*\.png}, candidate.files.first.blob.key)
 
-    delete delete_file_ats_candidate_path(candidate, candidate: { file_id_to_remove: candidate.files.first.id })
+    assert_difference "Event.where(type: 'active_storage_attachment_removed').count" do
+      delete delete_file_ats_candidate_path(candidate, candidate: { file_id_to_remove: candidate.files.first.id })
+    end
 
     candidate.reload
 
@@ -128,7 +134,9 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     file = fixture_file_upload("empty.pdf", "application/pdf")
     assert_difference "ActiveStorage::Blob.count" do
-      post upload_file_ats_candidate_path(candidate), params: { candidate: { file: } }
+      assert_difference "Event.where(type: 'active_storage_attachment_added').count" do
+        post upload_file_ats_candidate_path(candidate), params: { candidate: { file: } }
+      end
     end
 
     assert_response :redirect
@@ -136,7 +144,9 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     file_id_to_remove = candidate.files.last.id
     assert_difference "ActiveStorage::Blob.count", -1 do
-      delete delete_file_ats_candidate_path(candidate), params: { candidate: { file_id_to_remove: } }
+      assert_difference "Event.where(type: 'active_storage_attachment_removed').count" do
+        delete delete_file_ats_candidate_path(candidate), params: { candidate: { file_id_to_remove: } }
+      end
     end
 
     assert_response :success
@@ -151,9 +161,11 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_not candidate.cv
 
-    patch change_cv_status_ats_candidate_path(candidate),
-          params: { candidate: { file_id_to_change_cv_status: attachment.id,
-                                 new_cv_status: true } }
+    assert_difference "Event.where(type: 'candidate_changed').count" do
+      patch change_cv_status_ats_candidate_path(candidate),
+            params: { candidate: { file_id_to_change_cv_status: attachment.id,
+                                   new_cv_status: true } }
+    end
 
     assert_response :success
     candidate.reload
@@ -189,7 +201,9 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert candidate.cv
 
-    delete delete_cv_file_ats_candidate_path(candidate), params: { candidate: { file_id_to_remove: attachment.id } }
+    assert_difference "Event.where(type: 'active_storage_attachment_removed').count" do
+      delete delete_cv_file_ats_candidate_path(candidate), params: { candidate: { file_id_to_remove: attachment.id } }
+    end
 
     assert_response :redirect
     assert_not candidate.cv
@@ -219,7 +233,9 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_not candidate.cv
 
     file = fixture_file_upload("empty.pdf", "application/pdf")
-    post upload_cv_file_ats_candidate_path(candidate), params: { candidate: { file: } }
+    assert_difference "Event.where(type: 'active_storage_attachment_added').count" do
+      post upload_cv_file_ats_candidate_path(candidate), params: { candidate: { file: } }
+    end
 
     assert_response :redirect
     assert_predicate candidate.files, :attached?
@@ -246,7 +262,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_equal candidate.cover_letter.to_plain_text, new_candidate[:cover_letter].strip
   end
 
-  test "should update profile header card" do
+  test "should update profile header card and create events" do
     candidate = candidates(:jane)
 
     old_alternative_names = candidate.candidate_alternative_names.pluck(:name)
@@ -263,26 +279,61 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal candidate.full_name, "Jane Doe"
     assert_empty candidate.headline
-    assert_not candidate.company
+    assert_empty candidate.company
     assert_not candidate.blacklisted
     assert_equal candidate.location, locations(:moscow_city)
     assert_not_equal old_alternative_names, new_alternative_names
 
-    patch(
-      update_header_ats_candidate_path(candidate),
-      params: {
-        candidate: {
-          full_name: "Vasya",
-          headline: "new headline",
-          company: "New awesome company",
-          blacklisted: true,
-          location_id: locations(:valencia_city).id,
-          candidate_alternative_names_attributes:
+    assert_difference "Event.where(type: 'candidate_changed').count", 6 do
+      patch(
+        update_header_ats_candidate_path(candidate),
+        params: {
+          candidate: {
+            full_name: "Vasya",
+            headline: "new headline",
+            company: "New awesome company",
+            blacklisted: true,
+            location_id: locations(:valencia_city).id,
+            candidate_alternative_names_attributes:
+          }
         }
-      }
-    )
+      )
+    end
 
     assert_response :success
+
+    events = Event.last(6)
+
+    assert_equal events.first.eventable, candidate
+    assert_equal events.first.changed_field, "alternative_names"
+    assert_equal events.first.changed_from, ["Jenek"]
+    assert_equal events.first.changed_to, %w[name1 name2 name3]
+
+    assert_equal events.second.eventable, candidate
+    assert_equal events.second.changed_field, "location"
+    assert_equal events.second.changed_from, "Moscow, Russia"
+    assert_equal events.second.changed_to, "València, Spain"
+
+    assert_equal events.third.eventable, candidate
+    assert_equal events.third.changed_field, "full_name"
+    assert_equal events.third.changed_from, "Jane Doe"
+    assert_equal events.third.changed_to, "Vasya"
+
+    assert_equal events.fourth.eventable, candidate
+    assert_equal events.fourth.changed_field, "company"
+    assert_empty events.fourth.changed_from
+    assert_equal events.fourth.changed_to, "New awesome company"
+
+    assert_equal events.fifth.eventable, candidate
+    assert_equal events.fifth.changed_field, "blacklisted"
+    assert_not events.fifth.changed_from
+    assert events.fifth.changed_to
+
+    assert_equal events.last.eventable, candidate
+    assert_equal events.last.changed_field, "headline"
+    assert_empty events.last.changed_from
+    assert_equal events.last.changed_to, "new headline"
+
     candidate.reload
 
     assert_equal candidate.full_name, "Vasya"
@@ -294,7 +345,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
                  new_alternative_names.sort
   end
 
-  test "should update profile card contact_info" do
+  test "should update profile card contact_info and create events" do
     candidate = candidates(:ivan)
     card_patch = {
       source: "LinkedIn",
@@ -333,10 +384,35 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
         }
       }
     }
-    patch update_card_ats_candidate_path(candidate),
-          params: { card_name: "contact_info", candidate: card_patch }
+
+    assert_difference "Event.where(type: 'candidate_changed').count", 4 do
+      patch update_card_ats_candidate_path(candidate),
+            params: { card_name: "contact_info", candidate: card_patch }
+    end
 
     assert_response :success
+
+    events = Event.last(4)
+
+    assert_equal events.first.eventable, candidate
+    assert_equal events.first.changed_field, "candidate_source"
+    assert_nil events.first.changed_from
+    assert_equal events.first.changed_to, "LinkedIn"
+
+    assert_equal events.second.eventable, candidate
+    assert_equal events.second.changed_field, "email_addresses"
+    assert_equal events.second.changed_from, ["ivan@ivanov.com"]
+    assert_equal events.second.changed_to, ["sherlock@gmail.com", "sherlock@yandex.ru"]
+
+    assert_equal events.third.eventable, candidate
+    assert_equal events.third.changed_field, "phones"
+    assert_empty events.third.changed_from
+    assert_equal events.third.changed_to, ["+79259283344"]
+
+    assert_equal events.fourth.eventable, candidate
+    assert_equal events.fourth.changed_field, "links"
+    assert_empty events.fourth.changed_from
+    assert_equal events.fourth.changed_to, ["https://www.linkedin.com/in/monsher/"]
 
     candidate.reload
 
@@ -404,8 +480,8 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should assign and unassign recruiter for candidate" do
-    actor_user = accounts(:admin_account)
-    sign_in actor_user
+    actor_account = accounts(:admin_account)
+    sign_in actor_account
 
     candidate = Candidate.first
     recruiter1 = members(:admin_member)
@@ -413,44 +489,53 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     candidate.update!(recruiter_id: nil)
 
-    patch assign_recruiter_ats_candidate_path(candidate.id),
-          params: { candidate: { recruiter_id: recruiter1.id } }
+    assert_difference "Event.where(type: 'candidate_recruiter_assigned').count" do
+      patch assign_recruiter_ats_candidate_path(candidate.id),
+            params: { candidate: { recruiter_id: recruiter1.id } }
+    end
 
     assert_equal candidate.reload.recruiter_id, recruiter1.id
 
-    # TODO: uncomment if events have been added.
-    # Event.last.tap do |event|
-    #   assert_equal event.type, "candidate_responsible_assigned"
-    #   assert_equal event.actor_user_id, actor_user_id
-    #   assert_equal event.member_id, recruiter1.id
-    #   assert_equal event.person_id, candidate.id
-    # end
+    Event.last.tap do |event|
+      assert_equal event.type, "candidate_recruiter_assigned"
+      assert_equal event.actor_account_id, actor_account.id
+      assert_equal event.changed_to, recruiter1.id
+      assert_equal event.eventable, candidate
+    end
 
-    patch assign_recruiter_ats_candidate_path(candidate.id),
-          params: { candidate: { recruiter_id: recruiter2.id } }
+    assert_difference "Event.where(type: 'candidate_recruiter_unassigned').count" do
+      assert_difference "Event.where(type: 'candidate_recruiter_assigned').count" do
+        patch assign_recruiter_ats_candidate_path(candidate.id),
+              params: { candidate: { recruiter_id: recruiter2.id } }
+      end
+    end
 
     assert_equal candidate.reload.recruiter_id, recruiter2.id
 
-    # TODO: uncomment if events have been added.
-    # TODO: Add asserts for candidate_responsible_unassigned event
-    # Event.last.tap do |event|
-    #   assert_equal event.type, "candidate_responsible_assigned"
-    #   assert_equal event.actor_user_id, actor_user_id
-    #   assert_equal event.member_id, recruiter2.id
-    #   assert_equal event.person_id, candidate.id
-    # end
+    Event.last(2).tap do |recruiter_unassigned_event, recruiter_assigned_event|
+      assert_equal recruiter_unassigned_event.type, "candidate_recruiter_unassigned"
+      assert_equal recruiter_unassigned_event.actor_account_id, actor_account.id
+      assert_equal recruiter_unassigned_event.changed_from, recruiter1.id
+      assert_equal recruiter_unassigned_event.eventable, candidate
 
-    patch assign_recruiter_ats_candidate_path(candidate.id),
-          params: { candidate: { recruiter_id: nil } }
+      assert_equal recruiter_assigned_event.type, "candidate_recruiter_assigned"
+      assert_equal recruiter_assigned_event.actor_account_id, actor_account.id
+      assert_equal recruiter_assigned_event.changed_to, recruiter2.id
+      assert_equal recruiter_assigned_event.eventable, candidate
+    end
+
+    assert_difference "Event.where(type: 'candidate_recruiter_unassigned').count" do
+      patch assign_recruiter_ats_candidate_path(candidate.id),
+            params: { candidate: { recruiter_id: nil } }
+    end
 
     assert_nil candidate.reload.recruiter_id
 
-    # TODO: uncomment if events have been added.
-    # Event.last.tap do |event|
-    #   assert_equal event.type, "person_responsible_unassigned"
-    #   assert_equal event.actor_user_id, actor_user_id
-    #   assert_equal event.member_id, recruiter2.id
-    #   assert_equal event.person_id, candidate.id
-    # end
+    Event.last.tap do |event|
+      assert_equal event.type, "candidate_recruiter_unassigned"
+      assert_equal event.actor_account_id, actor_account.id
+      assert_equal event.changed_from, recruiter2.id
+      assert_equal event.eventable, candidate
+    end
   end
 end

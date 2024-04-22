@@ -5,12 +5,19 @@ module ActiveStorageAttachment
   include Dry::Monads[:result]
 
   included do
+    has_many :events, as: :eventable, dependent: :destroy
     has_one :attachment_information,
             foreign_key: :active_storage_attachment_id,
             dependent: :destroy
+    has_one :added_event,
+            -> { where(type: :active_storage_attachment_added) },
+            class_name: "Event",
+            foreign_key: "eventable_id",
+            inverse_of: false,
+            dependent: :destroy
   end
 
-  def change_cv_status(new_cv_status)
+  def change_cv_status(new_cv_status, actor_account = nil)
     record_object = record_type.constantize.find(record_id)
     old_cv = new_cv_status ? record_object.cv : self
     transaction do
@@ -24,6 +31,14 @@ module ActiveStorageAttachment
           AttachmentInformations::Add.new(params: { active_storage_attachment_id: id,
                                                     is_cv: new_cv_status }).call
         end
+
+      Events::AddChangedEvent.new(
+        eventable: record,
+        changed_field: "cv",
+        old_value: old_cv&.blob&.filename.to_s,
+        new_value: blob.filename.to_s,
+        actor_account:
+      ).call
 
       case result
       in Success(attachment_information)

@@ -18,4 +18,12 @@ class Account < ApplicationRecord
   def rails_admin_name
     email
   end
+
+  def member?
+    !member.nil?
+  end
+
+  def active_member?
+    member? && !member.inactive?
+  end
 end

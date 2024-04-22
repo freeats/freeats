@@ -103,6 +103,9 @@ class ATS::CandidatesController < ApplicationController
                   @candidate.placements.extract_associated(:scorecards).flatten.pluck(:id)
               )
             )
+            # @candidate.files is an ActiveStorage::Attached::Many class,
+            # so it doesn't work without .to_a
+            .union(Event.where(eventable: @candidate.files.to_a))
             .order(performed_at: :desc)
 
           if params[:event]
@@ -148,7 +151,10 @@ class ATS::CandidatesController < ApplicationController
   end
 
   def create
-    case Candidates::Add.new(params: candidate_params.to_h).call
+    case Candidates::Add.new(
+      params: candidate_params.to_h.deep_symbolize_keys,
+      actor_account: current_account
+    ).call
     in Success(candidate)
       redirect_to tab_ats_candidate_path(candidate, :info),
                   notice: "Candidate was successfully created."
@@ -169,9 +175,10 @@ class ATS::CandidatesController < ApplicationController
   def update_header
     case Candidates::Change.new(
       candidate: @candidate,
+      actor_account: current_account,
       params: candidate_params.to_h.deep_symbolize_keys
     ).call
-    in Success()
+    in Success(_)
       render_turbo_stream(
         [
           turbo_stream.replace(
@@ -222,37 +229,26 @@ class ATS::CandidatesController < ApplicationController
   def update_card
     return unless params[:card_name].to_sym.in?(INFO_CARDS)
 
-    @candidate.change(candidate_params)
     card_name = params[:card_name]
-
-    if card_name == "contact_info" && !helpers.candidate_card_contact_info_has_data?(@candidate) ||
-       card_name == "cover_letter" && @candidate.cover_letter.blank?
-      render_turbo_stream(
-        [
-          turbo_stream.replace(
-            "turbo_#{card_name}_section",
-            partial: "shared/profile/card_empty",
-            locals: { card_name:, target_model: @candidate }
-          )
-        ]
-      )
-    else
-      render_turbo_stream(
-        [
-          turbo_stream.replace(
-            "turbo_#{card_name}_section",
-            partial: "ats/candidates/info_cards/#{card_name}_show",
-            locals: { candidate: @candidate }
-          )
-        ]
-      )
+    case Candidates::Change.new(
+      candidate: @candidate,
+      actor_account: current_account,
+      params: candidate_params.to_h.deep_symbolize_keys
+    ).call
+    in Success(_)
+      render_card(card_name)
+    in Failure[:candidate_invalid, _e] |
+       Failure[:alternative_name_invalid, _e] |
+       Failure[:alternative_name_not_unique, _e]
+      render_error _e, status: :unprocessable_entity
     end
   end
 
   def assign_recruiter
-    case Candidates::AssignRecruiter.new(
+    case Candidates::Change.new(
       candidate: @candidate,
-      recruiter_id: params[:candidate][:recruiter_id]
+      actor_account: current_account,
+      params: { recruiter_id: params[:candidate][:recruiter_id] }
     ).call
     in Success(_)
       locals = {
@@ -277,7 +273,7 @@ class ATS::CandidatesController < ApplicationController
         ]
       )
     # rubocop:enable Rails/SkipsModelValidations
-    in Failure[:recruiter_invalid, error]
+    in Failure[:candidate_invalid, error]
       render_error error
     end
   end
@@ -291,34 +287,66 @@ class ATS::CandidatesController < ApplicationController
   end
 
   def upload_file
-    @candidate.files.attach(candidate_params[:file])
-
-    redirect_to tab_ats_candidate_path(@candidate, :files)
+    case Candidates::UploadFile.new(
+      candidate: @candidate,
+      actor_account: current_account,
+      file: candidate_params[:file]
+    ).call
+    in Success(file)
+      redirect_to tab_ats_candidate_path(@candidate, :files)
+    in Failure[:validation_failed, e]
+      render_error e, status: :unprocessable_entity
+    end
   end
 
   def upload_cv_file
-    file = @candidate.files.attach(candidate_params[:file]).attachments.last
-    file.change_cv_status(true)
-
-    redirect_to tab_ats_candidate_path(@candidate, :info)
+    case Candidates::UploadFile.new(
+      candidate: @candidate,
+      actor_account: current_account,
+      file: candidate_params[:file],
+      cv: true
+    ).call
+    in Success(file)
+      redirect_to tab_ats_candidate_path(@candidate, :info)
+    in Failure[:validation_failed, e]
+      render_error e, status: :unprocessable_entity
+    end
   end
 
   def delete_file
-    @candidate.destroy_file(candidate_params[:file_id_to_remove])
+    file = @candidate.files.find(candidate_params[:file_id_to_remove])
 
-    render_candidate_files(@candidate)
+    case Candidates::RemoveFile.new(
+      candidate: @candidate,
+      actor_account: current_account,
+      file:
+    ).call
+    in Success()
+      render_candidate_files(@candidate)
+    in Failure[:validation_failed, e]
+      render_error e, status: :unprocessable_entity
+    end
   end
 
   def delete_cv_file
-    @candidate.destroy_file(candidate_params[:file_id_to_remove])
+    file = @candidate.files.find(candidate_params[:file_id_to_remove])
 
-    redirect_to tab_ats_candidate_path(@candidate, :info)
+    case Candidates::RemoveFile.new(
+      candidate: @candidate,
+      actor_account: current_account,
+      file:
+    ).call
+    in Success()
+      redirect_to tab_ats_candidate_path(@candidate, :info)
+    in Failure[:validation_failed, e]
+      render_error e, status: :unprocessable_entity
+    end
   end
 
   def change_cv_status
     file = @candidate.files.find(candidate_params[:file_id_to_change_cv_status])
 
-    file.change_cv_status(candidate_params[:new_cv_status])
+    file.change_cv_status(candidate_params[:new_cv_status], current_account)
     if @candidate.errors.present?
       render_error @candidate.errors.full_messages
       return
@@ -466,6 +494,31 @@ class ATS::CandidatesController < ApplicationController
                                  locals: { all_files: candidate.all_files, candidate: }
       )
     )
+  end
+
+  def render_card(card_name)
+    if card_name == "contact_info" && !helpers.candidate_card_contact_info_has_data?(@candidate) ||
+       card_name == "cover_letter" && @candidate.cover_letter.blank?
+      render_turbo_stream(
+        [
+          turbo_stream.replace(
+            "turbo_#{card_name}_section",
+            partial: "shared/profile/card_empty",
+            locals: { card_name:, target_model: @candidate }
+          )
+        ]
+      )
+    else
+      render_turbo_stream(
+        [
+          turbo_stream.replace(
+            "turbo_#{card_name}_section",
+            partial: "ats/candidates/info_cards/#{card_name}_show",
+            locals: { candidate: @candidate }
+          )
+        ]
+      )
+    end
   end
 
   def set_placements_variables

@@ -5,6 +5,7 @@ class Candidates::AlternativeNames::Change
 
   include Dry::Initializer.define -> do
     option :candidate, Types::Instance(Candidate)
+    option :actor_account, Types::Instance(Account)
     option :alternative_names, Types::Strict::Array.of(
       Types::Strict::Hash.schema(
         name: Types::Strict::String
@@ -13,6 +14,7 @@ class Candidates::AlternativeNames::Change
   end
 
   def call
+    old_alternative_names = candidate.candidate_alternative_names.pluck(:name)
     result = Try[ActiveRecord::RecordInvalid] do
       ActiveRecord::Base.transaction do
         candidate.candidate_alternative_names.destroy_all
@@ -24,7 +26,14 @@ class Candidates::AlternativeNames::Change
           ).call
         end
 
-        # TODO: create events
+        Events::AddChangedEvent.new(
+          eventable: candidate,
+          changed_field: "alternative_names",
+          field_type: :plural,
+          old_value: old_alternative_names,
+          new_value: candidate.candidate_alternative_names.pluck(:name),
+          actor_account:
+        ).call
 
         nil
       end
