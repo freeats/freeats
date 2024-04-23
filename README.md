@@ -299,12 +299,15 @@ git add config/credentials.yml.enc && \
     git push
 ```
 
-Increase the allowed file size that could be uploaded.
+Set the allowed file size that could be uploaded.
 Dokku uses Nginx and can reject post requests with big file sizes.
-In this case, we have to increase the `client_max_body_size` value.
+In this case, we have to set the `client_max_body_size` value
+and set `NGINX_FILE_SIZE_LIMIT_IN_MEGA_BYTES` to display a warning in the interface.
 
 ```shell
-dokku nginx:set ats client-max-body-size 5m && dokku proxy:build-config ats
+dokku config:set ats NGINX_FILE_SIZE_LIMIT_IN_MEGA_BYTES=<value_in_megabytes>
+value=$(dokku config:get ats NGINX_FILE_SIZE_LIMIT_IN_MEGA_BYTES)
+dokku nginx:set ats client-max-body-size "$value"m && dokku proxy:build-config ats
 ```
 
 Setup certificate for domain.

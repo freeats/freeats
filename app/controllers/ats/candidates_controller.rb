@@ -15,6 +15,7 @@ class ATS::CandidatesController < ApplicationController
     }.freeze
   private_constant :INFO_CARDS
 
+  before_action :set_gon_variables
   before_action { @nav_item = :candidates }
   before_action :set_candidate, only: %i[show show_header edit_header update_header
                                          show_card edit_card update_card remove_avatar
@@ -543,5 +544,12 @@ class ATS::CandidatesController < ApplicationController
   def page_of_activity(event_id)
     num_of_activity = @all_activities.index { |activity| activity.id == event_id.to_i }.to_i + 1
     (num_of_activity.to_f / ACTIVITIES_PAGINATION_LIMIT).ceil
+  end
+
+  def set_gon_variables
+    default_value_in_megabytes = Rails.env.production? ? 0 : 5
+
+    gon.nginx_file_size_limit_in_mega_bytes =
+      ENV.fetch("NGINX_FILE_SIZE_LIMIT_IN_MEGA_BYTES", default_value_in_megabytes)
   end
 end

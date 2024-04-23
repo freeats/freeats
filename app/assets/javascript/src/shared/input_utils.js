@@ -1,13 +1,5 @@
 import $ from 'jquery';
 
-function activateFileUploadInput() {
-  $(document).on('change', 'input.upload', function changeButtonAppearance() {
-    const $uploadWrapper = $(this).closest('div.file-upload-button');
-    $uploadWrapper.find('span').html('Uploaded');
-    $uploadWrapper.find('input').click(e => e.preventDefault());
-  });
-}
-
 // Submit a form in a Turbo-friendly way.
 function requestSubmitPolyfilled(form) {
   if (form.requestSubmit) {
@@ -18,7 +10,7 @@ function requestSubmitPolyfilled(form) {
   }
 }
 
-function activateInstanceSubmit() {
+export default function activateInstanceSubmit() {
   $(document).on('change', '.instant-submit', function submitForm() {
     if (
       window.performance &&
@@ -34,6 +26,3 @@ function activateInstanceSubmit() {
     requestSubmitPolyfilled(this.closest('form'));
   });
 }
-
-
-export { activateFileUploadInput, activateInstanceSubmit };

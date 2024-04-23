@@ -44,12 +44,15 @@
                                            type: :button,
                                            hidden: true,
                                            class: "file-upload-button d-xl-inline-flex",
-                                           data: { bs_toggle: "tooltip", title: drag_and_drop_tooltip })
-                | Upload CV
+                                           data: { bs_toggle: "tooltip", title: drag_and_drop_tooltip, \
+                                                   controller: "handle-upload-button" })
+                span data-handle-upload-button-target="text"
+                  | Upload CV
                 = form.file_field :file,
                                   accept: ".pdf,.doc,.docx,.odt,.rtf",
                                   class: "upload turbo-instant-submit",
-                                  required: true
+                                  required: true,
+                                  "data-handle-upload-button-target": "input"
 
             / On mobile devices this button has a dropdown.
             .dropdown.d-md-none
@@ -60,13 +63,15 @@
                 | Upload CV
               ul.dropdown-menu
                 li = form_with model: @candidate, url: upload_cv_file_ats_candidate_path, local: true,
-                               multipart: true, method: :post do |form|
+                               multipart: true, method: :post, data: { controller: "handle-upload-button" } do |form|
                   .file-upload-button.dropdown-item
-                    span Upload CV
+                    span data-handle-upload-button-target="text"
+                      | Upload CV
                     = form.file_field :file,
                       accept: ".pdf,.doc,.docx,.odt,.rtf",
                       class: "upload turbo-instant-submit ms-2",
-                      required: true
+                      required: true,
+                      "data-handle-upload-button-target": "input"
                 - if @candidate.cv.present?
                   li = button_to "Remove CV",
                                  delete_cv_file_ats_candidate_path( \

@@ -4,9 +4,13 @@
                              size: :small,
                              type: :button,
                              class: "file-upload-button",
-                             data: { bs_toggle: "tooltip", title: drag_and_drop_tooltip }) do |c|
+                             data: { bs_toggle: "tooltip", \
+                                     title: drag_and_drop_tooltip, \
+                                     controller: "handle-upload-button" }) do |c|
   - c.with_icon("fas fa-upload", position: :right)
-  | Upload
+  span data-handle-upload-button-target="text"
+    | Upload
   = form.file_field file_field,
                     accept: "image/*",
-                    class: "upload d-inline"
+                    class: "upload d-inline",
+                    "data-handle-upload-button-target": "input"

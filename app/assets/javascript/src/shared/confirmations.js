@@ -4,7 +4,7 @@ import bootbox from 'bootbox';
 // https://github.com/bootboxjs/bootbox/issues/833#issuecomment-1450261337
 import $ from './global_jquery_loader';
 
-function atsConfirm() {
+export function atsConfirm() {
   const $atsConfirmBtn = $(this);
   const { form } = $atsConfirmBtn.get()[0];
 
@@ -50,6 +50,6 @@ function atsConfirm() {
   return false;
 }
 
-export default function init() {
+export function initConfirmations() {
   $(document).on('click', '[data-toggle=ats-confirmation]', atsConfirm);
 }

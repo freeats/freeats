@@ -28,12 +28,8 @@ import 'jquery-ui/ui/keycode';
 import 'jquery-ui/ui/widgets/sortable';
 import 'jquery-ui/ui/widgets/datepicker';
 
-import initConfirmations from '../src/shared/confirmations';
-import {
-  activateFileUploadInput,
-  activateInstanceSubmit
-} from '../src/shared/input_utils';
+import { initConfirmations } from '../src/shared/confirmations';
+import activateInstanceSubmit from '../src/shared/input_utils';
 
 initConfirmations();
-activateFileUploadInput();
 activateInstanceSubmit();
