@@ -33,7 +33,7 @@ module CandidatesHelper
           ].compact.join(" and ")
           message << field.singularize.pluralize([removed, added].max_by(&:size).size)
         elsif from.in?([true, false]) && to.in?([true, false])
-          message << "#{to ? 'added' : 'removed'} <b>Don't contact</b> status"
+          message << "#{to ? 'added' : 'removed'} <b>Blacklisted</b> status"
         else
           message <<
           if to.present? && from.present?
