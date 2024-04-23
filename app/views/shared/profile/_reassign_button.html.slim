@@ -38,7 +38,7 @@ ruby:
 
 .reassignment-button*controller_data
   - if allowed_to_edit
-    button.btn.btn-light.btn-sm.w-100.text-start.text-truncate [type="button"
+    button.btn.btn-light.btn-sm.w-100.text-start.text-truncate.d-flex.align-items-center [type="button"
       data-reassignment-buttons-target="button" data-action="reassignment-buttons#showForm"
       data-bs-toggle="tooltip" data-bs-title=tooltip_title]
       - if currently_assigned_account.present?
@@ -53,6 +53,7 @@ ruby:
                                                   mobile:, name: input_button_name }
       button.d-none type="submit" Hidden save
   - elsif currently_assigned_account.present?
-    .w-100.text-start.text-md-end.text-lg-start.text-xl-end data-bs-toggle="tooltip" title=tooltip_title
+    .w-100.text-start.text-md-end.text-lg-start.text-xl-end.d-flex.align-items-center [data-bs-toggle="tooltip"
+      title=tooltip_title]
       = picture_avatar_icon currently_assigned_account.avatar, {}, class: "small-avatar-thumbnail me-1"
       = currently_assigned_account.name

@@ -7,7 +7,7 @@
                   data: { action: "input->notes#storeNoteForm turbo:submit-end->notes#clearNoteForm",
                           notes_target: "noteForm" } do |form|
         = hidden_field_tag "render_time", render_time
-        .card-title
+        .card-title.d-flex.align-items-center
           = picture_avatar_icon note.member.account.avatar, {}, class: "small-avatar-thumbnail"
           span.ms-2 = note.member.account.name
         = form.text_area(:text, class: "form-control enter-turbo-submit note-textarea", rows: 4,

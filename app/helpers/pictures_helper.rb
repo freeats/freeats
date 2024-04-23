@@ -14,7 +14,11 @@ module PicturesHelper
 
     tag.picture do
       if (icon = attachment.variant(:icon)).present?
-        tag.img(src_sym => icon.url, **opts)
+        if icon.url.present?
+          tag.img(src_sym => icon.url, **opts)
+        else
+          tag.i(class: ["fal fa-loader", html_opts.delete(:class)], **html_opts)
+        end
       else
         image_tag("icons/user.png", **opts)
       end

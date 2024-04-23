@@ -331,3 +331,9 @@ h1 {
     @extend .text-truncate;
   }
 }
+
+picture {
+  svg {
+    height: 100% !important;
+  }
+}
