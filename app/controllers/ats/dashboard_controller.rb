@@ -6,7 +6,7 @@ class ATS::DashboardController < ApplicationController
   before_action { @nav_item = :dashboard }
 
   def index
-    # TODO: authorize
+    authorize! :dashboard
 
     @dashboard_positions_grid =
       ATS::DashboardPositionsGrid.new do |scope|

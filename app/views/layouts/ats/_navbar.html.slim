@@ -13,28 +13,32 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
       span.navbar-toggler-icon
     #navbarNav.collapse.navbar-collapse.gap-lg-2.order-2
       ul.navbar-nav.text-nowrap.gap-1.gap-lg-0.mb-1.mb-lg-0
-        li.nav-item
-          = link_to "Dashboard", root_path,
-            class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
-        li.nav-item
-          = link_to "Candidates", ats_candidates_path,
-            class: "nav-link#{' nav-link-selected' if @nav_item == :candidates}"
-        li.nav-item
-          = link_to "Positions", ats_positions_path,
-            class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
+        - if allowed_to?(:index?, with: ATS::DashboardPolicy)
+          li.nav-item
+            = link_to "Dashboard", root_path,
+              class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
+        - if allowed_to?(:index?, with: ATS::CandidatePolicy)
+          li.nav-item
+            = link_to "Candidates", ats_candidates_path,
+              class: "nav-link#{' nav-link-selected' if @nav_item == :candidates}"
+        - if allowed_to?(:index?, with: ATS::PositionPolicy)
+          li.nav-item
+            = link_to "Positions", ats_positions_path,
+              class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
         / li.nav-item
           = link_to "Sequences", "/", # TODO: Replace with the correct path \
             class: "nav-link#{' nav-link-selected' if @nav_item == :sequences}"
-        li.nav-item
-          = link_to "Stats", blazer_path, class: "nav-link"
-        / TODO: Add condition to check the current user is admin before displaying the admin dropdown
-        li.nav-item.dropdown
-          a.nav-link.dropdown-toggle [id="adminNavbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                                      aria-expanded="false" role="button"] Admin
-          ul.dropdown-menu.px-3 aria-labelledby="adminNavbarDropdown"
-            li = link_to "Jobs", "/jobs", class: "nav-link dropdown-item"
-            li = link_to "PgHero", pg_hero_path, class: "nav-link dropdown-item"
-            li = link_to "RailsAdmin", rails_admin.dashboard_path, class: "nav-link dropdown-item"
+        - if current_member.admin? || current_member.employee?
+          li.nav-item
+            = link_to "Stats", blazer_path, class: "nav-link"
+        - if current_member.admin?
+          li.nav-item.dropdown
+            a.nav-link.dropdown-toggle [id="adminNavbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" role="button"] Admin
+            ul.dropdown-menu.px-3 aria-labelledby="adminNavbarDropdown"
+              li = link_to "Jobs", "/jobs", class: "nav-link dropdown-item"
+              li = link_to "PgHero", pg_hero_path, class: "nav-link dropdown-item"
+              li = link_to "RailsAdmin", rails_admin.dashboard_path, class: "nav-link dropdown-item"
 
       / Necessary to place the profile button on the right side of the navbar.
       .flex-fill

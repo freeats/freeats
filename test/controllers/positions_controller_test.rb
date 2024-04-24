@@ -13,6 +13,15 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should not allow interviewer to get index" do
+    sign_in accounts(:interviewer_account)
+
+    get ats_positions_url
+
+    assert_response :redirect
+    assert_redirected_to "/"
+  end
+
   test "should assign recruiter" do
     recruiter = members(:employee_member)
     position = positions(:golang_position)

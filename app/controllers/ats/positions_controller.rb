@@ -20,6 +20,10 @@ class ATS::PositionsController < ApplicationController
                          reassign_recruiter show_card edit_card update_card change_status destroy]
   before_action :set_tabs, only: :show
   helper_method :position_status_options
+  before_action :authorize!, only: %i[create new index]
+  before_action -> { authorize!(@position) },
+                only: %i[show destroy update_side_header reassign_recruiter show_card edit_card
+                         update_card show_header edit_header update_header change_status]
   def index
     @positions_grid_params =
       params[:ats_positions_grid]
