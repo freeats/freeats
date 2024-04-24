@@ -96,11 +96,10 @@ class EmailSynchronization::ProcessSingleMessage
       Success(EmailSynchronization::MessageMember.new(field: :from, member:))
     elsif (member = Member.find_by_address(message.clean_to_emails))
       Success(EmailSynchronization::MessageMember.new(field: :to, member:))
-    elsif Member.find_by_address(message.clean_cc_emails + message.clean_bcc_emails)
-      # Receiving email requires the recruiter to answer this email and we have business logic which
-      # creates tasks if there was no reply. For now we only consider "receiving" when the email
-      # is sent directly to the recruiter via the "to" field.
-      Failure(:member_is_cc_or_bcc)
+    elsif (member = Member.find_by_address(message.clean_cc_emails))
+      Success(EmailSynchronization::MessageMember.new(field: :cc, member:))
+    elsif (member = Member.find_by_address(message.clean_bcc_emails))
+      Success(EmailSynchronization::MessageMember.new(field: :bcc, member:))
     else
       Failure(:message_does_not_contain_member_email_addresses)
     end

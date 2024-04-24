@@ -47,7 +47,7 @@ class EmailSynchronization::Synchronize
     result = EmailSynchronization::ProcessSingleMessage.new(message:).call
     case result
     in Failure(:message_already_exists) | Success() | Failure(:not_relevant_message) |
-      Failure(:member_is_cc_or_bcc) | Failure(:draft_message)
+       Failure(:draft_message)
       nil
     in Success[:with_log_report, payload]
       logger.error(payload[:error_name], **extra.merge(payload.except(:error_name)))
