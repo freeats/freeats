@@ -323,6 +323,12 @@ sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git && \
     dokku letsencrypt:enable ats
 ```
 
+Set `HOST_URL` environment variable as your domain name, it's necessary to generate links:
+
+```shell
+dokku config:set ats HOST_URL=<your_domain>
+```
+
 If the docker cache takes up a lot of space, it can be cleared it with the following command:
 
 ```shell

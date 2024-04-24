@@ -501,6 +501,15 @@ class Candidate < ApplicationRecord
       .uniq
   end
 
+  def url
+    Rails.application.routes.url_helpers.tab_ats_candidate_url(
+      self,
+      tab: :info,
+      host: ENV.fetch("HOST_URL", nil),
+      protocol: ATS::Application.config.force_ssl ? "https" : "http"
+    )
+  end
+
   def synchronize_email_messages(addresses = [], now: false, queue: :sync_emails)
     return if queue == :scraping_processing
 
