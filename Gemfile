@@ -12,6 +12,7 @@ gem "addressable", "2.8.1"
 gem "aws-sdk-s3", require: false
 gem "blazer"
 gem "bootsnap", require: false
+gem "cocoon"
 gem "cssbundling-rails"
 gem "datagrid"
 gem "dry-initializer"

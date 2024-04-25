@@ -68,6 +68,11 @@ Rails.application.routes.draw do
     resources :email_threads, only: [] do
       get :fetch_messages, on: :member
     end
+
+    resources :sequence_templates, only: %i[new create show edit] do
+      get :setup_test, on: :member
+      patch :archive, on: :member
+    end
   end
 
   namespace :api, defaults: { format: "json" } do

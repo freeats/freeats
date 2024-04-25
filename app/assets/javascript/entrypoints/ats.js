@@ -33,3 +33,7 @@ import activateInstanceSubmit from '../src/shared/input_utils';
 
 initConfirmations();
 activateInstanceSubmit();
+
+// Cocoon depends on Jquery, so should be loaded after.
+// Therefore using 'require' instead of async 'import'.
+require('@nathanvda/cocoon');

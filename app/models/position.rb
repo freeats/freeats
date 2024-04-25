@@ -59,6 +59,8 @@ class Position < ApplicationRecord
 
   has_many :events, as: :eventable, dependent: :destroy
 
+  has_many :sequence_templates, dependent: :nullify
+
   belongs_to :recruiter, optional: true, class_name: "Member"
 
   has_rich_text :description

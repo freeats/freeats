@@ -294,6 +294,12 @@ h1 {
   font-weight: bold;
 }
 
+h2 {
+  font-size: 1.25rem;
+  line-height: 2rem;
+  font-weight: bold;
+}
+
 .links-row {
   .disabled {
     opacity: 0.65 !important;
@@ -310,12 +316,6 @@ a {
   &:visited:not(.btn, .nav-link, .dropdown-item, .badge) {
     color: $blue-600;
   }
-}
-
-h1 {
-  font-size: 1.5rem;
-  line-height: 2rem;
-  font-weight: bold;
 }
 
 .sortable-handle {
@@ -335,5 +335,16 @@ h1 {
 picture {
   svg {
     height: 100% !important;
+  }
+}
+
+#ats-email-templates-variables {
+  & > h2 {
+    line-height: 1.5rem;
+  }
+
+  & > ul {
+    padding-top: 1rem;
+    line-height: 1.3125rem;
   }
 }

@@ -1,0 +1,38 @@
+/# locals: (sequence_template:)
+
+#sequence-template.row.row-gap-4 data-controller="sequence-templates"
+  .col-12.col-lg-7.col-xl-8
+    = form_with model: sequence_template, \
+                url: ats_sequence_templates_path(position_id: sequence_template.position_id), \
+                local: true do |form|
+      = form.hidden_field :position_id
+      = render LabeledComponent.new(class: "mb-2",
+                                    left_layout_class: "col-12 col-md-auto",
+                                    right_layout_class: "col-12 col-md") do |c|
+        - c.with_label("Name", size: :small, style: "min-width: 72px;",
+                       form:, for_field: :name)
+        = render TextInputComponent.new(form, method: :name, size: :small, required: true)
+      = render LabeledComponent.new(class: "mb-2",
+                                    left_layout_class: "col-12 col-md-auto",
+                                    right_layout_class: "col-12 col-md") do |c|
+        - c.with_label("Subject", size: :small, style: "min-width: 72px;",
+                       form:, for_field: :subject)
+        = render TextInputComponent.new(form, method: :subject, size: :small, required: true)
+      #stages data-sequence-templates-target="stagesList"
+        = form.fields_for :stages do |stage|
+          = render "stage_edit", f: stage
+        .empty-card-templates.d-flex.flex-column.mt-3
+          = link_to_add_association form, :stages, class: "d-inline-block empty-card",
+                                    partial: "stage_edit"
+            i.fas.fa-plus>
+            | Add stage
+        .hstack.gap-2.mt-4
+          = render ButtonComponent.new(size: :small)
+            | Save
+          = render ButtonLinkComponent.new( \
+            tab_ats_position_path(sequence_template.position_id, tab: :sequence_templates), \
+            variant: :secondary, size: :small \
+          )
+            | Cancel
+  #ats-email-templates-variables.col-12.col-lg
+    = email_templates_variables_help_for("position_sequence_template")

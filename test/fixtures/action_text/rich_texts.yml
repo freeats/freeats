@@ -1,4 +1,5 @@
-# one:
-#   record: name_of_fixture (ClassOfFixture)
-#   name: content
-#   body: <p>In a <i>million</i> stars!</p>
+golang_position_first_stage_body:
+  record: golang_position_first_stage (SequenceTemplateStage)
+  name: body
+  body: |
+    Hi there! We are excited to have you apply for the Golang position.

@@ -10,6 +10,7 @@
     "@fortawesome/pro-solid-svg-icons": "https://toughbyte.s3.eu-west-1.amazonaws.com/libraries/fontawesome/fortawesome-pro-solid-svg-icons-6.4.2.tgz",
     "@hotwired/stimulus": "^3.0.0",
     "@hotwired/turbo-rails": "^8.0.1",
+    "@nathanvda/cocoon": "^1.2.14",
     "@popperjs/core": "^2.11.2",
     "@rails/actiontext": "^7.1.3-2",
     "bootbox": "^6.0.0",

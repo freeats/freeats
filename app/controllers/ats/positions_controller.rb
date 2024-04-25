@@ -58,6 +58,14 @@ class ATS::PositionsController < ApplicationController
       set_pipeline_variables
     when "activities"
       set_activities_variables
+    when "sequence_templates"
+      @sequence_templates_grid = ATS::SequenceTemplatesGrid.new do |scope|
+        scope
+          .where(position: @position)
+          .order(:name)
+          .page(params[:page])
+          .per(10)
+      end
     end
 
     render "#{@active_tab}_tab", layout: "ats/position_profile"

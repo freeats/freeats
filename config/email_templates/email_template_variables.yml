@@ -1,0 +1,13 @@
+female: checks, whether sender is female or not
+
+first_name: first name of the recipient
+
+sender_calendar_url: link to sender's calendar
+
+sender_first_name: first name in English of the person sending the email
+
+sender_linkedin_url: link to sender's LinkedIn profile
+
+position: name of the position we're recruiting for
+
+source: source of the candidate profile, e.g. LinkedIn, GitHub, Facebook, etc

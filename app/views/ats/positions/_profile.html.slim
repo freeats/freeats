@@ -23,7 +23,7 @@
                        tab_ats_position_path(@position, :pipeline), class: "nav-link"
             span.nav-link.active
               | Pipeline
-        / li.nav-item
+        li.nav-item
           = link_to_if @active_tab != "sequence_templates", "Sequence templates",
                        tab_ats_position_path(@position, :sequence_templates), class: "nav-link"
             span.nav-link.active
@@ -43,7 +43,7 @@
                        class: "dropdown-item #{'active' if @active_tab == 'info'}"
           li = link_to "Pipeline", tab_ats_position_path(@position, :pipeline),
                        class: "dropdown-item #{'active' if @active_tab == 'pipeline'}"
-          / li = link_to "Sequence templates", tab_ats_position_path(@position, :sequence_templates),
+          li = link_to "Sequence templates", tab_ats_position_path(@position, :sequence_templates),
                        class: "dropdown-item #{'active' if @active_tab == 'sequence_templates'}"
           li = link_to "Activities", tab_ats_position_path(@position, :activities),
                        class: "dropdown-item #{'active' if @active_tab == 'activities'}"

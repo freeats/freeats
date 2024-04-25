@@ -1,0 +1,8 @@
+/ View variables
+/ - @sequence_template
+
+- ats_title("#{@sequence_template.name}")
+#sequence-template.d-flex.gap-4.flex-lg-row.flex-column data-controller="sequence-templates"
+  = render partial: "info"
+  #hub-email-templates-variables.col-12.col-lg.mt-4.mt-lg-0
+    = email_templates_variables_help_for("position_sequence_template")
