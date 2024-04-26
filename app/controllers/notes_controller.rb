@@ -3,8 +3,14 @@
 class NotesController < ApplicationController
   include Dry::Monads[:result]
 
+  before_action :set_note, only: %i[update destroy show_edit_view show_show_view
+                                    add_reaction remove_reaction]
   before_action :set_all_active_members,
                 only: %i[create reply update destroy show_show_view]
+  before_action :authorize!, only: %i[create reply]
+  before_action -> { authorize!(@note) },
+                only: %i[update destroy show_edit_view show_show_view
+                         add_reaction remove_reaction]
 
   def create
     case Notes::Add.new(
@@ -94,20 +100,17 @@ class NotesController < ApplicationController
   end
 
   def show_edit_view
-    note = Note.find(params[:id])
-
     render_time = params[:render_time].to_datetime
-    render(partial: "shared/notes/note_edit", locals: { note:, render_time: })
+    render(partial: "shared/notes/note_edit", locals: { note: @note, render_time: })
   end
 
   def show_show_view
-    note = Note.find(params[:id])
-    thread = note.note_thread
+    thread = @note.note_thread
 
     render(
       partial: "shared/notes/note_show",
       locals: {
-        note:,
+        note: @note,
         thread:,
         all_active_members: @all_active_members
       }
@@ -115,17 +118,16 @@ class NotesController < ApplicationController
   end
 
   def add_reaction
-    note = Note.find(params[:id])
-    current_member.reacted_notes << note unless current_member.reacted_to_note?(note)
-    reacted_names = note.reacted_member_names(current_member)
+    current_member.reacted_notes << @note unless current_member.reacted_to_note?(@note)
+    reacted_names = @note.reacted_member_names(current_member)
 
     respond_to do |format|
       format.turbo_stream do
         render(
           turbo_stream: turbo_stream.replace(
-            "note_reaction_#{note.id}",
+            "note_reaction_#{@note.id}",
             partial: "shared/notes/note_reaction",
-            locals: { note:, reacted_names:, member_react: true }
+            locals: { note: @note, reacted_names:, member_react: true }
           )
         )
       end
@@ -134,15 +136,14 @@ class NotesController < ApplicationController
   end
 
   def remove_reaction
-    note = Note.find(params[:id])
-    current_member.reacted_notes.delete(note) if current_member.reacted_to_note?(note)
-    reacted_names = note.reacted_member_names(current_member)
+    current_member.reacted_notes.delete(@note) if current_member.reacted_to_note?(@note)
+    reacted_names = @note.reacted_member_names(current_member)
 
     render(
       turbo_stream: turbo_stream.replace(
-        "note_reaction_#{note.id}",
+        "note_reaction_#{@note.id}",
         partial: "shared/notes/note_reaction",
-        locals: { note:, reacted_names:, member_react: false }
+        locals: { note: @note, reacted_names:, member_react: false }
       )
     )
   end
@@ -164,6 +165,10 @@ class NotesController < ApplicationController
 
   def note_update_params
     params.require(:note).permit(:text)
+  end
+
+  def set_note
+    @note = Note.find(params[:id])
   end
 
   def set_all_active_members

@@ -9,8 +9,6 @@ ruby:
   # TODO: use policy
   # change_visibility = "disabled" unless allowed_to?(:update?, thread, with: NoteThreadPolicy)
   change_visibility = ""
-  # TODO: use policy
-  allow ||= true
 
 = turbo_frame_tag dom_id(note, "turbo"), target: "_top"
   .tab-pane.note-show id="note-show-#{note.id}"
@@ -32,7 +30,7 @@ ruby:
             title=note.created_at.to_fs(:datetime_full)]
             | #{short_time_ago_in_words(note.created_at)} ago
       .d-flex.align-items-right.ms-auto
-        - if is_first_note && (allow || allowed_to?(:reply?, context: { note_thread: thread }, with: NotePolicy))
+        - if is_first_note && (allowed_to?(:reply?, context: { note_thread: thread }, with: NotePolicy))
           - unless hide_visibility_controls
             span data-bs-toggle="tooltip" data-bs-title=visibility_tooltip_title data-bs-html="true"
               = link_to change_visibility_modal_note_thread_path(thread, all_active_members:),
@@ -45,7 +43,7 @@ ruby:
           = link_to "#note-thread-reply-#{thread.id}", class: "btn btn-light btn-sm note-button-reply ms-2",
                     title: "Reply", data: { action: "click->note-thread#showReplyTab", bs_toggle: "tooltip" } do
             i.fal.fa-reply
-        - if allow || allowed_to?(:toggle_reaction?, note)
+        - if allowed_to?(:toggle_reaction?, note)
           = render "shared/notes/note_reaction",
                     note:,
                     reacted_names: note.reacted_member_names(current_member),
@@ -61,13 +59,13 @@ ruby:
                 data-clipboard-text=note.url data-bs-title="Copied!" data-bs-trigger="manual"]
                 i.fal.fa-link.fa-fw
                 span.ms-2 Copy link
-            - if allow || allowed_to?(:show_edit_view?, note)
+            - if allowed_to?(:show_edit_view?, note)
               li = link_to show_edit_view_note_path(note, render_time: Time.zone.now),
                            class: "btn btn-sm dropdown-item",
                            data: { turbo_frame: dom_id(note, "turbo") }
                 i.fal.fa-pencil-alt.fa-fw
                 span.ms-2 Edit
-            - if allow || allowed_to?(:destroy?, note)
+            - if allowed_to?(:destroy?, note)
               li = form_with url: note_path(note), method: :delete,
                              data: { action: "submit->candidate-notes#removeNoteCallback" } do |form|
                 = hidden_field_tag "render_time", Time.zone.now

@@ -1,17 +1,17 @@
 /# locals: (header:, control_button:, card_name:, target_model:)
 
 ruby:
-  edit_card_path =
+  edit_card_path, policy =
     case controller
-    when ATS::CandidatesController then "edit_card_ats_candidate_path"
-    when ATS::PositionsController then "edit_card_ats_position_path"
+    when ATS::CandidatesController then ["edit_card_ats_candidate_path", ATS::CandidatePolicy]
+    when ATS::PositionsController then ["edit_card_ats_position_path", ATS::PositionPolicy]
     end
 
 = turbo_frame_tag "turbo_#{card_name}_section"
   .card.mt-3
     .card-header.d-flex.flex-row
       .flex-fill.card-title = header
-      - if control_button == :edit
+      - if control_button == :edit && allowed_to?(:card_edit?, with: policy)
         = link_to public_send(edit_card_path, target_model, card_name:),
                   class: "btn control-grey-icon float-end px-2 p-0",
                   data: { bs_toggle: "tooltip", bs_title: "Edit" }

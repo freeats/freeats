@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ATS::CandidatePolicy < ApplicationPolicy
-  authorize :candidate, optional: true
-
   alias_rule :show_header?, :show_info?, :show_scorecards?, :show_card?, :show_files?, to: :show?
 
   def show?
