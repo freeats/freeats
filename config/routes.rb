@@ -69,7 +69,7 @@ Rails.application.routes.draw do
       get :fetch_messages, on: :member
     end
 
-    resources :sequence_templates, only: %i[new create show edit] do
+    resources :sequence_templates, only: %i[new create show edit update] do
       get :setup_test, on: :member
       patch :archive, on: :member
     end

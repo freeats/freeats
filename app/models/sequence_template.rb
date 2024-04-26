@@ -23,13 +23,19 @@ class SequenceTemplate < ApplicationRecord
   scope :not_archived, -> { where(archived: false) }
 
   before_validation do
-    stages.first.delay_in_days = nil if stages.first.present?
+    first_stage = stages_without_marked_for_destruction.first
+
+    first_stage.delay_in_days = nil if first_stage.present?
+  end
+
+  def stages_without_marked_for_destruction
+    stages.reject(&:marked_for_destruction?)
   end
 
   private
 
   def stages_must_be_valid
-    stages_to_inspect = stages.reject(&:marked_for_destruction?)
+    stages_to_inspect = stages_without_marked_for_destruction
 
     positions = stages_to_inspect.map(&:position)
     errors.add(:stages, "must have different positions") if positions.uniq.to_a != positions

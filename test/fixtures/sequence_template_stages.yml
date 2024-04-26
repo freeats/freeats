@@ -1,4 +1,14 @@
 golang_position_first_stage:
   sequence_template: golang_position_sequence_template
   position: 1
-  delay_in_days: 0
+  delay_in_days: null
+
+golang_position_second_stage:
+  sequence_template: golang_position_sequence_template
+  position: 2
+  delay_in_days: 2
+
+ruby_position_first_stage:
+  sequence_template: ruby_position_sequence_template
+  position: 1
+  delay_in_days: null

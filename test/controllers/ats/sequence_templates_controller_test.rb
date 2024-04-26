@@ -115,4 +115,109 @@ class ATS::SequenceTemplatesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert sequence_template.reload.archived
   end
+
+  test "should update sequence_template and remove one stage" do
+    sequence_template = sequence_templates(:golang_position_sequence_template)
+    sequence_template_stage = sequence_template_stages(:golang_position_second_stage)
+
+    stages_attributes = { "0" => {
+      position: sequence_template_stage.position,
+      delay_in_days: sequence_template_stage.delay_in_days,
+      body: sequence_template_stage.body.to_s,
+      id: sequence_template_stage.id,
+      _destroy: true
+    } }
+    params = { sequence_template: {
+      subject: "Subject",
+      name: "Name",
+      stages_attributes:
+    } }
+
+    assert_equal sequence_template.stages.size, 2
+    assert_not_equal sequence_template.subject, params[:sequence_template][:subject]
+    assert_not_equal sequence_template.name, params[:sequence_template][:name]
+
+    assert_difference "SequenceTemplateStage.count" => -1 do
+      assert_no_difference "SequenceTemplate.count" do
+        patch ats_sequence_template_url(sequence_template, params:)
+      end
+    end
+    assert_response :redirect
+
+    sequence_template.reload
+
+    assert_equal sequence_template.subject, params[:sequence_template][:subject]
+    assert_equal sequence_template.name, params[:sequence_template][:name]
+    assert_equal sequence_template.stages.size, 1
+  end
+
+  test "should not update sequence_template with stage without body" do
+    sequence_template = sequence_templates(:golang_position_sequence_template)
+    sequence_template_stage = sequence_template_stages(:golang_position_second_stage)
+
+    stages_attributes = { "0" => {
+      position: sequence_template_stage.position,
+      delay_in_days: sequence_template_stage.delay_in_days,
+      body: "",
+      id: sequence_template_stage.id,
+      _destroy: false
+    } }
+    params = { sequence_template: {
+      subject: "Subject",
+      name: "Name",
+      stages_attributes:
+    } }
+
+    assert_no_difference "SequenceTemplate.count", "SequenceTemplateStage.count" do
+      patch ats_sequence_template_url(sequence_template, params:)
+    end
+
+    assert_turbo_stream action: :replace, target: "alerts", status: :unprocessable_entity do
+      assert_select("template", text: "Stages body can't be blank, remove empty stages or add text.")
+    end
+  end
+
+  test "should replace first sequence template stage" do
+    sequence_template = sequence_templates(:ruby_position_sequence_template)
+    sequence_template_stage = sequence_template_stages(:ruby_position_first_stage)
+
+    stages_attributes = {
+      "0" => {
+        position: sequence_template_stage.position,
+        delay_in_days: 0,
+        body: sequence_template_stage.body.to_s,
+        id: sequence_template_stage.id,
+        _destroy: true
+      },
+      "1" => {
+        position: 1,
+        delay_in_days: 55,
+        body: "New body",
+        _destroy: false
+      }
+    }
+    params = { sequence_template: {
+      subject: sequence_template.subject,
+      name: sequence_template.name,
+      stages_attributes:
+    } }
+
+    assert_equal sequence_template.stages.size, 1
+
+    assert_no_difference "SequenceTemplate.count", "SequenceTemplateStage.count" do
+      patch ats_sequence_template_url(sequence_template, params:)
+    end
+
+    assert_response :redirect
+
+    sequence_template.reload
+
+    assert_equal sequence_template.stages.size, 1
+
+    new_first_stage = sequence_template.stages.first
+
+    assert_not SequenceTemplateStage.exists?(sequence_template_stage.id)
+    assert_equal new_first_stage.position, 1
+    assert_nil new_first_stage.delay_in_days
+  end
 end

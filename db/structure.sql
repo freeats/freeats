@@ -1703,7 +1703,8 @@ CREATE TABLE public.sequence_template_stages (
     delay_in_days integer,
     "position" integer DEFAULT 1 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT position_and_delay_in_days_must_be_valid CHECK (((("position" = 1) AND (delay_in_days IS NULL)) OR (("position" > 1) AND (delay_in_days IS NOT NULL) AND (delay_in_days > 0))))
 );
 
 
@@ -3836,6 +3837,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240425094431'),
 ('20240423033545'),
 ('20240423022713'),
 ('20240422114747'),

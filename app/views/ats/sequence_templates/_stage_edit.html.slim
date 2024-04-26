@@ -4,7 +4,7 @@
 ruby:
   stage_form = f
 
-.card.mt-3
+.card.mt-3 data-sequence-templates-target="stage"
   .card-header
     span.card-title data-sequence-templates-target="position"
       .d-inline-block.stage-position
@@ -14,7 +14,7 @@ ruby:
                                  data: { bs_toggle: "tooltip", bs_title: "Delete this stage",
                                          bs_placement: "bottom" }
       i.fas.fa-trash-alt
-  .card-body.p-3 data-sequence-templates-target="delay"
+  .card-body.p-3
     | Send if no replies in
     = stage_form.number_field :delay_in_days, min: 0, max: 99, class: "form-control d-inline mx-2 p-1 py-0",
                               style: "width: 42px; height: auto;", required: true

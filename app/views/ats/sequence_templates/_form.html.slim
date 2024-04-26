@@ -1,9 +1,24 @@
 /# locals: (sequence_template:)
 
+ruby:
+  submit_path =
+    if sequence_template.new_record?
+      ats_sequence_templates_path
+    else
+      ats_sequence_template_path(sequence_template)
+    end
+
+  cancel_path =
+    if sequence_template.new_record?
+      tab_ats_position_path(sequence_template.position_id, tab: :sequence_templates)
+    else
+      ats_sequence_template_path(sequence_template)
+    end
+
 #sequence-template.row.row-gap-4 data-controller="sequence-templates"
   .col-12.col-lg-7.col-xl-8
     = form_with model: sequence_template, \
-                url: ats_sequence_templates_path(position_id: sequence_template.position_id), \
+                url: submit_path, \
                 local: true do |form|
       = form.hidden_field :position_id
       = render LabeledComponent.new(class: "mb-2",
@@ -30,7 +45,7 @@
           = render ButtonComponent.new(size: :small)
             | Save
           = render ButtonLinkComponent.new( \
-            tab_ats_position_path(sequence_template.position_id, tab: :sequence_templates), \
+            cancel_path, \
             variant: :secondary, size: :small \
           )
             | Cancel

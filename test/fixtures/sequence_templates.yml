@@ -2,3 +2,8 @@ golang_position_sequence_template:
   position: golang_position
   name: Goland position
   subject: Golang position
+
+ruby_position_sequence_template:
+  position: ruby_position
+  name: Ruby position
+  subject: Ruby position

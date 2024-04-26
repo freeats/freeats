@@ -2,7 +2,7 @@
 
 class ATS::SequenceTemplatesController < ApplicationController
   before_action :authorize!
-  before_action :set_sequence_template, only: %i[show archive]
+  before_action :set_sequence_template, only: %i[show archive edit update]
 
   include Dry::Monads[:result]
 
@@ -17,8 +17,23 @@ class ATS::SequenceTemplatesController < ApplicationController
     end
   end
 
+  def edit; end
+
   def create
     case SequenceTemplates::Add.new(params: sequence_template_params, stages_params:).call
+    in Success(sequence_template)
+      redirect_to ats_sequence_template_path(sequence_template)
+    in Failure[:sequence_template_invalid, error]
+      render_turbo_stream([], error:, status: :unprocessable_entity)
+    end
+  end
+
+  def update
+    case SequenceTemplates::Change.new(
+      sequence_template: @sequence_template,
+      params: sequence_template_params,
+      stages_params:
+    ).call
     in Success(sequence_template)
       redirect_to ats_sequence_template_path(sequence_template)
     in Failure[:sequence_template_invalid, error]
@@ -68,7 +83,7 @@ class ATS::SequenceTemplatesController < ApplicationController
   def stages_params
     params
       .require(:sequence_template)
-      .permit(stages_attributes: %i[position delay_in_days body _destroy])
+      .permit(stages_attributes: %i[id position delay_in_days body _destroy])
       .[](:stages_attributes)
       .to_h
       .deep_symbolize_keys

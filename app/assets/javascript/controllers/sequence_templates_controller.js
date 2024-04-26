@@ -4,8 +4,8 @@ import $ from 'jquery';
 export default class extends Controller {
   static targets = [
     'position',
-    'stagesList',
-    'delay'
+    'stage',
+    'stagesList'
   ];
 
   connect() {
@@ -36,13 +36,24 @@ export default class extends Controller {
       }
     });
 
-    if (!this.delayTargets[0]) return;
+    if (!this.stageTargets[0]) return;
 
-    const $firstDelay = $(this.delayTargets[0]);
-    $firstDelay.hide();
-    $firstDelay.find('input').val(0);
-    if (!this.delayTargets[1]) return;
+    const delayInputs =
+      this.stageTargets
+      .map(stage => {
+        if ($(stage).is(':visible')) {
+          return stage.querySelector('[id$=delay_in_days]');
+        }
+        return null;
+      })
+      .filter(delayInput => delayInput);
 
-    $(this.delayTargets[1]).show();
+    const $firstDelay = $(delayInputs[0]);
+    $firstDelay.parent().hide();
+    $firstDelay.val(0);
+
+    if (!delayInputs[1]) return;
+
+    $(delayInputs[1]).parent().show();
   }
 }
