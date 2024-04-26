@@ -143,10 +143,10 @@ module CandidateCardsHelper
     chat_links = []
     if candidate.telegram.present?
       chat_links << link_to_with_copy_popover_button(
-        tag.i("", class: "fab fa-telegram telegram-icon"),
+        tag.i("", class: "fab fa-telegram"),
         "http://t.me/#{candidate.telegram.delete_prefix('@')}",
         data: { copy_link_tooltip: candidate.telegram },
-        class: "col-auto d-flex text-decoration-none link-font skype-icon"
+        class: "col-auto d-flex text-decoration-none link-font telegram-icon"
       )
     end
     if candidate.skype.present?

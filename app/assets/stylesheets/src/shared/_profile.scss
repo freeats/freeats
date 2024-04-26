@@ -43,11 +43,25 @@
 }
 
 #profile {
+  @include media-breakpoint-down(xs) {
+    #tab-list {
+      .nav-tabs {
+        border-bottom: none;
+      }
+    }
+  }
+
   @include media-breakpoint-up(md) {
     .col-md-profile {
       flex: 0 0 150px;
       max-width: 150px;
       padding-right: 0;
+    }
+
+    #tab-list {
+      .nav-tabs {
+        border-bottom: 1px solid $gray-500;
+      }
     }
   }
 
@@ -70,6 +84,12 @@
     }
     .vk-icon {
       color: $vk-blue;
+    }
+    .skype-icon {
+      color: $skype-color;
+    }
+    .telegram-icon {
+      color: $telegram-color;
     }
     a,
     span {

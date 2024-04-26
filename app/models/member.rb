@@ -52,9 +52,11 @@ class Member < ApplicationRecord
   }
 
   def self.find_by_address(address)
-    joins(:account, :email_addresses)
+    left_joins(:account, :email_addresses)
       .where(account: { email: address })
-      .where(email_addresses: { address: })
+      .or(
+        where(email_addresses: { address: })
+      )
       .first
   end
 

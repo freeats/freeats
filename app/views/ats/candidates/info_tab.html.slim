@@ -33,10 +33,11 @@
             /   | Uploaded #{short_time_ago_in_words(@candidate.cv.added_event.performed_at)} ago
         .d-flex.justify-content-between
           .hstack.gap-2.mt-4
-            = render ButtonLinkComponent.new(download_cv_file_ats_candidate_path(@candidate),
-                                             size: :small,
-                                             target: :_blank)
-              | Download CV
+            - if @candidate.cv.present?
+              = render ButtonLinkComponent.new(download_cv_file_ats_candidate_path(@candidate),
+                                               size: :small,
+                                               target: :_blank)
+                | Download CV
             - if allowed_to?(:upload_cv_file?)
               = form_with model: @candidate, url: upload_cv_file_ats_candidate_path, local: true,
                           multipart: true, method: :post do |form|

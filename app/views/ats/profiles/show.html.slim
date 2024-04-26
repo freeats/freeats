@@ -1,4 +1,4 @@
-h1 style="font-size: 24px;"
+h1.mb-4 style="font-size: 24px;"
   | Profile
 
 ul class="list-reset mb-4"
@@ -8,5 +8,5 @@ ul class="list-reset mb-4"
       span class="text-secondary"
         =< email_address[:token_present] ? "(linked)" : "(token blank)"
 
-= render ButtonLinkComponent.new(@link_gmail_uri)
+= render ButtonLinkComponent.new(@link_gmail_uri, size: :small)
   | Link email

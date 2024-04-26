@@ -24,7 +24,7 @@ ruby:
       = render "ats/candidates/avatar_image", candidate: @candidate
 
     / ACTIONS
-    .col-auto.align-items-end.ms-auto.order-md-last.gap-2.mb-2
+    .col-auto.d-flex.ms-auto.order-md-last.gap-2.mb-2
       .d-flex
         = render "ats/candidates/action_buttons", profile: @candidate
         - if allowed_to?(:edit_header?)
@@ -47,7 +47,7 @@ ruby:
           company = @candidate.company
           # That regexp is for fixing a long solid headline.
           text_to_clamp = candidate_turn_array_to_string_with_line_breakers([candidate_headline, company])
-        = text_to_clamp
+        .mt-2 = text_to_clamp
         / = clamp_text text_to_clamp, { inline_expand_button: true },
                      html_options: { class: "mt-2 font-body overflow-hidden" },
                      button_html_options: { class: "font-body" }

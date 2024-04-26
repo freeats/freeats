@@ -29,10 +29,11 @@ import 'jquery-ui/ui/widgets/sortable';
 import 'jquery-ui/ui/widgets/datepicker';
 
 import { initConfirmations } from '../src/shared/confirmations';
-import activateInstanceSubmit from '../src/shared/input_utils';
+import { activateInstanceSubmit, activateKeybindShortcuts } from '../src/shared/input_utils';
 
 initConfirmations();
 activateInstanceSubmit();
+activateKeybindShortcuts();
 
 // Cocoon depends on Jquery, so should be loaded after.
 // Therefore using 'require' instead of async 'import'.

@@ -34,9 +34,9 @@ module ATS::PositionsHelper
       when "position_stage_changed"
         "changed stage from <b>#{from}</b> to <b>#{to}</b>"
       when "scorecard_template_added"
-        "added scorecard <b>#{event.eventable.title}</b>"
+        "added scorecard template <b>#{event.eventable.title}</b>"
       when "scorecard_template_updated"
-        "updated scorecard <b>#{event.eventable.title}</b>"
+        "updated scorecard template <b>#{event.eventable.title}</b>"
       end
 
     sanitize(text)
@@ -143,6 +143,11 @@ module ATS::PositionsHelper
   end
 
   def from_and_to_message(field, from, to)
+    if field == "status"
+      from = from.humanize
+      to = to.humanize
+    end
+
     if to.present? && from.present?
       "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
     elsif to.present?

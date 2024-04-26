@@ -11,6 +11,7 @@ class Candidate < ApplicationRecord
            dependent: :destroy,
            inverse_of: :candidate
   has_many :candidate_alternative_names,
+           -> { order(:name) },
            class_name: "CandidateAlternativeName",
            dependent: :destroy,
            inverse_of: :candidate

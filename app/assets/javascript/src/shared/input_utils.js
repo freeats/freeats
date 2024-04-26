@@ -10,7 +10,7 @@ function requestSubmitPolyfilled(form) {
   }
 }
 
-export default function activateInstanceSubmit() {
+function activateInstanceSubmit() {
   $(document).on('change', '.instant-submit', function submitForm() {
     if (
       window.performance &&
@@ -26,3 +26,35 @@ export default function activateInstanceSubmit() {
     requestSubmitPolyfilled(this.closest('form'));
   });
 }
+
+function activateKeybindShortcuts() {
+  $(document).keydown(event => {
+    const $target = $(event.target);
+    if ($target.is(':focus') && $target.val() !== '') {
+      return true;
+    }
+
+    if (event.keyCode === 39) {
+      if ($('.arrow-right').length > 0) $('.arrow-right')[0].click();
+      return false;
+    }
+
+    if (event.keyCode === 37) {
+      if ($('.arrow-left').length > 0) $('.arrow-left')[0].click();
+      return false;
+    }
+
+    return true;
+  });
+
+  $(document).on('keydown', '.enter-turbo-submit', function submitForm(event) {
+    if ((event.keyCode === 10 || event.keyCode === 13) && (event.ctrlKey || event.metaKey)) {
+      $(this.closest('form')).find("[type='submit']").click();
+    }
+  });
+}
+
+export { activateInstanceSubmit,
+         activateKeybindShortcuts,
+         requestSubmitPolyfilled};
+

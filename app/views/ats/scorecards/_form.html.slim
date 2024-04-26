@@ -24,7 +24,7 @@ ruby:
   = form.hidden_field :title, value: scorecard.title
   = form.hidden_field :visible_to_interviewer, value: scorecard.visible_to_interviewer
 
-  .h1.mb-4 #{scorecard.title}
+  .h1.mb-3 #{scorecard.title}
 
   = render LabeledComponent.new( \
     class: "mb-2",
@@ -54,7 +54,7 @@ ruby:
     - scorecard_template = scorecard.position_stage.scorecard_template
     = link_to(scorecard_template.title, ats_scorecard_template_path(scorecard_template))
   = render LabeledComponent.new( \
-    class: "mb-3",
+    class: "mb-4",
     left_layout_class: "col-12 col-md-auto",
     right_layout_class: "col-12 col-md-5" \
   ) do |c|
@@ -119,5 +119,5 @@ ruby:
   .card-submit.hstack.gap-2.mt-4
     = render ButtonComponent.new(size: :small)
       | Save
-    = render ButtonLinkComponent.new(cancel_path, variant: :cancel, size: :small)
+    = render ButtonLinkComponent.new(cancel_path, variant: :secondary, size: :small)
       | Cancel

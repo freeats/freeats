@@ -3,7 +3,7 @@
 #profile.row
   .col-12.col-lg-7.col-xl-8
 
-    .h1.mb-4 #{@scorecard.title}
+    .h1.mb-3 #{@scorecard.title}
 
     = render LabeledComponent.new( \
       class: "mb-2",
@@ -33,7 +33,7 @@
       - scorecard_template = @scorecard.position_stage.scorecard_template
       = link_to(scorecard_template.title, ats_scorecard_template_path(scorecard_template))
     = render LabeledComponent.new( \
-      class: "mb-3",
+      class: "mb-4",
       left_layout_class: "col-auto",
       right_layout_class: "col",
       right_class: "ps-0 col-form-label-sm" \

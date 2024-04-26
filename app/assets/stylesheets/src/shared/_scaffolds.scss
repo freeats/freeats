@@ -1,5 +1,5 @@
 $footer-min-height: 117px;
-$navbar-min-height: 64px;
+$navbar-min-height: 56px;
 
 html,
 body {
@@ -22,7 +22,6 @@ body {
   top: -8px;
 
   .notification {
-    margin-bottom: 16px;
     padding: 8px 30px 8px 16px;
     border-radius: 0.25rem;
     font-size: 14px;
@@ -252,7 +251,7 @@ footer .container-fluid {
 
 body {
   font-size: 0.875rem;
-  line-height: 1.3125rem;
+  line-height: 1.5rem;
 }
 
 // Change styles to Bootstrap v4.
@@ -274,10 +273,6 @@ body {
     padding: 0.75rem;
     border-bottom: none;
   }
-}
-
-:not(.dropdown) > .btn {
-  --bs-btn-font-size: 0.875rem;
 }
 
 .btn.btn-sm {

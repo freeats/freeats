@@ -27,7 +27,7 @@ export default class extends Controller {
   }
 
   #initSelectize(obj, searchUrl) {
-    const scores = { active: 100, passive: 10, open: 1, on_hold: 0.1, closed: 0.01 };
+    const scores = { active: 1000, passive: 100, open: 10, on_hold: 1, draft: 0.1, closed: 0.01 };
     // We use client-side rendering here instead of server-side due to errors that occur
     // when passing the default value while sourcing in the Hub.
     function renderOption(item, escape) {

@@ -3,5 +3,5 @@ h1 style="font-size: 24px; line-height: 32px; font-weight: 700;"
 
 = form_with url: rodauth.omniauth_request_path(:google_oauth2), data: { turbo: false }
   .form-group.mt-3
-    = render ButtonComponent.new
+    = render ButtonComponent.new(size: :large)
       | Sign in with Google

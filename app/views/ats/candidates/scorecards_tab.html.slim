@@ -12,8 +12,8 @@
               .col-8
                 = link_to(position.name, ats_position_path(position))
               .col-4.text-end.text-secondary
-                /TODO: Set the correct status/stage with date from event
-                = "Added (#{placement.created_at.strftime('%d.%m.%Y')})"
+                = "#{placement.status.humanize}/#{placement.stage.humanize} " \
+                  "(#{placement.added_event.performed_at.to_fs(:date)})"
         .accordion-collapse.collapse [data-bs-parent="#scorecards-accordion" id=unique_id
           class=("show" if index.zero?)]
           .accordion-body
