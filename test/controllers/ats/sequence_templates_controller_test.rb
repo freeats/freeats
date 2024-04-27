@@ -4,7 +4,8 @@ require "test_helper"
 
 class ATS::SequenceTemplatesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    sign_in accounts(:employee_account)
+    @account = accounts(:employee_account)
+    sign_in @account
   end
 
   test "should compose the new sequence_template" do
@@ -219,5 +220,44 @@ class ATS::SequenceTemplatesControllerTest < ActionDispatch::IntegrationTest
     assert_not SequenceTemplateStage.exists?(sequence_template_stage.id)
     assert_equal new_first_stage.position, 1
     assert_nil new_first_stage.delay_in_days
+  end
+
+  test "should display setup_test modal" do
+    sequence_template = sequence_templates(:golang_position_sequence_template)
+
+    get setup_test_ats_sequence_template_path(sequence_template)
+
+    assert_response :success
+
+    doc = Nokogiri::HTML::Document.parse(response.body)
+
+    assert_equal doc.at_css("#position").attr(:value), sequence_template.position.name
+    assert_equal doc.at_css("#sender_first_name").attr(:value), @account.name.split.first
+    assert_equal doc.at_css("#sender_calendar_url").attr(:value), @account.calendar_url
+    assert_equal doc.at_css("#sender_linkedin_url").attr(:value), @account.linkedin_url
+    assert_equal [doc.at_css("#female").attr(:value), @account.female.to_s], %w[female true]
+  end
+
+  test "should display test sequence_template" do
+    sequence_template = sequence_templates(:golang_position_sequence_template)
+
+    params = {
+      position: sequence_template.position.name,
+      sender_first_name: @account.name.split.first,
+      sender_calendar_url: @account.calendar_url,
+      sender_linkedin_url: @account.linkedin_url
+    }
+    get test_ats_sequence_template_path(sequence_template, params:)
+
+    assert_response :success
+
+    doc = Nokogiri::HTML::Document.parse(response.body)
+
+    first_stage_body = doc.at_css(".card-body").text
+
+    assert_includes first_stage_body, params[:position]
+    assert_includes first_stage_body, params[:sender_first_name]
+    assert_includes first_stage_body, params[:sender_calendar_url]
+    assert_includes first_stage_body, params[:sender_linkedin_url]
   end
 end

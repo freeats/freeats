@@ -122,6 +122,11 @@ module ApplicationHelper
     end
   end
 
+  def unescape_link_tags(html)
+    # Captures everything between closest openings and closings of <a> tag and unescapes it.
+    html.gsub(/(<a(?:(?!<a|>)[\s\S])*>)/) { CGI.unescape(Regexp.last_match(1)) }
+  end
+
   private
 
   def compose_select_component(grid:, filter:)

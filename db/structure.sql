@@ -420,7 +420,10 @@ ALTER SEQUENCE public.account_remember_keys_id_seq OWNED BY public.account_remem
 CREATE TABLE public.accounts (
     id bigint NOT NULL,
     email public.citext NOT NULL,
-    name character varying NOT NULL
+    name character varying NOT NULL,
+    linkedin_url character varying DEFAULT ''::character varying NOT NULL,
+    calendar_url character varying DEFAULT ''::character varying NOT NULL,
+    female boolean DEFAULT false NOT NULL
 );
 
 
@@ -3838,6 +3841,7 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240425094431'),
+('20240425091511'),
 ('20240423033545'),
 ('20240423022713'),
 ('20240422114747'),

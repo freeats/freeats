@@ -32,6 +32,17 @@ class SequenceTemplate < ApplicationRecord
     stages.reject(&:marked_for_destruction?)
   end
 
+  def present_variables
+    @sequence_template_body_sum = stages.each_with_object([]) do |stage, memo|
+      memo << stage.body.body.to_html
+    end.join(" ")
+    LiquidTemplate.new(
+      ApplicationController.helpers.unescape_link_tags(
+        "#{subject} #{@sequence_template_body_sum}"
+      )
+    ).present_variables
+  end
+
   private
 
   def stages_must_be_valid

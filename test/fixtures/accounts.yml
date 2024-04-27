@@ -9,6 +9,9 @@ hiring_manager_account:
 employee_account:
   email: employee@mail.com
   name: Alexandra Dovgal
+  female: true
+  linkedin_url: https://www.linkedin.com/in/employee
+  calendar_url: https://calendar.google.com/employee
 
 interviewer_account:
   email: interviewer@mail.com

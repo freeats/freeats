@@ -10,6 +10,10 @@ class Account < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true
 
+  before_validation do
+    self.linkedin_url = AccountLink.new(linkedin_url).normalize if linkedin_url.present?
+  end
+
   # Needed for Rails Admin to teach how to delete the avatar.
   attr_accessor :remove_avatar
 

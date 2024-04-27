@@ -71,6 +71,7 @@ Rails.application.routes.draw do
 
     resources :sequence_templates, only: %i[new create show edit update] do
       get :setup_test, on: :member
+      get :test, on: :member
       patch :archive, on: :member
     end
   end

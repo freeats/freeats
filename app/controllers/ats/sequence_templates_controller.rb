@@ -2,7 +2,7 @@
 
 class ATS::SequenceTemplatesController < ApplicationController
   before_action :authorize!
-  before_action :set_sequence_template, only: %i[show archive edit update]
+  before_action :set_sequence_template, only: %i[show archive edit update setup_test test]
 
   include Dry::Monads[:result]
 
@@ -42,7 +42,36 @@ class ATS::SequenceTemplatesController < ApplicationController
   end
 
   def setup_test
-    # TODO: implement this action
+    partial_name = "test_sequence_template_modal"
+    @sequence_template_variables = @sequence_template.present_variables
+    @defaults =
+      LiquidTemplate.extract_attributes_from(
+        current_account:,
+        position: @sequence_template.position
+      )
+
+    render(
+      partial: partial_name,
+      layout: "modal",
+      locals: {
+        modal_id: partial_name.dasherize,
+        form_options: {
+          url: test_ats_sequence_template_path(@sequence_template),
+          method: :get,
+          html: { target: "_blank" },
+          data: {
+            turbo: false
+          }
+        },
+        modal_size: "modal-lg"
+      }
+    )
+  end
+
+  def test
+    @parameters = test_sequence_template_params(@sequence_template.present_variables)
+
+    render "_test_show"
   end
 
   def archive
@@ -88,5 +117,12 @@ class ATS::SequenceTemplatesController < ApplicationController
       .to_h
       .deep_symbolize_keys
       .values
+  end
+
+  def test_sequence_template_params(variables)
+    variables.index_with do |variable|
+      result = params[variable].presence
+      result == "false" ? false : result
+    end
   end
 end
