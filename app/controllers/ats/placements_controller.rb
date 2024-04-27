@@ -6,6 +6,9 @@ class ATS::PlacementsController < ApplicationController
   layout "ats/application"
 
   before_action :set_placement, only: %i[destroy change_status change_stage]
+  before_action :authorize!, only: %i[create]
+  before_action -> { authorize!(@placement) },
+                only: %i[destroy change_stage change_status]
 
   def create
     case Placements::Add.new(

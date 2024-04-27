@@ -6,7 +6,8 @@ ruby:
 #turbo_placements_notes_panel
   #placements-notes-panel [data-controller="placements-notes-panel"
       data-placements-notes-panel-position-search-url-value=search_path]
-    = render partial: "ats/candidates/add_placement", locals: { candidate: }
+    - if allowed_to?(:create?, with: ATS::PlacementPolicy)
+      = render partial: "ats/candidates/add_placement", locals: { candidate: }
     hr.my-4
     = render partial: "ats/candidates/placements_section",
              locals: { candidate:,

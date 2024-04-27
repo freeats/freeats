@@ -11,9 +11,10 @@ ruby:
   .row
     .col.align-self-center
       .row.g-0
-        .col-auto.me-1
-          = link_to tab_ats_position_path(placement.position.id, :pipeline)
-            = position_html_status_circle(placement.position)
+        - if allowed_to?(:show?, placement.position, with: ATS::PositionPolicy)
+          .col-auto.me-1
+            = link_to tab_ats_position_path(placement.position.id, :pipeline)
+              = position_html_status_circle(placement.position)
         .col
           ruby:
             placement_class =
@@ -23,64 +24,65 @@ ruby:
                 "text-decoration-line-through"
               end
           span class=placement_class
-            = link_to placement.position.name, tab_ats_position_path(placement.position.id, :info)
+            - if allowed_to?(:show?, placement.position, with: ATS::PositionPolicy)
+              = link_to placement.position.name, tab_ats_position_path(placement.position.id, :info)
+            - else
+              = placement.position.name
     .col-auto
       span.font-italic.me-2 data-bs-toggle="tooltip" data-bs-title=tooltip_text data-bs-html="true"
         = placement.position_stage.name.humanize
 
-      .btn-group.placement-buttons
-        - if placement.qualified? && !placement.hired?
+      - if allowed_to?(:change_stage?, placement, with: ATS::PlacementPolicy)
+        .btn-group.placement-buttons
+          - if placement.qualified? && !placement.hired?
+            .btn-group
+              = render "ats/placements/change_stage_buttons",
+                       placement:,
+                       with_forward_button: true,
+                       with_text: false,
+                       square_button: true
+
           .btn-group
-            = render "ats/placements/change_stage_buttons",
+            = render "ats/placements/disrequalify_buttons",
                      placement:,
-                     with_forward_button: true,
-                     with_text: false,
-                     square_button: true
+                     tooltip: true
 
-        .btn-group
-          = render "ats/placements/disrequalify_buttons",
-                   placement:,
-                   tooltip: true
+          .btn-group
+            ruby:
+              interview_tooltips = []
+              interview_tooltips << "Candidate is disqualified" unless placement.qualified?
+              interview_tooltips << "Candidate is hired" if placement.hired?
+              interview_tooltips << "Candidate has no recruiter" if placement.candidate.recruiter.blank?
+              interview_tooltips << "Candidate has no emails" if placement.candidate.emails.none?
 
-        .btn-group
-          ruby:
-            interview_tooltips = []
-            interview_tooltips << "Candidate is disqualified" unless placement.qualified?
-            interview_tooltips << "Candidate is hired" if placement.hired?
-            interview_tooltips << "Candidate has no recruiter" if placement.candidate.recruiter.blank?
-            interview_tooltips << "Candidate has no emails" if placement.candidate.emails.none?
+              buttons_visibility =
+                placement.qualified? ||
+                interview_tooltips.empty?
 
-            buttons_visibility =
-              placement.qualified? ||
-              interview_tooltips.empty?
+            - if buttons_visibility
+              span aria-expanded="false" aria-haspopup="true" data-bs-toggle="dropdown" type="button"
+                button.btn.btn-light.placement-dropdown-toggle.placement-button [data-bs-toggle="tooltip"
+                    data-bs-title="More" data-bs-placement="bottom"]
+                  i.far.fa-ellipsis-h
+              ul.dropdown-menu.dropdown-menu-end
+                - if placement.qualified?
+                  li =< render "ats/placements/reserve_buttons", placement:, dropdown_item: true
 
-          - if buttons_visibility
-            span aria-expanded="false" aria-haspopup="true" data-bs-toggle="dropdown" type="button"
-              button.btn.btn-light.placement-dropdown-toggle.placement-button [data-bs-toggle="tooltip"
-                  data-bs-title="More" data-bs-placement="bottom"]
-                i.far.fa-ellipsis-h
-            ul.dropdown-menu.dropdown-menu-end
-              - if placement.qualified?
-                li =< render "ats/placements/reserve_buttons", placement:, dropdown_item: true
-
-              / TODO: update this condition when events and sequences have been added
-              / (current_member is admin || current_member is author of this placement) &&
-              / placement.sourced? && (placement doesn't have sequences) && (placement doesn't have scorecards)
-              - if current_member.admin? && placement.sourced? && placement.scorecards.blank?
-                li =< button_to ats_placement_path(placement.id),
-                                method: :delete,
-                                type: "submit",
-                                class: "dropdown-item",
-                                data: { toggle: "ats-confirmation",
-                                        title: "Delete position from candidate?",
-                                        btn_cancel_label: "Cancel",
-                                        btn_ok_label: "Delete",
-                                        btn_ok_class: "btn btn-danger btn-small" }
-                  span.dropdown-button-icon
-                    i.fa-light.fa-trash-alt.fa-fw
-                  span.ms-2 Remove
-          - else
-            span [aria-expanded="false" aria-haspopup="true" data-bs-title="No items in menu"
-                  data-bs-toggle="tooltip" data-bs-placement="left"]
-              button.btn.btn-light.placement-dropdown-toggle.placement-button.disabled.opacity-45
-                i.far.fa-ellipsis-h
+                - if allowed_to?(:destroy?, placement, with: ATS::PlacementPolicy)
+                  li =< button_to ats_placement_path(placement.id),
+                                  method: :delete,
+                                  type: "submit",
+                                  class: "dropdown-item",
+                                  data: { toggle: "ats-confirmation",
+                                          title: "Delete position from candidate?",
+                                          btn_cancel_label: "Cancel",
+                                          btn_ok_label: "Delete",
+                                          btn_ok_class: "btn btn-danger btn-small" }
+                    span.dropdown-button-icon
+                      i.fa-light.fa-trash-alt.fa-fw
+                    span.ms-2 Remove
+            - else
+              span [aria-expanded="false" aria-haspopup="true" data-bs-title="No items in menu"
+                    data-bs-toggle="tooltip" data-bs-placement="left"]
+                button.btn.btn-light.placement-dropdown-toggle.placement-button.disabled.opacity-45
+                  i.far.fa-ellipsis-h

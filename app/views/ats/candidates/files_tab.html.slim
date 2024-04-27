@@ -1,7 +1,8 @@
 = render "ats/candidates/profile" do
   .row.mt-3
     .col
-      = render "file_upload_button", candidate: @candidate
+      - if allowed_to?(:upload_file?)
+        = render "file_upload_button", candidate: @candidate
       - if @candidate.files.attached?
         = render partial: "ats/candidates/candidate_files",
                  locals: { all_files: @all_files, candidate: @candidate }
