@@ -50,6 +50,9 @@ class Member < ApplicationRecord
   scope :with_email, lambda {
     active.includes(user: :identities).where(users: { identities: { provider: "toughbyte" } })
   }
+  scope :with_linked_email_service, -> {
+    joins(:email_addresses).where.not(email_addresses: { refresh_token: "" }).distinct
+  }
 
   def self.find_by_address(address)
     left_joins(:account, :email_addresses)

@@ -514,11 +514,13 @@ class Candidate < ApplicationRecord
   def synchronize_email_messages(addresses = [], now: false, queue: :sync_emails)
     return if queue == :scraping_processing
 
-    (addresses.presence || all_emails).each do |address|
+    addresses_to_sync = addresses.presence || all_emails
+
+    Member.with_linked_email_service.pluck(:id).each do |member_id|
       if now
-        SynchronizeEmailMessagesForEmailJob.set(queue:).perform_now(address)
+        SynchronizeEmailMessagesForEmailJob.set(queue:).perform_now(member_id, addresses_to_sync)
       else
-        SynchronizeEmailMessagesForEmailJob.set(queue:).perform_later(address)
+        SynchronizeEmailMessagesForEmailJob.set(queue:).perform_later(member_id, addresses_to_sync)
       end
     end
   end
