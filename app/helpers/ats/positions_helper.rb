@@ -54,16 +54,22 @@ module ATS::PositionsHelper
   def position_description_edit_value(position)
     position.description.presence ||
       <<~HTML
-        <b>Tasks:</b>
+        <b>General description</b>
+        <br><br>
+        <b>Responsibilities</b>
         <ul><li> </li></ul>
-        <b>Must-have:</b>
+        <b>Requirements</b>
+        <ul><li>Must-have
         <ul><li> </li></ul>
-        <b>Nice-to-have:</b>
+        </li></ul>
+        <ul><li>Nice-to-have
         <ul><li> </li></ul>
-        <b>Benefits and conditions:</b>
-        <ul><li>Trial period:</li></ul>
-        <b>Interview process:</b>
+        </li></ul>
+        <b>Interview process</b>
         <ul><li> </li></ul>
+        <b>Team</b>
+        <br><br>
+        <b>Salary range</b>
       HTML
   end
 
