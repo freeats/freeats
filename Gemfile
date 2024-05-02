@@ -90,7 +90,9 @@ group :test do
   gem "capybara"
   gem "factory_bot_rails"
   gem "faker"
+  gem "minitest-stub-const"
   gem "selenium-webdriver"
+  gem "webmock"
 end
 
 # rubocop:disable Bundler/DuplicatedGem

@@ -1,0 +1,105 @@
+Delivered-To: eileen.nyaguthii@toughbyte.com
+Received: by 2002:a05:6a21:2d89:b0:1a3:339b:7f5c with SMTP id ty9csp1012565pzb;
+        Fri, 15 Mar 2024 05:24:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHEmgjFvmHBccFxkjltVHYPNxuKEbhtjIXrKXcl73+qdDmEt5DRxDb+a3Lry8S1791F+CsJ
+X-Received: by 2002:a5d:47c4:0:b0:33e:9dff:a3f7 with SMTP id o4-20020a5d47c4000000b0033e9dffa3f7mr2713810wrc.62.1710505457793;
+        Fri, 15 Mar 2024 05:24:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1710505457; cv=none;
+        d=google.com; s=arc-20160816;
+        b=tcKVY2dNt5UOtb9ViapF/VHVbwmq5xjPSIc4oWoVhrqA2S7by6fQnLV/X/ADVw3Cmk
+         ncb4cwORtScrAIaiOiv7uPIJL/XR5BcrbFaR6rz3LIhsyLKyIgJT3axbmqcgiW8H7ZeR
+         4R+TXeJEHDSZyiN4ew3Hj4RyuJn5X6n3RrXy/l8w0QpwPmiEkf2RD3B/uCq/6ubJ0GwK
+         T6Hjfnl+L8x514k+1tNf57Cj7DQueSWxYL9bvkBgU/fuyg6FuQXZfPsF45KHoTp4hpCo
+         1KxELlfDrzLmkV0EFKiO6oTKZdUkmuwC9AbvjmQRFIiGHh/gwJM/ZeO8DPJT6Pc/WMd3
+         QX6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=mime-version:content-transfer-encoding:auto-submitted:in-reply-to
+         :references:message-id:date:thread-index:thread-topic:subject:to
+         :from:dkim-signature:dkim-signature;
+        bh=b+LmbRkUAxW89jj+oI8Bo9yp2Pbi/rwC7jrgkLq4mg4=;
+        fh=TRX/hVHujoDcU8w45qpTJWUJSBi8BsSF4ZrjNrbAnA4=;
+        b=SH5DJ0eakpGYjukyDJxQUO8s7DnprYn/3GwRBq6ieTCdeSKd3xr36GSV6yQiCV97zG
+         oRedEVU0ryK+Me60R5TzG8lIaFuk0+xG9f6jB12MfD1gGGu4uRWoLlKW8XTosIboPwZp
+         y08Ps8jr8vI4KxqtAtzT3qNmFZQCGMzK7xKzGrx0nd0UzbaMLMR+AZzJ6S8wppfcLO2T
+         R06kdA2hMBdS//oqud7ndbbgrVI1Z69pDr/8zuzX5IA5GtcMlGUQDdKqHDBJOcR5u150
+         zS9OaZE9oV9KDaa9x7rx5C76vyu88of7ZqNa31aBoPOuLwP9JEMyK7QHnPjNGD08VPfk
+         WhyQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=neutral (no key) header.i=@ral.de;
+       dkim=pass header.i=@ral.de header.s=s2020 header.b=HOSbrZhF;
+       spf=none (google.com: mx1.ral.de does not designate permitted sender hosts) smtp.helo=mx1.ral.de;
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=ral.de
+Return-Path: <>
+Received: from mx1.ral.de (mx1.ral.de. [81.20.131.229])
+        by mx.google.com with ESMTPS id o12-20020a5d62cc000000b0033e8281ac47si1523069wrv.202.2024.03.15.05.24.17
+        for <eileen.nyaguthii@toughbyte.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 15 Mar 2024 05:24:17 -0700 (PDT)
+Received-SPF: none (google.com: mx1.ral.de does not designate permitted sender hosts) client-ip=81.20.131.229;
+Authentication-Results: mx.google.com;
+       dkim=neutral (no key) header.i=@ral.de;
+       dkim=pass header.i=@ral.de header.s=s2020 header.b=HOSbrZhF;
+       spf=none (google.com: mx1.ral.de does not designate permitted sender hosts) smtp.helo=mx1.ral.de;
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=ral.de
+DKIM-Signature: v=1; c=relaxed/relaxed; d=ral.de; s=s2020e; t=1710505428; 
+ bh=b+LmbRkUAxW89jj+oI8Bo9yp2Pbi/rwC7jrgkLq4mg4=; h=
+ Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
+ a=ed25519-sha256; b=
+ 80RMhHLKYNtdFazf2MxKZrBbSKKv0kqNJsQB6trA6fPgHJW01wNXoq+pp2MmI0yFTcIQuXc+rf0eaq6I9dxiCw==
+DKIM-Signature: v=1; c=relaxed/relaxed; d=ral.de; s=s2020; t=1710505428; 
+ bh=b+LmbRkUAxW89jj+oI8Bo9yp2Pbi/rwC7jrgkLq4mg4=; h=
+ Subject:Subject:From:From:Date:Date:ReplyTo:ReplyTo:Cc:Cc:Message-Id:Message-Id; 
+ a=rsa-sha256; b=
+ HOSbrZhFBoy5/PB2hE/DQrxyhMxwGX7qX6IJpiOUhsJijdIpeOAD4Amq03SduRd/tb515xjeqMGkEoVaDosAJJe/X5664AU9feFs0nvqZQUhYKllHWinGZ6ztNRLwzjdRdAf6sFal/EoVnst0XU5c/P9tl6ppIDOAvc+7EheJDY=
+From: <Kirstin.Herrmann@ral.de>
+To: <eileen.nyaguthii@toughbyte.com>
+Subject: Automatische Antwort: Finding an IT coordinator for RAL
+Thread-Topic: Finding an IT coordinator for RAL
+Thread-Index: AQHadtOyL6rLxP0B8kSnZHRcrJp0mLE4ub2f
+Date: Fri, 15 Mar 2024 12:24:16 +0000
+Message-ID: <bec1174f62974febac81df803bc70931@SRV020.int.ral.de>
+References: <CAMhumc6BE74UHH9JAyY0=NK04RaNWJc=nZ+4P+pzNKUMJd19PA@mail.gmail.com>
+In-Reply-To: <CAMhumc6BE74UHH9JAyY0=NK04RaNWJc=nZ+4P+pzNKUMJd19PA@mail.gmail.com>
+X-MS-Has-Attach:
+X-Auto-Response-Suppress: All
+X-MS-Exchange-Inbox-Rules-Loop: Kirstin.Herrmann@ral.de
+X-MS-TNEF-Correlator:
+x-ms-exchange-parent-message-id: <CAMhumc6BE74UHH9JAyY0=NK04RaNWJc=nZ+4P+pzNKUMJd19PA@mail.gmail.com>
+auto-submitted: auto-generated
+x-ms-exchange-generated-message-source: Mailbox Rules Agent
+Content-Type: text/plain; charset=\"Windows-1252\"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Guten Tag,
+vielen Dank f=FCr Ihre E-Mail. Ich bin derzeit nicht im B=FCro und werde bi=
+s einschlie=DFlich 15.03.2024 abwesend sein. In dieser Zeit werde ich meine=
+ E-Mails nicht lesen und auch keine Anrufe entgegennehmen k=F6nnen.
+Ihre Nachricht wird nicht weitergeleitet. Bitte wenden Sie sich in dringend=
+en F=E4llen an meine Kollegin Anke Mietchen (anke.mietchen@ral.de, Tel. 022=
+8-68895-184).
+Gerne bin ich ab dem 18.03.2024 wieder f=FCr Sie erreichbar.
+
+Mit freundlichen Gr=FC=DFen
+
+Kirstin Herrmann
+Leiterin Administration und Organisation
+
+
+
+
+
+
+RAL gemeinn=FCtzige GmbH
+Fr=E4nkische Stra=DFe 7 =95 53229 Bonn =95 Germany
+
+T: +49 228 =96 688 95-180
+
+kirstin.herrmann@ral.de =95 www.ral.de<http://www.ral.de>
+
+Gesch=E4ftsf=FChrer: RA R=FCdiger Wollmann =95 RA Thomas Ro=DFbach
+Sitz der Gesellschaft: Bonn =95 HRB 23155 =95 Amtsgericht Bonn
+
+
+
