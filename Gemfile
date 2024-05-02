@@ -85,6 +85,7 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
+  gem "factory_bot_rails"
   gem "faker"
   gem "selenium-webdriver"
 end

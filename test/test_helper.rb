@@ -8,6 +8,8 @@ require "minitest/mock"
 # rubocop:disable Style/ClassAndModuleChildren
 module ActiveSupport
   class TestCase
+    include FactoryBot::Syntax::Methods
+
     parallelize if ENV["CI"].blank? # Disable parallelization for continuous integration.
 
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.

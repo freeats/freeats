@@ -73,6 +73,16 @@ class CandidatePhone < ApplicationRecord
     end
   end
 
+  def to_params
+    attributes.symbolize_keys.slice(
+      :phone,
+      :list_index,
+      :status,
+      :type,
+      :source
+    )
+  end
+
   private
 
   def phone_must_be_valid

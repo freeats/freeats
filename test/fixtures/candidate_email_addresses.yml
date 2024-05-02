@@ -6,6 +6,14 @@ john_email_address:
   source: linkedin
   status: current
 
+john_duplicate_email_address:
+  candidate: john_duplicate
+  address: john@gmail.com
+  list_index: 1
+  type: personal
+  source: linkedin
+  status: current
+
 jane_email_address:
   candidate: jane
   address: jane@gmail.com

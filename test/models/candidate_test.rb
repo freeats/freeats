@@ -3,6 +3,8 @@
 require "test_helper"
 
 class CandidateTest < ActiveSupport::TestCase
+  include Dry::Monads[:result]
+
   test "should assign a source" do
     candidate = candidates(:john)
     candidate.update!(candidate_source: candidate_sources(:linkedin))
@@ -12,6 +14,7 @@ class CandidateTest < ActiveSupport::TestCase
 
   test "should return all duplicates" do
     candidate = candidates(:john)
+    candidates(:john_duplicate).destroy!
     email_address = candidate.candidate_email_addresses.first
     phone = candidate.candidate_phones.first
     link = "https://www.linkedin.com/in/awesome_linkedin_profile/"
@@ -43,7 +46,7 @@ class CandidateTest < ActiveSupport::TestCase
   end
 
   test "should not show duplicates for a person with same invalid phone/email" do
-    candidate = candidates(:john)
+    candidate = candidates(:jane)
 
     assert_empty candidate.duplicates
 
@@ -52,7 +55,7 @@ class CandidateTest < ActiveSupport::TestCase
                            status: :invalid }
     same_invalid_phone = { phone: candidate.phones.first, status: :invalid, type: :personal }
 
-    duplicate_with_same_invalid_email = candidates(:jane)
+    duplicate_with_same_invalid_email = candidates(:ivan)
     duplicate_with_same_invalid_email.emails = [same_invalid_email]
 
     duplicates_with_same_invalid_phone = candidates(:sam)

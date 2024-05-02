@@ -184,6 +184,11 @@ GEM
       dry-logic (~> 1.4)
       zeitwerk (~> 2.6)
     erubi (1.12.0)
+    factory_bot (6.4.6)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.4.3)
+      factory_bot (~> 6.4)
+      railties (>= 5.0.0)
     faker (3.2.3)
       i18n (>= 1.8.11, < 2)
     faraday (2.9.0)
@@ -562,6 +567,7 @@ DEPENDENCIES
   dry-logger
   dry-monads
   dry-schema
+  factory_bot_rails
   faker
   faraday
   gon

@@ -16,4 +16,11 @@ class CandidateLink < ApplicationRecord
   rescue Addressable::URI::InvalidURIError
     false
   end
+
+  def to_params
+    attributes.symbolize_keys.slice(
+      :url,
+      :status
+    )
+  end
 end

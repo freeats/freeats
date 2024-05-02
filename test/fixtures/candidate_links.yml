@@ -1,9 +1,14 @@
 john_link:
   candidate: john
-  url: "https://linkedin.com/john"
+  url: "https://www.linkedin.com/in/john/"
+  status: current
+
+john_duplicate_link:
+  candidate: john_duplicate
+  url: "https://www.linkedin.com/in/john/"
   status: current
 
 jane_link:
   candidate: jane
-  url: "https://linkedin.com/jane"
+  url: "https://www.linkedin.com/in/jane/"
   status: current

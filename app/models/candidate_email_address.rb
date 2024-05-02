@@ -92,4 +92,15 @@ class CandidateEmailAddress < ApplicationRecord
   def normalize_address
     self.address = Normalizer.email_address(address)
   end
+
+  def to_params
+    attributes.symbolize_keys.slice(
+      :address,
+      :list_index,
+      :status,
+      :type,
+      :source,
+      :url
+    )
+  end
 end
