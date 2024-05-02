@@ -29,11 +29,3 @@ ivan_email_address:
   type: personal
   source: other
   status: current
-
-john_duplicate_email_address:
-  candidate: john_duplicate
-  address: john@duplicate.com
-  list_index: 1
-  type: personal
-  source: other
-  status: current
