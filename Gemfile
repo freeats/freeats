@@ -60,6 +60,9 @@ end
 group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "debug", platforms: %i[mri windows]
+  gem "pry-byebug"
+  gem "pry-inline"
+  gem "pry-rails"
   gem "rubocop", require: false
   gem "rubocop-minitest", require: false
   gem "rubocop-performance", require: false
