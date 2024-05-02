@@ -1,0 +1,31 @@
+ruby_position_sam:
+  sequence_template: ruby_position_sequence_template
+  member_email_address: admin_second_email_address
+  placement: sam_ruby_replied
+  to: sam@gmail.com
+  status: running
+  scheduled_at: <%= Time.zone.now %>
+  parameters: {}
+  data:
+    - subject: Hey Sam, let's discuss the Scala Developer Position
+      body: |
+        Lorem Ipsum toughbyte.com is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+        It has survived not only five centuries, but also the leap into electronic typesetting,
+        remaining essentially unchanged. It was popularised in the 1960s with the release
+        of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
+        publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+      position: 1
+      delay_in_days: ""
+    - subject: "Re: Hey Sam, let's discuss the Scala Developer Position"
+      body: |
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+        It has survived not only five centuries, but also the leap into electronic typesetting,
+        remaining essentially unchanged. It was popularised in the 1960s with the release
+        of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
+        publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+      position: 2
+      delay_in_days: 3

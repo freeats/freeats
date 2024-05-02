@@ -249,6 +249,18 @@ CREATE TYPE public.scorecard_score AS ENUM (
 
 
 --
+-- Name: sequence_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.sequence_status AS ENUM (
+    'running',
+    'replied',
+    'exited',
+    'stopped'
+);
+
+
+--
 -- Name: array_deduplicate(anyarray); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1765,6 +1777,49 @@ ALTER SEQUENCE public.sequence_templates_id_seq OWNED BY public.sequence_templat
 
 
 --
+-- Name: sequences; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sequences (
+    id bigint NOT NULL,
+    member_email_address_id bigint NOT NULL,
+    placement_id bigint NOT NULL,
+    sequence_template_id bigint NOT NULL,
+    email_thread_id bigint,
+    "to" public.citext NOT NULL,
+    current_stage integer DEFAULT 0 NOT NULL,
+    scheduled_at timestamp without time zone NOT NULL,
+    started_at timestamp without time zone,
+    exited_at timestamp without time zone,
+    data jsonb DEFAULT '{}'::jsonb NOT NULL,
+    parameters jsonb DEFAULT '{}'::jsonb NOT NULL,
+    status public.sequence_status DEFAULT 'running'::public.sequence_status NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT current_stage_must_not_be_negative CHECK ((current_stage >= 0))
+);
+
+
+--
+-- Name: sequences_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sequences_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sequences_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sequences_id_seq OWNED BY public.sequences.id;
+
+
+--
 -- Name: solid_queue_blocked_executions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2335,6 +2390,13 @@ ALTER TABLE ONLY public.sequence_templates ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: sequences id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sequences ALTER COLUMN id SET DEFAULT nextval('public.sequences_id_seq'::regclass);
+
+
+--
 -- Name: solid_queue_blocked_executions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2723,6 +2785,14 @@ ALTER TABLE ONLY public.sequence_template_stages
 
 ALTER TABLE ONLY public.sequence_templates
     ADD CONSTRAINT sequence_templates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sequences sequences_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sequences
+    ADD CONSTRAINT sequences_pkey PRIMARY KEY (id);
 
 
 --
@@ -3344,6 +3414,34 @@ CREATE INDEX index_sequence_templates_on_position_id ON public.sequence_template
 
 
 --
+-- Name: index_sequences_on_email_thread_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sequences_on_email_thread_id ON public.sequences USING btree (email_thread_id);
+
+
+--
+-- Name: index_sequences_on_member_email_address_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sequences_on_member_email_address_id ON public.sequences USING btree (member_email_address_id);
+
+
+--
+-- Name: index_sequences_on_placement_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sequences_on_placement_id ON public.sequences USING btree (placement_id);
+
+
+--
+-- Name: index_sequences_on_sequence_template_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sequences_on_sequence_template_id ON public.sequences USING btree (sequence_template_id);
+
+
+--
 -- Name: index_solid_queue_blocked_executions_for_maintenance; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3530,6 +3628,14 @@ ALTER TABLE ONLY public.candidates
 
 
 --
+-- Name: sequences fk_rails_2803439625; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sequences
+    ADD CONSTRAINT fk_rails_2803439625 FOREIGN KEY (member_email_address_id) REFERENCES public.member_email_addresses(id);
+
+
+--
 -- Name: positions_hiring_managers fk_rails_28b240935e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3562,6 +3668,14 @@ ALTER TABLE ONLY public.solid_queue_failed_executions
 
 
 --
+-- Name: sequences fk_rails_3e1f1c2462; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sequences
+    ADD CONSTRAINT fk_rails_3e1f1c2462 FOREIGN KEY (placement_id) REFERENCES public.placements(id);
+
+
+--
 -- Name: positions_interviewers fk_rails_4094d59edc; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3583,6 +3697,14 @@ ALTER TABLE ONLY public.notes
 
 ALTER TABLE ONLY public.solid_queue_blocked_executions
     ADD CONSTRAINT fk_rails_4cd34e2228 FOREIGN KEY (job_id) REFERENCES public.solid_queue_jobs(id) ON DELETE CASCADE;
+
+
+--
+-- Name: sequences fk_rails_4db3b50b3e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sequences
+    ADD CONSTRAINT fk_rails_4db3b50b3e FOREIGN KEY (sequence_template_id) REFERENCES public.sequence_templates(id);
 
 
 --
@@ -3840,6 +3962,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240426071136'),
 ('20240425094431'),
 ('20240425091511'),
 ('20240423033545'),

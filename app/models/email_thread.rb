@@ -9,6 +9,7 @@ class EmailThread < ApplicationRecord
            inverse_of: :email_thread,
            class_name: "EmailMessage"
   has_many :email_message_addresses, through: :messages
+  has_one :sequence, dependent: :destroy
 
   def self.get_threads_with_addresses(email_address:, time_range: (nil..nil))
     if !time_range.is_a?(Range) ||

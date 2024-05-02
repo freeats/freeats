@@ -17,3 +17,9 @@ golang_position_second_stage_body:
   name: body
   body: |
     Friendly reminder that we are still waiting for your response.
+
+ruby_position_first_stage_body:
+  record: ruby_position_first_stage (SequenceTemplateStage)
+  name: body
+  body: |
+    Hi there! We are excited to have you apply for the Ruby position

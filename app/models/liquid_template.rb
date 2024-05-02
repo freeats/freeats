@@ -7,14 +7,22 @@ class LiquidTemplate
 
   OPTIONAL_TEMPLATE_VARIABLE_NAMES = %w[source].freeze
 
-  def self.extract_attributes_from(current_account:, position:)
-    {
+  def self.extract_attributes_from(current_account:, position: nil, candidate: nil)
+    attributes = {
       "female" => current_account.female,
       "sender_calendar_url" => current_account.calendar_url,
       "sender_first_name" => current_account.name.split.first,
-      "sender_linkedin_url" => current_account.linkedin_url,
-      "position" => position.name
+      "sender_linkedin_url" => current_account.linkedin_url
     }
+
+    attributes["position"] = position.name if position.present?
+
+    if candidate.present?
+      attributes["first_name"] = candidate.full_name.split.first
+      attributes["source"] = candidate.source
+    end
+
+    attributes
   end
 
   def initialize(body)

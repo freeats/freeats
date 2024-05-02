@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Member::EmailAddress < ApplicationRecord
+  has_many :sequences, dependent: :restrict_with_exception
   belongs_to :member
 
   validates :address, presence: true
