@@ -59,4 +59,37 @@ class Event < ApplicationRecord
   validates :type, presence: true
   validates :eventable_type, presence: true
   validates :eventable_id, presence: true # rubocop:disable Rails/RedundantPresenceValidationOnBelongsTo
+
+  after_create :update_candidate_last_activity
+
+  def update_candidate_last_activity
+    candidates_to_update =
+      if type.in?(%w[sequence_initialized sequence_started sequence_stopped sequence_exited
+                     sequence_replied])
+        Candidate
+          .not_merged
+          .search_by_emails(eventable.to)
+      elsif type.in?(%w[placement_added placement_changed])
+        [eventable.candidate]
+      # TODO: implement after notes events added
+      # elsif type == "note_added" && (notable = note.note_thread.notable).is_a?(Candidate) &&
+      #       notable.last_activity_at.present?
+      #   return if notable_to_update.last_activity_at.after?(performed_at)
+      # TODO: implement events where eventable is task
+      elsif type.in?(%w[scorecard_added scorecard_updated])
+        [eventable.placement.candidate]
+      elsif type == "active_storage_attachment_added"
+        [eventable.record]
+      elsif type.in?(%w[email_sent email_received])
+        return unless eventable
+
+        eventable.find_candidates_in_message
+      elsif eventable.is_a?(Candidate)
+        [eventable]
+      end
+
+    return if candidates_to_update.blank?
+
+    candidates_to_update.each { _1.update_last_activity_at(performed_at, validate: false) }
+  end
 end

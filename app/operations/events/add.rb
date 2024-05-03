@@ -19,6 +19,7 @@ class Events::Add
   end
 
   def call
+    params[:performed_at] ||= Time.zone.now
     event = Event.new(params)
 
     result = Try[ActiveRecord::RecordInvalid] do

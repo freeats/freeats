@@ -504,4 +504,10 @@ class Candidate < ApplicationRecord
       end
     end
   end
+
+  def update_last_activity_at(date, validate: true)
+    self.last_activity_at = date if last_activity_at.before?(date)
+
+    validate ? save! : save(validate:)
+  end
 end
