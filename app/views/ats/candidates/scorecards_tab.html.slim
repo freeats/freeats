@@ -10,7 +10,7 @@
               class=("collapsed" if index.positive?)]
             .row.w-100.me-1
               .col-8
-                = link_to(position.name, ats_position_path(position))
+                = position.name
               .col-4.text-end.text-secondary
                 = "#{placement.status.humanize}/#{placement.stage.humanize} " \
                   "(#{placement.added_event.performed_at.to_fs(:date)})"
