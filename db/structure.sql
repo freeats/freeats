@@ -144,6 +144,8 @@ CREATE TYPE public.event_type AS ENUM (
     'candidate_merged',
     'candidate_recruiter_assigned',
     'candidate_recruiter_unassigned',
+    'email_received',
+    'email_sent',
     'placement_added',
     'placement_changed',
     'position_added',
@@ -153,11 +155,15 @@ CREATE TYPE public.event_type AS ENUM (
     'position_stage_added',
     'position_stage_changed',
     'scorecard_added',
-    'scorecard_updated',
     'scorecard_template_added',
     'scorecard_template_updated',
-    'email_sent',
-    'email_received'
+    'scorecard_updated',
+    'sequence_exited',
+    'sequence_initialized',
+    'sequence_replied',
+    'sequence_resumed',
+    'sequence_started',
+    'sequence_stopped'
 );
 
 
@@ -3962,6 +3968,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240502094848'),
 ('20240426071136'),
 ('20240425094431'),
 ('20240425091511'),

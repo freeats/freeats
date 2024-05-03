@@ -36,7 +36,12 @@ class Sequences::Add
 
     sequence = Sequence.new(params)
 
-    save_sequence(sequence)
+    ActiveRecord::Base.transaction do
+      yield save_sequence(sequence)
+      yield add_event(sequence:, actor_account:)
+    end
+
+    Success(sequence)
   end
 
   private
@@ -95,5 +100,17 @@ class Sequences::Add
     Failure[:sequence_invalid, e.to_s]
   rescue ActiveRecord::RecordInvalid
     Failure[:sequence_invalid, sequence.errors.full_messages]
+  end
+
+  def add_event(sequence:, actor_account:)
+    params = {
+      actor_account:,
+      type: :sequence_initialized,
+      eventable: sequence
+    }
+
+    yield Events::Add.new(params:).call
+
+    Success()
   end
 end

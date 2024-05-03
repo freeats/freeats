@@ -12,7 +12,7 @@ class SequenceTest < ActiveSupport::TestCase
     @placement = placements(:sam_ruby_replied)
   end
 
-  test "should create sequence" do
+  test "should create sequence and event" do
     existing_sequence = sequences(:ruby_position_sam)
     existing_sequence.update!(status: :stopped)
 
@@ -25,7 +25,7 @@ class SequenceTest < ActiveSupport::TestCase
     now = Time.zone.now
 
     Time.zone.stub(:now, now) do
-      assert_difference "Sequence.count" do
+      assert_difference "Sequence.count" => 1, "Event.count" => 1 do
         sequence = Sequences::Add.new(params:, actor_account: @actor_account).call.value!
 
         assert_equal sequence.status, "running"
@@ -40,6 +40,12 @@ class SequenceTest < ActiveSupport::TestCase
                         "subject" => "Ruby position",
                         "position" => 1,
                         "delay_in_days" => nil }]
+
+        event = Event.last
+
+        assert_equal event.actor_account_id, @actor_account.id
+        assert_equal event.type, "sequence_initialized"
+        assert_equal event.eventable_id, sequence.id
       end
     end
   end

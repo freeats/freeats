@@ -22,6 +22,8 @@ class Event < ApplicationRecord
     candidate_merged
     candidate_recruiter_assigned
     candidate_recruiter_unassigned
+    email_received
+    email_sent
     placement_added
     placement_changed
     position_added
@@ -31,11 +33,15 @@ class Event < ApplicationRecord
     position_stage_added
     position_stage_changed
     scorecard_added
-    scorecard_updated
     scorecard_template_added
     scorecard_template_updated
-    email_sent
-    email_received
+    scorecard_updated
+    sequence_exited
+    sequence_initialized
+    sequence_replied
+    sequence_resumed
+    sequence_started
+    sequence_stopped
   ].index_with(&:to_s)
 
   self.inheritance_column = nil
