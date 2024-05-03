@@ -22,7 +22,10 @@
     ) do |c|
       - c.with_label("Position", size: :small, style: "min-width: 100px;")
       - position = @scorecard.placement.position
-      = link_to(position.name, ats_position_path(position))
+      - if allowed_to?(:show?, position, with: ATS::PositionPolicy)
+        = link_to(position.name, ats_position_path(position))
+      - else
+        = position.name
     = render LabeledComponent.new( \
       class: "mb-2",
       left_layout_class: "col-auto",
@@ -31,7 +34,10 @@
     ) do |c|
       - c.with_label("Template", size: :small, style: "min-width: 100px;")
       - scorecard_template = @scorecard.position_stage.scorecard_template
-      = link_to(scorecard_template.title, ats_scorecard_template_path(scorecard_template))
+      - if allowed_to?(:show?, scorecard_template, with: ATS::ScorecardTemplatePolicy)
+        = link_to(scorecard_template.title, ats_scorecard_template_path(scorecard_template))
+      - else
+        = scorecard_template.title
     = render LabeledComponent.new( \
       class: "mb-4",
       left_layout_class: "col-auto",

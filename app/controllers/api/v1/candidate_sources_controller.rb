@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class API::V1::CandidateSourcesController < ApplicationController
-  # TODO: add authorization
+  before_action :authorize!
   before_action :check_minimum_query_length
 
   ALLOWED_LOCATION_TYPES = %w[city country].freeze

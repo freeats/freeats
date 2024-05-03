@@ -5,6 +5,8 @@ class ATS::ProfilesController < ApplicationController
 
   include Dry::Monads[:result]
 
+  before_action { authorize! :profile }
+
   def show
     @email_addresses = current_member.email_addresses.order(:address).map do |email_address|
       { address: email_address.address, token_present: email_address.refresh_token.present? }

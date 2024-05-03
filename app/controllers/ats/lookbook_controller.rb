@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ATS::LookbookController < ApplicationController
-  # TODO: add authentication before accessing the lookbook.
+  before_action { authorize! :lookbook }
 
   def fetch_options_for_select_component_preview
     candidate = Struct.new(:id, :name, :candidate_emails)

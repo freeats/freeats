@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class API::V1::MembersController < ApplicationController
+  before_action :authorize!
+
   def fetch_members
     access_level = params[:access_level]
     allow_nil = params[:allow_nil] == "true"

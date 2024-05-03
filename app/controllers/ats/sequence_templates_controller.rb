@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class ATS::SequenceTemplatesController < ApplicationController
-  before_action :authorize!
   before_action :set_sequence_template, only: %i[show archive edit update setup_test test]
+  before_action :authorize!, only: %i[create new]
+  before_action -> { authorize!(@sequence_template) },
+                only: %i[show edit update setup_test test archive]
 
   include Dry::Monads[:result]
 

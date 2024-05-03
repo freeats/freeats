@@ -3,6 +3,7 @@
 class NoteThreadsController < ApplicationController
   before_action :set_note_thread
   before_action :set_all_active_members, only: :update
+  before_action -> { authorize!(@note_thread) }, only: %i[update]
 
   def update
     @note_thread.update_visibility_settings(thread_params, current_member:)

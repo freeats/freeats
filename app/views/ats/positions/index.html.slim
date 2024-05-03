@@ -8,10 +8,11 @@
       b Positions:
       =< render PrettyNumberComponent.new(@positions_stats[:positions])
   .col-auto
-    = render ButtonLinkComponent.new(new_ats_position_path,
-            size: :small,
-            data: { turbo_frame: :turbo_modal_window })
-      | Add position
+    - if allowed_to?(:new?)
+      = render ButtonLinkComponent.new(new_ats_position_path,
+               size: :small,
+               data: { turbo_frame: :turbo_modal_window })
+        | Add position
 
 = datagrid_table(@positions_grid, @positions_grid_assets)
 = paginate(@positions_grid.assets, theme: "ats")

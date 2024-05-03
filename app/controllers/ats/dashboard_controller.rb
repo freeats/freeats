@@ -4,6 +4,7 @@ class ATS::DashboardController < ApplicationController
   layout "ats/application"
 
   before_action { @nav_item = :dashboard }
+  before_action { authorize! :dashboard }
 
   def index
     authorize! :dashboard

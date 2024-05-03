@@ -6,6 +6,9 @@ class ATS::ScorecardsController < ApplicationController
   layout "ats/application"
 
   before_action :set_scorecard, only: %i[show edit update]
+  before_action :authorize!, only: %i[new create]
+  before_action -> { authorize!(@scorecard) },
+                only: %i[show edit update]
 
   def show; end
 

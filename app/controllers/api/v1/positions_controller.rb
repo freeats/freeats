@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class API::V1::PositionsController < ApplicationController
-  # TODO: add authorization
+  before_action :authorize!
 
   def fetch_positions
     positions =

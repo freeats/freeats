@@ -3,6 +3,8 @@
 class ATS::EmailThreadsController < ApplicationController
   include Dry::Monads[:result]
 
+  before_action :authorize!
+
   def fetch_messages
     email_thread = EmailThread.find(params[:email_thread_id])
     collection =
