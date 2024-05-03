@@ -29,3 +29,11 @@ ivan_email_address:
   type: personal
   source: other
   status: current
+
+sam_email_address:
+  candidate: sam
+  address: sam@gmail.com
+  list_index: 1
+  type: personal
+  source: other
+  status: current

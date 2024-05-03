@@ -20,7 +20,7 @@ class Sequences::Add
     to = params[:to]
     yield verify_recipient(to)
 
-    recipient_emails = params[:placement].candidate.all_emails(status: :current) + [to]
+    recipient_emails = params[:placement].candidate.all_emails(status: :current) | [to]
     yield check_running_sequences(recipient_emails)
 
     variables =

@@ -418,26 +418,6 @@ class Candidate < ApplicationRecord
     files.joins(:blob).order(id: :desc)
   end
 
-  def stop_sequences(
-    with_status: :stopped,
-    with_exited_at: Time.zone.now,
-    actor_user: nil,
-    properties: {}
-  )
-    stopped_sequences = []
-    transaction do
-      Sequence.to_stop(all_emails).each do |sequence|
-        stopped_sequences << sequence if sequence.stop(
-          with_status:,
-          with_exited_at:,
-          actor_user:,
-          properties:
-        )
-      end
-    end
-    stopped_sequences
-  end
-
   def duplicates_for_merge_dialog
     not_merged_duplicates
       .unscope(:select)

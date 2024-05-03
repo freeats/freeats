@@ -15,10 +15,11 @@ class EmailSynchronization::ProcessSingleMessage::StopSequences
     # to stop sequences.
     if unsuccessful_delivery_reason
       email_message.candidates_in_thread.each do |candidate|
-        candidate.stop_sequences(
-          with_exited_at: Time.zone.at(email_message.timestamp).to_datetime,
-          properties: { reason: unsuccessful_delivery_reason }
-        )
+        Candidates::StopSequences.new(
+          candidate:,
+          with_exited_at: Time.zone.at(email_message.timestamp),
+          event_properties: { reason: unsuccessful_delivery_reason }
+        ).call.value!
       end
 
       if unsuccessful_delivery_reason == "address_not_found"
@@ -30,10 +31,11 @@ class EmailSynchronization::ProcessSingleMessage::StopSequences
     # Auto-reply
     elsif is_auto_replied
       email_message.candidates_in_thread.each do |candidate|
-        candidate.stop_sequences(
-          with_exited_at: Time.zone.at(email_message.timestamp).to_datetime,
-          properties: { reason: :auto_reply }
-        )
+        Candidates::StopSequences.new(
+          candidate:,
+          with_exited_at: Time.zone.at(email_message.timestamp),
+          event_properties: { reason: "auto_reply" }
+        ).call.value!
       end
 
       Success(:auto_reply_sequences_stopped)
@@ -41,11 +43,12 @@ class EmailSynchronization::ProcessSingleMessage::StopSequences
     # Got normal response, stopping the sequence.
     else
       email_message.email_thread.candidates_in_thread.each do |candidate|
-        candidate.stop_sequences(
+        Candidates::StopSequences.new(
+          candidate:,
           with_status: :replied,
-          with_exited_at: Time.zone.at(email_message.timestamp).to_datetime,
-          properties: { from: email_message.fetch_from_addresses.first }
-        )
+          with_exited_at: Time.zone.at(email_message.timestamp),
+          event_properties: { from: email_message.fetch_from_addresses.first }
+        ).call.value!
       end
 
       Success()

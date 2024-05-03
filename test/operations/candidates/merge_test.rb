@@ -526,7 +526,9 @@ class Candidates::MergeTest < ActiveSupport::TestCase
   end
 
   test "should transfer all duplicates placements" do
-    assert_equal @candidate.placements, [placements(:john_ruby_hired)]
+    existing_placements = [placements(:john_ruby_hired), placements(:john_ruby_replied)]
+
+    assert_equal @candidate.placements.sort, existing_placements.sort
     assert_empty @candidate_duplicate.placements
 
     placement = create(
@@ -544,7 +546,7 @@ class Candidates::MergeTest < ActiveSupport::TestCase
       ).call.value!
     end
 
-    assert_equal @candidate.reload.placements.sort, [placements(:john_ruby_hired), placement].sort
+    assert_equal @candidate.reload.placements.sort, [*existing_placements, placement].sort
     assert_empty @candidate_duplicate.reload.placements
   end
 

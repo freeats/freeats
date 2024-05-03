@@ -63,4 +63,15 @@ class CandidateTest < ActiveSupport::TestCase
 
     assert_empty candidate.duplicates
   end
+
+  test "should stop sequences with specified status" do
+    candidate = candidates(:sam)
+    sequence = sequences(:ruby_position_sam)
+
+    assert_equal sequence.status, "running"
+
+    Candidates::StopSequences.new(candidate:, with_status: :replied, with_exited_at: 1.hour.ago).call.value!
+
+    assert_equal sequence.reload.status, "replied"
+  end
 end

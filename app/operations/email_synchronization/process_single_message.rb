@@ -30,26 +30,25 @@ class EmailSynchronization::ProcessSingleMessage
         message_member:,
         sent_via: :gmail
       ).call.value!
-      # unsuccessful_delivery_reason = message.find_unsuccessful_delivery_reason
-      # is_auto_replied = message.auto_replied?
+      unsuccessful_delivery_reason = message.find_unsuccessful_delivery_reason
+      is_auto_replied = message.auto_replied?
       timestamp_is_old = old_timestamp?(email_message)
 
       # Messages from our members do not affect sequences.
       if message_member.field != :from && !timestamp_is_old
-        # TODO: uncomment after adding sequences
-        # result = StopSequences.new(
-        #   email_message:,
-        #   message_member:,
-        #   unsuccessful_delivery_reason:,
-        #   is_auto_replied:
-        # ).call
-        # case result
-        # in Success(:failed_delivery_sequences_stopped) |
-        #    Success(:auto_reply_sequences_stopped)
-        #   nil
-        # in Success()
-        AdvancePlacementsToRepliedStage.new(email_message:).call.value!
-        # end
+        result = StopSequences.new(
+          email_message:,
+          message_member:,
+          unsuccessful_delivery_reason:,
+          is_auto_replied:
+        ).call
+        case result
+        in Success(:failed_delivery_sequences_stopped) |
+           Success(:auto_reply_sequences_stopped)
+          nil
+        in Success()
+          AdvancePlacementsToRepliedStage.new(email_message:).call.value!
+        end
       elsif timestamp_is_old
         Log.tagged("EmailSynchronization::ProcessSingleMessage#call") do |log|
           log.error("Received a message with old timestamp", email_message_id: email_message.id)

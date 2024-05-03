@@ -12,7 +12,7 @@ class EmailSynchronization::ProcessSingleMessage::StopSequencesTest < ActiveSupp
     @email_message = email_messages(:john_msg1)
     @message_member =
       EmailSynchronization::MessageMember.new(field: :to, member: members(:employee_member))
-    @sequence = sequences(:ruby_position_sam)
+    @sequence = sequences(:ruby_position_john)
 
     assert_equal @sequence.status, "running"
   end
@@ -28,8 +28,8 @@ class EmailSynchronization::ProcessSingleMessage::StopSequencesTest < ActiveSupp
 
     result = StopSequences.new(**params).call
 
-    # TODO: uncomment when sequence stop operation will be implemented.
-    # assert_equal @sequence.reload.status, "stopped"
+    assert_equal @sequence.reload.status, "stopped"
+    # TODO: uncomment when sequence stop event will be implemented.
     # assert_equal @sequence.events.last.properties["reason"], unsuccessful_delivery_reason
     assert_equal result, Success(:failed_delivery_sequences_stopped)
   end
@@ -44,8 +44,8 @@ class EmailSynchronization::ProcessSingleMessage::StopSequencesTest < ActiveSupp
 
     result = StopSequences.new(**params).call
 
-    # TODO: uncomment when sequence stop operation will be implemented.
-    # assert_equal @sequence.reload.status, "stopped"
+    assert_equal @sequence.reload.status, "stopped"
+    # TODO: uncomment when sequence stop event will be implemented.
     # assert_equal @sequence.events.last.properties["reason"], "auto_reply"
     assert_equal result, Success(:auto_reply_sequences_stopped)
   end
@@ -64,8 +64,8 @@ class EmailSynchronization::ProcessSingleMessage::StopSequencesTest < ActiveSupp
 
     result = StopSequences.new(**params).call
 
-    # TODO: uncomment when sequence stop operation will be implemented.
-    # assert_equal @sequence.reload.status, "replied"
+    assert_equal @sequence.reload.status, "replied"
+    # TODO: uncomment when sequence stop event will be implemented.
     # assert_equal @sequence.events.last.type, "sequence_replied"
     assert_equal result, Success()
   end

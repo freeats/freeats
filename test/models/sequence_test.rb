@@ -13,6 +13,9 @@ class SequenceTest < ActiveSupport::TestCase
   end
 
   test "should create sequence" do
+    existing_sequence = sequences(:ruby_position_sam)
+    existing_sequence.update!(status: :stopped)
+
     params = {
       sequence_template: @sequence_template,
       member_email_address: @member_email_address,
@@ -63,6 +66,9 @@ class SequenceTest < ActiveSupport::TestCase
   end
 
   test "should not create sequence if sequence template variables are missing" do
+    existing_sequence = sequences(:ruby_position_sam)
+    existing_sequence.update!(status: :stopped)
+
     params = {
       sequence_template: @sequence_template,
       member_email_address: @member_email_address,
