@@ -68,7 +68,7 @@ class PlacementTest < ActiveSupport::TestCase
   test "should change stage and create event" do
     placement = placements(:sam_golang_sourced)
     actor_account = accounts(:admin_account)
-    old_stage = placement.stage
+    old_stage_id = placement.position_stage_id
     new_stage = placement.next_stage
 
     assert_difference "Event.count" => 1 do
@@ -87,8 +87,8 @@ class PlacementTest < ActiveSupport::TestCase
       assert_equal event.eventable_id, placement.id
       assert_equal event.eventable_type, "Placement"
       assert_equal event.changed_field, "stage"
-      assert_equal event.changed_from, old_stage
-      assert_equal event.changed_to, new_stage
+      assert_equal event.changed_from, old_stage_id
+      assert_equal event.changed_to, placement.position_stage_id
     end
   end
 

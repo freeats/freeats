@@ -82,4 +82,12 @@ RailsAdmin.config do |config|
       configure(:account) { required true }
     end
   end
+
+  config.model("Event") do
+    include_fields :id, :type, :performed_at, :actor_account, :eventable,
+                   :changed_field, :properties
+    # Without explicit configuration rails admin don't show these fields.
+    field :changed_to, :jsonb
+    field :changed_from, :jsonb
+  end
 end

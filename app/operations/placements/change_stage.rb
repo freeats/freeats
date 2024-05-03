@@ -14,6 +14,7 @@ class Placements::ChangeStage
 
     return Success(placement) if old_stage == new_stage
 
+    old_stage_id = placement.position_stage_id
     placement.position_stage = placement.position.stages.find_by(name: new_stage)
 
     return Failure[:new_stage_invalid, "Cannot find stage."] if placement.position_stage.blank?
@@ -23,8 +24,8 @@ class Placements::ChangeStage
       type: :placement_changed,
       eventable: placement,
       changed_field: :stage,
-      changed_from: old_stage,
-      changed_to: new_stage
+      changed_from: old_stage_id,
+      changed_to: placement.position_stage_id
     }
 
     ActiveRecord::Base.transaction do

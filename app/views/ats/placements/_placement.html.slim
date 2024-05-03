@@ -30,7 +30,7 @@ ruby:
               = placement.position.name
     .col-auto
       span.font-italic.me-2 data-bs-toggle="tooltip" data-bs-title=tooltip_text data-bs-html="true"
-        = placement.position_stage.name.humanize
+        = placement.position_stage.name
 
       - if allowed_to?(:change_stage?, placement, with: ATS::PlacementPolicy)
         .btn-group.placement-buttons

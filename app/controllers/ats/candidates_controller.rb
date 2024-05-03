@@ -119,8 +119,10 @@ class ATS::CandidatesController < ApplicationController
           @all_activities =
             @all_activities
             .includes(
-              :eventable,
-              actor_account: :member
+              :eventable, :stage_to,
+              actor_account: :member,
+              assigned_member: :account,
+              unassigned_member: :account
             )
             .page(params[:page])
             .per(ACTIVITIES_PAGINATION_LIMIT)

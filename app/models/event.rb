@@ -13,6 +13,16 @@ class Event < ApplicationRecord
              optional: true,
              foreign_key: :changed_from,
              inverse_of: :unassigned_events
+  belongs_to :stage_from,
+             class_name: "PositionStage",
+             optional: true,
+             foreign_key: :changed_from,
+             inverse_of: :moved_from_events
+  belongs_to :stage_to,
+             class_name: "PositionStage",
+             optional: true,
+             foreign_key: :changed_to,
+             inverse_of: :moved_to_events
 
   enum type: %i[
     active_storage_attachment_added

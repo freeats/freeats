@@ -8,7 +8,7 @@
     span type="button"
       = button_tag name: "stage", value: placement.next_stage,
                    class: "btn #{dropdown_item ? 'dropdown-item' : square_button_classes}",
-                   data: { bs_toggle: "tooltip", bs_title: placement.next_stage.humanize, bs_placement: "bottom" }
+                   data: { bs_toggle: "tooltip", bs_title: placement.next_stage, bs_placement: "bottom" }
         - if with_text
-          span.me-2 = sanitize placement.next_stage.humanize
+          span.me-2 = sanitize placement.next_stage
         i.fa-arrow-right class=(dropdown_item ? "fa-light" : "far")

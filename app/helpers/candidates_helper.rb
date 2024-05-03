@@ -23,7 +23,7 @@ module CandidatesHelper
         message = +""
         to = event.changed_to
         from = event.changed_from
-        field = event.changed_field
+        field = event.changed_field.humanize(capitalize: false)
         if to.is_a?(Array) && from.is_a?(Array)
           removed = from - to
           added = to - from
@@ -93,7 +93,7 @@ module CandidatesHelper
         TEXT
       end
     when "stage"
-      "moved the candidate to stage <b>#{event.changed_to.humanize}</b> on #{position_link}"
+      "moved the candidate to stage <b>#{event.stage_to.name}</b> on #{position_link}"
     end
   end
 end
