@@ -34,6 +34,8 @@ class Event < ApplicationRecord
     candidate_recruiter_unassigned
     email_received
     email_sent
+    note_added
+    note_removed
     placement_added
     placement_changed
     position_added
@@ -71,10 +73,8 @@ class Event < ApplicationRecord
           .search_by_emails(eventable.to)
       elsif type.in?(%w[placement_added placement_changed])
         [eventable.candidate]
-      # TODO: implement after notes events added
-      # elsif type == "note_added" && (notable = note.note_thread.notable).is_a?(Candidate) &&
-      #       notable.last_activity_at.present?
-      #   return if notable_to_update.last_activity_at.after?(performed_at)
+      elsif type == "note_added"
+        [eventable.note_thread.notable]
       # TODO: implement events where eventable is task
       elsif type.in?(%w[scorecard_added scorecard_updated])
         [eventable.placement.candidate]

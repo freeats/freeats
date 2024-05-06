@@ -43,8 +43,14 @@ class Notes::Add
         note.note_thread = note_thread
         note.save!
 
-        # TODO: add events
-
+        yield Events::Add.new(
+          params:
+            {
+              type: :note_added,
+              eventable: note,
+              actor_account:
+            }
+        ).call
         note
       end
     end.to_result

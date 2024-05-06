@@ -64,3 +64,21 @@ ruby_position_replied_scorecard_added:
   actor_account: admin_account
   eventable: ruby_position_replied_scorecard (Scorecard)
   performed_at: <%= 1.week.ago %>
+
+admin_short_note_added:
+  type: :note_added
+  actor_account: admin_account
+  eventable: admin_member_short_note (Note)
+  performed_at: <%= 2.hour.ago %>
+
+admin_long_note_added:
+  type: :note_added
+  actor_account: admin_account
+  eventable: admin_member_long_note (Note)
+  performed_at: <%= 1.hour.ago %>
+
+interviewer_reply_added:
+  type: :note_added
+  actor_account: interviewer_account
+  eventable: interviewer_reply (Note)
+  performed_at: <%= 1.minute.ago %>

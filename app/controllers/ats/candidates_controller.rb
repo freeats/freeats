@@ -104,6 +104,16 @@ class ATS::CandidatesController < ApplicationController
                   @candidate.placements.extract_associated(:scorecards).flatten.pluck(:id)
               )
             )
+            .union(
+              Event
+              .joins(
+                "JOIN notes ON events.eventable_id = notes.id AND events.eventable_type = 'Note' " \
+                "JOIN note_threads ON note_threads.id = notes.note_thread_id " \
+                "JOIN candidates ON note_threads.notable_id = candidates.id " \
+                "AND note_threads.notable_type = 'Candidate'"
+              )
+              .where(candidates: { id: @candidate.id })
+            )
             # @candidate.files is an ActiveStorage::Attached::Many class,
             # so it doesn't work without .to_a
             .union(Event.where(eventable: @candidate.files.to_a))

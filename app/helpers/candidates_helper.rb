@@ -60,6 +60,11 @@ module CandidatesHelper
         "added file <b>#{event.properties['name']}</b>"
       when "active_storage_attachment_removed"
         "removed file <b>#{event.properties['name']}</b>"
+      when "note_added"
+        "added a note <blockquote class='activity-quote text-truncate'>
+        #{event.eventable&.text&.truncate(180)}</blockquote>"
+      when "note_removed"
+        "removed a note"
       when "placement_added"
         position = event.eventable.position
         "assigned the candidate to #{link_to(position.name, tab_ats_position_url(position))}"

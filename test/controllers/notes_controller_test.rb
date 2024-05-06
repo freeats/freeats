@@ -25,8 +25,10 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :ok
 
-    assert_difference "Note.count", -1 do
-      delete note_path(interviewer_note)
+    assert_difference "Event.where(type: 'note_removed').count" do
+      assert_difference "Note.count", -1 do
+        delete note_path(interviewer_note)
+      end
     end
 
     assert_response :ok

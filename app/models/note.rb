@@ -5,6 +5,14 @@ class Note < ApplicationRecord
                           class_name: "Member",
                           join_table: :note_reactions
 
+  has_many :events, as: :eventable, dependent: :destroy
+  has_one :added_event,
+          -> { where(type: :note_added) },
+          class_name: "Event",
+          foreign_key: :eventable_id,
+          inverse_of: false,
+          dependent: nil
+
   belongs_to :note_thread
   belongs_to :member
 

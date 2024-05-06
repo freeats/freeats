@@ -559,6 +559,8 @@ class Candidates::MergeTest < ActiveSupport::TestCase
       notable: @candidate_duplicate
     )
 
+    note_removed_event = create(:event, type: "note_removed", eventable: @candidate_duplicate)
+
     assert_no_difference "Event.where.not(type: 'candidate_merged').count" do
       Candidates::Merge.new(
         target: @candidate,
@@ -567,6 +569,7 @@ class Candidates::MergeTest < ActiveSupport::TestCase
       ).call.value!
     end
 
+    assert_equal note_removed_event.reload.eventable, @candidate
     assert_equal @candidate.reload.note_threads.sort,
                  [note_threads(:thread_one), note_threads(:thread_two), note_thread].sort
     assert_empty @candidate_duplicate.reload.note_threads

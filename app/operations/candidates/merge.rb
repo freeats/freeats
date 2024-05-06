@@ -97,7 +97,10 @@ class Candidates::Merge < ApplicationOperation
 
     action_list << merge_candidate_note_threads(
       target_id: target.id,
-      duplicates_note_threads: duplicates.map(&:note_threads).flatten
+      duplicates_note_threads: duplicates.map(&:note_threads).flatten,
+      duplicates_note_removed_events: duplicates
+                                        .map { _1.events.where(type: %i[note_removed]) }
+                                        .flatten
     )
 
     action_list << merge_candidate_alternative_names(
@@ -528,12 +531,18 @@ class Candidates::Merge < ApplicationOperation
     result
   end
 
-  # TODO: move note removed events.
-  def merge_candidate_note_threads(target_id:, duplicates_note_threads:)
+  def merge_candidate_note_threads(
+    target_id:,
+    duplicates_note_threads:,
+    duplicates_note_removed_events:
+  )
     result = []
 
     duplicates_note_threads.each do |note_thread|
       result << AL.save_record(note_thread.tap { _1.notable_id = target_id })
+    end
+    duplicates_note_removed_events.each do |event|
+      result << AL.save_record(event.tap { _1.eventable_id = target_id })
     end
 
     result
