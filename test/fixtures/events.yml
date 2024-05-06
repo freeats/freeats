@@ -82,3 +82,10 @@ interviewer_reply_added:
   actor_account: interviewer_account
   eventable: interviewer_reply (Note)
   performed_at: <%= 1.minute.ago %>
+
+john_candidate_interview_scheduled:
+  type: :candidate_interview_scheduled
+  actor_account: admin_account
+  eventable: john (Candidate)
+  properties:
+    scheduled_for: <%= (Time.zone.now +  1.day).rfc3339 %>
