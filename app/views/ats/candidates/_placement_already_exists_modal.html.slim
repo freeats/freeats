@@ -14,9 +14,9 @@
 ruby:
   text =
     if placement.qualified?
-      "still qualified on <b>#{stage}</b> stage"
+      "is still qualified on <b>#{stage}</b> stage"
     elsif placement.disqualified?
-      "disqualified with reason <b>#{reason.humanize}</b>"
+      "is disqualified with reason <b>#{reason.humanize}</b>"
     else
       "reserved"
     end
