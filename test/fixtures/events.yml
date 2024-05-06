@@ -33,6 +33,12 @@ sam_golang_replied_placement_added:
   eventable: sam_golang_replied (Placement)
   performed_at: <%= 1.week.ago %>
 
+john_ruby_replied_placement_added:
+  type: :placement_added
+  actor_account: admin_account
+  eventable: john_ruby_replied (Placement)
+  performed_at: <%= 1.week.ago %>
+
 john_ruby_hired_placement_added:
   type: :placement_added
   actor_account: admin_account
