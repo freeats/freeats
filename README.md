@@ -14,7 +14,12 @@
    $ cd ats
    ```
 
-3. Install the right Ruby version:
+3. Ask for two private keys from other developers and place them in the following directories:
+
+   - `master.key` - `config`
+   - `test.key` - `config/credentials`
+
+4. Install the right Ruby version:
 
    ```shell
    $ grep "ruby \"" Gemfile
@@ -22,7 +27,7 @@
    $ rvm --default use <version>
    ```
 
-4. Install PostgreSQL using [this instruction](https://wiki.archlinux.org/index.php/PostgreSQL).
+5. Install PostgreSQL using [this instruction](https://wiki.archlinux.org/index.php/PostgreSQL).
    The process is similar for most of Linux distributions.
    On Ubuntu, PostgreSQL can be installed by entering these commands:
 
@@ -45,16 +50,16 @@
 
    - Restart the PostgreSQL service.
 
-5. Create a user and databases:
+6. Create a user and databases:
 
    ```shell
    $ sudo -u postgres psql < db/postgres/init.sql
    ```
 
-6. Install [NodeJS](https://nodejs.org/en/download/package-manager) and
+7. Install [NodeJS](https://nodejs.org/en/download/package-manager) and
    [yarn](https://yarnpkg.com/en/docs/install).
 
-7. Install JavaScript and Ruby dependencies:
+8. Install JavaScript and Ruby dependencies:
 
    ```shell
    $ bin/yarn
@@ -76,31 +81,31 @@
    $ bin/bundle install
    ```
 
-8. Prepare the database:
+9. Prepare the database:
 
    ```shell
    $ bin/rails db:migrate         # Update the DB and the schema
    ```
 
-9. Prepare image-related library, we used it for ActiveStorage image processing:
+10. Prepare image-related library, we used it for ActiveStorage image processing:
 
-   ```shell
-   $ sudo apt install libvips
-   ```
+    ```shell
+    $ sudo apt install libvips
+    ```
 
-10. Run tests to make sure everything is configured correctly:
+11. Run tests to make sure everything is configured correctly:
 
     ```shell
     $ bin/spring rails test
     ```
 
-11. Run Rails:
+12. Run Rails:
 
     ```shell
     $ bin/dev
     ```
 
-12. Open <http://localhost:3000>.
+13. Open <http://localhost:3000>.
 
 ## Staging environment
 
