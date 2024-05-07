@@ -11,17 +11,19 @@ ruby:
 = turbo_frame_tag :side_header, class: "col-12 col-lg-5 col-xl-4 mt-4 mt-lg-0", style: "min-height: 173px;",
                                 data: { controller: "persistent-dropdown" }
 
-  = render LabeledComponent.new(class: "mb-2", left_layout_class: "col-3", right_layout_class: "col-9",
-                                right_class: "full-width-reassignment-button \
-                                             turbo_position_reassign_recruiter_button") do |c|
-    - c.with_label("Recruiter", size: :small)
-    = render "shared/profile/reassign_button",
-             currently_assigned_account: @position.recruiter&.account,
-             target_model: @position,
-             target_url: reassign_recruiter_ats_position_path(@position),
-             input_button_name: "position[recruiter_id]",
-             unassignment_label: "Unassign recruiter",
-             mobile: true
+  - if @position.recruiter.present? || allowed_to?(:reassign_recruiter?)
+    = render LabeledComponent.new(class: "mb-2", left_layout_class: "col-3", right_layout_class: "col-9",
+                                  right_class: "full-width-reassignment-button \
+                                               turbo_position_reassign_recruiter_button") do |c|
+      - c.with_label("Recruiter", size: :small)
+      = render "shared/profile/reassign_button",
+               currently_assigned_account: @position.recruiter&.account,
+               target_model: @position,
+               target_url: reassign_recruiter_ats_position_path(@position),
+               input_button_name: "position[recruiter_id]",
+               unassignment_label: "Unassign recruiter",
+               allowed_to_edit: allowed_to?(:reassign_recruiter?),
+               mobile: true
 
   = render LabeledComponent.new(class: "mb-2",
                                 left_layout_class: "col-3", right_layout_class: "col-9",
@@ -36,6 +38,7 @@ ruby:
         = render MultipleSelectComponent.new( \
             form,
             method: :collaborator_ids,
+            readonly: !allowed_to?(:update_side_header?),
             size: :small,
             include_hidden: true,
             local: { options: @options_for_collaborators },
@@ -55,6 +58,7 @@ ruby:
         = render MultipleSelectComponent.new( \
             form,
             method: :hiring_manager_ids,
+            readonly: !allowed_to?(:update_side_header?),
             size: :small,
             include_hidden: true,
             local: { options: @options_for_hiring_managers },
@@ -74,6 +78,7 @@ ruby:
         = render MultipleSelectComponent.new( \
             form,
             method: :interviewer_ids,
+            readonly: !allowed_to?(:update_side_header?),
             size: :small,
             include_hidden: true,
             local: { options: @options_for_interviewers },

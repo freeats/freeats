@@ -1,6 +1,4 @@
-/ Partial variables:
-/ - position
-/ - control_button
+/# locals: (position:, control_button:, namespace: nil)
 
 - header = card_header(title: "Pipeline", icon_style: "fa-list-check")
 
@@ -10,6 +8,7 @@
       - position.stages.each do |stage|
         = render LabeledComponent.new( \
           left_class: "text-gray-600 d-flex align-items-center",
+          visible_if_blank: true,
           right_class: "col-form-label-sm" \
         ) do |c|
           - c.with_label(stage.name, size: :small)
@@ -17,7 +16,7 @@
             = link_to scorecard_template.title, ats_scorecard_template_path(scorecard_template), data: { turbo: false }
             - if stage.scorecard_template.visible_to_interviewer
               |< (visible to interviewer)
-          - else
+          - elsif allowed_to?(:new?, with: ATS::ScorecardTemplatePolicy)
             = render ButtonLinkComponent.new( \
                 new_ats_scorecard_template_path(position_stage_id: stage.id),
                 type: :submit, size: :tiny, variant: :cancel, data: { turbo: false } \

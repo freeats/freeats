@@ -55,7 +55,7 @@ class LabeledComponent < ApplicationComponent
   option :visible_if_blank, Types::Strict::Bool, optional: true, default: -> { false }
 
   def call
-    return if content.empty? && !visible_if_blank
+    return if content.blank? && !visible_if_blank
 
     tag.div(class: ["row", hidden_class, additional_options.delete(:class)],
             **element_attributes) do

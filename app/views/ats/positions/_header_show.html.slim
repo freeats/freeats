@@ -4,23 +4,24 @@
     .col-auto.d-flex.ms-auto.order-md-last.gap-2
       / POSITION STATUS
       .justify-content-end
-        .dropdown
-          = render ButtonComponent.new(variant: :cancel,
-                  size: :tiny,
-                  type: :button,
-                  aria: { expanded: false, haspopup: true },
-                  data: { bs_toggle: "dropdown" }) do |c|
-            - c.with_icon("fa-light fa-chevron-down", position: :right)
-            = @position.status.humanize
-          ul.dropdown-menu.dropdown-menu-end
-            - Position.statuses.except("draft", @position.status).each do |status|
-              li = button_to(change_status_ats_position_path(@position, new_status: status.first),
-                      method: :patch,
-                      class: "dropdown-item",
-                      form: { data: { turbo_frame: :turbo_modal_window } })
-                i.fa.fa-user class=ats_position_color_class_for_status(status.first)
-                | &ensp;
-                = status.first.humanize
+        - if allowed_to?(:change_status?)
+          .dropdown
+            = render ButtonComponent.new(variant: :cancel,
+                     size: :tiny,
+                     type: :button,
+                     aria: { expanded: false, haspopup: true },
+                     data: { bs_toggle: "dropdown" }) do |c|
+              - c.with_icon("fa-light fa-chevron-down", position: :right)
+              = @position.status.humanize
+            ul.dropdown-menu.dropdown-menu-end
+              - Position.statuses.except("draft", @position.status).each do |status|
+                li = button_to(change_status_ats_position_path(@position, new_status: status.first),
+                               method: :patch,
+                               class: "dropdown-item",
+                               form: { data: { turbo_frame: :turbo_modal_window } })
+                  i.fa.fa-user class=ats_position_color_class_for_status(status.first)
+                  | &ensp;
+                  = status.first.humanize
       / POSITION EDIT
       - if allowed_to?(:edit_header?)
         .d-flex.profile-header-actions
