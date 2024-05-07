@@ -262,7 +262,7 @@ class ATS::PositionsController < ApplicationController
       actual_reasons = Position.const_get("#{new_status.upcase}_REASONS")
       options_for_select =
         Position::CHANGE_STATUS_REASON_LABELS.slice(*actual_reasons).map do |value, text|
-          [text, value]
+          { text:, value: }
         end
 
       modal_render_options = {
