@@ -5,12 +5,16 @@ module CandidatesGridHelper
     placements = candidates_grid_sort_placements(model.placements).map do |placement|
       safe_join(
         [
-          link_to(
-            placement.position.name,
-            tab_ats_position_path(placement.position, :info)
-            # TODO: pipeline tab
-            # tab_ats_position_path(placement.position, :pipeline)
-          ),
+          (if allowed_to?(:show?, placement.position, with: ATS::PositionPolicy)
+             link_to(
+               placement.position.name,
+               tab_ats_position_path(placement.position, :info)
+               # TODO: pipeline tab
+               # tab_ats_position_path(placement.position, :pipeline)
+             )
+           else
+             placement.position.name
+           end),
           sanitize(
             case placement.status
             when "qualified"

@@ -33,7 +33,7 @@ class Position < ApplicationRecord
   RECRUITER_ACCESS_LEVEL = %w[admin employee].freeze
   COLLABORATORS_ACCESS_LEVEL = %w[admin employee].freeze
   HIRING_MANAGERS_ACCESS_LEVEL = %w[admin employee hiring_manager].freeze
-  INTERVIEWERS_ACCESS_LEVEL = %w[admin employee interviewer].freeze
+  INTERVIEWERS_ACCESS_LEVEL = %w[admin employee interviewer hiring_manager].freeze
 
   has_and_belongs_to_many :collaborators,
                           class_name: "Member",
