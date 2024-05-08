@@ -1,0 +1,60 @@
+/# locals: (task:, assignee_options:, added_by_account:, added_on_time:, all_active_members:,
+            suggested_names:, note_threads, hidden_fields:, grid:)
+
+ruby:
+  title =
+    if task.taskable
+      "Task for #{task.taskable_name}"
+    else
+      "Task"
+    end
+
+= turbo_frame_tag :turbo_modal_window, target: "_top"
+  .modal.fade [aria-hidden="true" role="dialog" tabindex="-1" id="show" data-controller="async-modals"
+              data-bs-backdrop="static"]
+      .modal-dialog.modal-lg role="document"
+        .modal-hidden-input
+          - hidden_fields.each do |k, v|
+            = hidden_field_tag k, v
+        .modal-content
+          .modal-header
+            h5.modal-title = title
+            button.btn-close aria-label="Close" data-bs-dismiss="modal" type="button"
+          .modal-body.task-scrollable-modal
+            .container
+              = render partial: "main_content",
+                      locals: { \
+                        task:,
+                        assignee_options:,
+                        added_by_account:,
+                        added_on_time:,
+                        grid:,
+                      }
+              .row.mt-3
+                .col-12
+                  ul.nav.nav-tabs rolw="tablist"
+                    li.nav-item
+                      a.nav-link.active [id="#{dom_id(task)}-notes" data-bs-toggle="tab" href="#notes-tab" role="tab"
+                          aria-controls="notes" aria-selected="true"]
+                        | Notes
+                    li.nav-item
+                      a.nav-link [id="#{dom_id(task)}-activities" data-bs-toggle="tab" href="#activities-tab" role="tab"
+                          aria-controls="activities" aria-selected="false"]
+                        | Activities
+                  .tab-content
+                    .tab-pane.fade.show.active.notes-block id="notes-tab" role="tabpanel" aria-labelledby="notes-tab"
+                      #notes.row
+                        = render partial: "shared/profile/notes",
+                                locals: { \
+                                  all_active_members:,
+                                  suggested_names:,
+                                  note_threads:,
+                                  additional_create_param_input: hidden_field_tag("note[note_thread][task_id]",
+                                                                                  task.id),
+                                  hide_visibility_controls: true,
+                                }
+                    .tab-pane.fade id="activities-tab" role="tabpanel" aria-labelledby="activities-tab"
+                      .row.mt-3
+                        .col
+                            ul.list-group.text-break id="turbo_task_event_list"
+                              = render partial: "ats/tasks/activity_event_row", collection: all_activities, as: :event

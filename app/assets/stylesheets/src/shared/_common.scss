@@ -14,3 +14,50 @@
 .fa-loader {
   @extend .text-secondary;
 }
+
+// Global colors for links also affect datepicker date cells.
+.ui-datepicker-calendar {
+  a {
+    color: unset !important;
+    text-decoration: none !important;
+
+    &:hover {
+      color: unset !important;
+    }
+    &:visited {
+      color: unset !important;
+    }
+  }
+  a.ui-state-active {
+    color: white !important;
+  }
+  a.ui-state-highlight {
+    color: unset !important;
+  }
+}
+
+// Replace jquery-ui arrow icons with fa icons in datepicker.
+.ui-datepicker-header {
+  .ui-icon {
+    background-image: none !important;
+  }
+
+  .ui-icon-circle-triangle-e,
+  .ui-icon-circle-triangle-w {
+    text-indent: 0;
+    &:before {
+      @extend .fa-light;
+      width: 100%;
+      text-align: center;
+      vertical-align: top;
+    }
+  }
+
+  .ui-icon-circle-triangle-w:before {
+    content: fa-content($fa-var-angle-left);
+  }
+
+  .ui-icon-circle-triangle-e:before {
+    content: fa-content($fa-var-angle-right);
+  }
+}

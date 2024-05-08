@@ -90,7 +90,9 @@ table.datagrid {
 }
 
 table.ats_positions_grid,
-table.ats_dashboard_positions_grid {
+table.ats_dashboard_positions_grid,
+table.tasks_grid,
+table.profile_tasks_grid {
   td.status {
     text-align: center;
     width: 1rem;

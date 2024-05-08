@@ -526,9 +526,9 @@ class Candidates::MergeTest < ActiveSupport::TestCase
   end
 
   test "should transfer all duplicates placements" do
-    existing_placements = [placements(:john_ruby_hired), placements(:john_ruby_replied)]
+    candidate_placements = @candidate.placements.to_a
 
-    assert_equal @candidate.placements.sort, existing_placements.sort
+    assert_not_empty candidate_placements
     assert_empty @candidate_duplicate.placements
 
     placement = create(
@@ -546,8 +546,28 @@ class Candidates::MergeTest < ActiveSupport::TestCase
       ).call.value!
     end
 
-    assert_equal @candidate.reload.placements.sort, [*existing_placements, placement].sort
+    assert_equal @candidate.reload.placements.sort, [*candidate_placements, placement].sort
     assert_empty @candidate_duplicate.reload.placements
+  end
+
+  test "should transfer all duplicates tasks" do
+    candidate_tasks = @candidate.tasks.to_a
+
+    assert_not_empty candidate_tasks
+    assert_empty @candidate_duplicate.tasks
+
+    task = create(:task, taskable: @candidate_duplicate)
+
+    assert_no_difference "Event.where.not(type: 'candidate_merged').count" do
+      Candidates::Merge.new(
+        target: @candidate,
+        duplicates: [@candidate_duplicate],
+        actor_account_id: @actor_account.id
+      ).call.value!
+    end
+
+    assert_equal @candidate.reload.tasks.sort, [*candidate_tasks, task].sort
+    assert_empty @candidate_duplicate.reload.tasks
   end
 
   test "should transfer all duplicates note threads" do

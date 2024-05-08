@@ -56,9 +56,8 @@ class Position < ApplicationRecord
            class_name: "PositionStage",
            dependent: :destroy
   has_many :placements, dependent: :destroy
-
   has_many :events, as: :eventable, dependent: :destroy
-
+  has_many :tasks, as: :taskable, dependent: :destroy
   has_many :sequence_templates, dependent: :nullify
 
   belongs_to :recruiter, optional: true, class_name: "Member"

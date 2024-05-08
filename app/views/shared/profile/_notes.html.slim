@@ -15,6 +15,9 @@ ruby:
   elsif @position.present?
     model_id = @position.id
     namespace = "position_#{model_id}"
+  elsif @task.present?
+    model_id = @task.id
+    namespace = "task_#{@task.id}"
   else
     raise "Unsupported model"
   end
@@ -28,6 +31,8 @@ ruby:
                 data: { action: "turbo:submit-end->candidate-notes#addNoteCallback " \
                                 "input->notes#storeNoteForm " \
                                 "turbo:submit-end->notes#clearNoteForm" } do |note_form|
+      - if @task.present?
+        = hidden_field_tag "render_time", Time.zone.now
       .card-body
         .card-title.d-flex.align-items-center
           = picture_avatar_icon current_member.account.avatar, {}, class: "small-avatar-thumbnail"

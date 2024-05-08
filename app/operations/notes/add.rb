@@ -7,7 +7,8 @@ class Notes::Add
     option :text, Types::Strict::String
     option :note_thread_params, Types::Strict::Hash.schema(
       id?: Types::Params::Integer,
-      candidate_id?: Types::Params::Integer
+      candidate_id?: Types::Params::Integer,
+      task_id?: Types::Params::Integer
     )
     option :actor_account, Types::Instance(Account)
     option :add_hidden_thread_members, Types::Strict::Bool, default: -> { false }

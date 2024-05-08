@@ -71,6 +71,54 @@ ruby_position_replied_scorecard_added:
   eventable: ruby_position_replied_scorecard (Scorecard)
   performed_at: <%= 1.week.ago %>
 
+position_task_added:
+  type: :task_added
+  actor_account: admin_account
+  eventable: position (Task)
+  performed_at: <%= 1.day.ago %>
+
+position_closed_task_added:
+  type: :task_added
+  actor_account: admin_account
+  eventable: position_closed (Task)
+  performed_at: <%= 1.day.ago %>
+
+candidate_task_added:
+  type: :task_added
+  actor_account: admin_account
+  eventable: candidate (Task)
+  performed_at: <%= 1.day.ago %>
+
+candidate2_task_added:
+  type: :task_added
+  actor_account: admin_account
+  eventable: candidate2 (Task)
+  performed_at: <%= 1.day.ago %>
+
+candidate3_task_added:
+  type: :task_added
+  actor_account: admin_account
+  eventable: candidate3 (Task)
+  performed_at: <%= 1.day.ago %>
+
+candidate4_task_added:
+  type: :task_added
+  actor_account: admin_account
+  eventable: candidate4 (Task)
+  performed_at: <%= 1.day.ago %>
+
+candidate5_task_added:
+  type: :task_added
+  actor_account: admin_account
+  eventable: candidate5 (Task)
+  performed_at: <%= 1.day.ago %>
+
+no_taskable_task_added:
+  type: :task_added
+  actor_account: admin_account
+  eventable: no_taskable (Task)
+  performed_at: <%= 1.day.ago %>
+
 admin_short_note_added:
   type: :note_added
   actor_account: admin_account

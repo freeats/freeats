@@ -7,7 +7,7 @@ class ATS::CandidatesController < ApplicationController
 
   ACTIVITIES_PAGINATION_LIMIT = 25
   DEFAULT_TAB_PAGINATION_LIMIT = 10
-  TABS = %w[Info Emails Scorecards Files Activities].freeze
+  TABS = %w[Info Tasks Emails Scorecards Files Activities].freeze
   INFO_CARDS =
     {
       contact_info: %w[source emails phones links telegram skype],
@@ -57,6 +57,28 @@ class ATS::CandidatesController < ApplicationController
         case @active_tab
         when "info"
           # info
+        when "tasks"
+          @lazy_load_form_url =
+            if params[:task_id]
+              if params[:task_id] == "new"
+                new_modal_ats_tasks_path(
+                  params: { taskable_id: @candidate.id, taskable_type: @candidate.class.name }
+                )
+              else
+                show_modal_ats_task_path(params[:task_id], grid: :profiles)
+              end
+            end
+          @tasks_grid = ATS::ProfileTasksGrid.new(
+            helpers.add_default_sorting(
+              params[:ats_profile_tasks_grid],
+              :due_date, :desc
+            )
+          )
+          @tasks_grid.scope do |scope|
+            scope.where(taskable: @candidate)
+                 .page(params[:page])
+                 .per(DEFAULT_TAB_PAGINATION_LIMIT)
+          end
         when "emails"
           candidate_emails = @candidate.all_emails
           @hashed_avatars = {}
@@ -108,6 +130,11 @@ class ATS::CandidatesController < ApplicationController
                 eventable_id:
                   @candidate.placements.extract_associated(:scorecards).flatten.pluck(:id)
               )
+            )
+            .union(
+              Event
+              .where(eventable_type: "Task")
+              .where(eventable_id: @candidate.tasks.ids)
             )
             .union(
               Event
@@ -457,10 +484,13 @@ class ATS::CandidatesController < ApplicationController
     @active_tab ||=
       if @tabs.key?(params[:tab])
         params[:tab]
+      elsif params[:task_id]&.match?(/(new|\d+)$/)
+        "tasks"
       else
         @tabs.keys.first
       end
     @assigned_recruiter = @candidate.recruiter
+    @pending_tab_tasks_count = Task.where(taskable: @candidate).open.size
     @email_count =
       EmailMessage.where(
         email_thread_id:

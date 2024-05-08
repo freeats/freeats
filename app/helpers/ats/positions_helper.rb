@@ -37,6 +37,13 @@ module ATS::PositionsHelper
         "added scorecard template <b>#{event.eventable.title}</b>"
       when "scorecard_template_updated"
         "updated scorecard template <b>#{event.eventable.title}</b>"
+      when "task_added"
+        "created <b>#{event.eventable.name}</b> task"
+      when "task_status_changed"
+        "#{event.changed_to == 'open' ? 'reopened' : 'closed'} " \
+        "<b>#{event.eventable.name}</b> task"
+      when "task_changed"
+        ats_task_changed_display_activity(event)
       end
 
     sanitize(text)

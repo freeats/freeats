@@ -167,7 +167,10 @@ CREATE TYPE public.event_type AS ENUM (
     'sequence_replied',
     'sequence_resumed',
     'sequence_started',
-    'sequence_stopped'
+    'sequence_stopped',
+    'task_added',
+    'task_changed',
+    'task_status_changed'
 );
 
 
@@ -247,6 +250,19 @@ CREATE TYPE public.position_status AS ENUM (
 
 
 --
+-- Name: repeat_interval_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.repeat_interval_type AS ENUM (
+    'never',
+    'daily',
+    'weekly',
+    'monthly',
+    'yearly'
+);
+
+
+--
 -- Name: scorecard_score; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -267,6 +283,16 @@ CREATE TYPE public.sequence_status AS ENUM (
     'replied',
     'exited',
     'stopped'
+);
+
+
+--
+-- Name: task_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.task_status AS ENUM (
+    'open',
+    'closed'
 );
 
 
@@ -2127,6 +2153,54 @@ ALTER SEQUENCE public.solid_queue_semaphores_id_seq OWNED BY public.solid_queue_
 
 
 --
+-- Name: tasks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tasks (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    status public.task_status DEFAULT 'open'::public.task_status NOT NULL,
+    repeat_interval public.repeat_interval_type DEFAULT 'never'::public.repeat_interval_type NOT NULL,
+    description text DEFAULT ''::text NOT NULL,
+    taskable_type character varying,
+    taskable_id bigint,
+    assignee_id bigint NOT NULL,
+    due_date date NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.tasks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.tasks_id_seq OWNED BY public.tasks.id;
+
+
+--
+-- Name: tasks_watchers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tasks_watchers (
+    task_id bigint NOT NULL,
+    watcher_id bigint NOT NULL
+);
+
+
+--
 -- Name: account_identities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2467,6 +2541,13 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions ALTER COLUMN id SET DEF
 --
 
 ALTER TABLE ONLY public.solid_queue_semaphores ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_semaphores_id_seq'::regclass);
+
+
+--
+-- Name: tasks id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tasks ALTER COLUMN id SET DEFAULT nextval('public.tasks_id_seq'::regclass);
 
 
 --
@@ -2875,6 +2956,14 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 
 ALTER TABLE ONLY public.solid_queue_semaphores
     ADD CONSTRAINT solid_queue_semaphores_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tasks tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tasks
+    ADD CONSTRAINT tasks_pkey PRIMARY KEY (id);
 
 
 --
@@ -3606,6 +3695,42 @@ CREATE INDEX index_solid_queue_semaphores_on_key_and_value ON public.solid_queue
 
 
 --
+-- Name: index_tasks_on_assignee_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_tasks_on_assignee_id ON public.tasks USING btree (assignee_id);
+
+
+--
+-- Name: index_tasks_on_assignee_id_and_due_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_tasks_on_assignee_id_and_due_date ON public.tasks USING btree (assignee_id, due_date);
+
+
+--
+-- Name: index_tasks_on_taskable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_tasks_on_taskable ON public.tasks USING btree (taskable_type, taskable_id);
+
+
+--
+-- Name: index_tasks_watchers_on_task_id_and_watcher_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tasks_watchers_on_task_id_and_watcher_id ON public.tasks_watchers USING btree (task_id, watcher_id);
+
+
+--
+-- Name: tasks fk_rails_0016c50613; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tasks
+    ADD CONSTRAINT fk_rails_0016c50613 FOREIGN KEY (assignee_id) REFERENCES public.members(id);
+
+
+--
 -- Name: scorecards fk_rails_0668b92833; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3790,6 +3915,14 @@ ALTER TABLE ONLY public.solid_queue_ready_executions
 
 
 --
+-- Name: tasks_watchers fk_rails_83d4da4da8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tasks_watchers
+    ADD CONSTRAINT fk_rails_83d4da4da8 FOREIGN KEY (watcher_id) REFERENCES public.members(id);
+
+
+--
 -- Name: positions_collaborators fk_rails_8588910131; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3851,6 +3984,14 @@ ALTER TABLE ONLY public.account_remember_keys
 
 ALTER TABLE ONLY public.solid_queue_claimed_executions
     ADD CONSTRAINT fk_rails_9cfe4d4944 FOREIGN KEY (job_id) REFERENCES public.solid_queue_jobs(id) ON DELETE CASCADE;
+
+
+--
+-- Name: tasks_watchers fk_rails_a5a37f1835; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tasks_watchers
+    ADD CONSTRAINT fk_rails_a5a37f1835 FOREIGN KEY (task_id) REFERENCES public.tasks(id);
 
 
 --
@@ -3973,8 +4114,11 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240602141415'),
+('20240506091416'),
 ('20240504075807'),
 ('20240502094848'),
+('20240501080828'),
+('20240501075335'),
 ('20240426071136'),
 ('20240425094431'),
 ('20240425091511'),

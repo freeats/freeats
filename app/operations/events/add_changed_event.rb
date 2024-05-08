@@ -11,11 +11,13 @@ class Events::AddChangedEvent
            default: proc { :singular }
     option :old_value,
            Types::Strict::Integer | Types::Strict::String |
-           Types::Strict::Bool | Types::Strict::Array.optional,
+           Types::Strict::Bool | Types::Strict::Date |
+           Types::Strict::Array.optional,
            optional: true
     option :new_value,
            Types::Strict::Integer | Types::Strict::String |
-           Types::Strict::Bool | Types::Strict::Array.optional,
+           Types::Strict::Bool | Types::Strict::Date |
+           Types::Strict::Array.optional,
            optional: true
     option :actor_account, Types::Instance(Account).optional, optional: true
     option :properties, Types::Strict::Hash.optional, default: proc { {} }

@@ -29,6 +29,9 @@
       activities: "Activities"
     }
 
+  - tab_labels[:tasks] = capture
+    | Tasks
+    = render partial: "ats/tasks/tab_counter", locals: { pending_tasks_count: @pending_tab_tasks_count }
   - tab_labels[:emails] = capture
     | Emails
     - if @email_count.positive?
@@ -49,6 +52,10 @@
     li.nav-item
       = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
                 class: "nav-link #{'active' if @active_tab == 'info'}"
+    - if allowed_to?(:show_tasks?, @candidate)
+      li.nav-item
+        = link_to tab_labels[:tasks], tab_ats_candidate_path(@candidate, :tasks),
+                  class: "nav-link #{'active' if @active_tab == 'tasks'}"
     - if allowed_to?(:show_emails?, @candidate)
       li.nav-item
         = link_to tab_labels[:emails], tab_ats_candidate_path(@candidate, :emails),
@@ -72,6 +79,9 @@
     ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
       li = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
                    class: "dropdown-item #{'active' if @active_tab == 'info'}"
+      - if allowed_to?(:show_tasks?, @candidate)
+        li = link_to tab_labels[:tasks], tab_ats_candidate_path(@candidate, :tasks),
+                     class: "dropdown-item #{'active' if @active_tab == 'tasks'}"
       - if allowed_to?(:show_emails?, @candidate)
         li = link_to tab_labels[:emails], tab_ats_candidate_path(@candidate, :emails),
                      class: "dropdown-item #{'active' if @active_tab == 'emails'}"

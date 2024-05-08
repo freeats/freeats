@@ -1,0 +1,31 @@
+#ats-tasks-index,
+// Matches ats-candidates- and ats-positions-
+[id$="show-tasks"] {
+  .task-overdue-checkbox {
+    input[type="checkbox"] {
+      @extend .border-danger;
+    }
+  }
+
+  .ats_tasks_grid,
+  .profile_tasks_grid {
+    input[type="checkbox"] {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}
+
+// These two are used in the task show/new modal that is outside of the @page_id
+// selector. Could wrap .modal around them to scope, if it makes sense.
+.task-large-checkbox {
+  input[type="checkbox"] {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.task-scrollable-modal {
+  overflow-y: auto;
+  max-height: 650px;
+}

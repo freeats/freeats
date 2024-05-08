@@ -54,7 +54,11 @@ function activateKeybindShortcuts() {
   });
 }
 
+function arraysEqual(a, b) {
+  return a.length === b.length && a.every((element, index) => element === b[index]);
+}
+
 export { activateInstanceSubmit,
          activateKeybindShortcuts,
-         requestSubmitPolyfilled};
-
+         requestSubmitPolyfilled,
+         arraysEqual };

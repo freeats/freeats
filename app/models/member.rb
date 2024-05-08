@@ -17,6 +17,10 @@ class Member < ApplicationRecord
                           class_name: "Position",
                           foreign_key: :interviewer_id,
                           join_table: :positions_interviewers
+  has_and_belongs_to_many :watched_tasks,
+                          class_name: "Task",
+                          join_table: :tasks_watchers,
+                          foreign_key: :watcher_id
   has_many :positions,
            inverse_of: :recruiter,
            foreign_key: :recruiter_id,
@@ -32,6 +36,10 @@ class Member < ApplicationRecord
            lambda { where(type: %i[position_recruiter_unassigned candidate_recruiter_unassigned]) },
            class_name: "Event",
            inverse_of: :unassigned_member,
+           dependent: :destroy
+  has_many :tasks,
+           inverse_of: :assignee,
+           foreign_key: :assignee_id,
            dependent: :destroy
 
   belongs_to :account

@@ -1,0 +1,40 @@
+ruby:
+  model = @candidate || @position
+  paginate_params =
+    if model.present?
+      { id: model.id, tab: :tasks, action: :show,
+        controller: model.class.name.downcase.pluralize }
+    else
+      { id: nil, action: :index }
+    end
+  clean_update_status_params = { grid: nil, task: nil }
+  clean_add_task_params = { assignee_id: nil, description: nil, due_date: nil,
+                            due_date_alt: nil, name: nil, path_ending: nil,
+                            taskable_id: nil, taskable_type: nil }
+
+/ To make paginate works with update task status and add task we have to declare additional params,
+/ otherwise it will be broken or paginate url will be ugly.
+- paginate_form = capture
+  = paginate(@tasks_grid.assets,
+             theme: "ats",
+             params: { **paginate_params,
+                       **clean_update_status_params,
+                       **clean_add_task_params })
+
+= turbo_frame_tag :turbo_tasks_grid, class: "mt-3",
+                  data: { controller: "tasks", tasks_lazy_load_form_url_value: @lazy_load_form_url }
+  - if model.present?
+    .my-3
+      = ats_task_add_button(taskable: model)
+  - else
+    .row.align-items-center.mb-3.row-gap-2
+      - if @tasks_grid.assets.total_pages > 1
+        .col-12.col-lg-auto = paginate_form
+      .col-12.col-lg
+        b> Tasks:
+        = render PrettyNumberComponent.new(@tasks_grid.assets.total_count)
+      .col-auto
+        = ats_task_add_button
+  - if @tasks_grid.assets.present?
+    = datagrid_table(@tasks_grid, html: { class: "datagrid profile_tasks_grid" })
+    = paginate_form

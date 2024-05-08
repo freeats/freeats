@@ -112,7 +112,8 @@ class NotesController < ApplicationController
       locals: {
         note: @note,
         thread:,
-        all_active_members: @all_active_members
+        all_active_members: @all_active_members,
+        hide_visibility_controls: thread.notable.is_a?(Task)
       }
     )
   end
@@ -159,6 +160,7 @@ class NotesController < ApplicationController
         id
         candidate_id
         position_id
+        task_id
       ]
     )
   end
@@ -233,7 +235,8 @@ class NotesController < ApplicationController
     locals = {
       note_thread:,
       all_active_members: @all_active_members,
-      expanded:
+      expanded:,
+      hide_visibility_controls: note_thread.notable.is_a?(Task)
     }
 
     if action == :create

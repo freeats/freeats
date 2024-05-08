@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   namespace :ats do
     resources :candidates, except: %i[show edit] do
       get "/", to: redirect("/ats/candidates/%{id}/info"), on: :member, id: /\d+/
+      get "tasks/:task_id", to: "candidates#show", on: :member, as: "task"
       get :show_card, on: :member
       get :edit_card, on: :member
       patch :update_card, on: :member
@@ -27,7 +28,7 @@ Rails.application.routes.draw do
       post :stop_sequences, on: :member
       post :synchronize_email_messages, on: :member
       get ":tab", to: "candidates#show", on: :member,
-                  tab: /info|emails|scorecards|files|activities/, as: "tab"
+                  tab: /info|tasks|emails|scorecards|files|activities/, as: "tab"
 
       resources :placements, only: %i[create destroy], shallow: true do
         post :change_stage, on: :member
@@ -37,10 +38,11 @@ Rails.application.routes.draw do
 
     resources :positions, except: %i[edit update] do
       get "/", to: redirect("/ats/positions/%{id}/info"), on: :member, id: /\d+/
+      get "tasks/:task_id", to: "positions#show", on: :member, as: "task"
       get ":tab",
           to: "positions#show",
           on: :member,
-          tab: /info|pipeline||sequence_templates||activities/,
+          tab: /info|pipeline|tasks|sequence_templates||activities/,
           as: "tab"
       patch :change_status, on: :member
       patch :reassign_recruiter, on: :member
@@ -73,6 +75,16 @@ Rails.application.routes.draw do
       get :setup_test, on: :member
       get :test, on: :member
       patch :archive, on: :member
+    end
+
+    resources :tasks, only: %i[index create update new show] do
+      get :new_modal, on: :collection
+      get :show_modal, on: :member
+      patch :update_status, on: :member
+      # Remove the below post paths after implementing turbo_modals for
+      # the show task modal with get method.
+      post :new_modal, on: :collection
+      post :show_modal, on: :member
     end
   end
 

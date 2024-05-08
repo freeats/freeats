@@ -1,0 +1,266 @@
+# frozen_string_literal: true
+
+class ATS::TasksController < ApplicationController
+  include Dry::Monads[:result]
+
+  layout "ats/application"
+
+  before_action { @nav_item = :tasks }
+  before_action :authorize!
+  before_action :set_variables, only: %i[show update update_status]
+
+  def index
+    session[:ats_tasks_grid_params] = params[:ats_tasks_grid]&.to_unsafe_h
+    set_tasks_grid
+  end
+
+  def show
+    case @task.taskable
+    when Candidate then redirect_to task_ats_candidate_path(@task.taskable, @task)
+    when Position then redirect_to task_ats_position_path(@task.taskable, @task)
+    else
+      set_tasks_grid
+      @lazy_load_form_url = show_modal_ats_task_path(@task)
+      render :index
+    end
+  end
+
+  def new
+    set_tasks_grid
+    @lazy_load_form_url = new_modal_ats_tasks_path
+    render :index
+  end
+
+  def new_modal
+    taskable =
+      [Candidate, Position]
+      .find { _1.name == params[:taskable_type] }
+      &.find(params[:taskable_id])
+    taskable_name = params[:taskable_type] == "Position" ? taskable&.name : taskable&.full_name
+    modal_options = {
+      partial: "new",
+      layout: "modal",
+      locals: {
+        modal_id: "new",
+        form_options: { url: ats_tasks_path, data: { turbo_frame: :turbo_tasks_grid } },
+        modal_size: "modal-lg",
+        assignee_options:,
+        default_assignee: default_assignee(taskable, current_member),
+        default_watchers: Task.default_watchers(taskable).map(&:id),
+        current_member:,
+        taskable:,
+        taskable_name:,
+        hidden_fields: { path_ending: "new" }
+      }
+    }
+    if taskable
+      modal_options[:locals][:hidden_fields].merge!(
+        { "task[taskable_id]": taskable.id, "task[taskable_type]": taskable.class.name }
+      )
+    end
+    render(modal_options)
+  end
+
+  def show_modal
+    @task = Task.find(params[:id])
+    # TODO: include 'added_event' once 'note_added' is added to event types.
+    note_threads =
+      NoteThread
+      .includes(notes: %i[member reacted_members])
+      .preload(:members)
+      .where(notable: @task)
+      .order("note_threads.id DESC", "notes.id")
+      .visible_to(current_member)
+    render(
+      partial: "show",
+      locals: {
+        task: @task,
+        assignee_options:,
+        added_by_account: @task.added_event.actor_account,
+        added_on_time: @task.added_event.performed_at,
+        all_active_members:,
+        suggested_names: all_active_members.map(&:name),
+        note_threads:,
+        all_activities: @task.activities,
+        grid: params[:grid],
+        hidden_fields: { path_ending: @task.id.to_s }
+      }
+    )
+  end
+
+  def create
+    case Tasks::Add.new(
+      params: task_params.to_h.deep_symbolize_keys,
+      actor_account: current_account
+    ).call
+    in Success[task]
+      render_tasks_grid(task)
+    in Failure[:inactive_assignee, _error] | Failure[:task_invalid, _error]
+      render_error _error, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    case Tasks::Change.new(
+      task: @task,
+      params: task_params.to_h.deep_symbolize_keys,
+      actor_account: current_account
+    ).call
+    in Success[_task]
+      render_task_card
+    in Failure[:task_invalid, _error]
+      render_error _error, status: :unprocessable_entity
+    end
+  end
+
+  def update_status
+    case Tasks::ChangeStatus.new(
+      task: @task,
+      new_status: params.dig(:task, :status),
+      actor_account: current_account
+    ).call
+    in Success[_task]
+      render_task_card
+    in Failure[:task_invalid, _error]
+      render_error _error, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def assignee_options
+    assignees = Member
+                .joins(:account)
+                .active
+                .order("accounts.name ASC")
+                .pluck("accounts.name", :id)
+    assignees << [@task.assignee.account.name, @task.assignee.id] if @task
+    assignees.uniq
+  end
+
+  def default_assignee(taskable, current_member)
+    if taskable.is_a?(Candidate) || taskable.is_a?(Position)
+      return taskable.recruiter&.active? ? taskable.recruiter_id : current_member.id
+    end
+
+    current_member.id
+  end
+
+  def all_active_members
+    Member.active.where.not(id: current_member.id).includes(:account)
+  end
+
+  def extract_task_variables(task)
+    case task.taskable
+    when Candidate
+      @candidate = task.taskable
+      @tasks_grid = ATS::ProfileTasksGrid.new(helpers.add_default_sorting({}, :due_date, :desc))
+      @tasks_grid.scope { _1.where(taskable: @candidate).page(params[:page]).per(10) }
+    when Position
+      @position = task.taskable
+      @tasks_grid = ATS::ProfileTasksGrid.new(helpers.add_default_sorting({}, :due_date, :desc))
+      @tasks_grid.scope { _1.where(taskable: @position).page(params[:page]).per(10) }
+    else
+      set_tasks_grid(grid_params: session[:ats_tasks_grid_params])
+    end
+  end
+
+  def set_tasks_grid(grid_params: nil)
+    grid_params = params.fetch(:ats_tasks_grid, {}) if grid_params.nil?
+    grid_params[:current_member_id] = current_member.id
+    grid_params[:assignee] ||= current_member.id
+    @tasks_grid = ATS::TasksGrid.new(
+      helpers.add_default_sorting(
+        grid_params,
+        :due_date
+      )
+    ) do |scope|
+      scope.page(params[:page])
+    end
+  end
+
+  def render_tasks_grid(task)
+    extract_task_variables(task)
+
+    render_turbo_stream(
+      [
+        turbo_stream.replace(:turbo_tasks_grid, partial: "tasks_grid"),
+        if task.taskable
+          turbo_stream.replace_all(
+            ".turbo_tab_tasks_counter",
+            partial: "ats/tasks/tab_counter",
+            locals: { pending_tasks_count: Task.where(taskable: task.taskable).open.size }
+          )
+        end
+      ],
+      notice: "Task was successfully created."
+    )
+  end
+
+  def render_task_card
+    new_activities =
+      if (new_events = @task.activities(since: @time_before_update))
+        new_events.to_a.sort_by(&:performed_at).map do |event|
+          turbo_stream.prepend(
+            :turbo_task_event_list,
+            partial: "ats/tasks/activity_event_row",
+            locals: { event: }
+          )
+        end
+      else
+        []
+      end
+
+    # Setting taskable to nil will cause the following method to call set_tasks_grid method.
+    @task.taskable = nil unless params[:grid] == "profiles"
+    task_dom_id = ActionView::RecordIdentifier.dom_id(@task)
+    extract_task_variables(@task)
+    render_turbo_stream(
+      [
+        turbo_stream.replace(
+          :turbo_task_main_content,
+          partial: "ats/tasks/main_content",
+          locals: {
+            task: @task,
+            assignee_options:,
+            added_by_account: @task.added_event.actor_account,
+            added_on_time: @task.added_event.performed_at,
+            grid: params[:grid]
+          }
+        ),
+        turbo_stream.replace(
+          task_dom_id,
+          helpers.ats_datagrid_render_row(@tasks_grid, Task.grid_scope.find(params[:id]))
+        ),
+        if @task.taskable
+          turbo_stream.replace_all(
+            ".turbo_tab_tasks_counter",
+            partial: "ats/tasks/tab_counter",
+            locals: { pending_tasks_count: Task.where(taskable: @task.taskable).open.size }
+          )
+        end,
+        *new_activities
+      ]
+    )
+  end
+
+  def set_variables
+    @task = Task.find(params[:id])
+    @time_before_update = Time.zone.now
+  end
+
+  def task_params
+    params
+      .require(:task)
+      .permit(
+        :name,
+        :due_date,
+        :description,
+        :repeat_interval,
+        :taskable_id,
+        :taskable_type,
+        :assignee_id,
+        watcher_ids: []
+      )
+  end
+end

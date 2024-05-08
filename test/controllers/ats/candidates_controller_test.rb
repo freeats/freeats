@@ -28,6 +28,9 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     get tab_ats_candidate_path(candidate, :info)
 
     assert_response :success
+    get tab_ats_candidate_path(candidate, :tasks)
+
+    assert_response :success
     get tab_ats_candidate_path(candidate, :emails)
 
     assert_response :success

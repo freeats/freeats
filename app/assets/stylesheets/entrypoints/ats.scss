@@ -1,5 +1,9 @@
 $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 
+// jQuery
+@import "jquery-ui/themes/base/theme";
+@import "jquery-ui/themes/base/datepicker";
+
 // Bootstrap
 @import "../src/shared/variables";
 @import "../src/shared/colors";
@@ -23,3 +27,4 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 @import "../src/ats/positions";
 @import "../src/ats/candidates";
 @import "../src/ats/sequence_template";
+@import "../src/ats/task";

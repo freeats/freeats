@@ -1,0 +1,6 @@
+/#locals: (pending_tasks_count:)
+
+span.turbo_tab_tasks_counter
+  - if pending_tasks_count.positive?
+    | &nbsp;
+    span.badge.bg-secondary = pending_tasks_count

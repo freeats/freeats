@@ -8,6 +8,7 @@ class ATS::PositionsController < ApplicationController
   TABS = [
     "Info",
     "Pipeline",
+    "Tasks",
     "Sequence templates",
     "Activities"
   ].freeze
@@ -61,6 +62,21 @@ class ATS::PositionsController < ApplicationController
     case @active_tab
     when "pipeline"
       set_pipeline_variables
+    when "tasks"
+      @lazy_load_form_url =
+        if params[:task_id]
+          if params[:task_id] == "new"
+            new_modal_ats_tasks_path(
+              params: { taskable_id: @position.id, taskable_type: @position.class.name }
+            )
+          else
+            show_modal_ats_task_path(params[:task_id], grid: :profiles)
+          end
+        end
+      @tasks_grid = ATS::ProfileTasksGrid.new(
+        helpers.add_default_sorting(params[:ats_profile_tasks_grid], :due_date, :desc)
+      )
+      @tasks_grid.scope { _1.where(taskable: @position).page(params[:page]).per(10) }
     when "activities"
       set_activities_variables
     when "sequence_templates"
@@ -323,14 +339,15 @@ class ATS::PositionsController < ApplicationController
 
   def set_tabs
     @tabs = TABS.index_by { _1.parameterize(separator: "_") }
-    # rubocop:disable Naming/MemoizedInstanceVariableName
     @active_tab ||=
       if @tabs.key?(params[:tab])
         params[:tab]
+      elsif params[:task_id]&.match?(/(new|\d+)$/)
+        "tasks"
       else
         @tabs.keys.first
       end
-    # rubocop:enable Naming/MemoizedInstanceVariableName
+    @pending_tab_tasks_count = Task.where(taskable: @position).open.size
   end
 
   def set_position
@@ -441,6 +458,11 @@ class ATS::PositionsController < ApplicationController
         SQL
         .where(eventable_type: "PositionStage")
         .where(position_stages: { position_id: @position.id })
+      )
+      .union(
+        Event
+        .where(eventable_type: "Task")
+        .where(eventable_id: @position.tasks.ids)
       )
       .includes(
         :eventable,

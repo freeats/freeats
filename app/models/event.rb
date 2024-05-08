@@ -56,6 +56,9 @@ class Event < ApplicationRecord
     sequence_resumed
     sequence_started
     sequence_stopped
+    task_added
+    task_changed
+    task_status_changed
   ].index_with(&:to_s)
 
   self.inheritance_column = nil
@@ -75,9 +78,8 @@ class Event < ApplicationRecord
           .search_by_emails(eventable.to)
       elsif type.in?(%w[placement_added placement_changed])
         [eventable.candidate]
-      elsif type == "note_added"
+      elsif type == "note_added" && eventable.note_thread.notable.is_a?(Candidate)
         [eventable.note_thread.notable]
-      # TODO: implement events where eventable is task
       elsif type.in?(%w[scorecard_added scorecard_updated])
         [eventable.placement.candidate]
       elsif type == "active_storage_attachment_added"
@@ -88,6 +90,8 @@ class Event < ApplicationRecord
         eventable.find_candidates_in_message
       elsif eventable.is_a?(Candidate)
         [eventable]
+      elsif eventable.is_a?(Task) && eventable.taskable.is_a?(Candidate)
+        [eventable.taskable]
       end
 
     return if candidates_to_update.blank?

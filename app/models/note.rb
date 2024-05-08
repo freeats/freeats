@@ -56,6 +56,13 @@ class Note < ApplicationRecord
         host: ENV.fetch("HOST_URL", "localhost:3000"),
         protocol: ATS::Application.config.force_ssl ? "https" : "http"
       )
+    when "Task"
+      Rails.application.routes.url_helpers.ats_task_url(
+        note_thread.notable_id,
+        anchor: "note-#{id}",
+        host: ENV.fetch("HOST_URL", "localhost:3000"),
+        protocol: ATS::Application.config.force_ssl ? "https" : "http"
+      )
     else
       raise "Unsupported model"
     end

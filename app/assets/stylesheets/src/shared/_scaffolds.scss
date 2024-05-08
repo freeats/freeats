@@ -275,8 +275,34 @@ body {
   }
 }
 
+.btn {
+  --bs-btn-font-size: 0.875rem;
+}
+
 .btn.btn-sm {
   padding: 0.125rem 0.5rem;
+}
+
+input,
+button {
+  &.btn-link {
+    text-decoration: none;
+  }
+  &.btn-link:hover {
+    text-decoration: underline;
+  }
+}
+
+.selectpicker-button {
+  border: 1px solid $gray-500;
+  background-color: unset;
+  color: unset;
+  &:hover,
+  &:active {
+    border: 1px solid $gray-500;
+    background-color: $gray-100;
+    color: unset;
+  }
 }
 
 .hidden {

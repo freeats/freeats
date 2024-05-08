@@ -17,6 +17,10 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
           li.nav-item
             = link_to "Dashboard", root_path,
               class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
+        - if allowed_to?(:index?, with: ATS::TaskPolicy)
+          li.nav-item
+            = link_to "Tasks", ats_tasks_path,
+              class: "nav-link#{' nav-link-selected' if @nav_item == :tasks}"
         - if allowed_to?(:index?, with: ATS::CandidatePolicy)
           li.nav-item
             = link_to "Candidates", ats_candidates_path,

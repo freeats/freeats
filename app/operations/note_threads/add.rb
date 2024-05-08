@@ -5,7 +5,8 @@ class NoteThreads::Add
 
   include Dry::Initializer.define -> do
     option :params, Types::Strict::Hash.schema(
-      candidate_id: Types::Params::Integer
+      candidate_id?: Types::Params::Integer,
+      task_id?: Types::Params::Integer
     )
     option :actor_account, Types::Instance(Account)
   end
@@ -15,6 +16,8 @@ class NoteThreads::Add
       case params
       in { candidate_id: candidate_id }
         [candidate_id, "Candidate"]
+      in { task_id: task_id }
+        [task_id, "Task"]
       end
 
     note_thread = NoteThread.new(

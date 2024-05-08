@@ -1,0 +1,19 @@
+/# locals: (task:, grid:)
+
+= form_with model: task,
+            url: update_status_ats_task_path(task),
+            class: "turbo-instant-submit d-inline-block",
+            data: { "tasks-target" => "changeStatusForm" } do |f|
+  = hidden_field_tag :grid, grid
+  .form-check class=("task-overdue-checkbox" if task.overdue?)
+    = f.check_box :status,
+                  { class: "form-check-input current", id: dom_id(task, :grid_status) },
+                  "closed", "open"
+    label.form-check-label for=dom_id(task, :grid_status)
+    = f.check_box :status,
+                  { class: "form-check-input changed hidden",
+                    id: dom_id(task, :grid_status_changed),
+                    disabled: true,
+                  },
+                  "open", "closed"
+    label.form-check-label for=dom_id(task, :grid_status_changed)

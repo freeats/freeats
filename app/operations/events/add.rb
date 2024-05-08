@@ -9,9 +9,11 @@ class Events::Add
       eventable: Types::Instance(ApplicationRecord) | Types::Instance(ActiveStorage::Attachment),
       type: Types::Symbol.enum(*Event.types.keys.map(&:to_sym)),
       changed_to?: Types::Strict::Integer | Types::Strict::String |
-                   Types::Strict::Bool | Types::Strict::Array.optional,
+                   Types::Strict::Bool | Types::Strict::Date |
+                   Types::Strict::Array.optional,
       changed_from?: Types::Strict::Integer | Types::Strict::String |
-                     Types::Strict::Bool | Types::Strict::Array.optional,
+                     Types::Strict::Bool | Types::Strict::Date |
+                     Types::Strict::Array.optional,
       changed_field?: Types::Strict::Symbol | Types::Strict::String,
       properties?: Types::Strict::Hash.optional,
       performed_at?: Types::Strict::DateTime.optional

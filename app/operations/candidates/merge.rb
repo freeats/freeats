@@ -95,6 +95,11 @@ class Candidates::Merge < ApplicationOperation
       duplicates_placements: duplicates.map(&:placements).flatten
     )
 
+    action_list << merge_tasks(
+      target_id: target.id,
+      duplicates_tasks: duplicates.map(&:tasks).flatten
+    )
+
     action_list << merge_candidate_note_threads(
       target_id: target.id,
       duplicates_note_threads: duplicates.map(&:note_threads).flatten,
@@ -518,14 +523,21 @@ class Candidates::Merge < ApplicationOperation
     [new_responsible_member_id, result]
   end
 
-  def merge_placements(
-    target_id:,
-    duplicates_placements:
-  )
+  def merge_placements(target_id:, duplicates_placements:)
     result = []
     duplicates_placements.each do |placement|
       placement.candidate_id = target_id
       result << AL.save_record(placement)
+    end
+
+    result
+  end
+
+  def merge_tasks(target_id:, duplicates_tasks:)
+    result = []
+    duplicates_tasks.each do |task|
+      task.taskable_id = target_id
+      result << AL.save_record(task)
     end
 
     result
