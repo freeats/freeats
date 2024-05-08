@@ -37,7 +37,7 @@ class ATS::CandidatesController < ApplicationController
       helpers.add_default_sorting(
         params.fetch(:ats_candidates_grid, {})
         .merge(page: params[:page]),
-        :added
+        :last_activity
       )
     ) do |scope|
       authorized_scope(
