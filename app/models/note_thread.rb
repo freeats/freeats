@@ -13,6 +13,7 @@ class NoteThread < ApplicationRecord
   scope :visible_to, lambda { |member|
     left_outer_joins(:members)
       .where("members.id = ? AND hidden = true OR hidden = false", member.id)
+      .distinct
   }
 
   def update_visibility_settings(params, current_member:)
