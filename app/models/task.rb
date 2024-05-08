@@ -91,7 +91,7 @@ class Task < ApplicationRecord
     task_events_query =
       Event
       .joins(<<~SQL)
-        JOIN tasks ON tasks.id = events.eventable_id
+        JOIN tasks ON tasks.id = events.eventable_id AND events.eventable_type = 'Task'
       SQL
       .where(tasks: { id: })
       .union(note_events_query)
