@@ -24,15 +24,14 @@ ruby:
       = render "ats/candidates/avatar_image", candidate: @candidate
 
     / ACTIONS
-    .col-auto.d-flex.ms-auto.order-md-last.gap-2.mb-2
-      .d-flex
-        = render "ats/candidates/action_buttons", profile: @candidate
-        - if allowed_to?(:edit_header?)
-          .profile-header-actions
-            = link_to edit_header_ats_candidate_path(@candidate),
-                      class: "btn",
-                      data: { bs_toggle: "tooltip", bs_title: "Edit" }
-              i.fas.fa-pencil-alt
+    .col-auto.d-flex.flex-row.ms-auto.order-md-last.gap-2.mb-2
+      = render "ats/candidates/action_buttons", profile: @candidate
+      - if allowed_to?(:edit_header?)
+        .profile-header-actions
+          = link_to edit_header_ats_candidate_path(@candidate),
+                    class: "btn",
+                    data: { bs_toggle: "tooltip", bs_title: "Edit" }
+            i.fas.fa-pencil-alt
 
     / BASE INFO
     .col-12.col-md
