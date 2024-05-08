@@ -5,7 +5,7 @@ class ATS::CandidatePolicy < ApplicationPolicy
              :show_scorecards?, :show_card?, :show_files?, to: :show?
 
   def show?
-    available_for_active_member?
+    available_for_employee? || visible_for_hiring_manager? || visible_for_interviewer?
   end
 
   def index?
@@ -21,12 +21,41 @@ class ATS::CandidatePolicy < ApplicationPolicy
       .joins(placements: :position)
       .joins(
         "LEFT JOIN positions_hiring_managers " \
-        "ON positions_hiring_managers.position_id = positions.id"
-      )
-      .joins(
+        "ON positions_hiring_managers.position_id = positions.id " \
         "LEFT JOIN positions_interviewers ON positions_interviewers.position_id = positions.id"
       )
       .where("positions_hiring_managers.hiring_manager_id = ? " \
              "OR positions_interviewers.interviewer_id = ?", member_id, member_id)
+  end
+
+  private
+
+  def visible_for_hiring_manager?
+    available_for_hiring_manager? &&
+      (assigned_to_position_with_hiring_manager? || assigned_to_position_with_interviewer?)
+  end
+
+  def visible_for_interviewer?
+    available_for_interviewer? && assigned_to_position_with_interviewer?
+  end
+
+  def assigned_to_position_with_hiring_manager?
+    Candidate
+      .joins(placements: :position)
+      .joins(
+        "JOIN positions_hiring_managers ON positions_hiring_managers.position_id = positions.id"
+      )
+      .where(candidates: { id: record.id })
+      .exists?(positions_hiring_managers: { hiring_manager_id: member.id })
+  end
+
+  def assigned_to_position_with_interviewer?
+    Candidate
+      .joins(placements: :position)
+      .joins(
+        "JOIN positions_interviewers ON positions_interviewers.position_id = positions.id"
+      )
+      .where(candidates: { id: record.id })
+      .exists?(positions_interviewers: { interviewer_id: member.id })
   end
 end
