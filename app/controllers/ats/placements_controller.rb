@@ -56,7 +56,7 @@ class ATS::PlacementsController < ApplicationController
     ).call
     in Success[placement]
       render_placements_notes_panel(placement)
-    in Failure[:placement_invalid, error]
+    in Failure[:placement_not_destroyed, error]
       render_error error, status: :unprocessable_entity
     end
   end

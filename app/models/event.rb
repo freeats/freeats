@@ -40,6 +40,7 @@ class Event < ApplicationRecord
     note_removed
     placement_added
     placement_changed
+    placement_removed
     position_added
     position_changed
     position_recruiter_assigned

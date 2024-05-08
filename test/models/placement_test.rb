@@ -120,4 +120,30 @@ class PlacementTest < ActiveSupport::TestCase
       assert_equal event.changed_to, new_status
     end
   end
+
+  test "should destroy and create event" do
+    placement = placements(:sam_golang_sourced)
+    actor_account = accounts(:admin_account)
+
+    # 'placement_added' event is destroyed with placement.
+    assert_difference "Event.count" => 0, "Placement.count" => -1 do
+      Placements::Destroy.new(
+        placement:,
+        actor_account:
+      ).call.value!
+
+      event = Event.last
+
+      assert_equal event.actor_account_id, actor_account.id
+      assert_equal event.type, "placement_removed"
+      assert_equal event.eventable_id, placement.candidate.id
+      assert_equal event.eventable_type, "Candidate"
+      assert_equal event.properties["position_id"], placement.position_id
+      assert_equal event.properties["placement_id"], placement.id
+      assert_equal event.properties["placement_stage"], placement.stage
+      assert_equal event.properties["placement_status"], placement.status
+      assert_equal event.properties["added_actor_account_id"], placement.added_event.actor_account_id
+      assert_in_delta Time.zone.parse(event.properties["added_at"]), placement.added_event.performed_at, 1
+    end
+  end
 end

@@ -82,6 +82,9 @@ module CandidatesHelper
         "assigned the candidate to #{link_to(position.name, tab_ats_position_url(position))}"
       when "placement_changed"
         placement_changed_text(event)
+      when "placement_removed"
+        position = Position.find(event.properties["position_id"])
+        "unassigned the candidate from #{link_to(position.name, tab_ats_position_url(position))}"
       when "scorecard_added"
         "added scorecard <b>#{event.eventable.title}</b>"
       when "scorecard_updated"
