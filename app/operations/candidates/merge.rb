@@ -6,9 +6,6 @@ class Candidates::Merge < ApplicationOperation
   # target is used to perform the merge on a list of candidates: target + duplicates.
   option :target, Types::Instance(Candidate)
 
-  # duplicates are not merged duplicates for target.
-  option :duplicates, Types::Strict::Array.of(Types::Instance(Candidate))
-
   # actor_account_id is the one who performed the merge.
   option :actor_account_id, Types::Strict::Integer
 
@@ -19,9 +16,9 @@ class Candidates::Merge < ApplicationOperation
   AL = ActionList
 
   def call
-    return Failure(:no_duplicates) if duplicates.empty?
+    duplicates = target.not_merged_duplicates.to_a
 
-    return Failure(:duplicates_differ) if target.not_merged_duplicates.to_a.sort != duplicates.sort
+    return Failure(:no_duplicates) if duplicates.empty?
 
     action_list = ActionList.new(
       target_candidate_id: target.id,

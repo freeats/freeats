@@ -27,6 +27,8 @@ Rails.application.routes.draw do
       get :download_cv_file, on: :member
       post :stop_sequences, on: :member
       post :synchronize_email_messages, on: :member
+      get :merge_duplicates_modal, on: :member
+      post :merge_duplicates, on: :member
       get ":tab", to: "candidates#show", on: :member,
                   tab: /info|tasks|emails|scorecards|files|activities/, as: "tab"
 

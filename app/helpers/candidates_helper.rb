@@ -9,6 +9,18 @@ module CandidatesHelper
     }
   end
 
+  def ats_candidate_duplicates_merge_association_select(form, form_field_name, options_for_select)
+    options = options_for_select.map do |text, value|
+      { text:, value: }
+    end
+    render SingleSelectComponent.new(
+      form,
+      method: form_field_name,
+      required: true,
+      local: { options: }
+    )
+  end
+
   def candidate_display_activity(event)
     actor_account_name = compose_actor_account_name(event)
 

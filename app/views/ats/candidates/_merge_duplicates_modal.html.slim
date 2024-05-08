@@ -1,0 +1,31 @@
+.modal.fade.modal-thread [aria-hidden="true" id="merge-candidates-modal" role="dialog" tabindex="-1"
+                          data-bs-backdrop="static" data-controller="async-modals"]
+  .modal-dialog.modal-dialog-centered role="document"
+    .modal-content
+      = form_with url: merge_duplicates_ats_candidate_path(@candidate.id),
+                  method: :post,
+                  local: true,
+                  data: { turbo_frame: "_top" },
+                  id: "merge-form" do |form|
+        .modal-header
+          h5.modal-title Merge profiles?
+          button.btn-close aria-label="Close" data-bs-dismiss="modal" type="button"
+        .modal-body
+          p
+            => "Profile".pluralize(@duplicates.size)
+            => safe_join(@duplicates.map { |dup| tag.b(dup.full_name) }, ", ")
+            | will be merged with the current <b>#{@candidate.full_name}</b> profile.
+          - if @duplicate_recruiters.size > 1
+            = render LabeledComponent.new(class: "mb-3",
+                                          left_layout_class: "col-12",
+                                          right_layout_class: "col-12") do |c|
+              - c.with_label("Recruiter", size: :small, class: "form-label", for_field: :new_recruiter_id)
+              = ats_candidate_duplicates_merge_association_select(form, :new_recruiter_id, @duplicate_recruiters)
+          - elsif @duplicate_recruiters.size == 1
+            = form.hidden_field( \
+              :new_recruiter_id, value: @duplicate_recruiters.first.last, id: "new_recruiter_id-hidden")
+      .modal-footer
+        = render ButtonComponent.new(size: :small, variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
+          | Cancel
+        = render ButtonComponent.new(size: :small, form: "merge-form")
+          | Merge

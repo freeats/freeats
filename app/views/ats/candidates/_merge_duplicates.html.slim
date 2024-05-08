@@ -1,0 +1,33 @@
+/#locals: (candidate:, duplicates:)
+
+.card.fixed-bottom.mx-3.mx-sm-auto.pe-0.border-danger style="bottom: 1rem; max-width: 576px; min-height: 102px"
+  .card-body
+    .card-title.d-flex.align-items-center
+      .flex-grow-1.text-danger
+        | Possible duplicates
+      .flex-grow-0
+        button.btn-close.close-card type="button" aria-label="Close"
+    .card-text.d-flex.align-items-center
+      .flex-grow-1
+        ruby:
+          candidate_links_with_tooltips = safe_join(
+            duplicates.take(10).map do |duplicate|
+              same_emails = duplicate.same_addresses.compact
+              same_links = duplicate.same_links.compact.map { Addressable::URI.unencode(_1) }
+              same_phones = duplicate.same_phones.compact
+              same_emails_tooltip = "Same emails: #{same_emails.join(', ')}" if same_emails.present?
+              same_links_tooltip = "Same links: #{same_links.join(', ')}" if same_links.present?
+              same_phones_tooltip = "Same phones: #{same_phones.join(', ')}" if same_phones.present?
+              link_to duplicate.full_name,
+                      tab_ats_candidate_path(duplicate, :info,
+                                             candidates_carousel_keep_previous_candidate_id: candidate.id),
+                      data: { bs_toggle: "tooltip", bs_html: true },
+                      title: safe_join([same_emails_tooltip, same_links_tooltip, same_phones_tooltip].compact, "<br>")
+            end,
+            ", "
+          )
+        => candidate_links_with_tooltips
+        - if duplicates.size > 10
+          | and #{duplicates.size - 10} more
+      = render ButtonLinkComponent.new(merge_duplicates_modal_ats_candidate_path(candidate),
+                                       size: :small).with_content("Merge")

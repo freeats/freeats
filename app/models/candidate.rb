@@ -425,6 +425,7 @@ class Candidate < ApplicationRecord
       .select(
         "candidates.id",
         "candidates.full_name",
+        "candidates.recruiter_id",
         "candidates_with_intersections.same_addresses",
         "candidates_with_intersections.same_links",
         "candidates_with_intersections.same_phones"

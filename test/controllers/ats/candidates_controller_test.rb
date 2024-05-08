@@ -568,4 +568,40 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
       assert_equal event.eventable, candidate
     end
   end
+
+  test "should show merge_duplicates_modal" do
+    sign_in accounts(:admin_account)
+
+    candidate = candidates(:john)
+
+    candidate_duplicate = candidate.not_merged_duplicates.first
+
+    get merge_duplicates_modal_ats_candidate_path(candidate)
+
+    assert_response :success
+    assert_includes response.body, "Merge profiles?"
+    assert_includes(
+      response.body,
+      "Profile <b>#{candidate_duplicate.full_name}</b> will be merged with the current " \
+      "<b>#{candidate.full_name}</b> profile."
+    )
+    assert_includes response.body, "Cancel"
+    assert_includes response.body, "Merge"
+  end
+
+  test "should get redirected to other candidate if current one was merged" do
+    sign_in accounts(:admin_account)
+
+    candidate = candidates(:john)
+    candidate_duplicate = candidate.not_merged_duplicates.first
+    candidate_duplicate.update(merged_to: candidate.id)
+
+    %i[info emails scorecards files activities].each do |tab|
+      get tab_ats_candidate_path(candidate_duplicate, tab)
+
+      assert_redirected_to tab_ats_candidate_path(candidate, tab)
+      assert_equal flash[:warning],
+                   "Candidate you were trying to access was merged with this candidate."
+    end
+  end
 end

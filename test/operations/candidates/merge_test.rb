@@ -16,25 +16,13 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_equal @candidate.not_merged_duplicates, [@candidate_duplicate]
   end
 
-  test "should fail with 'no_duplicates' when no duplicates are passed" do
+  test "should fail with 'no_duplicates' when no duplicates exist" do
     result = Candidates::Merge.new(
-      target: @candidate,
-      duplicates: [],
+      target: candidates(:sam),
       actor_account_id: @actor_account.id
     ).call
 
     assert_equal result, Failure(:no_duplicates)
-  end
-
-  test "should fail with 'duplicates_differ' when duplicates differ " \
-       "from non-merged duplicates for the target candidate" do
-    result = Candidates::Merge.new(
-      target: @candidate,
-      duplicates: [candidates(:jane)],
-      actor_account_id: @actor_account.id
-    ).call
-
-    assert_equal result, Failure(:duplicates_differ)
   end
 
   test "should update 'merged_to' field and create 'candidate_merged event'" do
@@ -43,7 +31,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_difference "Event.count" => 1 do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
 
@@ -81,7 +68,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where.not(type: 'candidate_merged').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -99,7 +85,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where.not(type: 'candidate_merged').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -113,7 +98,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_difference "Event.count" => 2 do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
 
@@ -136,7 +120,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where.not(type: 'candidate_merged').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -155,7 +138,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where.not(type: 'candidate_merged').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -175,13 +157,12 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where.not(type: 'candidate_merged').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
 
     assert_predicate @candidate.avatar, :attached?
-    assert_not_predicate @candidate_duplicate.avatar, :attached?
+    assert_not_predicate @candidate_duplicate.reload.avatar, :attached?
     assert_equal @candidate.avatar.blob_id, blob_id
   end
 
@@ -197,13 +178,12 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where.not(type: 'candidate_merged').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
 
     assert_predicate @candidate.files, :attached?
-    assert_not_predicate @candidate_duplicate.files, :attached?
+    assert_not_predicate @candidate_duplicate.reload.files, :attached?
     assert_equal @candidate.files.blobs.ids.sort, blob_ids.sort
   end
 
@@ -214,7 +194,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_difference "Event.count" => 2 do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
 
@@ -237,7 +216,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_difference "Event.count" => 3 do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         new_recruiter_id: members(:employee_member).id,
         actor_account_id: @actor_account.id
       ).call.value!
@@ -263,7 +241,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where(type: 'candidate_changed').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
 
@@ -294,7 +271,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_difference "Event.where(type: 'candidate_changed').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -327,7 +303,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where(type: 'candidate_changed').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -366,7 +341,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where(type: 'candidate_changed').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -393,7 +367,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_difference "Event.where(type: 'candidate_changed').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -420,7 +393,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where(type: 'candidate_changed').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -452,7 +424,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_difference "Event.where(type: 'candidate_changed').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -484,7 +455,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where(type: 'candidate_changed').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -516,7 +486,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where(type: 'candidate_changed').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -541,7 +510,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where.not(type: 'candidate_merged').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -584,7 +552,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where.not(type: 'candidate_merged').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end
@@ -609,7 +576,6 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_no_difference "Event.where.not(type: 'candidate_merged').count" do
       Candidates::Merge.new(
         target: @candidate,
-        duplicates: [@candidate_duplicate],
         actor_account_id: @actor_account.id
       ).call.value!
     end

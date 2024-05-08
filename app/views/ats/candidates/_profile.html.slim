@@ -119,16 +119,10 @@
 
 / BODY BOTTOM
 
-/ TODO: Code that can be used for merge logic.
-/ - content_for :body_bottom
+- content_for :body_bottom
   #turbo_merge_dialog_section
     - if @duplicates.size.positive?
-      = render "ats/candidates/merge_duplicates",
-               candidate: @candidate,
-               duplicates: @duplicates
-  #turbo_find_dialog_section
-    - if ats_candidate_show_find_dialog?(@candidate)
-      = render "ats/candidates/find_dialog", candidate: @candidate
+      = render "ats/candidates/merge_duplicates", candidate: @candidate, duplicates: @duplicates
   #merge-candidates-modal
 
 / BODY BOTTOM END

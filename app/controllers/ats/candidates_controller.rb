@@ -13,6 +13,7 @@ class ATS::CandidatesController < ApplicationController
       contact_info: %w[source emails phones links telegram skype],
       cover_letter: %w[cover_letter]
     }.freeze
+  MERGED_WARNING = "Candidate you were trying to access was merged with this candidate."
   private_constant :INFO_CARDS
 
   before_action :set_gon_variables
@@ -21,7 +22,8 @@ class ATS::CandidatesController < ApplicationController
                                          show_card edit_card update_card remove_avatar
                                          upload_file change_cv_status delete_file
                                          delete_cv_file download_cv_file upload_cv_file
-                                         assign_recruiter synchronize_email_messages]
+                                         assign_recruiter synchronize_email_messages
+                                         merge_duplicates_modal merge_duplicates]
   before_action :authorize!, only: %i[create new index]
   before_action -> { authorize!(@candidate) },
                 only: %i[show show_header edit_header update_header
@@ -412,6 +414,41 @@ class ATS::CandidatesController < ApplicationController
                 notice: "Started synchronizing emails. Please check back in a few minutes."
   end
 
+  def merge_duplicates_modal
+    @duplicates = @candidate.not_merged_duplicates
+    @duplicate_recruiters =
+      Member
+      .active
+      .where(id: [@candidate, *@duplicates].map(&:recruiter_id))
+      .order("accounts.name")
+      .pluck("accounts.name", :id)
+
+    render_turbo_stream(
+      turbo_stream.update(
+        "merge-candidates-modal",
+        partial: "ats/candidates/merge_duplicates_modal"
+      )
+    )
+  end
+
+  def merge_duplicates
+    result = Candidates::Merge.new(
+      target: @candidate,
+      actor_account_id: current_account.id,
+      new_recruiter_id: params[:new_recruiter_id]
+    ).call
+
+    case result
+    in Success(target:)
+      @candidate = target
+    in Failure(:no_duplicates)
+      return redirect_to tab_ats_candidate_path(@candidate, :info),
+                         alert: "No duplicates available for merge"
+    end
+
+    redirect_to tab_ats_candidate_path(@candidate, :info)
+  end
+
   private
 
   def candidate_params
@@ -490,6 +527,7 @@ class ATS::CandidatesController < ApplicationController
         @tabs.keys.first
       end
     @assigned_recruiter = @candidate.recruiter
+    @duplicates = @candidate.duplicates_for_merge_dialog
     @pending_tab_tasks_count = Task.where(taskable: @candidate).open.size
     @email_count =
       EmailMessage.where(
@@ -511,8 +549,8 @@ class ATS::CandidatesController < ApplicationController
 
     return if @candidate.merged_to.nil?
 
-    redirect_to tab_ats_candidate_path(@candidate.merged_to, params[:tab] || :info) # ,
-    # warning: MERGED_WARNING
+    redirect_to tab_ats_candidate_path(@candidate.merged_to, params[:tab] || :info),
+                warning: MERGED_WARNING
   end
 
   def suggested_members_names_for(active_members)
