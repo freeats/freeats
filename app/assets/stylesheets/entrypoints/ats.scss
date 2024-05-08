@@ -11,9 +11,6 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 @import "tributejs/dist/tribute";
 @import "bootstrap-select/sass/bootstrap-select";
 
-// Custom component styles
-@import "../src/shared/components";
-
 @import "../src/shared/scaffolds";
 @import "../src/shared/datagrid";
 @import "../src/shared/profile";
@@ -28,3 +25,6 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 @import "../src/ats/candidates";
 @import "../src/ats/sequence_template";
 @import "../src/ats/task";
+
+// Custom component styles
+@import "../src/shared/components";
