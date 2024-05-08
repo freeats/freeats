@@ -8,7 +8,8 @@ ruby:
       data-placements-notes-panel-position-search-url-value=search_path]
     - if allowed_to?(:create?, with: ATS::PlacementPolicy)
       = render partial: "ats/candidates/add_placement", locals: { candidate: }
-    hr.my-4
+    - if relevant_placements.present? || irrelevant_placements.present?
+      hr.my-4
     = render partial: "ats/candidates/placements_section",
              locals: { candidate:,
                        relevant_placements:,
