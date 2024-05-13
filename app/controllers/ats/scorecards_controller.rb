@@ -6,7 +6,6 @@ class ATS::ScorecardsController < ApplicationController
   layout "ats/application"
 
   before_action :set_scorecard, only: %i[show edit update]
-  before_action :authorize!, only: %i[new create]
   before_action -> { authorize!(@scorecard) },
                 only: %i[show edit update]
 
@@ -14,6 +13,7 @@ class ATS::ScorecardsController < ApplicationController
 
   def new
     scorecard_template = PositionStage.find(params[:position_stage_id]).scorecard_template
+    authorize!(scorecard_template, to: :new?, with: ATS::ScorecardPolicy)
     placement = Placement.find(params[:placement_id])
 
     case Scorecards::New.new(scorecard_template:, placement:).call
@@ -25,6 +25,8 @@ class ATS::ScorecardsController < ApplicationController
   def edit; end
 
   def create
+    scorecard_template = PositionStage.find(scorecard_params[:position_stage_id]).scorecard_template
+    authorize!(scorecard_template, to: :create?, with: ATS::ScorecardPolicy)
     questions_params = scorecard_params.delete(:scorecard_questions_attributes)
     questions_params = questions_params.values if questions_params.present?
 

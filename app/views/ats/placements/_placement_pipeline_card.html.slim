@@ -29,20 +29,21 @@
             - if placement.disqualified?
               .text-secondary.align-self-center.text-truncate title=placement.status.humanize
                 = placement.status.humanize
-            .card-hidden-container [
-                class=("d-flex flex-row-reverse gap-1 col-sm-12 justify-content-sm-between" if placement.reserved?)]
-              = render "ats/placements/disrequalify_buttons",
-                       placement:,
-                       data_display_static: true,
-                       position_pipeline_card: true
-            - if placement.qualified? && placement.next_stage.present?
-              .card-hidden-container
-                = render "ats/placements/reserve_buttons",
+            - if allowed_to?(:change_stage?, placement, with: ATS::PlacementPolicy)
+              .card-hidden-container [
+                  class=("d-flex flex-row-reverse gap-1 col-sm-12 justify-content-sm-between" if placement.reserved?)]
+                = render "ats/placements/disrequalify_buttons",
                          placement:,
+                         data_display_static: true,
                          position_pipeline_card: true
-              .card-hidden-container
-                = render "ats/placements/change_stage_buttons",
-                         placement:,
-                         with_forward_button: true,
-                         square_button: true,
-                         position_pipeline_card: true
+              - if placement.qualified? && placement.next_stage.present?
+                .card-hidden-container
+                  = render "ats/placements/reserve_buttons",
+                           placement:,
+                           position_pipeline_card: true
+                .card-hidden-container
+                  = render "ats/placements/change_stage_buttons",
+                           placement:,
+                           with_forward_button: true,
+                           square_button: true,
+                           position_pipeline_card: true

@@ -77,12 +77,13 @@ ruby:
                         @position.id, :pipeline, pipeline_tab: "disqualified", assigned_only: params[:assigned_only]),
                       class: "dropdown-item"
 
-      .col-sm-auto.ms-auto
-        = form_tag tab_ats_position_path(@position.id, :pipeline), method: :get, class: "form-check"
-          - if params[:pipeline_tab]
-            = hidden_field_tag :pipeline_tab, params[:pipeline_tab]
-          = check_box_tag :assigned_only, "true", params[:assigned_only], class: "form-check-input"
-          = label_tag :assigned_only, "Assigned only", class: "form-check-label"
+      - if allowed_to?(:assign_only?)
+        .col-sm-auto.ms-auto
+          = form_tag tab_ats_position_path(@position.id, :pipeline), method: :get, class: "form-check"
+            - if params[:pipeline_tab]
+              = hidden_field_tag :pipeline_tab, params[:pipeline_tab]
+            = check_box_tag :assigned_only, "true", params[:assigned_only], class: "form-check-input"
+            = label_tag :assigned_only, "Assigned only", class: "form-check-label"
 
     /! MOBILE ONLY STAGE NAVIGATION
     #pipeline-mobile-stage-nav.d-sm-none.nav.nav-pills.d-flex.justify-content-between.mt-3.mb-2 role="tablist"

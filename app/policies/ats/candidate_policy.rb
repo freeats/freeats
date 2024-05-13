@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ATS::CandidatePolicy < ApplicationPolicy
-  alias_rule :show_header?, :show_info?, :show_tasks?, :show_emails?,
-             :show_scorecards?, :show_card?, :show_files?, to: :show?
+  alias_rule :show_header?, :show_card?,
+             :show_info?, :show_tasks?, :show_scorecards?, :show_files?, to: :show?
 
   def show?
     available_for_employee? || visible_for_hiring_manager? || visible_for_interviewer?

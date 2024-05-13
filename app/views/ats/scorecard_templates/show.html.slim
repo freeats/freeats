@@ -29,8 +29,8 @@
             div class="text-gray-600"
               | No questions
 
-    .hstack.flex-wrap.gap-2.mt-4.justify-content-between
-      .hstack.flex-wrap.gap-2
-        = render ButtonLinkComponent.new(edit_ats_scorecard_template_path(@scorecard_template),
-                                        size: :small)
-          | Edit
+    - if allowed_to?(:edit?)
+      .hstack.flex-wrap.gap-2.mt-4.justify-content-between
+        .hstack.flex-wrap.gap-2
+          = render ButtonLinkComponent.new(edit_ats_scorecard_template_path(@scorecard_template), size: :small)
+            | Edit

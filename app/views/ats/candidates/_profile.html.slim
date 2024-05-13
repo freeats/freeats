@@ -49,9 +49,10 @@
       span.badge.bg-secondary = @candidate.files.size
 
   ul.nav.d-none.d-md-flex
-    li.nav-item
-      = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
-                class: "nav-link #{'active' if @active_tab == 'info'}"
+    - if allowed_to?(:show_info?, @candidate)
+      li.nav-item
+        = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
+                  class: "nav-link #{'active' if @active_tab == 'info'}"
     - if allowed_to?(:show_tasks?, @candidate)
       li.nav-item
         = link_to tab_labels[:tasks], tab_ats_candidate_path(@candidate, :tasks),
@@ -77,8 +78,9 @@
         id="dropdownNavLink" data-bs-toggle="dropdown"]
       = tab_labels[@active_tab.to_sym]
     ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
-      li = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
-                   class: "dropdown-item #{'active' if @active_tab == 'info'}"
+      - if allowed_to?(:show_info?, @candidate)
+        li = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
+                     class: "dropdown-item #{'active' if @active_tab == 'info'}"
       - if allowed_to?(:show_tasks?, @candidate)
         li = link_to tab_labels[:tasks], tab_ats_candidate_path(@candidate, :tasks),
                      class: "dropdown-item #{'active' if @active_tab == 'tasks'}"
@@ -121,7 +123,7 @@
 
 - content_for :body_bottom
   #turbo_merge_dialog_section
-    - if @duplicates.size.positive?
+    - if @duplicates.size.positive? && allowed_to?(:merge_duplicates?)
       = render "ats/candidates/merge_duplicates", candidate: @candidate, duplicates: @duplicates
   #merge-candidates-modal
 

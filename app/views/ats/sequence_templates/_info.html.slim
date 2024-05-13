@@ -36,15 +36,17 @@
   .hstack.flex-wrap.gap-2.mt-4.justify-content-between
     - unless @sequence_template.archived?
       .hstack.flex-wrap.gap-2
-        = render ButtonLinkComponent.new(edit_ats_sequence_template_path(@sequence_template), size: :small)
-          | Edit
-        = form_with url: setup_test_ats_sequence_template_path(@sequence_template), method: :get, class: "d-inline",
-            data: { turbo_frame: :turbo_modal_window }
-          input type="hidden" name="status" value="test_sequence_template"
-          = render ButtonComponent.new(variant: :secondary,
-                                       size: :small,
-                                       disabled: @sequence_template.stages.empty?)
-            | Test
+        - if allowed_to?(:edit?)
+          = render ButtonLinkComponent.new(edit_ats_sequence_template_path(@sequence_template), size: :small)
+            | Edit
+        - if allowed_to?(:test?)
+          = form_with url: setup_test_ats_sequence_template_path(@sequence_template), method: :get, class: "d-inline",
+              data: { turbo_frame: :turbo_modal_window }
+            input type="hidden" name="status" value="test_sequence_template"
+            = render ButtonComponent.new(variant: :secondary,
+                                         size: :small,
+                                         disabled: @sequence_template.stages.empty?)
+              | Test
     .hstack.flex-wrap.gap-2
       / TODO: uncomment after adding sequences
       / - if @sequence_template.sequences.where(status: :running).count.zero?
@@ -62,7 +64,7 @@
       /                                          btn_cancel_label: "Cancel",
       /                                          btn_ok_label: "Stop" })
       /       | Stop all sequences
-      - unless @sequence_template.archived?
+      - if !@sequence_template.archived? && allowed_to?(:archive?)
         .col-auto
           = form_with url: archive_ats_sequence_template_path, method: :patch, data: { turbo_frame: :_self }
             = render ButtonComponent.new(variant: :danger,
