@@ -3,7 +3,7 @@
 class SynchronizeEmailMessagesForEmailJob < ApplicationJob
   self.queue_adapter = :solid_queue
 
-  limits_concurrency key: ->(addresses) { addresses }
+  limits_concurrency key: ->(member_id, addresses) { { member_id => addresses } }
 
   queue_as :sync_emails
 
