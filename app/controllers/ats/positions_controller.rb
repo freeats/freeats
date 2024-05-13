@@ -365,42 +365,36 @@ class ATS::PositionsController < ApplicationController
       Member
       .includes(:account)
       .where(access_level: Position::COLLABORATORS_ACCESS_LEVEL)
-      .filter_map do |member|
-        if member.id != @position.recruiter_id
-          {
-            text: member.account.name,
-            value: member.id,
-            selected: @position.collaborator_ids&.include?(member.id)
-          }
-        end
+      .map do |member|
+        {
+          text: member.account.name,
+          value: member.id,
+          selected: @position.collaborator_ids&.include?(member.id)
+        }
       end
 
     @options_for_hiring_managers =
       Member
       .includes(:account)
       .where(access_level: Position::HIRING_MANAGERS_ACCESS_LEVEL)
-      .filter_map do |member|
-        if member.id != @position.recruiter_id
-          {
-            text: member.account.name,
-            value: member.id,
-            selected: @position.hiring_manager_ids&.include?(member.id)
-          }
-        end
+      .map do |member|
+        {
+          text: member.account.name,
+          value: member.id,
+          selected: @position.hiring_manager_ids&.include?(member.id)
+        }
       end
 
     @options_for_interviewers =
       Member
       .includes(:account)
       .where(access_level: Position::INTERVIEWERS_ACCESS_LEVEL)
-      .filter_map do |member|
-        if member.id != @position.recruiter_id
-          {
-            text: member.account.name,
-            value: member.id,
-            selected: @position.interviewer_ids&.include?(member.id)
-          }
-        end
+      .map do |member|
+        {
+          text: member.account.name,
+          value: member.id,
+          selected: @position.interviewer_ids&.include?(member.id)
+        }
       end
   end
 
