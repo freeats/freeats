@@ -57,7 +57,7 @@ class ATS::SequenceTemplatesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_turbo_stream action: :replace, target: "alerts", status: :unprocessable_entity do
-      assert_select("template", text: "Name has already been taken")
+      assert_select("template", text: "Name has already been taken.")
     end
   end
 
