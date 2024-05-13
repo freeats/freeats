@@ -2,7 +2,7 @@
 
 .small-avatar-thumbnail {
   @extend .rounded;
-  height: 2rem;
+  max-height: 2rem;
   width: 2rem;
 }
 
