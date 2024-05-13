@@ -9,7 +9,7 @@ class ATS::DashboardPositionsGrid
 
   scope do
     Position
-      .where(status: %i[draft active passive])
+      .select("distinct on (id) positions.*")
       .joins(
         <<~SQL
           LEFT JOIN placements
@@ -17,7 +17,8 @@ class ATS::DashboardPositionsGrid
           LEFT JOIN candidates
           ON placements.candidate_id = candidates.id AND candidates.merged_to IS NULL
         SQL
-      ).select("positions.*").group("positions.id")
+      )
+      .where(status: %i[draft active passive])
   end
 
   #

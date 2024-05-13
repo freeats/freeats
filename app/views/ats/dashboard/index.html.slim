@@ -9,5 +9,7 @@
   h5.mb-0.fw-bold Your candidates
 - if @dashboard_candidates_grid.rows.size.positive?
   = datagrid_table(@dashboard_candidates_grid)
+- elsif current_member.access_level.in?(%w[admin employee])
+  p No active candidates
 - else
   p No qualified candidates on stage replied or later
