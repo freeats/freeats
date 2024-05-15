@@ -90,9 +90,7 @@ ruby:
       .card-header
         span.card-title Summary
       .card-body
-        .fw-bold
-          | Score
-          span.text-danger data-bs-toggle="tooltip" data-bs-placement="top" title="This is required question" *
+        span data-bs-toggle="tooltip" data-bs-placement="top" title="This is required question" Score
         .row.g-1
           .col-auto
             = form.radio_button(:score, :irrelevant, required: true, class: "btn-check")
@@ -114,7 +112,7 @@ ruby:
             = form.label(:score_perfect, class: "btn btn-sm btn-outline-info")
               i.fas.fa-grin-stars
               | <br>Perfect<br>candidate
-        .mt-3.fw-bold
+        .mt-3
             | Open-ended feedback
         .card
           .card-body
