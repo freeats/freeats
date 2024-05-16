@@ -77,7 +77,7 @@ module ImapTestHelper
     headers: [
       { "Return-Path" => "<developers+bncBDV4XZ5QTAIBBB4BY6WQMGQENBNHVHA@toughbyte.com>" },
       { "Received" => "by 2002:a59:a763:0:b0:44a:ccd8:b1ad with SMTP id z3csp634500vqs;\r\n        Wed, 24 Jan 2024 17:59:37 -0800 (PST)" },
-      { "Received" => "from mail-sor-f69.google.com (mail-sor-f69.google.com. [209.85.220.69])        by mx.google.com with SMTPS id p25-20020a056512329900b005101702db2dsor437450lfe.18.2024.01.24.17.59.36        for <viktor.butsaev@toughbyte.com>        (Google Transport Security);        Wed, 24 Jan 2024 17:59:36 -0800 (PST)" },
+      { "Received" => "from mail-sor-f69.google.com (mail-sor-f69.google.com. [209.85.220.69])        by mx.google.com with SMTPS id p25-20020a056512329900b005101702db2dsor437450lfe.18.2024.01.24.17.59.36        for <developers@toughbyte.com>        (Google Transport Security);        Wed, 24 Jan 2024 17:59:36 -0800 (PST)" },
       { "Received" => "by 2002:a05:6512:238e:b0:50e:79a5:777e with SMTP id\r\n c14-20020a056512238e00b0050e79a5777els9159lfv.2.-pod-delta-00-eu; Wed, 24 Jan\r\n 2024 17:59:34 -0800 (PST)" },
       { "Received" => "from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])        by mx.google.com with SMTPS id o16-20020a198c10000000b005101c043967sor55353lfd.12.2024.01.24.17.59.33        for <developers@toughbyte.com>        (Google Transport Security);        Wed, 24 Jan 2024 17:59:33 -0800 (PST)" },
       { "Date" => "Thu, 25 Jan 2024 07:59:22 +0600" },
@@ -87,7 +87,7 @@ module ImapTestHelper
       { "Subject" => "Report for 25.01.24" },
       { "Mime-Version" => "1.0" },
       { "Content-Type" => "multipart/alternative; boundary=\"000000000000dc78cd060fbb87e8\"" },
-      { "Delivered-To" => "viktor.butsaev@toughbyte.com" },
+      { "Delivered-To" => "developers@toughbyte.com" },
       { "X-Received" => "by 2002:a05:6512:52f:b0:50e:30a8:4c8e with SMTP id o15-20020a056512052f00b0050e30a84c8emr95121lfc.43.1706147976752;        Wed, 24 Jan 2024 17:59:36 -0800 (PST)" },
       { "ARC-Seal" => "i=3; a=rsa-sha256; t=1706147976; cv=pass;        d=google.com; s=arc-20160816;        b=gGPyz4MTlEcgtHXPFE1DeEQh+GHpDaTR/CFRnyXrKKD6TtdNPnN7auqtQBzPR53Jc5         TjXLFpu4oaU+Brlhitz2SrV7pH89z5HY2FQOFQVbluID8ZUXDJdhZBUml+977cM6M8cs         4ZTrm/+RCP6fcEqBehV2zVTntEqLuf2XGq2j9n3q7XbuiAThV0Il/wE2QP8uKtoQb93Q         /5tL+culo+NdPO9RsJU04sdjuj/2h0uwQpkh5+cvyaDWj0rQvaIv9+ltLJudY/1XerhY         TfRxNy+QPoGbL8yEAoFShLOjVJRwWX0sEX/0b6klqXAsoNFq1lFTL+k/2oXgNmf+Et0A         RdMw==" },
       { "ARC-Message-Signature" => "i=3; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;        h=list-unsubscribe:list-archive:list-help:list-post:list-id         :mailing-list:precedence:to:subject:message-id:date:from         :mime-version:dkim-signature;        bh=JrDfgKgD3fxIaEwe/UVuDOVXvt0kUiZ+K3u86egdlIM=;        fh=mkvyNViEaOQ6J4bqLkFcMoAZrktAT+q8dhgk/AZa5Fg=;        b=dp8XINNEwOqvPl+5GQ1cQxUkSojZ1ttoTJaP1dFZo+fiAnI8keiaEzBkXX18BpbUtw         YeOqPiV/o+TW+eIxe+2ZzwQ8lOihkhccsZQazWQn5WWrxqq/akVfTekQxLEdsIAB8Qoh         o0TCkBzH3IBilgOHiXVFbazrb1LcfR8eWSm2J2C1dqUH/kCyOOHcoijmstDSb9lPv107         GxTW74wU/2W/CqGMSbcwWg2YIDqGC0GMek5j2Wcy9a7zgqmdvHSOFy4cbtDoixs6Ef3I         kIM0tteleRyrwHNm0IYrV+mRRUgAp88PasMuSrCby0cm8mkG0vThHV1ni1QTTWqs12OV         ctCA==" },

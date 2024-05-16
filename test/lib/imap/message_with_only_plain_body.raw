@@ -1,4 +1,4 @@
-Delivered-To: viktor.butsaev@toughbyte.com
+Delivered-To: arthur.morgan@toughbyte.com
 Received: by 2002:a59:a763:0:b0:44a:ccd8:b1ad with SMTP id z3csp634500vqs;
         Wed, 24 Jan 2024 17:59:37 -0800 (PST)
 X-Received: by 2002:a05:6512:52f:b0:50e:30a8:4c8e with SMTP id o15-20020a056512052f00b0050e30a84c8emr95121lfc.43.1706147976752;
@@ -31,7 +31,7 @@ ARC-Authentication-Results: i=3; mx.google.com;
 Return-Path: <developers+bncBDV4XZ5QTAIBBB4BY6WQMGQENBNHVHA@toughbyte.com>
 Received: from mail-sor-f69.google.com (mail-sor-f69.google.com. [209.85.220.69])
         by mx.google.com with SMTPS id p25-20020a056512329900b005101702db2dsor437450lfe.18.2024.01.24.17.59.36
-        for <viktor.butsaev@toughbyte.com>
+        for <arthur.morgan@toughbyte.com>
         (Google Transport Security);
         Wed, 24 Jan 2024 17:59:36 -0800 (PST)
 Received-SPF: pass (google.com: domain of developers+bncbdv4xz5qtaibbb4by6wqmgqenbnhvha@toughbyte.com designates 209.85.220.69 as permitted sender) client-ip=209.85.220.69;
@@ -62,7 +62,7 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          xQ2g==
 ARC-Authentication-Results: i=2; mx.google.com;
        dkim=pass header.i=@toughbyte.com header.s=google header.b=TzxdsK4Z;
-       spf=pass (google.com: domain of vladimir.bikmeyev@toughbyte.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=vladimir.bikmeyev@toughbyte.com;
+       spf=pass (google.com: domain of stefan.hammond@toughbyte.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=stefan.hammond@toughbyte.com;
        dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toughbyte.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=toughbyte.com; s=google; t=1706147976; x=1706752776; darn=toughbyte.com;
@@ -122,29 +122,29 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          UcSw==
 ARC-Authentication-Results: i=1; mx.google.com;
        dkim=pass header.i=@toughbyte.com header.s=google header.b=TzxdsK4Z;
-       spf=pass (google.com: domain of vladimir.bikmeyev@toughbyte.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=vladimir.bikmeyev@toughbyte.com;
+       spf=pass (google.com: domain of stefan.hammond@toughbyte.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=stefan.hammond@toughbyte.com;
        dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toughbyte.com
 Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
         by mx.google.com with SMTPS id o16-20020a198c10000000b005101c043967sor55353lfd.12.2024.01.24.17.59.33
         for <developers@toughbyte.com>
         (Google Transport Security);
         Wed, 24 Jan 2024 17:59:33 -0800 (PST)
-Received-SPF: pass (google.com: domain of vladimir.bikmeyev@toughbyte.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Received-SPF: pass (google.com: domain of stefan.hammond@toughbyte.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
 X-Received: by 2002:ac2:4288:0:b0:510:10e0:cc91 with SMTP id
  m8-20020ac24288000000b0051010e0cc91mr65018lfh.112.1706147972931; Wed, 24 Jan
  2024 17:59:32 -0800 (PST)
 MIME-Version: 1.0
-From: Vladimir Bikmeyev <vladimir.bikmeyev@toughbyte.com>
+From: Stefan Hammond <stefan.hammond@toughbyte.com>
 Date: Thu, 25 Jan 2024 07:59:22 +0600
 Message-ID: <CAHj9ApeDMFnA-nGED5MGsLr3kM3ZF7qztj75To_CxO5Ft7jF+Q@mail.gmail.com>
 Subject: Report for 25.01.24
 To: Developers <developers@toughbyte.com>
 Content-Type: multipart/alternative; boundary="000000000000dc78cd060fbb87e8"
-X-Original-Sender: vladimir.bikmeyev@toughbyte.com
+X-Original-Sender: stefan.hammond@toughbyte.com
 X-Original-Authentication-Results: mx.google.com;       dkim=pass
  header.i=@toughbyte.com header.s=google header.b=TzxdsK4Z;       spf=pass
- (google.com: domain of vladimir.bikmeyev@toughbyte.com designates
- 209.85.220.41 as permitted sender) smtp.mailfrom=vladimir.bikmeyev@toughbyte.com;
+ (google.com: domain of stefan.hammond@toughbyte.com designates
+ 209.85.220.41 as permitted sender) smtp.mailfrom=stefan.hammond@toughbyte.com;
        dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toughbyte.com
 Precedence: list
 Mailing-list: list developers@toughbyte.com; contact developers+owners@toughbyte.com
@@ -161,6 +161,6 @@ List-Unsubscribe: <mailto:googlegroups-manage+494641124923+unsubscribe@googlegro
 --000000000000dc78cd060fbb87e8
 Content-Type: text/plain; charset="UTF-8"
 
-Vladimir Bikmeyev
+Stefan Hammond
 Software Developer at Toughbyte
 <https://www.toughbyte.com/?utm_campaign=bikmeyev&utm_medium=email&utm_source=email>

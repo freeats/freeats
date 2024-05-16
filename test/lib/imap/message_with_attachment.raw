@@ -1,4 +1,4 @@
-Delivered-To: viktor.butsaev@toughbyte.com
+Delivered-To: arthur.morgan@toughbyte.com
 Received: by 2002:a05:612c:1a4e:b0:44a:ccd8:b1ad with SMTP id hu14csp685689vqb;
         Fri, 26 Jan 2024 05:40:14 -0800 (PST)
 X-Google-Smtp-Source: AGHT+IFRf+P1YjvqKONYRNWCyd3O4Q/S16xzp8Fql0/RIxwuimGBwblDv+Br+5FCSxHpZ4ZzzuiT
@@ -29,7 +29,7 @@ ARC-Authentication-Results: i=1; mx.google.com;
 Return-Path: <test@gmail.com>
 Received: from smtp55.i.mail.ru (smtp55.i.mail.ru. [95.163.41.93])
         by mx.google.com with ESMTPS id u15-20020a2e9f0f000000b002cd03a3b7dbsi392835ljk.471.2024.01.26.05.40.13
-        for <viktor.butsaev@toughbyte.com>
+        for <arthur.morgan@toughbyte.com>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 26 Jan 2024 05:40:13 -0800 (PST)
 Received-SPF: pass (google.com: domain of test@gmail.com designates 95.163.41.93 as permitted sender) client-ip=95.163.41.93;
@@ -51,15 +51,15 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru;
 	NpeQuu6kQ9PxfkS+ytMrS+QY+HK/pqv04ROGeDJGmj9ikikeQIZiEWXqXylhUDTQ==;
 Received: by smtp55.i.mail.ru with esmtpa (envelope-from <test@gmail.com>)
 	id 1rTMRI-0000000Avo7-1IDk
-	for viktor.butsaev@toughbyte.com; Fri, 26 Jan 2024 16:40:12 +0300
-From: Viktor Butsaev <test@gmail.com>
+	for arthur.morgan@toughbyte.com; Fri, 26 Jan 2024 16:40:12 +0300
+From: Arthur Morgan <test@gmail.com>
 Content-Type: multipart/mixed;
 	boundary="Apple-Mail=_3D9812C9-C3F0-4EBD-921A-1C38414BE991"
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
 Subject: Message with attachment
 Message-Id: <EC9C7AF8-CC38-4407-AEC9-8751A3229700@mail.ru>
 Date: Fri, 26 Jan 2024 16:40:01 +0300
-To: Viktor Butsaev <viktor.butsaev@toughbyte.com>
+To: Arthur Morgan <arthur.morgan@toughbyte.com>
 X-Mailer: Apple Mail (2.3774.300.61.1.2)
 Authentication-Results: smtp55.i.mail.ru; auth=pass smtp.auth=test@gmail.com smtp.mailfrom=test@gmail.com
 X-Mailru-Src: smtp

@@ -3,7 +3,7 @@ john_msg1:
   message_id: <c1c8df1e-db3c-0211-872b-fcf6f6cb3214@mixmax.com>
   in_reply_to: ""
   timestamp: 1533050757
-  subject: "Геймдев проект с релокацией в Финляндию"
+  subject: "Gamdev project with relocation to Finland"
   plain_body: |-
     <%= File.read(Rails.root.join("test/fixtures/files/john_msg1.txt")).gsub("\n", "\n    ") %>
   html_body: |-

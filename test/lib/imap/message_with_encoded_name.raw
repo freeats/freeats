@@ -1,4 +1,4 @@
-Delivered-To: viktor.butsaev@toughbyte.com
+Delivered-To: arthur.morgan@toughbyte.com
 Received: by 2002:a05:612c:fcb:b0:453:23f6:458e with SMTP id kg11csp218122vqb;
         Tue, 5 Mar 2024 02:41:09 -0800 (PST)
 X-Google-Smtp-Source: AGHT+IG4HVxbVmJ926CHM6LYTqPWf3pRPWxYDko5jNV6pr1yAiDkkPkkMuNWF1mwSERWpFTlBcgC
@@ -31,7 +31,7 @@ ARC-Authentication-Results: i=1; mx.google.com;
 Return-Path: <test@gmail.com>
 Received: from f557.i.mail.ru (f557.i.mail.ru. [45.84.129.62])
         by mx.google.com with ESMTPS id y21-20020a197515000000b00511694ddea2si3194759lfe.568.2024.03.05.02.41.09
-        for <viktor.butsaev@toughbyte.com>
+        for <arthur.morgan@toughbyte.com>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
         Tue, 05 Mar 2024 02:41:09 -0800 (PST)
 Received-SPF: pass (google.com: domain of test@gmail.com designates 45.84.129.62 as permitted sender) client-ip=45.84.129.62;
@@ -45,19 +45,19 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru; s=ma
    b=LHd5fB8wRg45cdaDK06srwOGjFquG+L/iGd8EPesuD4aOwrhYdHmacRzP0h2UTE11o7VDs62oNyri6iOnMSwFYh/BNqcYL8zgoSLqbpE/fqk9+AiO5XLhoEeflKnM974VqrqT1XtJMsja5QlU2G2UyPjc78yq6IJg9YgJE9631NtlvcmPMU8i9egvyvVZ0dnZK6fMBNwQZ5bvV2XHtDEFQawtffyQoVhaZjzi11KhaT7mMxVp6EED65Eb10I5nePrRhvKtKmhUUPeA44m3S5PhlyV3DvKfpI2IKnDaKsqB3iFGPnnjyrDThMPF6BF39IjcXrrohvQ3JGff2DFQOoag==;
 Received: by f557.i.mail.ru with local (envelope-from <test@gmail.com>)
    id 1rhSEB-00036b-Cr
-   for viktor.butsaev@toughbyte.com; Tue, 05 Mar 2024 13:40:55 +0300
+   for arthur.morgan@toughbyte.com; Tue, 05 Mar 2024 13:40:55 +0300
 Received: by e.mail.ru with HTTP;
    Tue, 05 Mar 2024 13:40:55 +0300   
-From: =?UTF-8?B?0JLQuNC60YLQvtGAINCR0YPRhtCw0LXQsg==?= <test@gmail.com>
-To: =?UTF-8?B?VmlrdG9yIEJ1dHNhZXY=?= <viktor.butsaev@toughbyte.com>
-Subject: =?UTF-8?B?dGVzdA==?=
+From: =?UTF-8?B?dGVzdA=?= <test@gmail.com>
+To: =?UTF-8?B?QXJ0aHVyIE1vcmdhbg==?= <arthur.morgan@toughbyte.com>
+Subject: =?UTF-8?B?QXJ0aHVyIE1vcmdhbg==?=
 MIME-Version: 1.0
 X-Mailer: Mail.Ru Mailer 1.0
 X-SenderField-Remind: 0
 Date: Tue, 05 Mar 2024 13:40:55 +0300
 Message-ID: <1709635255.132498532@f545.i.mail.ru>
 X-Priority: 3 (Normal)
-Reply-To: =?UTF-8?B?0JLQuNC60YLQvtGAINCR0YPRhtCw0LXQsg==?= <test@gmail.com>
+Reply-To: =?UTF-8?B?QXJ0aHVyIE1vcmdhbg==?= <test@gmail.com>
 Content-Type: multipart/alternative;
    boundary=\"--ALT--41eAaDa151d860694A4a9f51Fa37B56b1709635255\"
 Authentication-Results: f557.i.mail.ru; auth=pass smtp.auth=test@gmail.com smtp.mailfrom=test@gmail.com

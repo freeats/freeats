@@ -4,9 +4,9 @@ john_msg1_to:
   position: 1
   email_message: john_msg1
 
-john_msg1_from:
+jane_msg1_from:
   field: from
-  address: oleg@toughbyte.com
+  address: jane@toughbyte.com
   position: 1
   email_message: john_msg1
 

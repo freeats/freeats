@@ -35,14 +35,14 @@ class ImapMessageTest < ActiveSupport::TestCase
     message = Imap::Message.new_from_api(ITH::MESSAGE_WITH_MULTIPLE_ADDRESSES, MESSAGE_UID, MESSAGE_FLAGS)
 
     assert_equal message.to.sort,
-                 ["vera.bekker@toughbyte.com", "Viktor Butsaev <viktor.butsaev@toughbyte.com>"].sort
+                 ["larry.grant@toughbyte.com", "Arthur Morgan <arthur.morgan@toughbyte.com>"].sort
     assert_equal message.clean_to_emails.sort,
-                 ["vera.bekker@toughbyte.com", "viktor.butsaev@toughbyte.com"].sort
+                 ["larry.grant@toughbyte.com", "arthur.morgan@toughbyte.com"].sort
 
     assert_equal message.to.map { Imap::Message.parse_address(_1) }.sort_by { _1[:address] },
                  [
-                   { name: "", address: "vera.bekker@toughbyte.com" },
-                   { name: "Viktor Butsaev", address: "viktor.butsaev@toughbyte.com" }
+                   { name: "", address: "larry.grant@toughbyte.com" },
+                   { name: "Arthur Morgan", address: "arthur.morgan@toughbyte.com" }
                  ].sort_by { _1[:address] }
   end
 
@@ -76,8 +76,8 @@ class ImapMessageTest < ActiveSupport::TestCase
     from_field_names =
       Imap::Message.parse_address(message.from.first).values_at(:name)
 
-    assert_equal to_field_names, ["Viktor Butsaev"]
-    assert_equal from_field_names, ["Виктор Буцаев"]
+    assert_equal to_field_names, ["Arthur Morgan"]
+    assert_equal from_field_names, ["test"]
   end
 
   test "should parse message with both plain text body and html body" do
@@ -94,7 +94,7 @@ class ImapMessageTest < ActiveSupport::TestCase
     )
     assert_includes(
       message.html_body,
-      "<div style=\"font-size:16px;font-weight:700;line-height:24px\">Vladimir Bikmeyev</div>"
+      "<div style=\"font-size:16px;font-weight:700;line-height:24px\">Stefan Hammond</div>"
     )
   end
 
@@ -102,7 +102,7 @@ class ImapMessageTest < ActiveSupport::TestCase
     message = Imap::Message.new_from_api(ITH::REPLY_FROM_HUB_MESSAGE, MESSAGE_UID, MESSAGE_FLAGS)
 
     assert_equal message.to, ["test <test@gmail.com>"]
-    assert_equal message.from, ["Viktor Butsaev <viktor.butsaev@toughbyte.com>"]
+    assert_equal message.from, ["Arthur Morgan <arthur.morgan@toughbyte.com>"]
     assert_equal message.subject, "Re: Message with attachment"
     assert_equal message.timestamp, Time.parse("Fri, 26 Jan 2024 07:00:01 -0800").to_i
     assert_equal message.message_id, "<CA+frY=t9OGrwyVD7BzLOAaPQpikk6Cuy1SdH=ApT535PA4H4ug@mail.gmail.com>"
@@ -114,7 +114,7 @@ class ImapMessageTest < ActiveSupport::TestCase
     message = Imap::Message.new_from_api(ITH::SEQUENCE_MESSAGE, MESSAGE_UID, MESSAGE_FLAGS)
 
     assert_equal message.to, ["test <test@gmail.com>"]
-    assert_equal message.from, ["Viktor Butsaev <viktor.butsaev@toughbyte.com>"]
+    assert_equal message.from, ["Arthur Morgan <arthur.morgan@toughbyte.com>"]
     assert_equal message.subject, "Hey test, let's discuss the Scala Developer Position"
     assert_equal message.timestamp, Time.parse("Fri, 26 Jan 2024 07:12:26 -0800").to_i
 
@@ -174,7 +174,7 @@ class ImapMessageTest < ActiveSupport::TestCase
 
   test "should receive all messages concerning specific emails" do
     account_params = {
-      email: "oleg.founder@toughbyte.com",
+      email: "john.founder@toughbyte.com",
       access_token: "oauth_access_token",
       refresh_token: "oauth_refresh_token"
     }
@@ -203,7 +203,7 @@ class ImapMessageTest < ActiveSupport::TestCase
 
   test "should receive new messages since the last fetch with last_email_synchronization_uid" do
     account_params = {
-      email: "oleg.founder@toughbyte.com",
+      email: "john.founder@toughbyte.com",
       access_token: "oauth_access_token",
       refresh_token: "oauth_refresh_token",
       last_email_synchronization_uid: MESSAGE_UID
@@ -234,7 +234,7 @@ class ImapMessageTest < ActiveSupport::TestCase
 
   test "should receive new messages since the last fetch without last_email_synchronization_uid" do
     account_params = {
-      email: "oleg.founder@toughbyte.com",
+      email: "john.founder@toughbyte.com",
       access_token: "oauth_access_token",
       refresh_token: "oauth_refresh_token"
     }
@@ -265,7 +265,7 @@ class ImapMessageTest < ActiveSupport::TestCase
 
   test "should mark unauthenticated accounts" do
     account_params = {
-      email: "oleg.founder@toughbyte.com",
+      email: "john.founder@toughbyte.com",
       access_token: "oauth_access_token",
       refresh_token: "oauth_refresh_token"
     }

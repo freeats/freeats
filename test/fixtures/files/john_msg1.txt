@@ -1,24 +1,24 @@
-Джон, добрый день!
-Встретил ваш профиль на Linkedin и обратил внимание на ваш опыт в области Unity,
-поэтому очень хочу рассказать вам об одном интересном проекте, с релокацией в
-Финляндию.
-Lightneer (http://www.lightneer.com/) - это небольшая game студия, основанная в
-2015 году. Миссия компании создавать крутые мобильные игры, стимулирующие
-пользователя к обучению. Команда состоит из настоящих профессионалов и ветеранов
-GameDev из таких компаний как Rovio, Gameloft, Digital Chocolate, Eidos, EA,
-PopCap and Xbox. Ребята верят, что меняют мир, создавая абсолютно другие игры.
+John, good afternoon!
+Came across your Linkedin profile and noticed your experience in Unity,
+so I'd really like to tell you about an interesting project, relocating to Finland.
+Finland.
+Lightneer (http://www.lightneer.com/) is a small game studio founded in
+2015. The company's mission is to create cool mobile games that stimulate the user to learn.
+users to learn. The team consists of real professionals and veterans
+GameDev from companies such as Rovio, Gameloft, Digital Chocolate, Eidos, EA,
+PopCap and Xbox. The guys believe in changing the world by creating completely different games.
 
-В данный момент, они запускают два новых проекта, один из которых планируют
-зарелизить в августе, поэтому они ищут сильного Unity3D разработчика, который
-сможет не только отвечать за backend, а также сможет взять на себя развитие
-команды. Это крутая возможность участвовать в значимых проектах с нуля, быть
-отвественным за свое собственное "детище", поработать с настоящими
-проффесионалами мировой game индустрии. Стоит отметить, что компания только что
-закрыла раунд в 5M$, а в числе их инвесторов не только финские компании, но и
-компании из Кремниевой долины, поэтому самое время присоединяться к команде и
-"хватать" опцион.
-Что думаете? Буду рад любой обратной связи, с удовольствием поделюсь всеми
-деталями.
+Right now, they're launching two new projects, one of which they're planning on
+to release in August, so they're looking for a strong Unity3D developer who can
+who can not only be responsible for the backend, but also be able to take over the development
+team. This is a cool opportunity to be involved in meaningful projects from the ground up, be
+to be responsible for your own "brainchild", to work with true
+professionals of the world game industry. It's worth noting that the company just
+closed a $5M round, and among their investors are not only Finnish companies, but also Silicon Valley companies.
+Silicon Valley companies, so it's time to join the team and
+"and grab the option.
+What do you think? I will be glad to get any feedback, I will be happy to share all the
+the details.
 --JOHN RASTOSKUEV
 RECRUITER ATTOUGHBYTE
-TELEGRAM: NIMVINGMOBILE:+7 925 380-21-63
+TELEGRAM: NIMVINGMOBILE: +14844458163
