@@ -97,7 +97,7 @@ class EmailSynchronization::ProcessSingleMessage::StopSequencesTest < ActiveSupp
 
   test "should mark candidate email addresses as invalid if the address is not " \
        "found and haven't email messages sent to us" do
-    candidate_email_address = candidate_email_addresses(:ivan_email_address)
+    candidate_email_address = candidate_email_addresses(:jake_email_address)
     address_not_found_message = build(
       :email_message,
       from: "mailer-daemon@googlemail.com",

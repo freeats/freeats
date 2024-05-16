@@ -4,11 +4,11 @@ admin_account:
 
 hiring_manager_account:
   email: hiring_manager@mail.com
-  name: Dmitry Matveyev
+  name: Travis Hodge
 
 employee_account:
   email: employee@mail.com
-  name: Alexandra Dovgal
+  name: Adrian Barton
   female: true
   linkedin_url: https://www.linkedin.com/in/employee
   calendar_url: https://calendar.google.com/employee
@@ -20,7 +20,7 @@ interviewer_account:
 # Inactive account doesn't have any identities.
 inactive_account:
   email: inactive@mail.com
-  name: Sergey Tomashevsky
+  name: Jimmy Bean
 
 # Only has an account created and a member record.
 new_employee_account:

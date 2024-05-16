@@ -1,14 +1,14 @@
 john:
   full_name: John Doe
-  location: moscow_city
+  location: helsinki_city
   recruiter: admin_member
 
 jane:
   full_name: Jane Doe
-  location: moscow_city
+  location: helsinki_city
 
-ivan:
-  full_name: Ivan Ivanov
+jake:
+  full_name: Jake Trujillo
   location: haridwar_city
   recruiter: admin_member
 
@@ -19,5 +19,5 @@ sam:
 
 john_duplicate:
   full_name: John Doe Duplicate
-  location: moscow_city
+  location: helsinki_city
   blacklisted: true

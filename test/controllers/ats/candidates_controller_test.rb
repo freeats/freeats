@@ -20,7 +20,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should GET all tabs" do
-    candidate = candidates(:ivan)
+    candidate = candidates(:jake)
 
     get ats_candidate_path(candidate)
 
@@ -304,7 +304,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_empty candidate.headline
     assert_empty candidate.company
     assert_not candidate.blacklisted
-    assert_equal candidate.location, locations(:moscow_city)
+    assert_equal candidate.location, locations(:helsinki_city)
     assert_not_equal old_alternative_names, new_alternative_names
 
     travel_to Time.zone.now.days_since(1) do
@@ -336,7 +336,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal events.second.eventable, candidate
     assert_equal events.second.changed_field, "location"
-    assert_equal events.second.changed_from, "Moscow, Russia"
+    assert_equal events.second.changed_from, "Helsinki, Finland"
     assert_equal events.second.changed_to, "València, Spain"
 
     assert_equal events.third.eventable, candidate
@@ -372,7 +372,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update profile card contact_info and create events" do
-    candidate = candidates(:ivan)
+    candidate = candidates(:jake)
     card_patch = {
       source: "LinkedIn",
       candidate_email_addresses_attributes: {
@@ -427,7 +427,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal events.second.eventable, candidate
     assert_equal events.second.changed_field, "email_addresses"
-    assert_equal events.second.changed_from, ["ivan@ivanov.com"]
+    assert_equal events.second.changed_from, ["jake@trujillo.com"]
     assert_equal events.second.changed_to, ["sherlock@gmail.com", "sherlock@yandex.ru"]
 
     assert_equal events.third.eventable, candidate
@@ -453,7 +453,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update profile card cover_letter" do
-    candidate = candidates(:ivan)
+    candidate = candidates(:jake)
     card_patch = {
       cover_letter: "I'm Vasya"
     }

@@ -188,8 +188,8 @@ class Candidates::MergeTest < ActiveSupport::TestCase
   end
 
   test "should find the most relevant location from target and duplicates" do
-    @candidate.update!(location: locations(:russia_country))
-    @candidate_duplicate.update!(location: locations(:moscow_city))
+    @candidate.update!(location: locations(:finland_country))
+    @candidate_duplicate.update!(location: locations(:helsinki_city))
 
     assert_difference "Event.count" => 2 do
       Candidates::Merge.new(
@@ -204,8 +204,8 @@ class Candidates::MergeTest < ActiveSupport::TestCase
       assert_equal events.pluck(:type), %w[candidate_changed candidate_merged]
 
       assert_equal events.first.changed_field, "location"
-      assert_equal events.first.changed_from, locations(:russia_country).short_name
-      assert_equal events.first.changed_to, locations(:moscow_city).short_name
+      assert_equal events.first.changed_from, locations(:finland_country).short_name
+      assert_equal events.first.changed_to, locations(:helsinki_city).short_name
     end
   end
 

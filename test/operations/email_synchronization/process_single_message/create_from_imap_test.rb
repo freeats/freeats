@@ -13,8 +13,8 @@ class EmailSynchronization::ProcessSingleMessage::CreateFromImapTest < ActiveSup
   test "should normalize addresses before create" do
     to_addresses = ["<john.founder@toughbyte.com>",
                     "Admin <admin@toughbyte.com>",
-                    "<Sergey Tomashevsky> <sergey.tomashevsky@toughbyte.com>",
-                    "\"<Alexandra> alexandra.dovgal@toughbyte.com"]
+                    "<Steve Greer> <steve.greer@toughbyte.com>",
+                    "\"<Eesa Gamble> eesa.gamble@toughbyte.com"]
 
     from_addresses = ["\"<Candidate>\" <candidate@gmail.com>"]
 
@@ -56,8 +56,8 @@ class EmailSynchronization::ProcessSingleMessage::CreateFromImapTest < ActiveSup
     assert_equal result.fetch_to_addresses.sort,
                  %w[john.founder@toughbyte.com
                     admin@toughbyte.com
-                    sergey.tomashevsky@toughbyte.com
-                    alexandra.dovgal@toughbyte.com].sort
+                    steve.greer@toughbyte.com
+                    eesa.gamble@toughbyte.com].sort
     assert_equal result.fetch_from_addresses, ["candidate@gmail.com"]
   end
 end

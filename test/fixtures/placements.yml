@@ -31,7 +31,7 @@ john_ruby_hired:
   position_stage: ruby_position_hired
   created_at: <%= Time.zone.now %>
 
-ivan_golang_sourced:
+jake_golang_sourced:
   position: golang_position
-  candidate: ivan
+  candidate: jake
   position_stage: golang_position_sourced

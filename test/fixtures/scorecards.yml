@@ -1,7 +1,7 @@
 ruby_position_contacted_scorecard:
   position_stage: ruby_position_contacted
   title: Contacted stage scorecard template scorecard
-  interviewer: Petr Ivanov
+  interviewer: Robert Weiss
   visible_to_interviewer: true
   placement: sam_ruby_contacted
   score: "good"
@@ -9,7 +9,7 @@ ruby_position_contacted_scorecard:
 ruby_position_replied_scorecard:
   position_stage: ruby_position_replied
   title: Replied stage scorecard template scorecard
-  interviewer: Petr Ivanov
+  interviewer: Robert Weiss
   visible_to_interviewer: true
   placement: sam_ruby_replied
   score: "good"

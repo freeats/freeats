@@ -16,39 +16,39 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
 
   test "candidate filter should work " do
     john_candidate = candidates(:john)
-    ivan_candidate = candidates(:ivan)
+    jake_candidate = candidates(:jake)
 
     # search by part of name
     grid_assets =
-      ATS::CandidatesGrid.new(candidate: ivan_candidate.full_name[0..5]).assets.to_a
+      ATS::CandidatesGrid.new(candidate: jake_candidate.full_name[0..5]).assets.to_a
 
-    assert_includes grid_assets, ivan_candidate
+    assert_includes grid_assets, jake_candidate
     assert_not_includes grid_assets, john_candidate
 
     # search by alternative name
     grid_assets =
-      ATS::CandidatesGrid.new(candidate: ivan_candidate.candidate_alternative_names.sample.name).assets.to_a
+      ATS::CandidatesGrid.new(candidate: jake_candidate.candidate_alternative_names.sample.name).assets.to_a
 
-    assert_includes grid_assets, ivan_candidate
+    assert_includes grid_assets, jake_candidate
     assert_not_includes grid_assets, john_candidate
 
     # search by email address
     grid_assets =
-      ATS::CandidatesGrid.new(candidate: ivan_candidate.candidate_emails.sample).assets.to_a
+      ATS::CandidatesGrid.new(candidate: jake_candidate.candidate_emails.sample).assets.to_a
 
-    assert_includes grid_assets, ivan_candidate
+    assert_includes grid_assets, jake_candidate
     assert_not_includes grid_assets, john_candidate
   end
 
   test "locations filter should work" do
-    moscow_candidate = candidates(:john)
-    moscow_location = locations(:moscow_city)
+    helsinki_candidate = candidates(:john)
+    helsinki_location = locations(:helsinki_city)
     dublin_location = locations(:dublin_city)
     dublin_candidate = candidates(:sam)
     haridwar_location = locations(:haridwar_city)
-    haridwar_candidate = candidates(:ivan)
+    haridwar_candidate = candidates(:jake)
 
-    assert_equal moscow_candidate.location_id, moscow_location.id
+    assert_equal helsinki_candidate.location_id, helsinki_location.id
     assert_equal dublin_candidate.location_id, dublin_location.id
     assert_equal haridwar_candidate.location_id, haridwar_location.id
 
@@ -56,15 +56,15 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
     grid_assets = ATS::CandidatesGrid.new(locations: [dublin_location.id]).assets.to_a
 
     assert_includes grid_assets, dublin_candidate
-    assert_not_includes grid_assets, moscow_candidate
+    assert_not_includes grid_assets, helsinki_candidate
     assert_not_includes grid_assets, haridwar_candidate
 
     # multiple locations
     grid_assets =
-      ATS::CandidatesGrid.new(locations: [dublin_location.id, moscow_location.id]).assets.to_a
+      ATS::CandidatesGrid.new(locations: [dublin_location.id, helsinki_location.id]).assets.to_a
 
     assert_not_includes grid_assets, haridwar_candidate
-    assert_includes grid_assets, moscow_candidate
+    assert_includes grid_assets, helsinki_candidate
     assert_includes grid_assets, dublin_candidate
   end
 
@@ -102,7 +102,7 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
   test "position, stage, status filters should work" do
     candidate_without_placements = candidates(:jane)
     candidate_with_ruby_placement = candidates(:john)
-    candidate_with_goland_placement = candidates(:ivan)
+    candidate_with_goland_placement = candidates(:jake)
     candidate_with_both_placements = candidates(:sam)
     golang_position = positions(:golang_position)
     ruby_position = positions(:ruby_position)

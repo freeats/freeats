@@ -45,10 +45,10 @@ john_ruby_hired_placement_added:
   eventable: john_ruby_hired (Placement)
   performed_at: <%= 1.week.ago %>
 
-ivan_golang_sourced_placement_added:
+jake_golang_sourced_placement_added:
   type: :placement_added
   actor_account: admin_account
-  eventable: ivan_golang_sourced (Placement)
+  eventable: jake_golang_sourced (Placement)
   performed_at: <%= 1.week.ago %>
 
 jane_empty_pdf_attachment_added:

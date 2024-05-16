@@ -183,7 +183,7 @@ class ImapMessageTest < ActiveSupport::TestCase
     imap_service_mock.expect(
       :fetch_all_messages_related_to,
       [ITH::SIMPLE_MESSAGE],
-      [%w[dmitry.matveyev@toughbyte.com]],
+      [%w[travis.hodge@toughbyte.com]],
       batch_size: Imap::Account::DEFAULT_BATCH_SIZE
     )
 
@@ -191,7 +191,7 @@ class ImapMessageTest < ActiveSupport::TestCase
       account = Imap::Account.new(**account_params)
 
       Imap::Message.message_batches_related_to(
-        %w[dmitry.matveyev@toughbyte.com],
+        %w[travis.hodge@toughbyte.com],
         from_accounts: [account]
       ).each do |message_batch|
         assert_includes message_batch, ITH::SIMPLE_MESSAGE

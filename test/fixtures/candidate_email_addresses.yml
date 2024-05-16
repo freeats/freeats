@@ -22,9 +22,9 @@ jane_email_address:
   source: other
   status: current
 
-ivan_email_address:
-  candidate: ivan
-  address: ivan@ivanov.com
+jake_email_address:
+  candidate: jake
+  address: jake@trujillo.com
   list_index: 1
   type: personal
   source: other
