@@ -325,7 +325,9 @@ sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git && \
     dokku letsencrypt:set --global email admin@toughbyte.com && \
     dokku domains:clear ats && \
     dokku domains:add ats ats.toughbyte.com && \
-    dokku letsencrypt:enable ats
+    dokku letsencrypt:enable ats && \
+    dokku letsencrypt:cron-job --add ats && \
+    dokku letsencrypt:set ats graceperiod 2592000
 ```
 
 Set `HOST_URL` environment variable as your domain name, it's necessary to generate links:
