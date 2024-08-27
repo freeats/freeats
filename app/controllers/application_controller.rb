@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_account, :current_member, :current_user
 
   def check_gmail_blank_tokens
-    return unless current_member
+    return unless allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
 
     addresses =
       current_member
@@ -79,6 +79,8 @@ class ApplicationController < ActionController::Base
     return if addresses.blank?
 
     @email_blank_tokens_alert =
-      %(Please link #{addresses.to_sentence} emails at <a href="#{ats_profile_path}">profile</a>.)
+      %(#{'Email'.pluralize(addresses.size)} #{addresses.to_sentence}
+        #{'is'.pluralize(addresses.size)} not linked. Please press <i>Link Gmail</i> button in
+        <a href="#{ats_profile_url}">your profile</a> to synchronize emails.)
   end
 end

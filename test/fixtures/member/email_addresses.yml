@@ -8,3 +8,27 @@ admin_first_email_address:
 admin_second_email_address:
   member: admin_member
   address: admin.second@admin.com
+
+admin_third_email_address:
+  member: admin_member
+  address: admin@mail.com
+
+hiring_manager_first_email_address:
+  member: hiring_manager_member
+  address: hiring_manager@mail.com
+
+employee_first_email_address:
+  member: employee_member
+  address: employee@mail.com
+
+interviewer_first_email_address:
+  member: interviewer_member
+  address: interviewer@mail.com
+
+inactive_first_email_address:
+  member: inactive_member
+  address: inactive@mail.com
+
+new_employee_first_email_address:
+  member: new_employee_member
+  address: new_employee@mail.com

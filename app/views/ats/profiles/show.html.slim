@@ -5,8 +5,12 @@ ul class="list-reset mb-4"
   - @email_addresses.each do |email_address|
     li class="mb-2"
       span = email_address[:address]
-      span class="text-secondary"
-        =< email_address[:token_present] ? "(linked)" : "(token blank)"
+      - if allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
+        - if email_address[:token_present]
+          span class="text-secondary" =< "(linked)"
+        - else
+          span class="text-danger" =< "(token is blank)"
 
-= render ButtonLinkComponent.new(@link_gmail_uri, size: :small)
-  | Link email
+- if allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
+  = render ButtonLinkComponent.new(@link_gmail_uri, size: :small)
+    | Link email
