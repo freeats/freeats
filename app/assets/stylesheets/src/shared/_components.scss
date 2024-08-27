@@ -1,8 +1,3 @@
-// In order to override imported css file, all values should have !important flag.
-// So far I don't know how to import scss file, see
-// https://github.com/selectize/selectize.js/issues/1614.
-@import "selectize/dist/css/selectize.bootstrap5";
-
 // ButtonComponent styles
 .btn {
   &-light {
@@ -122,7 +117,6 @@
     border-radius: 4px !important;
     border-color: $gray-500;
     vertical-align: middle; // Fix the height of the component.
-    cursor: text !important;
 
     input::placeholder {
       color: $gray-600;
@@ -155,38 +149,11 @@
     }
   }
 
-  .selectize-dropdown {
-    border-radius: 4px;
-    box-shadow: none !important;
-    color: $gray-900;
-    border-color: $gray-500;
-
-    .selected {
-      background-color: white;
-      color: $gray-900;
-
-      // not disabled options.
-      &[data-selectable] {
-        background-color: $blue-500;
-        color: white;
-      }
-    }
-
-    .option.active[data-selectable]:hover {
-      background-color: $gray-200;
-      color: $gray-900;
-    }
-
-    .selectize-dropdown-content {
-      max-height: 200px;
-    }
-  }
-
   // Do not show the chevron icon when the loading icon is visible.
   &.with-chevron > :not(.loading) > .selectize-input {
     input,
     .item {
-      max-width: calc(100% - var(--space_for_chevron)) !important;
+      max-width: 100% !important;
     }
 
     &::before {
@@ -198,7 +165,8 @@
 
       content: fa-content($fa-var-chevron-down) !important;
       position: absolute;
-      margin-top: 0.25em;
+      top: 50%;
+      transform: translateY(-50%);
       right: var(--space_for_chevron);
       color: $gray-900;
     }
@@ -206,110 +174,82 @@
 
   // Start of sizes.
   &.tiny {
-    --font_size: 12px;
+    --select_component_font_size: 12px;
+    --select_component_min_height: 28px;
 
     .selectize-input {
-      min-height: 28px !important;
+      min-height: var(--select_component_min_height) !important;
       padding: 4px 8px !important;
-      font-size: var(--font_size);
+      font-size: var(--select_component_font_size);
 
       &:before {
-        height: var(--font_size);
-        width: var(--font_size);
+        height: var(--select_component_font_size);
+        width: var(--select_component_font_size);
       }
     }
 
     &.with-chevron > :not(.loading) > .selectize-input {
-      padding: 4px calc(8px + var(--font_size) + var(--space_for_chevron)) 4px 8px !important;
-    }
-
-    .selectize-dropdown .option {
-      font-size: var(--font_size);
-    }
-
-    .selectize-dropdown-emptyoptionlabel {
-      height: 28px;
+      padding: 4px calc(8px + var(--space_for_chevron)) 4px 8px !important;
     }
   }
 
   &.small {
-    --font_size: 14px;
+    --select_component_font_size: 14px;
+    --select_component_min_height: 32px;
 
     .selectize-input {
-      min-height: 32px !important;
+      min-height: var(--select_component_min_height) !important;
       padding: 4.5px 9px !important;
-      font-size: var(--font_size);
+      font-size: var(--select_component_font_size);
 
       &:before {
-        height: var(--font_size);
-        width: var(--font_size);
+        height: var(--select_component_font_size);
+        width: var(--select_component_font_size);
       }
     }
 
     &.with-chevron > :not(.loading) > .selectize-input {
-      padding: 4.5px calc(9px + var(--font_size) + var(--space_for_chevron)) 4.5px 9px !important;
-    }
-
-    .selectize-dropdown .option {
-      font-size: var(--font_size);
-    }
-
-    .selectize-dropdown-emptyoptionlabel {
-      height: 32px;
+      padding: 4.5px calc(9px + var(--space_for_chevron)) 4.5px 9px !important;
     }
   }
 
   &.medium {
-    --font_size: 16px;
+    --select_component_font_size: 16px;
+    --select_component_min_height: 40px;
 
     .selectize-input {
-      min-height: 40px !important;
+      min-height: var(--select_component_min_height) !important;
       padding: 7px 14px !important;
-      font-size: var(--font_size);
+      font-size: var(--select_component_font_size);
 
       &:before {
-        height: var(--font_size);
-        width: var(--font_size);
+        height: var(--select_component_font_size);
+        width: var(--select_component_font_size);
       }
     }
 
     &.with-chevron > :not(.loading) > .selectize-input {
-      padding: 7px calc(14px + var(--font_size) + var(--space_for_chevron)) 7px 14px !important;
-    }
-
-    .selectize-dropdown .option {
-      font-size: var(--font_size);
-    }
-
-    .selectize-dropdown-emptyoptionlabel {
-      height: 40px;
+      padding: 7px calc(14px + var(--space_for_chevron)) 7px 14px !important;
     }
   }
 
   &.large {
-    --font_size: 18px;
+    --select_component_font_size: 18px;
+    --select_component_min_height: 48px;
 
     .selectize-input {
-      min-height: 48px !important;
+      min-height: var(--select_component_min_height) !important;
       padding: 9.5px 19px !important;
-      font-size: var(--font_size);
+      font-size: var(--select_component_font_size);
 
       &:before {
-        height: var(--font_size);
-        width: var(--font_size);
+        height: var(--select_component_font_size);
+        width: var(--select_component_font_size);
       }
     }
 
     &.with-chevron > :not(.loading) > .selectize-input {
-      padding: 9.5px calc(19px + var(--font_size) + var(--space_for_chevron)) 9.5px 19px !important;
-    }
-
-    .selectize-dropdown .option {
-      font-size: var(--font_size);
-    }
-
-    .selectize-dropdown-emptyoptionlabel {
-      height: 48px;
+      padding: 9.5px calc(19px + var(--space_for_chevron)) 9.5px 19px !important;
     }
   }
   // End of sizes.
@@ -319,25 +259,24 @@
     width: 100%;
 
     .selectize-input {
-      // Do not replace the below block of styles with `text-truncate`
-      // because we explicitly need `overflow: clip`.
+      // Prevent displaying an additional empty line when selecting the long option.
       overflow: clip;
       white-space: nowrap;
-      text-overflow: ellipsis;
 
       .item {
         vertical-align: top;
         @extend .text-truncate;
       }
     }
-
-    .selectize-dropdown-emptyoptionlabel {
-      text-align: left;
-    }
   }
 
   &.multiple {
     @extend .single;
+
+    // Add an ellipsis if there is more than 1 selected item.
+    .selectize-input:has(.item:nth-of-type(2)) {
+      text-overflow: ellipsis;
+    }
 
     .item {
       padding: 0 !important;
@@ -360,23 +299,23 @@
   }
 
   &.pill {
-    .selectize-input > div {
-      padding: 0.0625rem 0.75rem;
+    .items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
     }
 
     .item {
       padding-top: 0 !important;
       padding-bottom: 0 !important;
       background-color: $gray-200 !important;
-      margin-bottom: 0rem !important;
+      margin: 0rem !important;
       border-radius: 4px !important;
 
       .remove {
         border: none !important;
         padding-top: 0 !important;
         padding-bottom: 0 !important;
-        margin-left: 0.1875rem;
-        margin-right: 0.4375rem;
       }
     }
 
@@ -384,7 +323,54 @@
       background-color: white !important;
     }
   }
+
+  &.html {
+    .selectize-input {
+      .item {
+        max-width: 100%;
+      }
+    }
+    @extend .single;
+  }
   // End of types.
 
   // There are no custom styles for the html select component yet.
+}
+
+// The select component dropdown could be anchored to the page body.
+// In this case we moved the dropdown styles out of the `.select-component` class.
+.selectize-dropdown {
+  border-radius: 4px;
+  box-shadow: none !important;
+  color: $gray-900;
+  border-color: $gray-500;
+
+  .selected {
+    background-color: white;
+    color: $gray-900;
+
+    // not disabled options.
+    &[data-selectable] {
+      background-color: $blue-500;
+      color: white;
+    }
+  }
+
+  .option {
+    font-size: var(--select_component_font_size);
+
+    &.active[data-selectable] {
+      background-color: $gray-200;
+      color: $gray-900;
+    }
+  }
+
+  .selectize-dropdown-content {
+    max-height: 200px;
+  }
+
+  .selectize-dropdown-emptyoptionlabel {
+    text-align: left;
+    height: var(--select_component_min_height);
+  }
 }

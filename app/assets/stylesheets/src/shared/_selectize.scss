@@ -20,11 +20,6 @@
     padding: 7px 14px;
     border-radius: 0.25rem;
   }
-  .selectpicker-button {
-    &:not(textarea) {
-      height: 40px;
-    }
-  }
 }
 
 .selectize-control > .selectize-input {
@@ -32,35 +27,6 @@
   &::after {
     // Remove default arrow.
     content: none !important;
-  }
-}
-
-.selectize-badge-dark-grey {
-  .item {
-    background-color: #ffffff !important;
-    border: 1px solid $gray-900 !important;
-    border-radius: 4px !important;
-    color: $gray-900 !important;
-    font-size: 0.75rem !important;
-    margin: 2px !important;
-    line-height: 1.5 !important;
-
-    &.active {
-      background-color: #ffffff !important;
-    }
-
-    .remove {
-      border: none !important;
-      padding: 0px 2px 2px 2px !important;
-      margin-left: 5px !important;
-      margin-right: 3px !important;
-      font-size: 1rem !important;
-      line-height: 1rem !important;
-
-      &:hover {
-        background-color: #ffffff !important;
-      }
-    }
   }
 }
 
@@ -118,21 +84,4 @@
 .selectize-control.plugin-remove_button .item .remove {
   margin-left: 0.1875rem;
   margin-right: 0.4375rem;
-}
-
-.selectize-dropdown.recruiter-select {
-  .selectize-dropdown-content {
-    > div {
-      padding: 5px 4px;
-      height: 32px;
-
-      svg {
-        width: 32px;
-      }
-
-      picture {
-        width: 32px;
-      }
-    }
-  }
 }

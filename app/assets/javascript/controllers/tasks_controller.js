@@ -1,11 +1,10 @@
-import { Controller } from '@hotwired/stimulus';
-import $ from 'jquery';
+import { Controller } from "@hotwired/stimulus";
+import $ from "jquery";
 
 export default class extends Controller {
-  static targets = ['changeStatusForm'];
+  static targets = ["changeStatusForm"];
 
   static values = { lazyLoadFormUrl: String };
-
 
   connect() {
     if (this.hasLazyLoadFormUrlValue) {
@@ -18,8 +17,8 @@ export default class extends Controller {
     $(element).on("submit", (event) => {
       const $form = $(event.target);
 
-      $form.find(':input[type=checkbox].current').addClass('hidden');
-      $form.find(':input[type=checkbox].changed').removeClass('hidden');
+      $form.find(":input[type=checkbox].current").addClass("hidden");
+      $form.find(":input[type=checkbox].changed").removeClass("hidden");
     });
   }
 
@@ -29,21 +28,21 @@ export default class extends Controller {
     if (!event.detail.success) return;
 
     event.detail.fetchResponse.responseText.then(
-      response => {
-        const pathEnding = $(response).find(`input[name="path_ending"]`).val();
+      (response) => {
+        const pathEnding = $(response).find('input[name="path_ending"]').val();
         if (!(/\/(new|\d+)$/.test(window.location.pathname))) {
           const newUrl = new URL(window.location.href);
           newUrl.pathname = `${newUrl.pathname}/${pathEnding}`;
           window.history.replaceState({}, null, newUrl);
         }
-      }
+      },
     );
   }
 
   activateSelectpicker($elem) {
     $elem.find(".selectpicker").selectpicker({
       liveSearch: true,
-      style: 'btn-outline-light selectpicker-button',
+      style: "btn-outline-light selectpicker-button",
     });
   }
 }

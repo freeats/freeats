@@ -22,8 +22,10 @@ class SelectComponent < ApplicationComponent
   option :size, Types::Symbol.enum(*SIZE_CLASSES.keys), default: -> { :small }
   option :readonly, Types::Strict::Bool, default: -> { false }
   option :disabled, Types::Strict::Bool.optional, default: -> { false }
-  option :placeholder, Types::Strict::String, default: -> { "" }
+  option :placeholder, Types::Strict::String.optional, default: -> { "" }
   option :method, Types::Strict::String | Types::Strict::Symbol, optional: true
+  option :id_suffix, Types::Strict::String.optional, default: -> { "" }
+  option :anchor_dropdown_to_body, Types::Strict::Bool.optional, default: -> { false }
 
   option :local,
          Types::Strict::Hash.schema(
@@ -63,7 +65,7 @@ class SelectComponent < ApplicationComponent
       raise ArgumentError, "Method must not be specified for using without form."
     end
 
-    super(*args, **kwargs)
+    super
   end
 
   private
@@ -86,5 +88,20 @@ class SelectComponent < ApplicationComponent
     end
 
     options_for_select(options, selected:, disabled:)
+  end
+
+  def compose_id
+    id_prefix =
+      if form_or_name.is_a?(ActionView::Helpers::FormBuilder)
+        "#{form_or_name.object_name}[#{method}]"
+      else
+        form_or_name
+      end
+
+    # Example: "candidate[email_addresses_attributes][0][source]" =>
+    # "candidate_email_addresses_attributes_0_source"
+    id_prefix = id_prefix.gsub("][", "_").sub(/\]$/, "").tr("[", "_")
+
+    id_prefix + id_suffix
   end
 end

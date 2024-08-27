@@ -1,9 +1,15 @@
-import { Controller } from '@hotwired/stimulus';
-import $ from 'jquery';
-import { requestSubmitPolyfilled, arraysEqual } from '../src/shared/input_utils';
+import { Controller } from "@hotwired/stimulus";
+import $ from "jquery";
+import { arraysEqual, requestSubmitPolyfilled } from "../src/shared/input_utils";
 
 export default class extends Controller {
-  static targets = ['selectPickerWatchers', 'selectAssignee', 'selectpicker', 'watchersForm', 'defaultWatchers'];
+  static targets = [
+    "selectPickerWatchers",
+    "selectAssignee",
+    "selectpicker",
+    "watchersForm",
+    "defaultWatchers",
+  ];
 
   static values = { currentMember: String, liveSearch: Boolean };
 
@@ -22,29 +28,29 @@ export default class extends Controller {
       const $selectAssignee = $(this.selectAssigneeTarget);
       const $defaultWatchers = $(this.defaultWatchersTarget);
       const currentMember = this.currentMemberValue;
-      $selectAssignee.on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => {
+      $selectAssignee.on("changed.bs.select", (e, clickedIndex, isSelected, previousValue) => {
         const assignee = $selectAssignee.val();
         let watchers = $selectWatchers.val();
-        $selectWatchers.find(`option[disabled]`).removeAttr('disabled');
-        $selectWatchers.find(`option[value=${assignee}]`).attr('disabled', 'disabled');
+        $selectWatchers.find("option[disabled]").removeAttr("disabled");
+        $selectWatchers.find(`option[value=${assignee}]`).attr("disabled", "disabled");
         watchers.push(assignee);
         const indexElement = watchers.indexOf(previousValue);
         if (currentMember === previousValue) {
           watchers.push(previousValue);
-        } else if(indexElement !== -1) {
+        } else if (indexElement !== -1) {
           watchers = watchers.splice(indexElement, 1);
         }
         watchers = [...new Set(watchers.concat($defaultWatchers.val().split(" ")))];
-        $selectWatchers.selectpicker('val', watchers);
-        $selectWatchers.selectpicker('refresh');
+        $selectWatchers.selectpicker("val", watchers);
+        $selectWatchers.selectpicker("refresh");
       });
     }
   }
 
   watchersFormTargetConnected() {
     const defaultWatchers = $(this.selectPickerWatchersTarget).val();
-    $(this.watchersFormTarget).on('hide.bs.dropdown', function submitForm() {
-      if(!arraysEqual(defaultWatchers, $(this).find('#task_watcher_ids').val())) {
+    $(this.watchersFormTarget).on("hide.bs.dropdown", function submitForm() {
+      if (!arraysEqual(defaultWatchers, $(this).find("#task_watcher_ids").val())) {
         requestSubmitPolyfilled(this);
       }
     });
@@ -53,7 +59,7 @@ export default class extends Controller {
   selectpickerTargetConnected(target) {
     $(target).selectpicker({
       liveSearch: !!target.dataset.liveSearch,
-      style: 'btn-outline-light selectpicker-button'
+      style: "btn-outline-light selectpicker-button",
     });
   }
 }

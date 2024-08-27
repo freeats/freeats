@@ -18,7 +18,7 @@ class SingleSelectComponentPreview < ViewComponent::Preview
       SingleSelectComponent.new(
         "name",
         local: { options: setup_options(options:, disabled_options:, selected_options:) },
-        blank_option: "None",
+        include_blank: "None",
         size:,
         placeholder:
       )
@@ -36,7 +36,7 @@ class SingleSelectComponentPreview < ViewComponent::Preview
       SingleSelectComponent.new(
         "name",
         local: { options: setup_options(options:, disabled_options:, selected_options:) },
-        blank_option: "None",
+        include_blank: "None",
         size:,
         placeholder:
       )
@@ -54,7 +54,7 @@ class SingleSelectComponentPreview < ViewComponent::Preview
       SingleSelectComponent.new(
         "name",
         local: { options: setup_options(options:, disabled_options:, selected_options:) },
-        blank_option: "None",
+        include_blank: "None",
         disabled: true,
         size:,
         placeholder:
@@ -73,7 +73,7 @@ class SingleSelectComponentPreview < ViewComponent::Preview
       SingleSelectComponent.new(
         "name",
         local: { options: setup_options(options:, disabled_options:, selected_options:) },
-        blank_option: "None",
+        include_blank: "None",
         readonly: true,
         size:,
         placeholder:

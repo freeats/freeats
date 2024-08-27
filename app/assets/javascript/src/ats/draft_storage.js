@@ -1,7 +1,7 @@
 export function storeFieldDraft(el) {
   if (!el || !el.id) return;
 
-  const value = el.type === 'radio' ? el.checked : el.value;
+  const value = el.type === "radio" ? el.checked : el.value;
   localStorage.setItem(el.id, value);
 }
 
@@ -10,13 +10,11 @@ export function retrieveFieldDraft(el) {
 
   const storedValue = localStorage.getItem(el.id);
   if (storedValue) {
-    /* eslint-disable no-param-reassign */
-    if (el.type === 'radio') {
-      el.checked = storedValue === 'true';
+    if (el.type === "radio") {
+      el.checked = storedValue === "true";
     } else {
       el.value = storedValue;
     }
-    /* eslint-enable no-param-reassign */
   }
 }
 
@@ -27,8 +25,8 @@ export function clearFieldDraft(el) {
 }
 
 export function storeFormDraft(form) {
-  [...form.elements].forEach(element => {
-    if (element.type !== 'hidden') {
+  [...form.elements].forEach((element) => {
+    if (element.type !== "hidden") {
       storeFieldDraft(element);
     }
   });
@@ -36,8 +34,8 @@ export function storeFormDraft(form) {
 
 export function retrieveFormDraft(form) {
   if (form) {
-    [...form.elements].forEach(element => {
-      if (element.type !== 'hidden') {
+    [...form.elements].forEach((element) => {
+      if (element.type !== "hidden") {
         retrieveFieldDraft(element);
       }
     });
@@ -46,8 +44,8 @@ export function retrieveFormDraft(form) {
 
 export function clearFormDraft(form) {
   if (form) {
-    [...form.elements].forEach(element => {
-      if (element.type !== 'hidden') {
+    [...form.elements].forEach((element) => {
+      if (element.type !== "hidden") {
         clearFieldDraft(element);
       }
     });

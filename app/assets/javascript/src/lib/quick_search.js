@@ -1,10 +1,10 @@
-import $ from 'jquery';
-import { Turbo } from '@hotwired/turbo-rails';
+import $ from "jquery";
+import { Turbo } from "@hotwired/turbo-rails";
 
 export function enableQuickSearchListeners(document, selectize) {
-  $(document).on('keydown.focusSearchField', event => {
+  $(document).on("keydown.focusSearchField", (event) => {
     // Do not focus the quick search field if it is aluready focused.
-    if ($(event.target).is(':focus')) {
+    if ($(event.target).is(":focus")) {
       return true;
     }
 
@@ -18,13 +18,13 @@ export function enableQuickSearchListeners(document, selectize) {
   });
 
   // Redirect to the link when an option is selected.
-  selectize.on('item_add', function goToLink(_value, item) {
+  selectize.on("item_add", function goToLink(_value, item) {
     // Clear options so that the selected item does not show up in the quick search field.
     this.clear();
-    Turbo.visit(item[0].querySelector('a').href);
+    Turbo.visit(item[0].querySelector("a").href);
   });
 }
 
 export function disableQuickSearchListeners(document) {
-  $(document).off('keydown.focusSearchField');
+  $(document).off("keydown.focusSearchField");
 }

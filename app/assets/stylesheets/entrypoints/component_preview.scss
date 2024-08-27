@@ -8,6 +8,7 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 @import "bootstrap/scss/bootstrap";
 
 // Custom component styles
+@import "../src/shared/selectize";
 @import "../src/shared/components";
 @import "../src/lookbook/scaffolds";
 

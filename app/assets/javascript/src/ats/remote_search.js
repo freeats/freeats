@@ -1,9 +1,9 @@
 function cleanOptions(selectize) {
   Object.values(selectize.options)
-  .forEach(option => {
-    const value = (option.id || option.value).toString();
-    if (!selectize.items.includes(value)) selectize.removeOption(value);
-  });
+    .forEach((option) => {
+      const value = (option.id || option.value).toString();
+      if (!selectize.items.includes(value)) selectize.removeOption(value);
+    });
 }
 
 export default function remoteSearch(target, url, replaceQuery, selectedItems = null) {
@@ -12,19 +12,19 @@ export default function remoteSearch(target, url, replaceQuery, selectedItems = 
     cleanOptions(target.selectize);
 
     let finalUrl = url.replace(replaceQuery, encodeURIComponent(q));
-    if(selectedItems) {
+    if (selectedItems) {
       finalUrl = `${finalUrl}`;
     }
     fetch(finalUrl)
-      .then(response => {
+      .then((response) => {
         if (response.ok) return response.json();
         throw new Error(`${response.url}: ${response.statusText}`);
       })
-      .then(json => {
+      .then((json) => {
         cb(json);
       })
-      .catch(e => {
-        console.error(e); // eslint-disable-line no-console
+      .catch((e) => {
+        console.error(e);
         cb([]);
       });
   };

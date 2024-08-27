@@ -1,0 +1,6 @@
+{
+  "fmt": {
+    "lineWidth": 100,
+    "include": ["app/assets/javascript/"]
+  }
+}

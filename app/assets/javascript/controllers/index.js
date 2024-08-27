@@ -1,6 +1,5 @@
 import { Application } from "@hotwired/stimulus";
 
-// eslint-disable-next-line import/no-unresolved, import/extensions
 import controllers from "./**/*_controller.js";
 
 window.Stimulus = Application.start();

@@ -8,28 +8,28 @@
 // layout file, like app/views/layouts/application.html.erb
 
 import "../src/shared/bootstrap_activators";
-import '../src/shared/global_jquery_loader';
-import '../src/shared/modal_remover';
-import '@hotwired/turbo-rails';
-import 'bootstrap';
-import 'trix';
-import 'tributejs';
+import "../src/shared/global_jquery_loader";
+import "../src/shared/modal_remover";
+import "@hotwired/turbo-rails";
+import "bootstrap";
+import "trix";
+import "tributejs";
 
-import '../controllers';
-import '../src/ats';
+import "../controllers";
+import "../src/ats";
 
 // Taken from configuring jquery-ui download page https://jqueryui.com/download/ when toggling
 // only "sortable" and "datepicker".
-import 'jquery-ui/ui/data';
-import 'jquery-ui/ui/widget';
-import 'jquery-ui/ui/scroll-parent';
-import 'jquery-ui/ui/widgets/mouse';
-import 'jquery-ui/ui/keycode';
-import 'jquery-ui/ui/widgets/sortable';
-import 'jquery-ui/ui/widgets/datepicker';
+import "jquery-ui/ui/data";
+import "jquery-ui/ui/widget";
+import "jquery-ui/ui/scroll-parent";
+import "jquery-ui/ui/widgets/mouse";
+import "jquery-ui/ui/keycode";
+import "jquery-ui/ui/widgets/sortable";
+import "jquery-ui/ui/widgets/datepicker";
 
-import { initConfirmations } from '../src/shared/confirmations';
-import { activateInstanceSubmit, activateKeybindShortcuts } from '../src/shared/input_utils';
+import { initConfirmations } from "../src/shared/confirmations";
+import { activateInstanceSubmit, activateKeybindShortcuts } from "../src/shared/input_utils";
 
 initConfirmations();
 activateInstanceSubmit();
@@ -37,4 +37,4 @@ activateKeybindShortcuts();
 
 // Cocoon depends on Jquery, so should be loaded after.
 // Therefore using 'require' instead of async 'import'.
-require('@nathanvda/cocoon');
+require("@nathanvda/cocoon");

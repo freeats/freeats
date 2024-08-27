@@ -21,6 +21,16 @@ class HtmlSelectComponent < SelectComponent
          optional: true
 
   def call
+    common_options = {
+      id: compose_id,
+      disabled:,
+      placeholder:,
+      readonly:,
+      required:,
+      "data-html-select-component-target": "select",
+      **additional_options
+    }
+
     select_content =
       if form_or_name.is_a?(ActionView::Helpers::FormBuilder)
         form_or_name.select(
@@ -29,24 +39,14 @@ class HtmlSelectComponent < SelectComponent
           {
             include_blank: required
           },
-          disabled:,
-          placeholder:,
-          readonly:,
-          required:,
-          "data-html-select-component-target" => "select",
-          **additional_options
+          **common_options
         )
       else
         select_tag(
           form_or_name,
           "",
           include_blank: required,
-          disabled:,
-          placeholder:,
-          readonly:,
-          required:,
-          "data-html-select-component-target" => "select",
-          **additional_options
+          **common_options
         )
       end
 
@@ -59,7 +59,9 @@ class HtmlSelectComponent < SelectComponent
 
   def stimulus_controller_options
     options = { data: { controller: "html-select-component",
-                        "html-select-component-item-as-rich-text-value" => item_as_rich_text } }
+                        html_select_component_item_as_rich_text_value: item_as_rich_text } }
+    options[:data].merge!(set_body_as_dropdown_parent) if anchor_dropdown_to_body.present?
+
     if local
       options[:data].merge!(local_options)
     elsif remote
@@ -69,15 +71,19 @@ class HtmlSelectComponent < SelectComponent
   end
 
   def local_options
-    { "html-select-component-options-value" => local[:options] }
+    { html_select_component_options_value: local[:options] }
   end
 
   def remote_options
     options = {
-      "html-select-component-search-url-value" => remote[:search_url],
-      "html-select-component-options-value" => remote[:options]
+      html_select_component_search_url_value: remote[:search_url],
+      html_select_component_options_value: remote[:options]
     }
-    options["html-select-component-type-value"] = remote[:type] if remote[:type]
+    options[:html_select_component_type_value] = remote[:type] if remote[:type]
     options
+  end
+
+  def set_body_as_dropdown_parent
+    { html_select_component_dropdown_parent_value: "body" }
   end
 end

@@ -1,5 +1,5 @@
-import $ from 'jquery';
-import * as clipboard from 'clipboard-polyfill';
+import $ from "jquery";
+import * as clipboard from "clipboard-polyfill";
 
 /* Callback-function for copying content to user's clipboard.
    Element, triggering callback event, should have next attributes:
@@ -11,10 +11,10 @@ export default async function copyToClip() {
   const richTextContent = $(this).data().clipboardText;
   const plainTextContent = $(this).data().clipboardPlainText || richTextContent;
   const item = new clipboard.ClipboardItem({
-    'text/html': new Blob([richTextContent], { type: 'text/html' }),
-    'text/plain': new Blob([plainTextContent], { type: 'text/plain' }),
+    "text/html": new Blob([richTextContent], { type: "text/html" }),
+    "text/plain": new Blob([plainTextContent], { type: "text/plain" }),
   });
-  $(this).tooltip('show');
+  $(this).tooltip("show");
   await clipboard.write([item]);
-  setTimeout(() => $(this).tooltip('hide'), 1000);
+  setTimeout(() => $(this).tooltip("hide"), 1000);
 }

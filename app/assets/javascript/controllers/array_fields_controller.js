@@ -1,25 +1,27 @@
-import { Controller } from '@hotwired/stimulus';
-import $ from 'jquery';
+import { Controller } from "@hotwired/stimulus";
+import $ from "jquery";
 
 export default class extends Controller {
   static values = {
     className: String,
     fieldName: String,
-    sortable: Boolean
+    sortable: Boolean,
   };
 
   connect() {
     if (this.sortableValue) {
       $(this.element).sortable({
-        handle: '.sortable-handle',
-        cursor: 'move',
+        handle: ".sortable-handle",
+        cursor: "move",
       });
     }
   }
 
   addField() {
     const pluralFieldName = this.#pluralizeFieldName(this.fieldNameValue);
-    const fieldTemplate = document.getElementById(`${this.classNameValue}_${pluralFieldName}_hidden`);
+    const fieldTemplate = document.getElementById(
+      `${this.classNameValue}_${pluralFieldName}_hidden`,
+    );
     const fieldIds = [...this.element.querySelectorAll(`.array-unit:not(#${fieldTemplate.id})`)]
       .map((el) => +el.id.slice(`${this.classNameValue}_${pluralFieldName}`.length));
     const id = fieldIds.length ? Math.max(...fieldIds) + 1 : 1;
@@ -27,23 +29,27 @@ export default class extends Controller {
     this.deSelectize(fieldTemplate);
 
     const newField = fieldTemplate.cloneNode(true);
-    newField.removeAttribute('hidden', false);
-    newField.setAttribute('disabled', false);
-    newField.setAttribute('id', `${this.classNameValue}_${pluralFieldName}${id}`);
+    newField.removeAttribute("hidden", false);
+    newField.setAttribute("disabled", false);
+    newField.setAttribute("id", `${this.classNameValue}_${pluralFieldName}${id}`);
 
     // Update attributes for email address fields.
-    [...newField.querySelectorAll('[id*=_id_]')].forEach((el) => {
-      el.setAttribute('name', el.name.replace('[id]', `[${id}]`));
-      el.setAttribute('id', el.id.replace('_id_', `_${id}_`));
-      el.setAttribute('data-array-fields-block-id-param', el.id.replace('_id_', `_${id}_`));
+    [...newField.querySelectorAll("[id*=_id_]")].forEach((el) => {
+      el.setAttribute("name", el.name.replace("[id]", `[${id}]`));
+      el.setAttribute("id", el.id.replace("_id_", `_${id}_`));
+      el.setAttribute("data-array-fields-block-id-param", el.id.replace("_id_", `_${id}_`));
     });
 
-    const deleteButton = newField.querySelector(`.${this.classNameValue}-delete-${this.fieldNameValue}-button`);
+    const deleteButton = newField.querySelector(
+      `.${this.classNameValue}-delete-${this.fieldNameValue}-button`,
+    );
     if (deleteButton) {
-      deleteButton.setAttribute('id', `${this.classNameValue}_delete_${this.fieldNameValue}_button${id}`);
-      deleteButton.setAttribute('data-array-fields-block-id-param', newField.id);
+      deleteButton.setAttribute(
+        "id",
+        `${this.classNameValue}_delete_${this.fieldNameValue}_button${id}`,
+      );
+      deleteButton.setAttribute("data-array-fields-block-id-param", newField.id);
     }
-
 
     this.element.insertBefore(newField, fieldTemplate);
   }
@@ -61,7 +67,7 @@ export default class extends Controller {
 
   // De-selectize select fields to prevent the problem with double initialization of selectize.
   deSelectize(section) {
-    section.querySelectorAll('.select-component select').forEach((el) => {
+    section.querySelectorAll(".select-component select").forEach((el) => {
       const { selectize } = el;
       if (selectize) selectize.destroy();
     });

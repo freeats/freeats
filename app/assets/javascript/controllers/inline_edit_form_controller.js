@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import $ from "jquery";
-import { removeTooltips } from '../src/shared/tooltips';
+import { removeTooltips } from "../src/shared/tooltips";
 
 export default class extends Controller {
   static targets = ["showView", "editView", "focusInput", "shortcut"];
@@ -15,7 +15,7 @@ export default class extends Controller {
   editViewTargetConnected(elem) {
     // addBack() is for case when the form itself is editViewTarget.
     $(elem).find("form").addBack().on("submit", () => {
-      $(elem).find('[data-bs-toggle=tooltip]').tooltip('hide');
+      $(elem).find("[data-bs-toggle=tooltip]").tooltip("hide");
     });
   }
 
@@ -39,8 +39,8 @@ export default class extends Controller {
   }
 
   editShortcutHint() {
-    if (navigator.appVersion.indexOf('Mac') !== -1) {
-      $(this.shortcutTarget).attr('data-bs-title', '⌘Cmd + Enter');
+    if (navigator.appVersion.indexOf("Mac") !== -1) {
+      $(this.shortcutTarget).attr("data-bs-title", "⌘Cmd + Enter");
     }
   }
 }

@@ -1,5 +1,5 @@
-import { Controller } from '@hotwired/stimulus';
-import $ from 'jquery';
+import { Controller } from "@hotwired/stimulus";
+import $ from "jquery";
 
 export default class extends Controller {
   static targets = ["datepicker", "datepickerAlt"];
@@ -62,11 +62,12 @@ export default class extends Controller {
         $altTarget.val(new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(valueDate));
       } else if (+todayDate.getFullYear() === +valueDate.getFullYear()) {
         $altTarget.val(
-          new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(valueDate)
+          new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(valueDate),
         );
       } else {
         $altTarget.val(
-          new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(valueDate)
+          new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" })
+            .format(valueDate),
         );
       }
     }
@@ -79,12 +80,12 @@ export default class extends Controller {
     const calendarHeight = inst.dpDiv.height();
     let topOffset = rect.bottom;
     const freeSpaceAtBottom = window.innerHeight - topOffset;
-    
+
     if (freeSpaceAtBottom < calendarHeight) {
       // If the calendar fits by covering the input field.
       if (freeSpaceAtBottom + rect.height > calendarHeight) {
         topOffset = rect.top;
-      // If there's enough space at the top for a calendar.
+        // If there's enough space at the top for a calendar.
       } else if (window.innerHeight - freeSpaceAtBottom - rect.height > calendarHeight) {
         topOffset = rect.top - calendarHeight;
       } else {

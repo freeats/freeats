@@ -1,7 +1,7 @@
-import { Controller } from '@hotwired/stimulus';
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ['form', 'mainField',];
+  static targets = ["form", "mainField"];
 
   mainFieldTargetConnected() {
     this.setRequiredAttribute(this.mainFieldTarget.value);
@@ -25,17 +25,15 @@ export default class extends Controller {
       required = true;
     }
 
-    this.formTarget.querySelectorAll('select').forEach((el) => {
-      // eslint-disable-next-line no-param-reassign
+    this.formTarget.querySelectorAll("select").forEach((el) => {
       el.required = required;
 
       const { selectize } = el;
       if (selectize) {
-        // eslint-disable-next-line no-param-reassign
         selectize.isRequired = required;
 
         if ((selectize.items.length === 0 && required) || !required) {
-          selectize.$control_input.prop('required', required);
+          selectize.$control_input.prop("required", required);
         }
       }
     });

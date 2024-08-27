@@ -1,63 +1,87 @@
-import { Controller } from '@hotwired/stimulus';
-import $ from 'jquery';
-import 'selectize/dist/js/selectize';
-import {
-  lock,
-  searchParams,
-  allowCheckmarkForDisabledOption,
-  allowToReSearch,
-  applyDeferredData,
-  destroySelectize
-} from '../src/lib/select_component';
+import SelectComponentController from "./select_component_controller";
+import $ from "jquery";
+import "selectize/dist/js/selectize";
+import { arraysEqual, requestSubmitPolyfilled } from "../src/shared/input_utils";
 
-export default class extends Controller {
-  static targets = ['select'];
+export default class extends SelectComponentController {
+  static targets = ["select"];
 
-  static values = { buttonGroupSize: String, searchUrl: String };
+  static values = {
+    buttonGroupSize: String,
+    searchUrl: String,
+    instantSubmit: Boolean,
+  };
 
-  selectTargetConnected() {
+  selectTargetConnected(target) {
     // The preloaded options are used to set the initial state of the selectize instance.
-    // We may have them when previously the selectize instance was destroyed and we want to restore the state,
-    // for example it may happen when we move sections with select fields by the `sortable` library.
+    // We may need to restore the selectize instance's state after it's been destroyed,
+    // such as when moving sections with select fields using the `sortable` library.
     let preloadedOptions = {};
-    if (this.selectTarget.dataset.state) {
-      preloadedOptions = JSON.parse(this.selectTarget.dataset.state);
-      this.selectTarget.removeAttribute('data-state');
+    if (target.dataset.state) {
+      preloadedOptions = JSON.parse(target.dataset.state);
+      target.removeAttribute("data-state");
     }
 
     let remoteSearchParams = {};
-    if (this.searchUrlValue !== '') {
-      remoteSearchParams = searchParams(this.selectTarget, this.searchUrlValue, this.parseOptions);
+    if (this.searchUrlValue !== "") {
+      remoteSearchParams = this.searchParams(
+        target,
+        this.searchUrlValue,
+        this.parseOptions,
+      );
     }
 
-    $(this.selectTarget).selectize({
+    this.purgeDeadSelectize(target);
+
+    $(target).selectize({
       plugins: {
         deselect_options_via_dropdown: {},
         auto_position: {},
-        dropdown_buttons: { buttonsClass: 'btn btn-outline-primary',
-                            buttonGroupSize: this.buttonGroupSizeValue },
+        dropdown_buttons: {
+          buttonsClass: "btn btn-outline-primary",
+          buttonGroupSize: this.buttonGroupSizeValue,
+        },
         handle_disabled_options: {},
       },
+      searchField: ["text", "value"],
       selectOnTab: false,
       showArrow: false, //  Hide the default down arrow to replace it with our own.
       ...preloadedOptions,
       ...remoteSearchParams,
     });
 
-    allowCheckmarkForDisabledOption(this.selectTarget.selectize);
+    this.allowCheckmarkForDisabledOption(target.selectize);
 
-    if (this.selectTarget.attributes.readonly) lock(this.selectTarget);
+    if (this.instantSubmitValue) this.#setupInstantSubmit(target);
 
-    if (this.searchUrlValue !== '') allowToReSearch(this.selectTarget.selectize);
-
-    applyDeferredData(this.selectTarget.dataset);
+    this.applyCommonFunctions(target, this.searchUrlValue);
   }
 
-  selectTargetDisconnected() {
-    destroySelectize(this.selectTarget);
+  selectTargetDisconnected(target) {
+    this.destroySelectize(target);
   }
 
   parseOptions(text) {
     return JSON.parse(text);
+  }
+
+  #setupInstantSubmit(target) {
+    let valuesOnOpen = [];
+
+    target.selectize.on(
+      "dropdown_open",
+      () => valuesOnOpen = [...target.options].map((option) => option.value),
+    );
+
+    target.selectize.on(
+      "dropdown_close",
+      () => {
+        let valuesOnClose = [...target.options].map((option) => option.value);
+
+        if (!arraysEqual(valuesOnOpen, valuesOnClose)) {
+          requestSubmitPolyfilled(target.form);
+        }
+      },
+    );
   }
 }

@@ -1,10 +1,10 @@
-import { Controller } from '@hotwired/stimulus';
-import $ from 'jquery';
-import remoteSearch from '../src/ats/remote_search';
+import { Controller } from "@hotwired/stimulus";
+import $ from "jquery";
+import remoteSearch from "../src/ats/remote_search";
 import { initBootstrapSelect } from "../src/shared/bootstrap_select";
 
 export default class extends Controller {
-  static targets = ['addPlacementAutocomplete'];
+  static targets = ["addPlacementAutocomplete"];
 
   static values = { positionSearchUrl: String };
 
@@ -22,7 +22,7 @@ export default class extends Controller {
   addPlacementAutocompleteTargetConnected() {
     this.#initSelectize(
       this.addPlacementAutocompleteTarget,
-      this.positionSearchUrlValue
+      this.positionSearchUrlValue,
     );
   }
 
@@ -32,24 +32,26 @@ export default class extends Controller {
     // when passing the default value while sourcing in the Hub.
     function renderOption(item, escape) {
       return (
-        `<div class="option selected${item.status === 'on_hold' || item.status === 'open' ? ' text-secondary' : ''}` +
+        `<div class="option selected${
+          item.status === "on_hold" || item.status === "open" ? " text-secondary" : ""
+        }` +
         ` data-selectable="true" data-value="${escape(item.id)}">${escape(item.name)}</div>`
       );
     }
     $(obj).selectize({
       maxItems: 1,
-      valueField: 'id',
-      searchField: 'name',
-      labelField: 'name',
+      valueField: "id",
+      searchField: "name",
+      labelField: "name",
       create: false,
       loadThrottle: 300,
       selectOnTab: true,
       render: { option: renderOption },
       score(search) {
         const score = this.getScoreFunction(search);
-        return item => score(item) * scores[item.status];
+        return (item) => score(item) * scores[item.status];
       },
-      load: remoteSearch(obj, searchUrl, 'QUERY'),
+      load: remoteSearch(obj, searchUrl, "QUERY"),
     });
   }
 }

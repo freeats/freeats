@@ -1,4 +1,3 @@
-import initPosition from './position';
-
+import initPosition from "./position";
 
 initPosition();

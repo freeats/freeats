@@ -151,7 +151,7 @@ module ApplicationHelper
 
     select_params = {
       placeholder: filter.options[:placeholder],
-      blank_option: filter.options[:include_blank],
+      include_blank: filter.options[:include_blank],
       local: { options: }
     }.compact
     name = "#{grid.model_name.param_key}[#{filter.name}]"

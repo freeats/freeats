@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from "jquery";
 
 // Submit a form in a Turbo-friendly way.
 function requestSubmitPolyfilled(form) {
@@ -11,7 +11,7 @@ function requestSubmitPolyfilled(form) {
 }
 
 function activateInstanceSubmit() {
-  $(document).on('change', '.instant-submit', function submitForm() {
+  $(document).on("change", ".instant-submit", function submitForm() {
     if (
       window.performance &&
       window.performance.navigation.type === window.performance.navigation.TYPE_BACK_FORWARD
@@ -20,36 +20,36 @@ function activateInstanceSubmit() {
       // cause resubmission of uploaded files.
       return;
     }
-    $(this).closest('form').submit();
+    $(this).closest("form").submit();
   });
-  $(document).on('change', '.turbo-instant-submit', function submitTurboForm() {
-    requestSubmitPolyfilled(this.closest('form'));
+  $(document).on("change", ".turbo-instant-submit", function submitTurboForm() {
+    requestSubmitPolyfilled(this.closest("form"));
   });
 }
 
 function activateKeybindShortcuts() {
-  $(document).keydown(event => {
+  $(document).keydown((event) => {
     const $target = $(event.target);
-    if ($target.is(':focus') && $target.val() !== '') {
+    if ($target.is(":focus") && $target.val() !== "") {
       return true;
     }
 
     if (event.keyCode === 39) {
-      if ($('.arrow-right').length > 0) $('.arrow-right')[0].click();
+      if ($(".arrow-right").length > 0) $(".arrow-right")[0].click();
       return false;
     }
 
     if (event.keyCode === 37) {
-      if ($('.arrow-left').length > 0) $('.arrow-left')[0].click();
+      if ($(".arrow-left").length > 0) $(".arrow-left")[0].click();
       return false;
     }
 
     return true;
   });
 
-  $(document).on('keydown', '.enter-turbo-submit', function submitForm(event) {
+  $(document).on("keydown", ".enter-turbo-submit", function submitForm(event) {
     if ((event.keyCode === 10 || event.keyCode === 13) && (event.ctrlKey || event.metaKey)) {
-      $(this.closest('form')).find("[type='submit']").click();
+      $(this.closest("form")).find("[type='submit']").click();
     }
   });
 }
@@ -58,7 +58,4 @@ function arraysEqual(a, b) {
   return a.length === b.length && a.every((element, index) => element === b[index]);
 }
 
-export { activateInstanceSubmit,
-         activateKeybindShortcuts,
-         requestSubmitPolyfilled,
-         arraysEqual };
+export { activateInstanceSubmit, activateKeybindShortcuts, arraysEqual, requestSubmitPolyfilled };
