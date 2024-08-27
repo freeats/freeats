@@ -5,8 +5,16 @@ class Scorecard < ApplicationRecord
            -> { order(:list_index) },
            dependent: :destroy,
            inverse_of: :scorecard
+  has_many :events, as: :eventable, dependent: :destroy
+  has_one :added_event,
+          -> { where(type: :scorecard_added) },
+          class_name: "Event",
+          as: :eventable,
+          inverse_of: false,
+          dependent: nil
   belongs_to :position_stage
   belongs_to :placement
+  belongs_to :interviewer, class_name: "Member"
 
   has_rich_text :summary
 
@@ -20,6 +28,5 @@ class Scorecard < ApplicationRecord
   ].index_with(&:to_s)
 
   validates :title, presence: true
-  validates :interviewer, presence: true
   validates :score, presence: true
 end

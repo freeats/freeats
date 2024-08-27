@@ -1717,12 +1717,12 @@ CREATE TABLE public.scorecards (
     position_stage_id bigint NOT NULL,
     placement_id bigint NOT NULL,
     title character varying NOT NULL,
-    interviewer character varying NOT NULL,
     score public.scorecard_score NOT NULL,
     greenhouse_id integer,
     visible_to_interviewer boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    interviewer_id bigint NOT NULL
 );
 
 
@@ -3796,6 +3796,14 @@ ALTER TABLE ONLY public.candidate_email_addresses
 
 
 --
+-- Name: scorecards fk_rails_38df9f3585; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scorecards
+    ADD CONSTRAINT fk_rails_38df9f3585 FOREIGN KEY (interviewer_id) REFERENCES public.members(id);
+
+
+--
 -- Name: solid_queue_failed_executions fk_rails_39bbc7a631; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4114,6 +4122,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240602141417'),
 ('20240602141416'),
 ('20240602141415'),
 ('20240506091416'),

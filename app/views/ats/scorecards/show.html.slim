@@ -45,7 +45,7 @@
       right_class: "ps-0 col-form-label-sm" \
     ) do |c|
       - c.with_label("Interviewer", size: :small, style: "min-width: 100px;")
-      = @scorecard.interviewer
+      = @scorecard.interviewer.name
 
     - @scorecard.scorecard_questions.each do |question|
       .profile-card

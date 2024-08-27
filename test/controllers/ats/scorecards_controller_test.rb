@@ -39,13 +39,14 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
       scorecard_template_questions(:ruby_position_contacted_first_scorecard_template_question)
     position_stage = position_stages(:ruby_position_contacted)
     placement = placements(:sam_ruby_contacted)
+    member = members(:employee_member)
 
     params = {
       title: "#{scorecard_template.title} scorecard",
       position_stage_id: position_stage.id,
       placement_id: placement.id,
       visible_to_interviewer: true,
-      interviewer: "John Doe",
+      interviewer_id: member.id,
       score: "good",
       scorecard_questions_attributes:
         { "0" => { question: scorecard_template_question.question, answer: "Yes" } }
@@ -75,13 +76,14 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
     scorecard_template = scorecard_templates(:ruby_position_contacted_scorecard_template)
     position_stage = position_stages(:ruby_position_contacted)
     placement = placements(:sam_ruby_contacted)
+    member = members(:employee_member)
 
     params = {
       title: "#{scorecard_template.title} scorecard",
       position_stage_id: position_stage.id,
       placement_id: placement.id,
       visible_to_interviewer: false,
-      interviewer: "John Doe",
+      interviewer_id: member.id,
       score: "good"
     }
 
@@ -105,6 +107,7 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
     scorecard_template = scorecard_templates(:ruby_position_contacted_scorecard_template)
     position_stage = position_stages(:ruby_position_contacted)
     placement = placements(:sam_ruby_contacted)
+    member = members(:employee_member)
 
     # without score
     params = {
@@ -112,7 +115,7 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
       position_stage_id: position_stage.id,
       placement_id: placement.id,
       visible_to_interviewer: false,
-      interviewer: "John Doe"
+      interviewer_id: member.id
     }
 
     assert_no_difference "Scorecard.count" do
@@ -137,7 +140,7 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
         post(ats_scorecards_path, params: { scorecard: params })
       end
 
-      assert_equal error.message, ":interviewer is missing in Hash input"
+      assert_equal error.message, ":interviewer_id is missing in Hash input"
     end
 
     # without visible_to_interviewer
@@ -145,7 +148,7 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
       title: "#{scorecard_template.title} scorecard",
       position_stage_id: position_stage.id,
       placement_id: placement.id,
-      interviewer: "John Doe",
+      interviewer_id: member.id,
       score: "good"
     }
 
@@ -161,16 +164,17 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
   test "should update the scorecard with question" do
     scorecard = scorecards(:ruby_position_contacted_scorecard)
     scorecard_question = scorecard_questions(:ruby_position_contacted_first_scorecard_question)
+    member = members(:employee_member)
 
     params = {
-      interviewer: "Sam baggins",
+      interviewer_id: member.id,
       score: "irrelevant",
       scorecard_questions_attributes: {
         "0" => { id: scorecard_question.id, answer: "I do not know where is Gandalf" }
       }
     }
 
-    assert_not_equal scorecard.interviewer, params[:interviewer]
+    assert_not_equal scorecard.interviewer_id, params[:interviewer_id]
     assert_not_equal scorecard.score, params[:score]
     assert_not_equal scorecard_question.answer, params[:scorecard_questions_attributes]["0"][:answer]
 
@@ -181,7 +185,7 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
     scorecard.reload
     scorecard_question.reload
 
-    assert_equal scorecard.interviewer, params[:interviewer]
+    assert_equal scorecard.interviewer_id, params[:interviewer_id]
     assert_equal scorecard.score, params[:score]
     assert_equal scorecard_question.answer.to_s,
                  "<div class=\"trix-content\">\n  #{params[:scorecard_questions_attributes]['0'][:answer]}\n</div>\n"
@@ -189,15 +193,16 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
 
   test "should update scorecard without question" do
     scorecard = scorecards(:ruby_position_replied_scorecard)
+    member = members(:employee_member)
 
     assert_empty scorecard.scorecard_questions
 
     params = {
-      interviewer: "Sam baggins",
+      interviewer_id: member.id,
       score: "irrelevant"
     }
 
-    assert_not_equal scorecard.interviewer, params[:interviewer]
+    assert_not_equal scorecard.interviewer_id, params[:interviewer_id]
     assert_not_equal scorecard.score, params[:score]
 
     assert_no_difference "Scorecard.count" do
@@ -206,7 +211,7 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
 
     scorecard.reload
 
-    assert_equal scorecard.interviewer, params[:interviewer]
+    assert_equal scorecard.interviewer_id, params[:interviewer_id]
     assert_equal scorecard.score, params[:score]
     assert_empty scorecard.scorecard_questions
   end

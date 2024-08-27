@@ -8,6 +8,7 @@ class ATS::ScorecardsController < ApplicationController
   before_action :set_scorecard, only: %i[show edit update]
   before_action -> { authorize!(@scorecard) },
                 only: %i[show edit update]
+  before_action :compose_interviewers, only: %i[new edit]
 
   def show; end
 
@@ -67,8 +68,34 @@ class ATS::ScorecardsController < ApplicationController
 
   private
 
+  def compose_interviewers
+    active_members = Member.active.includes(:account).to_a
+
+    position_members = []
+    if @scorecard.present?
+      position = @scorecard.placement.position
+      position_member_ids =
+        [position.recruiter_id,
+         *position.collaborators.ids,
+         *position.hiring_managers.ids,
+         *position.interviewers.ids].uniq
+      position_members = Member.where(id: position_member_ids).includes(:account).to_a
+    end
+
+    @interviewers = (position_members | active_members).map do |member|
+      { text: member.name, value: member.id, selected: member.id == @scorecard&.interviewer_id }
+    end
+  end
+
   def set_scorecard
-    @scorecard = Scorecard.includes(:scorecard_questions).find(params[:id])
+    @scorecard =
+      Scorecard
+      .includes(
+        :scorecard_questions,
+        interviewer: :account,
+        placement: { position: %i[collaborators hiring_managers interviewers] }
+      )
+      .find(params[:id])
   end
 
   def scorecard_params
@@ -77,7 +104,7 @@ class ATS::ScorecardsController < ApplicationController
       .require(:scorecard)
       .permit(
         :title,
-        :interviewer,
+        :interviewer_id,
         :score,
         :summary,
         :position_stage_id,

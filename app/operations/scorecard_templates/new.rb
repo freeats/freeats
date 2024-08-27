@@ -11,7 +11,8 @@ class ScorecardTemplates::New
     position_stage = PositionStage.find(position_stage_id)
     params = {
       position_stage:,
-      title: "#{position_stage.name} stage scorecard template"
+      title: "#{position_stage.name} stage scorecard template",
+      visible_to_interviewer: true
     }
 
     scorecard = ScorecardTemplate.new(params)

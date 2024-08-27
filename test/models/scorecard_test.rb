@@ -7,11 +7,12 @@ class ScorecardTest < ActiveSupport::TestCase
 
   test "should create scorecard" do
     actor_account = accounts(:admin_account)
+    member = members(:employee_member)
 
     params = {
       placement_id: placements(:sam_ruby_replied).id,
       score: "good",
-      interviewer: "John Doe",
+      interviewer_id: member.id,
       title: "Ruby position contacted scorecard template scorecard",
       position_stage_id: position_stages(:ruby_position_replied).id,
       visible_to_interviewer: true
@@ -41,11 +42,12 @@ class ScorecardTest < ActiveSupport::TestCase
 
   test "should not create scorecard with invalid question" do
     actor_account = accounts(:admin_account)
+    member = members(:employee_member)
 
     params = {
       title: "Ruby position contacted scorecard template scorecard ",
       score: "good",
-      interviewer: "John Doe",
+      interviewer_id: member.id,
       placement_id: placements(:sam_ruby_replied).id,
       position_stage_id: position_stages(:ruby_position_replied).id,
       visible_to_interviewer: true
@@ -85,12 +87,13 @@ class ScorecardTest < ActiveSupport::TestCase
     actor_account = accounts(:admin_account)
     scorecard = scorecards(:ruby_position_contacted_scorecard)
     scorecard_questions = scorecard.scorecard_questions
+    member = members(:employee_member)
 
     assert_nil scorecard.summary
     assert_predicate scorecard_questions, :present?
 
     params = {
-      interviewer: "John Doe",
+      interviewer_id: member.id,
       score: "relevant",
       summary: "Acceptable candidate"
     }
@@ -101,7 +104,7 @@ class ScorecardTest < ActiveSupport::TestCase
     assert_difference "Event.count" => 1 do
       scorecard = Scorecards::Change.new(params:, questions_params:, scorecard:, actor_account:).call.value!
 
-      assert_equal scorecard.interviewer, params[:interviewer]
+      assert_equal scorecard.interviewer_id, params[:interviewer_id]
       assert_equal scorecard.score, params[:score]
       assert_match params[:summary], scorecard.summary.body.to_s
 

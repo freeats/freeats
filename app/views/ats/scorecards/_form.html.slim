@@ -1,4 +1,4 @@
-/# locals: (scorecard:)
+/# locals: (scorecard:, interviewers:)
 
 ruby:
   submit_path =
@@ -64,8 +64,14 @@ ruby:
     left_layout_class: "col-12 col-md-auto",
     right_layout_class: "col-12 col-md-5" \
   ) do |c|
-    - c.with_label("Interviewer", size: :small, style: "min-width: 88px;", form:, for_field: :interviewer)
-    = render TextInputComponent.new(form, method: :interviewer, size: :small, required: true)
+    - c.with_label("Interviewer", size: :small, style: "min-width: 88px;", form:, for_field: :interviewer_id)
+    = render SingleSelectComponent.new( \
+      form,
+      method: :interviewer_id,
+      size: :small,
+      required: true,
+      local: { options: interviewers } \
+    )
 
   = form.fields_for(:scorecard_questions) do |question_form|
     .profile-card

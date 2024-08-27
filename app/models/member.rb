@@ -41,6 +41,10 @@ class Member < ApplicationRecord
            inverse_of: :assignee,
            foreign_key: :assignee_id,
            dependent: :destroy
+  has_many :scorecards,
+           foreign_key: :interviewer_id,
+           inverse_of: :interviewer,
+           dependent: :restrict_with_exception
 
   belongs_to :account
 

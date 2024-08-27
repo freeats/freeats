@@ -87,5 +87,6 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
 
     assert_equal scorecard_template_new.title, "Replied stage scorecard template"
     assert_equal scorecard_template_new.position_stage_id, position_stage_id
+    assert_equal scorecard_template_new.visible_to_interviewer, true
   end
 end

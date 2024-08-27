@@ -20,6 +20,7 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal doc.at_css("#scorecard_template_position_stage_id").attr(:value), position_stage.id.to_s
     assert_equal doc.at_css("#scorecard_template_title").attr(:value), "Contacted stage scorecard template"
+    assert_equal doc.at_css("#scorecard_template_visible_to_interviewer").attr(:value), "true"
   end
 
   test "should get show" do

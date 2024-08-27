@@ -6,7 +6,7 @@ class Scorecards::Add
   include Dry::Initializer.define -> do
     option :params, Types::Params::Hash.schema(
       title: Types::Params::String,
-      interviewer: Types::Params::String,
+      interviewer_id: Types::Params::Integer,
       score: Types::Params::String,
       summary?: Types::Params::String,
       position_stage_id: Types::Params::Integer,
