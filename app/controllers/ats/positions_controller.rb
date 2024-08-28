@@ -9,7 +9,7 @@ class ATS::PositionsController < ApplicationController
     "Info",
     "Pipeline",
     "Tasks",
-    "Sequence templates",
+    # "Sequence templates",
     "Activities"
   ].freeze
   ACTIVITIES_PAGINATION_LIMIT = 25
