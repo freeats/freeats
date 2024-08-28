@@ -3,32 +3,30 @@ ruby:
 
 nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
   - if current_account.present?
-    / Mobile user icon
-    .profile-button.d-lg-none.order-1
-      = picture_avatar_icon current_account.avatar, {},
-        class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo"
-
-    button.navbar-toggler.px-1 [aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
-                                data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button"]
+    / Mobile burger menu button
+    button.navbar-toggler.px-1.order-2 [aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                                        data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button"]
       span.navbar-toggler-icon
-    #navbarNav.collapse.navbar-collapse.gap-lg-2.order-2
+
+    / Navbar links
+    #navbarNav.collapse.navbar-collapse.gap-lg-2.order-5.order-lg-1
       ul.navbar-nav.text-nowrap.gap-1.gap-lg-0.mb-1.mb-lg-0
         - if allowed_to?(:index?, with: ATS::DashboardPolicy)
           li.nav-item
             = link_to "Dashboard", root_path,
-              class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
+                      class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
         - if allowed_to?(:index?, with: ATS::TaskPolicy)
           li.nav-item
             = link_to "Tasks", ats_tasks_path,
-              class: "nav-link#{' nav-link-selected' if @nav_item == :tasks}"
+                      class: "nav-link#{' nav-link-selected' if @nav_item == :tasks}"
         - if allowed_to?(:index?, with: ATS::CandidatePolicy)
           li.nav-item
             = link_to "Candidates", ats_candidates_path,
-              class: "nav-link#{' nav-link-selected' if @nav_item == :candidates}"
+                      class: "nav-link#{' nav-link-selected' if @nav_item == :candidates}"
         - if allowed_to?(:index?, with: ATS::PositionPolicy)
           li.nav-item
             = link_to "Positions", ats_positions_path,
-              class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
+                      class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
         / li.nav-item
           = link_to "Sequences", "/", # TODO: Replace with the correct path \
             class: "nav-link#{' nav-link-selected' if @nav_item == :sequences}"
@@ -58,14 +56,32 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
             = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
                         form_class: "pt-2", form: { data: { turbo: false } }
 
-      / Desktop
-      .dropdown.profile-button.d-none.d-lg-block
-        button.dropdown-toggle.btn aria-expanded="false" aria-haspopup="true" data-bs-toggle="dropdown" role="button"
-          = picture_avatar_icon current_account.avatar, {},
-            class: "profile-avatar-thumbnail dropdown-toggle", alt: "Your photo"
-        ul.dropdown-menu.dropdown-menu-end
-          li = link_to "Profile", ats_profile_path,
-                      class: "dropdown-item #{'nav-link-selected' if is_ats_profile}"
-          li
-            = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
-                        form_class: "dropdown-item", form: { data: { turbo: false } }
+    / Quick search
+    - if allowed_to?(:index?, with: ATS::QuickSearchPolicy)
+      .quick-search.flex-grow-1.flex-lg-grow-0.order-3
+        = render HtmlSelectComponent.new( \
+                   "quick_search",
+                   placeholder: "Search",
+                   item_as_rich_text: true,
+                   data: { controller: "quick-search",
+                           action: "resize@window->quick-search#changePlaceholder" },
+                   remote: { search_url: ats_quick_search_index_path(q: "QUERY"),
+                             type: :quick_search } \
+                 )
+
+    / User icon
+    .dropdown.profile-button.order-4
+      = picture_avatar_icon current_account.avatar, {},
+                            class: "profile-avatar-thumbnail dropdown-toggle d-inline d-lg-none",
+                            alt: "Your photo"
+      button.dropdown-toggle.btn.d-none.d-lg-block [aria-expanded="false" aria-haspopup="true"
+                                                    data-bs-toggle="dropdown" role="button" type="button"]
+        = picture_avatar_icon current_account.avatar, {},
+                              class: "profile-avatar-thumbnail dropdown-toggle",
+                              alt: "Your photo"
+      ul.dropdown-menu.dropdown-menu-end
+        li = link_to "Profile", ats_profile_path,
+                     class: "dropdown-item #{'nav-link-selected' if is_ats_profile}"
+        li
+          = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
+                      form_class: "dropdown-item", form: { data: { turbo: false } }

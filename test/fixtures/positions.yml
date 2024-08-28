@@ -8,6 +8,7 @@ golang_position:
   name: Golang developer
   status: active
   change_status_reason: filled
+  hiring_managers: [hiring_manager_member]
 
 closed_position:
   recruiter: admin_member

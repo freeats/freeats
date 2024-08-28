@@ -1,0 +1,12 @@
+/# locals: (dataset:, partials:, see_more_partial:)
+
+- optgroup = dataset.first.class.name.downcase if dataset.present?
+- see_more_partial ||= nil
+
+- dataset.zip(partials).map do |data, partial|
+  - label = data.try(:full_name) || data.name
+  option value=data.id label=label optgroup=optgroup
+    = partial
+- if see_more_partial
+  option value=optgroup.pluralize label="See more" optgroup=optgroup
+    = see_more_partial

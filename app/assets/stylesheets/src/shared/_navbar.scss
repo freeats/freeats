@@ -91,19 +91,14 @@ nav.header {
 }
 
 body {
-  padding-top: 56px;
+  padding-top: $navbar-min-height;
 }
 
 @include media-breakpoint-down(lg) {
   nav.header {
-    #navbarNav.show,
-    .aa-dropdown-menu {
-      max-height: calc(100vh - 54px);
+    #navbarNav.show {
+      max-height: calc(100vh - $navbar-min-height);
     }
-  }
-
-  body {
-    padding-top: 54px;
   }
 }
 

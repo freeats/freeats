@@ -88,6 +88,8 @@ Rails.application.routes.draw do
       post :new_modal, on: :collection
       post :show_modal, on: :member
     end
+
+    resources :quick_search, only: :index, controller: "quick_search"
   end
 
   namespace :api, defaults: { format: "json" } do

@@ -17,9 +17,6 @@ class ATS::PositionPolicy < ApplicationPolicy
 
     relation
       .select("positions.*")
-      .joins(
-        "JOIN positions_hiring_managers ON positions_hiring_managers.position_id = positions.id"
-      )
-      .where(positions_hiring_managers: { hiring_manager_id: member_id })
+      .visible_for_hiring_manager(member_id)
   end
 end

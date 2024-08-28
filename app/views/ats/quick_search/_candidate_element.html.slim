@@ -1,0 +1,16 @@
+/# locals: (candidate:)
+
+- candidate_content = capture do
+  .hstack.quick-search-suggestion.gap-2
+    .col-auto.ms-3.my-auto.small-avatar-thumbnail-wrapper
+      = picture_avatar_icon candidate.avatar, {}, class: "small-avatar-thumbnail"
+    .col
+      .row.g-0
+        .col-12.text-truncate
+          = candidate.full_name
+      .row.g-0
+        .col-12.text-truncate.aa-emails
+          = candidate.candidate_emails.first
+div
+  = link_to tab_ats_candidate_path(candidate, :info) do
+    = candidate_content

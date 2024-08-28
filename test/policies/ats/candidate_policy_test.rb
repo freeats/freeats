@@ -43,16 +43,16 @@ class ATS::CandidatePolicyTest < ActiveSupport::TestCase
     actor_account = accounts(:interviewer_account)
 
     assert_includes candidate.placements.map { _1.position.id }, position.id
-    assert_empty position.hiring_managers
+    assert_includes position.hiring_managers, hiring_manager
     assert_empty position.interviewers
 
     assert_not create_policy(candidate, actor_account, interviewer).apply(:show?)
 
-    position.update!(hiring_managers: [hiring_manager])
+    position.update!(hiring_managers: [])
 
     assert_not create_policy(candidate, actor_account, interviewer).apply(:show?)
 
-    position.update!(hiring_managers: [], interviewers: [hiring_manager])
+    position.update!(interviewers: [hiring_manager])
 
     assert_not create_policy(candidate, actor_account, interviewer).apply(:show?)
 

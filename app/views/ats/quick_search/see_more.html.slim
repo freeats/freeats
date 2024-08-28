@@ -1,0 +1,7 @@
+/# locals: (link:, count:, collection_name:)
+
+div
+  = link_to link do
+    .row.g-0.quick-search-see-more
+      .col.ms-3
+        'See all #{PrettyNumberComponent.new(count, object: collection_name).call}

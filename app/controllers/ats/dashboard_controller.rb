@@ -14,10 +14,7 @@ class ATS::DashboardController < ApplicationController
         positions = scope.where(id: nil) if current_member.interviewer?
 
         if current_member.access_level.in?(%w[admin employee hiring_manager])
-          positions =
-            scope
-            .joins(:hiring_managers)
-            .where(positions_hiring_managers: { hiring_manager_id: current_member.id })
+          positions = scope.visible_for_hiring_manager(current_member.id)
 
           unless current_member.hiring_manager?
             positions =

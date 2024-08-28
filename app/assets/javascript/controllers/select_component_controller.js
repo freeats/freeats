@@ -89,7 +89,7 @@ export default class SelectComponentController extends Controller {
       if (type) finalUrl += `&type=${type}`;
 
       if (type === "quick_search") {
-        ["candidate", "lead", "position", "company"].forEach((category) => {
+        ["candidate", "position"].forEach((category) => {
           request(`${finalUrl}&searching_for=${category}`, cb, parseFunction);
         });
       } else {

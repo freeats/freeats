@@ -135,6 +135,13 @@ class Position < ApplicationRecord
     ).joins(position_joins.join_sources)
   end
 
+  def self.visible_for_hiring_manager(member_id)
+    joins(
+      "JOIN positions_hiring_managers ON positions_hiring_managers.position_id = positions.id"
+    )
+      .where(positions_hiring_managers: { hiring_manager_id: member_id })
+  end
+
   def warnings
     @warnings ||= ActiveModel::Errors.new(self)
   end
