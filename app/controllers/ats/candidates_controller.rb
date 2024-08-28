@@ -393,7 +393,7 @@ class ATS::CandidatesController < ApplicationController
   def change_cv_status
     file = @candidate.files.find(candidate_params[:file_id_to_change_cv_status])
 
-    file.change_cv_status(candidate_params[:new_cv_status], current_account)
+    file.change_cv_status(current_account)
     if @candidate.errors.present?
       render_error @candidate.errors.full_messages
       return
@@ -464,7 +464,6 @@ class ATS::CandidatesController < ApplicationController
         :cover_letter,
         :file_id_to_remove,
         :file_id_to_change_cv_status,
-        :new_cv_status,
         :recruiter_id,
         :location_id,
         :full_name,

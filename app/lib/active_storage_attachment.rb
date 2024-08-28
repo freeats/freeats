@@ -17,26 +17,29 @@ module ActiveStorageAttachment
             dependent: :destroy
   end
 
-  def change_cv_status(new_cv_status, actor_account = nil)
+  def change_cv_status(actor_account = nil)
     record_object = record_type.constantize.find(record_id)
-    old_cv = new_cv_status ? record_object.cv : self
+    old_cv = record_object.cv
+
     transaction do
-      old_cv&.attachment_information&.update!(is_cv: false) if new_cv_status
+      old_cv&.attachment_information&.update!(is_cv: false)
 
       result =
         if attachment_information
           AttachmentInformations::Change.new(attachment_information:,
-                                             params: { is_cv: new_cv_status }).call
+                                             params: { is_cv: old_cv != self }).call
         else
           AttachmentInformations::Add.new(params: { active_storage_attachment_id: id,
-                                                    is_cv: new_cv_status }).call
+                                                    is_cv: true }).call
         end
+
+      same_file = old_cv&.blob == blob
 
       Events::AddChangedEvent.new(
         eventable: record,
         changed_field: "cv",
         old_value: old_cv&.blob&.filename.to_s,
-        new_value: blob.filename.to_s,
+        new_value: same_file ? nil : blob.filename.to_s,
         actor_account:
       ).call
 

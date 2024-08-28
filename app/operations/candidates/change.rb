@@ -13,7 +13,6 @@ class Candidates::Change
       cover_letter?: Types::Strict::String,
       file_id_to_remove?: Types::Strict::String,
       file_id_to_change_cv_status?: Types::Strict::String,
-      new_cv_status?: Types::Strict::String,
       recruiter_id?: Types::Strict::String.optional,
       location_id?: Types::Strict::String,
       full_name?: Types::Strict::String,

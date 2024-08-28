@@ -25,7 +25,7 @@ class Candidates::UploadFile
             }
         ).call
 
-        attachment.change_cv_status(true, actor_account) if cv
+        attachment.change_cv_status(actor_account) if cv
       end
     end.to_result
 

@@ -183,8 +183,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     travel_to Time.zone.now.days_since(1) do
       assert_difference "Event.where(type: 'candidate_changed').count" do
         patch change_cv_status_ats_candidate_path(candidate),
-              params: { candidate: { file_id_to_change_cv_status: attachment.id,
-                                     new_cv_status: true } }
+              params: { candidate: { file_id_to_change_cv_status: attachment.id } }
       end
     end
 
@@ -204,8 +203,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     new_attachment = candidate.files.last
     patch change_cv_status_ats_candidate_path(candidate),
-          params: { candidate: { file_id_to_change_cv_status: new_attachment.id,
-                                 new_cv_status: true } }
+          params: { candidate: { file_id_to_change_cv_status: new_attachment.id } }
 
     assert_response :success
 
@@ -219,7 +217,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_not candidate.cv
 
-    attachment.change_cv_status(true)
+    attachment.change_cv_status
 
     assert candidate.cv
 
@@ -238,7 +236,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     candidate = candidates(:jane)
     attachment = candidate.files.last
 
-    attachment.change_cv_status(true)
+    attachment.change_cv_status
 
     assert candidate.cv
 

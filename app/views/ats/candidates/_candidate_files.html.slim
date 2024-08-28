@@ -30,7 +30,7 @@
             - if file.cv?
               - if allowed_to?(:change_cv_status?)
                 = button_to change_cv_status_ats_candidate_path(candidate,
-                            candidate: { file_id_to_change_cv_status: file.id, new_cv_status: false }),
+                            candidate: { file_id_to_change_cv_status: file.id }),
                             method: :patch, class: "btn" do
                   span.clickable
                     i.far.fa-check-circle.hide-on-hover
@@ -39,7 +39,7 @@
                 i.far.fa-check-circle
             - elsif allowed_to?(:change_cv_status?)
               = form_with url: change_cv_status_ats_candidate_path(candidate,
-                          candidate: { file_id_to_change_cv_status: file.id, new_cv_status: true }),
+                          candidate: { file_id_to_change_cv_status: file.id }),
                           method: :patch
                 button.btn type="submit"
                   span.clickable
