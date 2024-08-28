@@ -43,7 +43,6 @@ gem "rodauth-model"
 gem "rodauth-omniauth"
 gem "rodauth-rails"
 gem "sassc-rails"
-gem "signet"
 gem "slim-rails"
 gem "solid_queue"
 gem "sprockets-rails"
@@ -57,9 +56,16 @@ group :production, :development, :staging do
   gem "signet"
 end
 
-group :development, :test do
+group :staging, :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "debug", platforms: %i[mri windows]
+end
+
+group :staging, :development do
+  gem "dotenv-rails"
+end
+
+group :development, :test do
   gem "pry-byebug"
   gem "pry-inline"
   gem "pry-rails"
@@ -81,7 +87,6 @@ group :development do
   # gem "spring"
 
   gem "dockerfile-rails", ">= 1.6"
-  gem "dotenv-rails"
   gem "rack-mini-profiler"
 end
 
@@ -94,11 +99,3 @@ group :test do
   gem "selenium-webdriver"
   gem "webmock"
 end
-
-# rubocop:disable Bundler/DuplicatedGem
-group :staging do
-  gem "byebug", platforms: %i[mri mingw x64_mingw]
-  gem "debug", platforms: %i[mri windows]
-  gem "dotenv-rails"
-end
-# rubocop:enable Bundler/DuplicatedGem
