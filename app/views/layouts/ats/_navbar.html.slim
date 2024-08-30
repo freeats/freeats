@@ -38,7 +38,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
             a.nav-link.dropdown-toggle [id="adminNavbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false" role="button"] Admin
             ul.dropdown-menu.px-3 aria-labelledby="adminNavbarDropdown"
-              li = link_to "Jobs", "/jobs", class: "nav-link dropdown-item"
+              li = link_to "Jobs", mission_control_jobs_path, class: "nav-link dropdown-item"
               li = link_to "PgHero", pg_hero_path, class: "nav-link dropdown-item"
               li = link_to "RailsAdmin", rails_admin.dashboard_path, class: "nav-link dropdown-item"
 
