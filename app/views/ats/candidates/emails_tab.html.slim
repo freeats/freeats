@@ -29,9 +29,9 @@ ruby:
                                                     "have been added to this profile before pressing the button",
                                              disabled: synchronize_button_tooltip_text.present?)
               | Synchronize
-        .col-auto
-          = render partial: "ats/candidates/stop_sequence_button",
-                   locals: { object: @candidate, running_sequences: @running_sequences }
+        / .col-auto
+        /   = render partial: "ats/candidates/stop_sequence_button",
+        /            locals: { object: @candidate, running_sequences: @running_sequences }
     / EMAILS
     .row
       .col#turbo_thread_list
