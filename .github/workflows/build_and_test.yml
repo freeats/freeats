@@ -37,7 +37,7 @@ jobs:
       # Required to compile pg ruby gem.
       - name: Install PostgreSQL client
         run: |
-          sudo apt-get update
+          sudo apt-get update -y
           sudo apt-get install libpq-dev
           sudo apt-get install postgresql-client
 
