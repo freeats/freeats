@@ -37,14 +37,14 @@ jobs:
       # Required to compile pg ruby gem.
       - name: Install PostgreSQL client
         run: |
-          sudo apt-get update -y
-          sudo apt-get install libpq-dev
-          sudo apt-get install postgresql-client
+          sudo apt-get update
+          sudo apt-get install libpq-dev -y
+          sudo apt-get install postgresql-client -y
 
       # Required for processing images.
       - name: Install libvips library
         run: |
-          sudo apt-get install libvips
+          sudo apt-get install libvips -y
 
       - name: Get yarn cache directory
         id: yarn-cache-dir-path
