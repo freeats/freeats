@@ -4,7 +4,7 @@ on: push
 
 jobs:
   build:
-    runs-on: namespace-profile-default
+    runs-on: ubuntu-22.04
     services:
       postgres:
         image: postgres:14.9
