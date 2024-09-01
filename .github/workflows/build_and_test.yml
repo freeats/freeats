@@ -47,7 +47,7 @@ jobs:
 
       - name: Test that Postgres is ready
         run: |
-          pg_isready -d ats -h localhost -p ${{ job.services.postgres.ports[5432] }} -U ats
+          pg_isready -d ats -h 127.0.0.1 -p ${{ job.services.postgres.ports[5432] }} -U ats
 
       # Required for processing images.
       - name: Install libvips library
