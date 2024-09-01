@@ -89,9 +89,9 @@ jobs:
 
       - name: Create DB
         env:
-          # Use 172.17.0.1 when running on self-hosted
-          # Use localhost when running on ubuntu, i.e. GitHub Actions
-          # Use postgres when running on a VM
+          # Use 172.17.0.1 when runs-on is self-hosted
+          # Use localhost when runs-on is ubuntu, a GitHub hosted runner
+          # Use postgres otherwise
           DATABASE_HOST: 172.17.0.1
           PGUSER: ats
           PGPASSWORD: ats
