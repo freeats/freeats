@@ -16,6 +16,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Push to dokku
+        working-directory: .
         uses: dokku/github-action@master
         with:
           git_remote_url: "ssh://dokku@alpha.toughbyte.com:22/ats"
