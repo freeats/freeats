@@ -21,4 +21,5 @@ jobs:
           echo "${{ secrets.DOKKU_SSH_PRIVATE_KEY }}" | tr -d '\r' >/root/.ssh/id_rsa
           chmod 600 /root/.ssh/id_rsa
           chmod 700 /root/.ssh
+          ssh-keyscan -t rsa alpha.toughbyte.com >> /root/.ssh/known_hosts
           git push --force ssh://dokku@alpha.toughbyte.com:22/ats $GITHUB_SHA:refs/heads/master
