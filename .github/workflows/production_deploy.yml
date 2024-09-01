@@ -10,13 +10,15 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: /github/workspace
     steps:
       - name: Cloning repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Push to dokku
-        working-directory: .
         uses: dokku/github-action@master
         with:
           git_remote_url: "ssh://dokku@alpha.toughbyte.com:22/ats"
