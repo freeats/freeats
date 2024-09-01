@@ -7,9 +7,12 @@ on:
     types: [completed]
   workflow_dispatch:
 
+env:
+  GIT_DISCOVERY_ACROSS_FILESYSTEM: 1
+
 jobs:
   deploy:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Cloning repo
         uses: actions/checkout@v4
