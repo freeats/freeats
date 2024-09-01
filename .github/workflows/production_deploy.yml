@@ -20,8 +20,7 @@ jobs:
         with:
           image: dokku/ci-docker-image:0.11.0
           run: |
-            pwd
-            ls -lha
+            ls bin/ -lha
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
