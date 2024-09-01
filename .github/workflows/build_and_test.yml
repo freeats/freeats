@@ -45,10 +45,6 @@ jobs:
           sudo apt-get install libpq-dev -y
           sudo apt-get install postgresql-client -y
 
-      - name: Test that Postgres is ready
-        run: |
-          pg_isready -d ats -h 172.17.0.1 -p ${{ job.services.postgres.ports[5432] }} -U ats
-
       # Required for processing images.
       - name: Install libvips library
         run: |
@@ -93,9 +89,10 @@ jobs:
 
       - name: Create DB
         env:
-          # Use localhost for the host here because we have specified a container for the job.
-          # If we were running the job on the VM this would be postgres.
-          PGHOST: localhost
+          # Use 172.17.0.1 when running on self-hosted
+          # Use localhost when running on ubuntu, i.e. GitHub Actions
+          # Use postgres when running on a VM
+          PGHOST: 172.17.0.1
           PGUSER: ats
           PGPASSWORD: ats
           PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
@@ -105,7 +102,7 @@ jobs:
 
       - run: bundle exec rails test
         env:
-          PGHOST: localhost
+          PGHOST: 172.17.0.1
           PGUSER: ats
           PGPASSWORD: ats
           PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
@@ -115,7 +112,7 @@ jobs:
 
       - run: bundle exec rails test:system
         env:
-          PGHOST: localhost
+          PGHOST: 172.17.0.1
           PGUSER: ats
           PGPASSWORD: ats
           PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
