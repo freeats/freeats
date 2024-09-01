@@ -10,9 +10,6 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
-    defaults:
-      run:
-        working-directory: /github/workspace
     steps:
       - name: Cloning repo
         uses: actions/checkout@v4
