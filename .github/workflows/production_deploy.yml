@@ -19,8 +19,9 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: dokku/ci-docker-image:0.11.0
+          options: -v ${{ github.workspace }}:/github/workspace
           run: |
-            ls bin/ -lha
+            ls /github/workspace -lha
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
