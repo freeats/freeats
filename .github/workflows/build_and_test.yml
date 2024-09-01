@@ -87,7 +87,7 @@ jobs:
           yarn build
           yarn build:css
 
-      - name: Test Postgres connection
+      - name: Test that Postgres is ready
         run: |
           pg_isready -h postgres -p ${{ job.services.postgres.ports[5432] }} -U ats ats
 
