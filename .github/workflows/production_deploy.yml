@@ -5,6 +5,7 @@ on:
     workflows: ["Build and test"]
     branches: [master]
     types: [completed]
+  workflow_dispatch:
 
 jobs:
   deploy:
