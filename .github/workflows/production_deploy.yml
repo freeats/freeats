@@ -15,8 +15,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: |
-          cat .git/HEAD
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
