@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0
       - run: |
-          ls
+          ls -a
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
