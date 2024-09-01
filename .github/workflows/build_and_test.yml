@@ -92,7 +92,7 @@ jobs:
           # Use 172.17.0.1 when running on self-hosted
           # Use localhost when running on ubuntu, i.e. GitHub Actions
           # Use postgres when running on a VM
-          PGHOST: 172.17.0.1
+          DATABASE_HOST: 172.17.0.1
           PGUSER: ats
           PGPASSWORD: ats
           PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
@@ -102,7 +102,7 @@ jobs:
 
       - run: bundle exec rails test
         env:
-          PGHOST: 172.17.0.1
+          DATABASE_HOST: 172.17.0.1
           PGUSER: ats
           PGPASSWORD: ats
           PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
@@ -112,7 +112,7 @@ jobs:
 
       - run: bundle exec rails test:system
         env:
-          PGHOST: 172.17.0.1
+          DATABASE_HOST: 172.17.0.1
           PGUSER: ats
           PGPASSWORD: ats
           PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
