@@ -45,6 +45,10 @@ jobs:
           sudo apt-get install libpq-dev -y
           sudo apt-get install postgresql-client -y
 
+      - name: Test that Postgres is ready
+        run: |
+          pg_isready -h postgres -p ${{ job.services.postgres.ports[5432] }} -U ats ats
+
       # Required for processing images.
       - name: Install libvips library
         run: |
@@ -86,10 +90,6 @@ jobs:
         run: |
           yarn build
           yarn build:css
-
-      - name: Test that Postgres is ready
-        run: |
-          pg_isready -h postgres -p ${{ job.services.postgres.ports[5432] }} -U ats ats
 
       - name: Create DB
         env:
