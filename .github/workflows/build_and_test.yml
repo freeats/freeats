@@ -87,6 +87,10 @@ jobs:
           yarn build
           yarn build:css
 
+      - name: Test Postgres connection
+        run: |
+          pg_isready -h postgres -p ${{ job.services.postgres.ports[5432] }} -U ats ats
+
       - name: Create DB
         env:
           # Use localhost for the host here because we have specified a container for the job.
