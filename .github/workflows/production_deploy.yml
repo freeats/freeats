@@ -17,5 +17,8 @@ jobs:
           fetch-depth: 0
       - name: Push to Dokku
         run: |
-          ls -lha
+          mkdir -p /root/.ssh
+          echo "${{ secrets.DOKKU_SSH_PRIVATE_KEY }}" | tr -d '\r' >/root/.ssh/id_rsa
+          chmod 600 /root/.ssh/id_rsa
+          chmod 700 /root/.ssh
           git push --force ssh://dokku@alpha.toughbyte.com:22/ats $GITHUB_SHA:refs/heads/master
