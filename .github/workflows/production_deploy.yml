@@ -15,11 +15,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: |
-          ls -a
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
           git_remote_url: "ssh://dokku@alpha.toughbyte.com:22/ats"
           ssh_private_key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
-          git_push_flags: --force
+          git_push_flags: "-vvv --force"
+          trace: "1"
