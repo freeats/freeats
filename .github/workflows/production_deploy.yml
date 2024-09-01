@@ -15,9 +15,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Pring working directory
-        run: |
-          pwd
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
