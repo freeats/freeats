@@ -3227,13 +3227,6 @@ CREATE INDEX index_location_aliases_on_alias_trgm ON public.location_aliases USI
 
 
 --
--- Name: index_location_aliases_on_location_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_location_aliases_on_location_id ON public.location_aliases USING btree (location_id);
-
-
---
 -- Name: index_location_aliases_on_location_id_and_alias; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3262,10 +3255,24 @@ CREATE UNIQUE INDEX index_location_hierarchies_on_path ON public.location_hierar
 
 
 --
+-- Name: index_location_hierarchies_on_path_using_gist_16; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_location_hierarchies_on_path_using_gist_16 ON public.location_hierarchies USING gist (path public.gist_ltree_ops (siglen='16'));
+
+
+--
 -- Name: index_locations_on_country_code; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_locations_on_country_code ON public.locations USING btree (country_code);
+
+
+--
+-- Name: index_locations_on_country_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_country_name ON public.locations USING btree (country_name);
 
 
 --
@@ -3308,6 +3315,27 @@ CREATE INDEX index_locations_on_geoname_feature_code ON public.locations USING b
 --
 
 CREATE UNIQUE INDEX index_locations_on_geoname_id ON public.locations USING btree (geoname_id);
+
+
+--
+-- Name: index_locations_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_name ON public.locations USING btree (name);
+
+
+--
+-- Name: index_locations_on_name_trgm; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_name_trgm ON public.locations USING gin (lower(public.f_unaccent((name)::text)) public.gin_trgm_ops);
+
+
+--
+-- Name: index_locations_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_locations_on_slug ON public.locations USING btree (slug);
 
 
 --
@@ -3764,6 +3792,14 @@ ALTER TABLE ONLY public.candidates
 
 
 --
+-- Name: candidates fk_rails_2223471537; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidates
+    ADD CONSTRAINT fk_rails_2223471537 FOREIGN KEY (location_id) REFERENCES public.locations(id);
+
+
+--
 -- Name: sequences fk_rails_2803439625; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4122,6 +4158,10 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240902071234'),
+('20240902064755'),
+('20240902063330'),
+('20240902055934'),
 ('20240602141417'),
 ('20240602141416'),
 ('20240602141415'),
