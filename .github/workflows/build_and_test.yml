@@ -7,7 +7,6 @@ env:
   # Use localhost when runs-on is ubuntu, a GitHub hosted runner
   # Use postgres otherwise
   DATABASE_HOST: 172.17.0.1
-  PGUSER: ats
   PGPASSWORD: ats
   RAILS_ENV: test
   RAILS_MASTER_KEY: "e1223b7c2186ddb83584ed06238e0d06"
