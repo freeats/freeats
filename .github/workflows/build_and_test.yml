@@ -13,9 +13,9 @@ jobs:
           POSTGRES_PASSWORD: ats
           POSTGRES_DB: ats
         ports:
-          # Will assign a random free host port.
+          # Will assign a random free host port
           - 5432/tcp
-        # Needed because the postgres container does not provide a healthcheck.
+        # Needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
@@ -95,7 +95,7 @@ jobs:
           DATABASE_HOST: 172.17.0.1
           PGUSER: ats
           PGPASSWORD: ats
-          PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_ENV: test
         run: |
           bin/rails db:create db:schema:load
@@ -105,7 +105,7 @@ jobs:
           DATABASE_HOST: 172.17.0.1
           PGUSER: ats
           PGPASSWORD: ats
-          PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_ENV: test
           CI: 1
           RAILS_MASTER_KEY: "e1223b7c2186ddb83584ed06238e0d06"
@@ -115,7 +115,7 @@ jobs:
           DATABASE_HOST: 172.17.0.1
           PGUSER: ats
           PGPASSWORD: ats
-          PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_ENV: test
           CI: 1
           RAILS_MASTER_KEY: "e1223b7c2186ddb83584ed06238e0d06"
