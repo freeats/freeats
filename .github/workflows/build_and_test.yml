@@ -38,8 +38,8 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
 
-      # Required to compile pg ruby gem.
-      - name: Install PostgreSQL client
+      # Required to compile Ruby gems
+      - name: Install Ubuntu packages
         run: |
           sudo apt-get update
           sudo apt-get install libpq-dev -y
