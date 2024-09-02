@@ -53,12 +53,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install libpq-dev -y
-          sudo apt-get install postgresql-client -y
-
-      # Required for processing images.
-      - name: Install libvips library
-        run: |
           sudo apt-get install libvips -y
+          sudo apt-get install postgresql-client -y
 
       - name: Get yarn cache directory
         id: yarn-cache-dir-path
