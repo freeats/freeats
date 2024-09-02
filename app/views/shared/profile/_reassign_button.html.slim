@@ -53,7 +53,6 @@ ruby:
                                                   mobile:, name: input_button_name }
       button.d-none type="submit" Hidden save
   - elsif currently_assigned_account.present?
-    .w-100.text-start.text-md-end.text-lg-start.text-xl-end [data-bs-toggle="tooltip"
-      title=tooltip_title]
+    .w-100.text-start data-bs-toggle="tooltip" title=tooltip_title
       = picture_avatar_icon currently_assigned_account.avatar, {}, class: "small-avatar-thumbnail me-1"
       = currently_assigned_account.name
