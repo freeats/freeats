@@ -2,6 +2,17 @@ name: Build and test
 
 on: push
 
+env:
+  # Use 172.17.0.1 when runs-on is self-hosted
+  # Use localhost when runs-on is ubuntu, a GitHub hosted runner
+  # Use postgres otherwise
+  DATABASE_HOST: 172.17.0.1
+  PGUSER: ats
+  PGPASSWORD: ats
+  RAILS_ENV: test
+  RAILS_MASTER_KEY: "e1223b7c2186ddb83584ed06238e0d06"
+  CI: 1
+
 jobs:
   build:
     runs-on: self-hosted
@@ -89,36 +100,17 @@ jobs:
 
       - name: Create DB
         env:
-          # Use 172.17.0.1 when runs-on is self-hosted
-          # Use localhost when runs-on is ubuntu, a GitHub hosted runner
-          # Use postgres otherwise
-          DATABASE_HOST: 172.17.0.1
-          PGUSER: ats
-          PGPASSWORD: ats
           PGPORT: ${{ job.services.postgres.ports[5432] }}
-          RAILS_ENV: test
         run: |
           bin/rails db:create db:schema:load
 
       - run: bundle exec rails test
         env:
-          DATABASE_HOST: 172.17.0.1
-          PGUSER: ats
-          PGPASSWORD: ats
           PGPORT: ${{ job.services.postgres.ports[5432] }}
-          RAILS_ENV: test
-          CI: 1
-          RAILS_MASTER_KEY: "e1223b7c2186ddb83584ed06238e0d06"
 
       - run: bundle exec rails test:system
         env:
-          DATABASE_HOST: 172.17.0.1
-          PGUSER: ats
-          PGPASSWORD: ats
           PGPORT: ${{ job.services.postgres.ports[5432] }}
-          RAILS_ENV: test
-          CI: 1
-          RAILS_MASTER_KEY: "e1223b7c2186ddb83584ed06238e0d06"
 
       - run: yarn eslint .
       - run: yarn prettier -c .
