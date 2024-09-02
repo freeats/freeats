@@ -27,7 +27,8 @@ jobs:
           - 5432/tcp
         # Needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
+    env:
+      PGPORT: ${{ job.services.postgres.ports[5432] }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -91,25 +92,17 @@ jobs:
 
       - name: Compile assets
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        env:
-          RAILS_ENV: test
         run: |
           yarn build
           yarn build:css
 
       - name: Create DB
-        env:
-          PGPORT: ${{ job.services.postgres.ports[5432] }}
         run: |
           bin/rails db:create db:schema:load
 
       - run: bundle exec rails test
-        env:
-          PGPORT: ${{ job.services.postgres.ports[5432] }}
 
       - run: bundle exec rails test:system
-        env:
-          PGPORT: ${{ job.services.postgres.ports[5432] }}
 
       - run: yarn eslint .
       - run: yarn prettier -c .
