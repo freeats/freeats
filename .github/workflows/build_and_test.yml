@@ -20,8 +20,8 @@ jobs:
       postgres:
         image: postgres:14.9
         env:
-          POSTGRES_USER: $PGUSER
-          POSTGRES_PASSWORD: $PGPASSWORD
+          POSTGRES_USER: ${{ env.PGUSER }}
+          POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
         ports:
           # Will assign a random free host port
           - 5432/tcp
