@@ -18,7 +18,7 @@ jobs:
       - name: Cloning repo
         uses: actions/checkout@v4
         with:
-          ref: $GITHUB_REF_NAME
+          ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
       - name: Rollback
         if: ${{ github.event.inputs.rollback }}
