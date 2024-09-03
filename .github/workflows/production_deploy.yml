@@ -8,9 +8,11 @@ on:
   workflow_dispatch:
     inputs:
       branch:
+        description: "Branch to deploy"
         required: true
         default: "master"
       rollback:
+        description: "Deploy second last commit"
         type: boolean
 
 jobs:
