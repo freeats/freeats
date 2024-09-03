@@ -21,7 +21,7 @@ jobs:
           ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
       - name: Rollback
-        if: ${{ github.event.inputs.rollback }}
+        if: github.event.inputs.rollback == 'true'
         run: git checkout HEAD^
       # dokku/github-action can't find git repo when self-hosted
       - name: Push to Dokku
