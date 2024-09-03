@@ -7,6 +7,9 @@ on:
     types: [completed]
   workflow_dispatch:
     inputs:
+      branch:
+        required: true
+        default: "master"
       rollback:
         type: boolean
 
@@ -18,7 +21,7 @@ jobs:
       - name: Cloning repo
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_branch }}
+          ref: ${{ github.event.inputs.branch }}
           fetch-depth: 0
       - name: Rollback
         if: github.event.inputs.rollback == 'true'
