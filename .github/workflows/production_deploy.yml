@@ -19,6 +19,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Rollback
+        if: ${{ github.event.inputs.rollback }}
+        run: git checkout HEAD^
       # dokku/github-action can't find git repo when self-hosted
       - name: Push to Dokku
         run: |
