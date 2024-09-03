@@ -11,9 +11,8 @@ on:
         description: "Branch to deploy"
         required: true
         default: "master"
-      rollback:
-        description: "Deploy second last commit"
-        type: boolean
+      commit:
+        description: "Commit to deploy, e.g. HEAD^"
 
 jobs:
   deploy:
@@ -26,8 +25,8 @@ jobs:
           ref: ${{ github.event.inputs.branch }}
           fetch-depth: 0
       - name: Rollback
-        if: github.event.inputs.rollback == 'true'
-        run: git checkout HEAD^
+        if: "${{ github.event.inputs.commit != '' }}"
+        run: git checkout ${{ github.event.inputs.commit }}
       # dokku/github-action can't find git repo when self-hosted
       - name: Push to Dokku
         run: |
