@@ -77,8 +77,9 @@ jobs:
         run: gem install bundler
 
       - name: Build Ruby dependencies
+        # Path should be same as in caching step
         run: |
-          bundle config path vendor/bundle # path should be same as in caching step
+          bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
 
       - name: Build JavaScript dependencies
