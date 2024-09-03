@@ -31,4 +31,4 @@ jobs:
           chmod 600 /root/.ssh/id_rsa
           chmod 700 /root/.ssh
           ssh-keyscan -t rsa ${{ vars.DOKKU_HOST }} >> /root/.ssh/known_hosts
-          git push --force ssh://dokku@${{ vars.DOKKU_HOST }}:22/${{ github.event.repository.name }} HEAD
+          git push --force ssh://dokku@${{ vars.DOKKU_HOST }}:22/${{ github.event.repository.name }} HEAD:master
