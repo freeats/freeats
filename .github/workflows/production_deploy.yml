@@ -18,6 +18,7 @@ jobs:
       - name: Cloning repo
         uses: actions/checkout@v4
         with:
+          ref: $GITHUB_REF_NAME
           fetch-depth: 0
       - name: Rollback
         if: ${{ github.event.inputs.rollback }}
@@ -30,4 +31,4 @@ jobs:
           chmod 600 /root/.ssh/id_rsa
           chmod 700 /root/.ssh
           ssh-keyscan -t rsa ${{ vars.DOKKU_HOST }} >> /root/.ssh/known_hosts
-          git push --force ssh://dokku@${{ vars.DOKKU_HOST }}:22/${{ github.event.repository.name }} $GITHUB_SHA:$GITHUB_REF
+          git push --force ssh://dokku@${{ vars.DOKKU_HOST }}:22/${{ github.event.repository.name }} HEAD
