@@ -16,7 +16,7 @@ on:
 
 jobs:
   deploy:
-    if: $GITHUB_EVENT_NAME == 'workflow_dispatch' || ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: self-hosted
     steps:
       - name: Cloning repo
