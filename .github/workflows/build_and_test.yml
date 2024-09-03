@@ -10,7 +10,7 @@ env:
   PGUSER: ats
   PGPASSWORD: ats
   RAILS_ENV: test
-  RAILS_MASTER_KEY: "e1223b7c2186ddb83584ed06238e0d06"
+  RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
   CI: 1
 
 jobs:
