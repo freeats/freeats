@@ -6,6 +6,9 @@ on:
     branches: [master]
     types: [completed]
   workflow_dispatch:
+    inputs:
+      rollback:
+        type: boolean
 
 jobs:
   deploy:
