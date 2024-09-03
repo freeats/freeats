@@ -1,4 +1,4 @@
-name: "Deploy"
+name: Production deploy
 
 on:
   workflow_run:
@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "Branch to deploy"
+        description: Branch to deploy
         required: true
-        default: "master"
+        default: master
       commit:
         description: "Commit to deploy, e.g. HEAD^"
 
