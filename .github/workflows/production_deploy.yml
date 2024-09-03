@@ -19,7 +19,7 @@ jobs:
       - name: Push to Dokku
         run: |
           mkdir -p /root/.ssh
-          echo "${{ secrets.DOKKU_SSH_PRIVATE_KEY }}" | tr -d '\r' >/root/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' >/root/.ssh/id_rsa
           chmod 600 /root/.ssh/id_rsa
           chmod 700 /root/.ssh
           ssh-keyscan -t rsa alpha.toughbyte.com >> /root/.ssh/known_hosts
