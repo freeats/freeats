@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   include ErrorHandler
 
   before_action :check_gmail_blank_tokens
+  before_action :set_selector_id_for_page
   rescue_from ActionPolicy::Unauthorized, with: :user_not_authorized
 
   add_flash_types :warning
@@ -84,5 +85,11 @@ class ApplicationController < ActionController::Base
       %(#{'Email'.pluralize(addresses.size)} #{addresses.to_sentence}
         #{'is'.pluralize(addresses.size)} not linked. Please press <i>Link Gmail</i> button in
         <a href="#{ats_profile_url}">your profile</a> to synchronize emails.)
+  end
+
+  def set_selector_id_for_page
+    controller = params[:controller] #=> "ats/candidates"
+    action = params[:action] #=> "show"
+    @page_id = "#{controller.tr('/', '-')}-#{action}".dasherize #=> "ats-candidates-show"
   end
 end

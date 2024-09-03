@@ -109,11 +109,27 @@ class ATS::CandidatesController < ApplicationController
           # @running_sequences = Sequence.where(to: candidate_emails, status: :running)
           @running_sequences = []
         when "scorecards"
+          # Do not use `includes` for position `stages`, it breaks their order by list_index.
           @placements_with_scorecard_templates =
             @candidate
             .placements
-            .includes(position: { stages: :scorecard_template })
-            .joins(position: { stages: :scorecard_template })
+            .preload(
+              position: { stages: :scorecard_template },
+              scorecards: [:added_event, { interviewer: :account }]
+            )
+            .where(<<~SQL)
+              EXISTS (
+                SELECT 1 FROM scorecard_templates
+                JOIN position_stages
+                  AS scorecard_template_stage
+                  ON scorecard_templates.position_stage_id = scorecard_template_stage.id
+                JOIN position_stages
+                  AS placement_stage
+                  ON placements.position_stage_id = placement_stage.id
+                WHERE scorecard_template_stage.list_index <= placement_stage.list_index
+                AND scorecard_template_stage.position_id = placements.position_id
+              )
+            SQL
         when "files"
           @all_files = @candidate.all_files
         when "activities"

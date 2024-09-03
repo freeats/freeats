@@ -6,7 +6,7 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
   test "should create only one scorecard template" do
-    position_stage = position_stages(:ruby_position_replied)
+    position_stage = position_stages(:ruby_position_hired)
     actor_account = accounts(:admin_account)
 
     params = {
@@ -57,7 +57,7 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
   end
 
   test "should return failure with invalid event" do
-    position_stage = position_stages(:ruby_position_replied)
+    position_stage = position_stages(:ruby_position_hired)
     actor_account = accounts(:admin_account)
 
     params = {

@@ -602,4 +602,98 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
                    "Candidate you were trying to access was merged with this candidate."
     end
   end
+
+  test "should display scorecard only for associated placement" do
+    sign_in accounts(:admin_account)
+
+    ruby_placement1 = placements(:sam_ruby_replied)
+    ruby_placement1_scorecard_path = ats_scorecard_path(scorecards(:ruby_position_replied_scorecard))
+    ruby_placement2 = placements(:sam_ruby_contacted)
+    candidate = candidates(:sam)
+
+    get tab_ats_candidate_path(candidate, :scorecards)
+
+    assert_equal [ruby_placement1.candidate_id, ruby_placement2.candidate_id].uniq, [candidate.id]
+    assert_equal ruby_placement1.position_id, ruby_placement2.position_id
+
+    assert_response :success
+
+    ruby_placement1_dom_links = css_select("#placement-#{ruby_placement1.id} a").map { _1.attr("href") }
+    ruby_placement2_dom_links = css_select("#placement-#{ruby_placement2.id} a").map { _1.attr("href") }
+
+    assert_includes ruby_placement1_dom_links, ruby_placement1_scorecard_path
+    assert_not_includes ruby_placement2_dom_links, ruby_placement1_scorecard_path
+  end
+
+  test "should display only stages with scorecard template and one of the next conditions is true: " \
+       "stage below or equal placement stage or stage already have scorecard" do
+    sign_in accounts(:admin_account)
+
+    # Stage below or equal placement stage.
+    ruby_placement = placements(:sam_ruby_contacted)
+    candidate = candidates(:sam)
+
+    assert_equal ruby_placement.candidate_id, candidate.id
+    assert_equal ruby_placement.stage, "Contacted"
+
+    get tab_ats_candidate_path(candidate, :scorecards)
+
+    assert_response :success
+
+    visible_stage_names =
+      css_select("#placement-#{ruby_placement.id} .row").map { _1.at_css("div").text }
+
+    assert_equal visible_stage_names, %w[Sourced Contacted]
+
+    # Stage already have scorecard.
+    replied_scorecard = scorecards(:ruby_position_replied_scorecard)
+    replied_scorecard.update!(placement_id: ruby_placement.id)
+
+    assert_operator(
+      ruby_placement.position_stage.list_index, :<, replied_scorecard.position_stage.list_index
+    )
+
+    get tab_ats_candidate_path(candidate, :scorecards)
+
+    assert_response :success
+
+    visible_stage_names =
+      css_select("#placement-#{ruby_placement.id} .row").map { _1.at_css("div").text }
+
+    assert_equal visible_stage_names, %w[Sourced Contacted Replied]
+
+    # Stage "Hired" do not have scorecard template
+    Placements::ChangeStage.new(placement: ruby_placement, new_stage: "Hired").call.value!
+
+    get tab_ats_candidate_path(candidate, :scorecards)
+
+    assert_response :success
+
+    visible_stage_names =
+      css_select("#placement-#{ruby_placement.id} .row").map { _1.at_css("div").text }
+
+    assert_equal visible_stage_names, %w[Sourced Contacted Replied]
+  end
+
+  test "should not display placement in scorecards table if scorecard template associated with " \
+       "stage later than placement stage" do
+    sign_in accounts(:admin_account)
+
+    ruby_placement = placements(:sam_ruby_contacted)
+    replied_stage_scorecard_template = scorecard_templates(:ruby_position_replied_scorecard_template)
+    candidate = candidates(:sam)
+
+    assert_equal ruby_placement.position_id, replied_stage_scorecard_template.position_stage.position_id
+    assert_equal ruby_placement.stage, "Contacted"
+    assert_equal replied_stage_scorecard_template.position_stage.name, "Replied"
+
+    scorecard_templates(:ruby_position_contacted_scorecard_template).destroy!
+    scorecard_templates(:ruby_position_sourced_scorecard_template).destroy!
+
+    get tab_ats_candidate_path(candidate, :scorecards)
+
+    assert_response :success
+
+    assert_empty css_select("#placement-#{ruby_placement.id}")
+  end
 end

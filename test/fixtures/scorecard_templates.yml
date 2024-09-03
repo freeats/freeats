@@ -6,3 +6,8 @@ ruby_position_contacted_scorecard_template:
   position_stage: ruby_position_contacted
   title: Contacted stage scorecard template
   visible_to_interviewer: true
+
+ruby_position_replied_scorecard_template:
+  position_stage: ruby_position_replied
+  title: Replied stage scorecard template
+  visible_to_interviewer: true

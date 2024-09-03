@@ -1,8 +1,8 @@
-/# locals: (stage:, placement:)
+/# locals: (stage:, scorecards:, placement_id:)
 
 .d-flex.gap-2.align-items-baseline.justify-content-around.mb-2
   .d-flex.gap-2.flex-row.flex-column.flex-grow-1
-    - stage.scorecards.each do |scorecard|
+    - scorecards.each do |scorecard|
       .d-flex.mb-1.gap-1
         - if allowed_to?(:show?, scorecard, with: ATS::ScorecardPolicy)
           = link_to(scorecard.title, ats_scorecard_path(scorecard))
@@ -12,7 +12,7 @@
         = "by #{scorecard.interviewer.name} on #{scorecard.added_event.performed_at.strftime('%d.%m.%Y')}"
   - if allowed_to?(:new?, stage.scorecard_template, with: ATS::ScorecardPolicy)
     = render ButtonLinkComponent.new( \
-      new_ats_scorecard_path(position_stage_id: stage.id, placement_id: placement.id),
+      new_ats_scorecard_path(position_stage_id: stage.id, placement_id:),
       variant: :cancel, size: :tiny, type: :button \
     )
       | Add scorecard

@@ -49,4 +49,12 @@ module ScorecardsHelper
       end
     end
   end
+
+  def visible_stages(placement)
+    placement.position.stages.filter do |stage|
+      stage.scorecard_template.present? &&
+        (stage.list_index <= placement.position_stage.list_index ||
+          placement.scorecards.any? { _1.position_stage_id == stage.id })
+    end
+  end
 end
