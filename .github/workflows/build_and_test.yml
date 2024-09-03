@@ -7,7 +7,8 @@ env:
   # Use localhost when runs-on is ubuntu, a GitHub hosted runner
   # Use postgres otherwise
   DATABASE_HOST: 172.17.0.1
-  PGUSER: ats
+  DATABASE_USERNAME: ats
+  # PGPASSWORD is passed directly to libpq, not referenced within Rails app
   PGPASSWORD: ats
   RAILS_ENV: test
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
@@ -20,7 +21,7 @@ jobs:
       postgres:
         image: postgres:14.9
         env:
-          POSTGRES_USER: ${{ env.PGUSER }}
+          POSTGRES_USER: ${{ env.DATABASE_USERNAME }}
           POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
         ports:
           # Will assign a random free host port
