@@ -7,7 +7,7 @@ env:
   # Use localhost when runs-on is ubuntu, a GitHub hosted runner
   # Use postgres otherwise
   DATABASE_HOST: 172.17.0.1
-  DATABASE_USERNAME: ats
+  DATABASE_USERNAME: postgres
   # PGPASSWORD is passed directly to libpq, not referenced within Rails app
   PGPASSWORD: ats
   RAILS_ENV: test
