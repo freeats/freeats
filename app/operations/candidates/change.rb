@@ -6,6 +6,7 @@ class Candidates::Change
   include Dry::Initializer.define -> do
     option :candidate, Types::Instance(Candidate)
     option :actor_account, Types::Instance(Account)
+    option :namespace, Types::Strict::Symbol, optional: true, default: -> { :ats }
     option :params, Types::Strict::Hash.schema(
       avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
       remove_avatar?: Types::Strict::String,
@@ -56,24 +57,18 @@ class Candidates::Change
   def call
     old_values = remember_old_values(candidate)
 
-    params[:emails].uniq! { _1[:address].downcase } if params[:emails].present?
-    if params[:phones].present?
-      params[:phones].uniq! do |phone_record|
-        CandidatePhone.normalize(phone_record[:phone], candidate.location&.country_code || "RU")
-      end
-    end
-    params[:links].uniq! { AccountLink.new(_1[:url]).normalize } if params[:links].present?
+    prepared_params = prepare_params(params:, old_values:, namespace:)
 
     result = Try[ActiveRecord::RecordInvalid] do
       ActiveRecord::Base.transaction do
-        candidate.assign_attributes(params.except(:alternative_names))
+        candidate.assign_attributes(prepared_params.except(:alternative_names))
         candidate.save!
 
-        if params.key?(:alternative_names)
+        if prepared_params.key?(:alternative_names)
           yield Candidates::AlternativeNames::Change.new(
             candidate:,
             actor_account:,
-            alternative_names: params[:alternative_names]
+            alternative_names: prepared_params[:alternative_names]
           ).call
         end
 
@@ -109,12 +104,24 @@ class Candidates::Change
       headline: candidate.headline,
       telegram: candidate.telegram,
       skype: candidate.skype,
-      candidate_source: candidate.source,
+      source: candidate.source,
       links: candidate.links,
       alternative_names: candidate.names,
       emails: candidate.emails,
       phones: candidate.phones
     }
+  end
+
+  def prepare_params(params:, old_values:, namespace:)
+    params[:emails].uniq! { _1[:address].downcase } if params[:emails].present?
+    if params[:phones].present?
+      params[:phones].uniq! do |phone_record|
+        CandidatePhone.normalize(phone_record[:phone], candidate.location&.country_code || "RU")
+      end
+    end
+    params[:links].uniq! { AccountLink.new(_1[:url]).normalize } if params[:links].present?
+    params.delete(:source) if old_values[:source].present? && namespace == :api
+    params
   end
 
   def add_recruiter_changed_events(candidate:, actor_account:, old_recruiter_id:)
@@ -203,7 +210,7 @@ class Candidates::Change
     Events::AddChangedEvent.new(
       eventable: candidate,
       changed_field: "candidate_source",
-      old_value: old_values[:candidate_source],
+      old_value: old_values[:source],
       new_value: candidate.source,
       actor_account:
     ).call

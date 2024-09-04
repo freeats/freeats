@@ -12,3 +12,13 @@ jane_link:
   candidate: jane
   url: "https://www.linkedin.com/in/jane/"
   status: current
+
+sam_link1:
+  candidate: sam
+  url: "https://hh.ru/resume/sam"
+  status: current
+
+sam_link2:
+  candidate: sam
+  url: "https://www.linkedin.com/in/sam/"
+  status: current

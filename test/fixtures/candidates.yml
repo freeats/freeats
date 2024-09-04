@@ -16,6 +16,7 @@ sam:
   full_name: Sam Smith
   location: dublin_city
   recruiter: admin_member
+  candidate_source: headhunter
 
 john_duplicate:
   full_name: John Doe Duplicate

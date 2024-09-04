@@ -33,13 +33,27 @@ class API::V1::DocumentsController < ApplicationController
     result = params.permit(:url, :full_name, :location, :headline, :avatar, :cv).to_h
     lp = LocationParser.new(result.delete(:location))
     result[:location_id] = lp.city_or_country.id.to_s if lp.parse
+    result[:source] =
+      case result[:url]
+      when %r{^https://.*hh\.ru/resume/}
+        "headhunter"
+      when %r{^https://www\.linkedin\.com/in}
+        "linkedin"
+      end
     result[:links] = [{ url: result.delete(:url), status: "current" }]
     result.deep_symbolize_keys
   end
 
   def create_or_update_candidate(params, url)
     if (duplicate = find_mergeable_duplicate(url)).present?
-      Candidates::Change.new(candidate: duplicate, params:, actor_account: current_account).call
+      Candidates::Change
+        .new(
+          candidate: duplicate,
+          params:,
+          actor_account: current_account,
+          namespace: :api
+        )
+        .call
     else
       Candidates::Add.new(params:, actor_account: current_account).call
     end
