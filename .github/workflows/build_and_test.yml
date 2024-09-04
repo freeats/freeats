@@ -7,9 +7,10 @@ env:
   # Use localhost when runs-on is ubuntu, a GitHub hosted runner
   # Use postgres otherwise
   DATABASE_HOST: 172.17.0.1
+  # This username is required for the postgres service to work without errors
   DATABASE_USERNAME: postgres
   # PGPASSWORD is passed directly to libpq, not referenced within Rails app
-  PGPASSWORD: ats
+  PGPASSWORD: postgres
   RAILS_ENV: test
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
   CI: 1
@@ -25,13 +26,13 @@ jobs:
       postgres:
         image: postgres:14.9
         env:
-          POSTGRES_USER: ${{ env.DATABASE_USERNAME }}
           POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
         ports:
           # Will assign a random free host port
           - 5432/tcp
-        # Needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        # User needs to be set to postgres for this to work without errors
+        # Healthcheck needed because the postgres container does not provide a healthcheck
+        options: --user postgres --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
