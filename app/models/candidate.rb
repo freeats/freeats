@@ -230,21 +230,6 @@ class Candidate < ApplicationRecord
     "https://vk.com/search/people?q=#{query}"
   end
 
-  def change(params)
-    case Candidates::Change.new(
-      candidate: self,
-      params: params.to_h.deep_symbolize_keys
-    ).call
-    in Success()
-      reload
-      true
-    in Failure[:candidate_invalid, _e] |
-       Failure[:alternative_name_invalid, _e] |
-       Failure[:alternative_name_not_unique, _e]
-      false
-    end
-  end
-
   def sorted_links(status: nil)
     domains = AccountLink::DOMAINS
     social_links = []
