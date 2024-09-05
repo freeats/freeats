@@ -344,7 +344,7 @@ sudo docker system prune
 
 ### Github actions
 
-Configure GitHub deploy: add `DOKKU_SSH_PRIVATE_KEY` to [github secrets].
+Configure GitHub deploy: add `SSH_PRIVATE_KEY` to [github secrets].
 To get the private rsa key, execute the following command on the server:
 
 ```shell
