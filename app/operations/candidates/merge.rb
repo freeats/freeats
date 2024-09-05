@@ -239,10 +239,10 @@ class Candidates::Merge < ApplicationOperation
   )
     result = []
     old_emails = target_email_addresses.to_a
-    old_emails_addresses = old_emails.pluck(:address)
+    old_emails_addresses = old_emails.pluck(:address, :created_via)
     duplicate_emails =
       duplicates_email_addresses
-      .filter { old_emails_addresses.include?(_1[:address]) }
+      .filter { old_emails_addresses.include?([_1[:address], _1[:created_via]]) }
     new_emails = duplicates_email_addresses - duplicate_emails
 
     merge_email_attributes = lambda do |main_obj, update_obj|
@@ -250,7 +250,7 @@ class Candidates::Merge < ApplicationOperation
       main_obj[:type] = update_obj[:type] if main_obj[:type].nil? && update_obj[:type].present?
 
       if main_obj[:source] == "other" && update_obj[:source] != "other"
-        %i[source url].each do |field|
+        %i[source url created_by_id created_via].each do |field|
           main_obj[field] = update_obj[field]
         end
       end
@@ -303,6 +303,9 @@ class Candidates::Merge < ApplicationOperation
 
     merge_link_attributes = lambda do |main_obj, update_obj|
       main_obj[:status] = update_obj[:status] if main_obj[:status] == "current"
+      %i[created_by_id created_via].each do |field|
+        main_obj[field] = update_obj[field]
+      end
       main_obj
     end
 
@@ -374,7 +377,9 @@ class Candidates::Merge < ApplicationOperation
       main_obj[:type] = update_obj[:type] if main_obj[:type].nil? && update_obj[:type].present?
 
       if main_obj[:source] == "other" && update_obj[:source] != "other"
-        main_obj[:source] = update_obj[:source]
+        %i[source created_by_id created_via].each do |field|
+          main_obj[field] = update_obj[field]
+        end
       end
 
       main_obj

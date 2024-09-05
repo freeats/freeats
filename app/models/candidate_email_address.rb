@@ -6,6 +6,7 @@ class CandidateEmailAddress < ApplicationRecord
   EMAIL_REGEXP = %r{\A(?:[\w!#$%&*+\-\/=?^'`{|}~]+\.?)+(?<!\.)@(?:[a-z\d-]+\.)+[a-z]+\z}
 
   belongs_to :candidate
+  belongs_to :created_by, class_name: "Member", optional: true
 
   enum status: %i[
     current
@@ -34,6 +35,11 @@ class CandidateEmailAddress < ApplicationRecord
     work
   ].index_with(&:to_s)
 
+  enum created_via: %i[
+    api
+    manual
+  ].index_with(&:to_s), _prefix: true
+
   validates :address, presence: true, uniqueness: { scope: :candidate_id }
   validates :list_index, presence: true
   validates :list_index, numericality: { greater_than: 0 }
@@ -50,12 +56,16 @@ class CandidateEmailAddress < ApplicationRecord
   def self.combine(old_email_addresses:, new_email_addresses:, candidate_id:)
     status_priority = %w[current outdated invalid].freeze
 
-    new_emails = new_email_addresses.sort_by { status_priority.index(_1[:status]) }
+    new_emails =
+      new_email_addresses.dup.each { _1[:address] = Normalizer.email_address(_1[:address]) }
+    new_emails = new_emails.sort_by { status_priority.index(_1[:status]) }
     new_emails = new_emails.filter { _1[:address].present? }.uniq { _1[:address] }
 
     new_candidate_email_addresses = []
 
     new_emails.each.with_index(1) do |attributes, index|
+      attributes[:created_via] ||= "manual"
+
       existing_email_address =
         old_email_addresses
         .find do |email_address|
@@ -64,6 +74,12 @@ class CandidateEmailAddress < ApplicationRecord
 
       if existing_email_address
         attributes[:list_index] = index
+
+        if existing_email_address.created_via == attributes[:created_via]
+          attributes[:created_by] = existing_email_address.created_by
+          attributes[:added_at] = existing_email_address.added_at
+        end
+
         existing_email_address.assign_attributes(attributes)
         new_candidate_email_addresses << existing_email_address
       else
@@ -100,7 +116,10 @@ class CandidateEmailAddress < ApplicationRecord
       :status,
       :type,
       :source,
-      :url
+      :url,
+      :added_at,
+      :created_by_id,
+      :created_via
     )
   end
 end

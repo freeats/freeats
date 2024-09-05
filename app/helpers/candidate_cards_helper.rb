@@ -48,10 +48,14 @@ module CandidateCardsHelper
     tag.div(class: "d-flex flex-row flex-wrap column-gap-2 row-gap-1") do
       safe_join(
         candidate.candidate_phones.map do |phone|
+          created_by_text =
+            phone.created_by ? "#{phone.created_by.name} (#{phone.created_via})" : "None"
           tooltip_text = [
             "Source: #{phone.source.humanize}",
             "Type: #{phone.type&.capitalize || 'None'}",
-            "Status: #{phone.status.capitalize}"
+            "Status: #{phone.status.capitalize}",
+            "Created on: #{phone.added_at&.to_fs(:date) || 'None'}",
+            "Created by: #{created_by_text}"
           ].join("<br>")
           phone_tooltip =
             tag.span(class: "ms-1",
@@ -85,10 +89,13 @@ module CandidateCardsHelper
 
     safe_join(
       [candidate.candidate_email_addresses.map do |e|
+         created_by_text = e.created_by ? "#{e.created_by.name} (#{e.created_via})" : "None"
          tooltip_text = [
            "Source: #{e.source.humanize}",
            "Type: #{e.type.capitalize}",
-           "Status: #{e.status.capitalize}"
+           "Status: #{e.status.capitalize}",
+           "Created on: #{e.added_at&.to_fs(:date) || 'None'}",
+           "Created by: #{created_by_text}"
          ].join("<br>")
          email_tooltip =
            tag.span(class: "flex-shrink-0",

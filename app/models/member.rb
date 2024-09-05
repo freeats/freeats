@@ -45,6 +45,21 @@ class Member < ApplicationRecord
            foreign_key: :interviewer_id,
            inverse_of: :interviewer,
            dependent: :restrict_with_exception
+  has_many :candidate_email_addresses,
+           class_name: "CandidateEmailAddress",
+           inverse_of: :created_by,
+           foreign_key: :created_by_id,
+           dependent: :nullify
+  has_many :candidate_phones,
+           class_name: "CandidatePhone",
+           inverse_of: :created_by,
+           foreign_key: :created_by_id,
+           dependent: :nullify
+  has_many :candidate_links,
+           class_name: "CandidateLink",
+           inverse_of: :created_by,
+           foreign_key: :created_by_id,
+           dependent: :nullify
 
   belongs_to :account
 

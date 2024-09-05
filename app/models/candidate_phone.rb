@@ -9,6 +9,7 @@ class CandidatePhone < ApplicationRecord
   ].freeze
 
   belongs_to :candidate
+  belongs_to :created_by, class_name: "Member", optional: true
 
   enum type: %i[
     personal
@@ -32,6 +33,10 @@ class CandidatePhone < ApplicationRecord
     current
     invalid
     outdated
+  ].index_with(&:to_s), _prefix: true
+  enum created_via: %i[
+    api
+    manual
   ].index_with(&:to_s), _prefix: true
 
   validates :list_index, presence: true
@@ -79,7 +84,10 @@ class CandidatePhone < ApplicationRecord
       :list_index,
       :status,
       :type,
-      :source
+      :source,
+      :added_at,
+      :created_by_id,
+      :created_via
     )
   end
 

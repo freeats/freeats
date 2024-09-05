@@ -1,7 +1,18 @@
-john_email_address:
+john_email_address1:
   candidate: john
   address: john@gmail.com
   list_index: 1
+  type: personal
+  source: linkedin
+  status: current
+  created_via: manual
+  created_by: admin_member
+  added_at: 2016-01-01
+
+john_email_address2:
+  candidate: john
+  address: john@yahoo.com
+  list_index: 2
   type: personal
   source: linkedin
   status: current

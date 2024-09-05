@@ -497,7 +497,7 @@ class ATS::CandidatesController < ApplicationController
 
     email_params =
       params[:candidate].permit(
-        candidate_email_addresses_attributes: %i[address status url source type]
+        candidate_email_addresses_attributes: %i[address status url source type created_via]
       )[:candidate_email_addresses_attributes]
 
     if email_params

@@ -19,7 +19,7 @@
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
           = render TextInputComponent.new(address_form, method: :url, size: :small, placeholder: "Link")
           = render "ats/candidates/info_cards/candidate_email_addresses_select_fields", address_form:
-            = address_form
+            = address_form.hidden_field(:created_via)
             - if address_form.object.id.present?
               = address_form.hidden_field(:id)
         button.btn.btn-sm.text-secondary.border-0.shadow-none.align-self-start.pe-0[
@@ -42,6 +42,7 @@
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
           = render TextInputComponent.new(address_form, method: :url, size: :small, placeholder: "Link")
           = render "ats/candidates/info_cards/candidate_email_addresses_select_fields", address_form:
+          = address_form.hidden_field(:created_via)
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"
             class="candidate-delete-email-button"

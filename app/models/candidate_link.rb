@@ -2,10 +2,16 @@
 
 class CandidateLink < ApplicationRecord
   belongs_to :candidate
+  belongs_to :created_by, class_name: "Member", optional: true
 
   enum status: %i[
     current
     outdated
+  ].index_with(&:to_s), _prefix: true
+
+  enum created_via: %i[
+    api
+    manual
   ].index_with(&:to_s), _prefix: true
 
   validates :url, presence: true, uniqueness: { scope: :candidate_id }
@@ -20,7 +26,10 @@ class CandidateLink < ApplicationRecord
   def to_params
     attributes.symbolize_keys.slice(
       :url,
-      :status
+      :status,
+      :added_at,
+      :created_by_id,
+      :created_via
     )
   end
 end

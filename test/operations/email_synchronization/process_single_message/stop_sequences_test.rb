@@ -72,7 +72,7 @@ class EmailSynchronization::ProcessSingleMessage::StopSequencesTest < ActiveSupp
 
   test "should mark candidate email addresses as outdated if the address is not " \
        "found and have email messages sent to us" do
-    candidate_email_address = candidate_email_addresses(:john_email_address)
+    candidate_email_address = candidate_email_addresses(:john_email_address1)
     address_not_found_message = build(
       :email_message,
       from: "mailer-daemon@googlemail.com",

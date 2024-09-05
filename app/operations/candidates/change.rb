@@ -57,7 +57,7 @@ class Candidates::Change
   def call
     old_values = remember_old_values(candidate)
 
-    prepared_params = prepare_params(params:, old_values:, namespace:)
+    prepared_params = prepare_params(candidate:, params:, old_values:, actor_account:, namespace:)
 
     result = Try[ActiveRecord::RecordInvalid] do
       ActiveRecord::Base.transaction do
@@ -112,15 +112,42 @@ class Candidates::Change
     }
   end
 
-  def prepare_params(params:, old_values:, namespace:)
-    params[:emails].uniq! { _1[:address].downcase } if params[:emails].present?
+  def prepare_params(candidate:, params:, old_values:, actor_account:, namespace:)
+    if params[:emails].present?
+      params[:emails].uniq! { _1[:address].downcase }
+      params[:emails].each do |p|
+        p[:created_by] = p[:created_by] || actor_account&.member
+      end
+    end
+
     if params[:phones].present?
       params[:phones].uniq! do |phone_record|
         CandidatePhone.normalize(phone_record[:phone], candidate.location&.country_code || "RU")
       end
+      params[:phones].each do |p|
+        if (person_phone = candidate.candidate_phones.to_a.find { _1.phone == p[:phone] })
+          p[:created_by] = person_phone.created_by
+          p[:added_at] = person_phone.added_at
+        else
+          p[:created_by] = p[:created_by] || actor_account&.member
+        end
+      end
     end
-    params[:links].uniq! { AccountLink.new(_1[:url]).normalize } if params[:links].present?
+
+    if params[:links].present?
+      params[:links].uniq! { AccountLink.new(_1[:url]).normalize }
+      params[:links].each do |p|
+        if (person_link = candidate.candidate_links.to_a.find { _1.url == p[:url] })
+          p[:created_by] = person_link.created_by
+          p[:added_at] = person_link.added_at
+        else
+          p[:created_by] = p[:created_by] || actor_account&.member
+        end
+      end
+    end
+
     params.delete(:source) if old_values[:source].present? && namespace == :api
+
     params
   end
 

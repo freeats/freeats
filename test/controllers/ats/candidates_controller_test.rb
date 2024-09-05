@@ -4,7 +4,8 @@ require "test_helper"
 
 class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    sign_in accounts(:employee_account)
+    @current_account = accounts(:employee_account)
+    sign_in @current_account
   end
 
   test "should get index" do
@@ -501,6 +502,47 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal email_address.address, new_address
     assert_predicate EmailMessage.messages_to_addresses(to: new_address), :exists?
+  end
+
+  test "should keep the same created_by, added_at values and entity for the email address" do
+    candidate = candidates(:john)
+    old_email_address = candidate_email_addresses(:john_email_address1)
+
+    old_created_by = old_email_address.created_by
+    old_added_at = old_email_address.added_at
+    old_address = old_email_address.address
+    new_address = old_address.upcase
+
+    assert_equal old_email_address.created_via, "manual"
+    assert_not_equal old_address, new_address
+    assert_not_equal @current_account.member, old_created_by
+    assert old_created_by
+    assert old_added_at
+
+    assert_no_difference "EmailMessage.count" do
+      assert_difference "CandidateEmailAddress.count" => -1 do
+        patch update_card_ats_candidate_path(candidate),
+              params: {
+                card_name: "contact_info",
+                candidate: {
+                  person_phones_attributes: { "0" => { phone: "" } },
+                  person_links_attributes: { "0" => { url: "" } },
+                  candidate_email_addresses_attributes: {
+                    "0" => { source: old_email_address.source,
+                             type: old_email_address.type,
+                             created_via: "manual",
+                             status: old_email_address.status,
+                             address: new_address }
+                  }
+                }
+              }
+      end
+    end
+
+    old_email_address.reload
+
+    assert_equal old_email_address.created_by, old_created_by
+    assert_equal old_email_address.added_at, old_added_at
   end
 
   test "should assign and unassign recruiter for candidate, create event and update last_activity_at" do

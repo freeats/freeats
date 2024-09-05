@@ -66,6 +66,16 @@ COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
+-- Name: candidate_contact_created_via; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.candidate_contact_created_via AS ENUM (
+    'api',
+    'manual'
+);
+
+
+--
 -- Name: candidate_contact_source; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -891,7 +901,10 @@ CREATE TABLE public.candidate_email_addresses (
     status public.candidate_contact_status DEFAULT 'current'::public.candidate_contact_status NOT NULL,
     url character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    added_at timestamp(6) without time zone DEFAULT clock_timestamp() NOT NULL,
+    created_via public.candidate_contact_created_via DEFAULT 'manual'::public.candidate_contact_created_via NOT NULL,
+    created_by_id bigint
 );
 
 
@@ -924,7 +937,10 @@ CREATE TABLE public.candidate_links (
     url character varying NOT NULL,
     status public.candidate_contact_status DEFAULT 'current'::public.candidate_contact_status NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    added_at timestamp(6) without time zone DEFAULT clock_timestamp() NOT NULL,
+    created_via public.candidate_contact_created_via DEFAULT 'manual'::public.candidate_contact_created_via NOT NULL,
+    created_by_id bigint
 );
 
 
@@ -960,7 +976,10 @@ CREATE TABLE public.candidate_phones (
     source public.candidate_contact_source DEFAULT 'other'::public.candidate_contact_source NOT NULL,
     status public.candidate_contact_status DEFAULT 'current'::public.candidate_contact_status NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    added_at timestamp(6) without time zone DEFAULT clock_timestamp() NOT NULL,
+    created_via public.candidate_contact_created_via DEFAULT 'manual'::public.candidate_contact_created_via NOT NULL,
+    created_by_id bigint
 );
 
 
@@ -3122,6 +3141,13 @@ CREATE UNIQUE INDEX index_candidate_email_addresses_on_candidate_id_and_address 
 
 
 --
+-- Name: index_candidate_email_addresses_on_created_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidate_email_addresses_on_created_by_id ON public.candidate_email_addresses USING btree (created_by_id);
+
+
+--
 -- Name: index_candidate_links_on_candidate_id_and_url; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3129,10 +3155,24 @@ CREATE UNIQUE INDEX index_candidate_links_on_candidate_id_and_url ON public.cand
 
 
 --
+-- Name: index_candidate_links_on_created_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidate_links_on_created_by_id ON public.candidate_links USING btree (created_by_id);
+
+
+--
 -- Name: index_candidate_phones_on_candidate_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_candidate_phones_on_candidate_id ON public.candidate_phones USING btree (candidate_id);
+
+
+--
+-- Name: index_candidate_phones_on_created_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidate_phones_on_created_by_id ON public.candidate_phones USING btree (created_by_id);
 
 
 --
@@ -3800,6 +3840,14 @@ ALTER TABLE ONLY public.candidates
 
 
 --
+-- Name: candidate_phones fk_rails_247c2f1f8c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_phones
+    ADD CONSTRAINT fk_rails_247c2f1f8c FOREIGN KEY (created_by_id) REFERENCES public.members(id);
+
+
+--
 -- Name: sequences fk_rails_2803439625; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4040,6 +4088,14 @@ ALTER TABLE ONLY public.tasks_watchers
 
 
 --
+-- Name: candidate_links fk_rails_a5ebb9a55f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_links
+    ADD CONSTRAINT fk_rails_a5ebb9a55f FOREIGN KEY (created_by_id) REFERENCES public.members(id);
+
+
+--
 -- Name: placements fk_rails_b301cc4475; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4136,6 +4192,14 @@ ALTER TABLE ONLY public.position_stages
 
 
 --
+-- Name: candidate_email_addresses fk_rails_fd26989a5d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.candidate_email_addresses
+    ADD CONSTRAINT fk_rails_fd26989a5d FOREIGN KEY (created_by_id) REFERENCES public.members(id);
+
+
+--
 -- Name: candidate_links fk_rails_ff2d75d07e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4158,6 +4222,9 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240904072749'),
+('20240904065325'),
+('20240904061514'),
 ('20240902071234'),
 ('20240902064755'),
 ('20240902063330'),

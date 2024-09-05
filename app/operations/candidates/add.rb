@@ -54,7 +54,10 @@ class Candidates::Add
   def call
     candidate = Candidate.new
     old_values = candidate.attributes.deep_symbolize_keys
-    candidate.assign_attributes(params)
+
+    prepared_params = prepare_params(params:, actor_account:)
+    candidate.assign_attributes(prepared_params)
+
     candidate.recruiter_id ||= actor_account&.member&.id
 
     return Failure[:candidate_invalid, candidate] unless candidate.valid?
@@ -93,6 +96,39 @@ class Candidates::Add
   end
 
   private
+
+  def prepare_params(params:, actor_account:)
+    if params[:emails].present?
+      params[:emails].uniq! { _1[:address].downcase }
+      params[:emails].each do |p|
+        p[:created_by] = p[:created_by] || actor_account&.member
+      end
+    end
+
+    if params[:phones].present?
+      country_code =
+        if params[:location_id].present?
+          Location.find(params[:location_id]).country_code
+        else
+          "RU"
+        end
+      params[:phones].uniq! do |phone_record|
+        CandidatePhone.normalize(phone_record[:phone], country_code)
+      end
+      params[:phones].each do |p|
+        p[:created_by] = p[:created_by] || actor_account&.member
+      end
+    end
+
+    if params[:links].present?
+      params[:links].uniq! { AccountLink.new(_1[:url]).normalize }
+      params[:links].each do |p|
+        p[:created_by] = p[:created_by] || actor_account&.member
+      end
+    end
+
+    params
+  end
 
   def add_changed_events(candidate:, actor_account:, old_values:)
     Events::AddChangedEvent.new(

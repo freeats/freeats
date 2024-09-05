@@ -18,7 +18,7 @@ class EmailSynchronization::ProcessSingleMessageTest < ActiveSupport::TestCase
 
   test "upload attachments should work" do
     raw_message = ITH::MESSAGE_WITH_ATTACHMENT.tap do |msg|
-      msg.from = [candidate_email_addresses(:john_email_address).address]
+      msg.from = [candidate_email_addresses(:john_email_address1).address]
       msg.to = ["admin@admin.com"]
     end
     message = Imap::Message.new_from_api(
@@ -52,7 +52,7 @@ class EmailSynchronization::ProcessSingleMessageTest < ActiveSupport::TestCase
 
   test "shouldn't work if message without member address" do
     raw_message = ITH::MESSAGE_WITH_ATTACHMENT.tap do |msg|
-      msg.from = [candidate_email_addresses(:john_email_address).address]
+      msg.from = [candidate_email_addresses(:john_email_address1).address]
       msg.to = ["travis.hodge@gmail.com"]
     end
     message = Imap::Message.new_from_api(

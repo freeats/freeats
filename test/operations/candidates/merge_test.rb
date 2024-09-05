@@ -328,6 +328,7 @@ class Candidates::MergeTest < ActiveSupport::TestCase
         source: "github",
         status: "current",
         url: "https://example.com",
+        created_by_id: Member.order("random()").first.id,
         list_index: 1,
         type: "personal"
       }
@@ -345,8 +346,8 @@ class Candidates::MergeTest < ActiveSupport::TestCase
       ).call.value!
     end
 
-    assert_equal @candidate.candidate_email_addresses.pluck(:source, :url, :type),
-                 same_email_with_another_source.pluck(:source, :url, :type)
+    assert_equal @candidate.candidate_email_addresses.pluck(:source, :url, :type, :created_by_id),
+                 same_email_with_another_source.pluck(:source, :url, :type, :created_by_id)
   end
 
   test "should merge and refresh different candidate links" do
