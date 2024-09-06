@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_account, :current_member, :current_user
 
   def check_gmail_blank_tokens
-    return if params[:controller].include?(mission_control_jobs_path)
+    return if params[:controller]&.include?(mission_control_jobs_path)
     return if current_member.blank?
     return unless allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
 
