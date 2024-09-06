@@ -89,6 +89,8 @@ class ApplicationController < ActionController::Base
 
   def set_selector_id_for_page
     controller = params[:controller] #=> "ats/candidates"
+    return unless controller
+
     action = params[:action] #=> "show"
     @page_id = "#{controller.tr('/', '-')}-#{action}".dasherize #=> "ats-candidates-show"
   end
