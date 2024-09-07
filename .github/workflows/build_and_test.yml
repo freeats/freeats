@@ -56,9 +56,10 @@ jobs:
 
       # Required to compile Ruby gems
       - name: Install Ubuntu packages
-        uses: tecolicom/actions-use-apt-tools@v1
+        uses: awalsh128/cache-apt-pkgs-action@v1
         with:
-          tools: libpq-dev libvips postgresql-client
+          packages: libpq-dev libvips postgresql-client
+          version: 2.0
 
       - name: Get yarn cache directory
         id: yarn-cache-dir-path
