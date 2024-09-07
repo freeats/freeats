@@ -56,11 +56,10 @@ jobs:
 
       # Required to compile Ruby gems
       - name: Install Ubuntu packages
-        run: |
-          sudo apt-get update
-          sudo apt-get install libpq-dev -y
-          sudo apt-get install libvips -y
-          sudo apt-get install postgresql-client -y
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libpq-dev libvips postgresql-client
+          version: 1.0
 
       - name: Get yarn cache directory
         id: yarn-cache-dir-path
