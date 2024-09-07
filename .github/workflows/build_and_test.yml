@@ -54,15 +54,13 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
 
-      - name: Update Ubuntu package index
-        run: sudo apt-get update
-
       # Required to compile Ruby gems
       - name: Install Ubuntu packages
-        uses: awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: postgresql-client libvips libpq-dev
-          version: 3.0
+        run: |
+          sudo apt-get update
+          sudo apt-get install libpq-dev -y
+          sudo apt-get install libvips -y
+          sudo apt-get install postgresql-client -y
 
       - name: Get yarn cache directory
         id: yarn-cache-dir-path
