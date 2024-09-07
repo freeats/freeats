@@ -58,8 +58,8 @@ jobs:
       - name: Install Ubuntu packages
         uses: awalsh128/cache-apt-pkgs-action@v1
         with:
-          packages: libpq-dev libvips postgresql-client
-          version: 2.0
+          packages: postgresql-client libvips libpq-dev
+          version: 1.0
 
       - name: Get yarn cache directory
         id: yarn-cache-dir-path
