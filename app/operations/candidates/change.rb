@@ -86,7 +86,7 @@ class Candidates::Change
 
     case result
     in Success(_)
-      Success(candidate)
+      Success(candidate.reload)
     in Failure[ActiveRecord::RecordInvalid => e]
       Failure[:candidate_invalid, candidate.errors.full_messages.presence || e.to_s]
     end
