@@ -74,19 +74,19 @@ class RodauthApp < Rodauth::Rails::App
 
       unless rodauth.account
         flash[:alert] = "An account with this email does not exist."
-        r.redirect "/login"
+        r.redirect "/sign_in"
       end
 
       if rodauth.account && !rodauth.member
         omniauth_identities_ds.where(account_id: rodauth.account[:id]).delete
         flash[:alert] = "This account has no associated member."
-        r.redirect "/login"
+        r.redirect "/sign_in"
       end
 
       if rodauth.account && !rodauth.active?
         omniauth_identities_ds.where(account_id: rodauth.account[:id]).delete
         flash[:alert] = "This account has been deactivated."
-        r.redirect "/login"
+        r.redirect "/sign_in"
       end
 
       unless omniauth_identity
@@ -108,7 +108,7 @@ class RodauthApp < Rodauth::Rails::App
       rodauth.forget_login
       rodauth.logout
       flash[:alert] = "This account has been deactivated."
-      r.redirect "/login"
+      r.redirect "/sign_in"
     end
   end
 end

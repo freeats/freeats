@@ -8,6 +8,12 @@ class RodauthMain < Rodauth::Rails::Auth
     # List of authentication features that are loaded.
     enable :login, :logout, :remember, :omniauth_base
 
+    login_route :sign_in
+    logout_route :sign_out
+
+    translate do |key, default|
+      I18n.t("rodauth.#{key}") || default
+    end
     # Google OAuth 2.0
     omniauth_provider :google_oauth2,
                       Rails.application.credentials.google_oauth.client_id!,

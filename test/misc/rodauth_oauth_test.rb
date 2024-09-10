@@ -86,7 +86,7 @@ class RodauthOauthTest < ActionDispatch::IntegrationTest
       get "/auth/google_oauth2/callback", params: @request_params
     end
 
-    assert_equal flash[:notice], "You have been logged in"
+    assert_equal flash[:notice], "Signed in successfully, enjoy your session!"
     assert_nil flash[:alert]
     assert_response :redirect
   end
@@ -103,7 +103,7 @@ class RodauthOauthTest < ActionDispatch::IntegrationTest
       end
     end
 
-    assert_equal flash[:notice], "You have been logged in"
+    assert_equal flash[:notice], "Signed in successfully, enjoy your session!"
     assert_nil flash[:alert]
     assert_response :redirect
   end

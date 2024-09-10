@@ -27,7 +27,7 @@ module ActiveSupport
     end
 
     def sign_out
-      post("/logout")
+      post("/sign_out")
     end
   end
 end
