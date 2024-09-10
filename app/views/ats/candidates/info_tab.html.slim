@@ -45,7 +45,7 @@
                 = render ButtonComponent.new(size: :small,
                                              type: :button,
                                              hidden: true,
-                                             class: "file-upload-button d-xl-inline-flex",
+                                             class: "file-upload-button d-md-inline-flex",
                                              data: { bs_toggle: "tooltip", title: drag_and_drop_tooltip, \
                                                      controller: "handle-upload-button" })
                   span data-handle-upload-button-target="text"
@@ -95,7 +95,7 @@
                           delete_cv_file_ats_candidate_path( \
                             @candidate, candidate: { file_id_to_remove: @candidate.cv.id } \
                           ),
-                          method: :delete, class: "btn btn-outline-primary ms-2",
+                          method: :delete, class: "btn btn-outline-primary btn-small ms-2",
                           data: delete_modal_data
         .mt-4.d-none.d-md-block
           = render "display_inline", file: @candidate.cv
