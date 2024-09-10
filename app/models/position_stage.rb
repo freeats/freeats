@@ -3,12 +3,12 @@
 class PositionStage < ApplicationRecord
   has_many :scorecards, dependent: :restrict_with_exception
   has_many :moved_to_events,
-           lambda { where(type: :placement_changed, changed_field: :status) },
+           lambda { where(type: :placement_changed, changed_field: :stage) },
            class_name: "Event",
            inverse_of: :stage_to,
            dependent: :destroy
   has_many :moved_from_events,
-           lambda { where(type: :placement_changed, changed_field: :status) },
+           lambda { where(type: :placement_changed, changed_field: :stage) },
            class_name: "Event",
            inverse_of: :stage_from,
            dependent: :destroy
