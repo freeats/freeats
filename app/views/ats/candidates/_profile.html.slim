@@ -1,4 +1,4 @@
-- content_for(:title) { "#{@candidate.full_name} #{@active_tab.humanize(capitalize: false)}" }
+- ats_title("#{@candidate.full_name} #{@active_tab.humanize(capitalize: false)}")
 - render_reassign_button = proc do |mobile: false|
   = render "shared/profile/reassign_button",
             currently_assigned_account: @assigned_recruiter&.account,
