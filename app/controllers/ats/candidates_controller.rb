@@ -293,13 +293,73 @@ class ATS::CandidatesController < ApplicationController
     return unless params[:card_name].to_sym.in?(INFO_CARDS)
 
     card_name = params[:card_name]
+    emails_changed = nil
+    links_changed = nil
+    phones_changed = nil
+
+    if card_name == "contact_info"
+      email_fields = %w[address status url source type]
+      current_emails = @candidate.candidate_email_addresses.order("address ASC")
+      new_emails = candidate_params[:emails].sort_by { _1["address"] }
+
+      phone_fields = %w[phone status source type]
+      current_phones = @candidate.candidate_phones&.sort_by { _1["phone"] }
+      new_phones = candidate_params[:phones]&.sort_by { _1["phone"] }
+
+      current_links = @candidate.candidate_links&.sort_by { _1["url"] }
+      new_links = candidate_params[:links]&.sort_by { _1["url"] }
+
+      if new_emails.present? && current_emails.size == new_emails.size
+        current_emails.each_with_index do |existing_address, idx|
+          new_address = new_emails[idx]
+          email_fields.each do |field|
+            if (existing_address.public_send(field) || "") != (new_address[field] || "")
+              emails_changed = true
+              break
+            end
+          end
+          break if emails_changed
+        end
+      else
+        emails_changed =
+          current_emails.pluck(:address) != (new_emails.pluck(:address) || [])
+      end
+
+      if new_phones.present? && current_phones.size == new_phones.size
+        current_phones.each_with_index do |existing_phone, idx|
+          new_phone = new_phones[idx]
+          phone_fields.each do |field|
+            if (existing_phone.public_send(field) || "") != (new_phone[field] || "")
+              phones_changed = true
+              break
+            end
+          end
+          break if phones_changed
+        end
+      else
+        phones_changed =
+          current_phones.pluck(:phone) != (new_phones&.pluck(:phone) || [])
+      end
+
+      links_changed =
+        current_links.pluck(:url, :status).sort != (new_links&.pluck(:url, :status)&.sort || [])
+    end
+
     case Candidates::Change.new(
       candidate: @candidate,
       actor_account: current_account,
       params: candidate_params.to_h.deep_symbolize_keys
     ).call
     in Success(_)
-      render_card(card_name)
+      turbo_dialogs = []
+      turbo_dialogs << turbo_merge_dialog if emails_changed || links_changed || phones_changed
+
+      render_turbo_stream(
+        [
+          *turbo_dialogs,
+          turbo_update_card(card_name)
+        ]
+      )
     in Failure[:candidate_invalid, _e] |
        Failure[:alternative_name_invalid, _e] |
        Failure[:alternative_name_not_unique, _e]
@@ -597,27 +657,38 @@ class ATS::CandidatesController < ApplicationController
     )
   end
 
-  def render_card(card_name)
+  def turbo_update_card(card_name)
     if card_name == "contact_info" && !helpers.candidate_card_contact_info_has_data?(@candidate) ||
        card_name == "cover_letter" && @candidate.cover_letter.blank?
-      render_turbo_stream(
-        [
-          turbo_stream.replace(
-            "turbo_#{card_name}_section",
-            partial: "shared/profile/card_empty",
-            locals: { card_name:, target_model: @candidate }
-          )
-        ]
+      turbo_stream.replace(
+        "turbo_#{card_name}_section",
+        partial: "shared/profile/card_empty",
+        locals: { card_name:, target_model: @candidate }
       )
     else
-      render_turbo_stream(
-        [
-          turbo_stream.replace(
-            "turbo_#{card_name}_section",
-            partial: "ats/candidates/info_cards/#{card_name}_show",
-            locals: { candidate: @candidate }
-          )
-        ]
+      turbo_stream.replace(
+        "turbo_#{card_name}_section",
+        partial: "ats/candidates/info_cards/#{card_name}_show",
+        locals: { candidate: @candidate }
+      )
+    end
+  end
+
+  def turbo_merge_dialog
+    duplicates = @candidate.duplicates_for_merge_dialog
+    if duplicates.present?
+      turbo_stream.update(
+        "turbo_merge_dialog_section",
+        partial: "ats/candidates/merge_duplicates",
+        locals: {
+          candidate: @candidate,
+          duplicates:
+        }
+      )
+    else
+      turbo_stream.update(
+        "turbo_merge_dialog_section",
+        ""
       )
     end
   end
