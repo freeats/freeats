@@ -8,9 +8,6 @@
 / - include_unassignment - whether to include the option to unassign, defaults to false
 / - mobile - whether to add mobile postfix to select id, used to prevent id duplication with selectize
 
-/ This partial throws strange errors about undefined variables if they are not defined before,
-/ otherwise the code under `ruby` block would be useless.
-
 ruby:
   target_model ||= nil
   allowed_to_edit ||= true unless allowed_to_edit == false
@@ -20,23 +17,8 @@ ruby:
   input_button_name ||= nil
   unassignment_label ||= nil
   mobile ||= false
-  controller_data =
-    if allowed_to_edit
-      { data:
-        {
-          controller: "reassignment-buttons",
-          "reassignment-buttons-search-url-value": fetch_members_api_v1_members_path(
-            unassignment_option: unassignment_label,
-            allow_nil: unassignment_label.present?,
-            access_level: Position::RECRUITER_ACCESS_LEVEL
-          )
-        }
-      }
-    else
-      {}
-    end
 
-.reassignment-button*controller_data
+.reassignment-button data-controller=("reassignment-buttons select-field-instant-submit" if allowed_to_edit)
   - if allowed_to_edit
     button.btn.btn-light.btn-sm.w-100.text-start.text-truncate [type="button"
       data-reassignment-buttons-target="button" data-action="reassignment-buttons#showForm"
@@ -48,9 +30,16 @@ ruby:
         | Assign
     = form_with model: target_model, url: target_url, html: { class: "w-100 hidden" },
                 data: { "reassignment-buttons-target" => "form" }
-      = member_autocomplete_select_tag input_button_name,
-                                       options: { class: "recruiter-select", placeholder: tooltip_title,
-                                                  mobile:, name: input_button_name }
+      = render HtmlSelectComponent.new( \
+                 input_button_name,
+                 placeholder: tooltip_title,
+                 id_suffix: mobile ? "-mobile" : "",
+                 include_blank: unassignment_label.present?,
+                 required: unassignment_label.blank?,
+                 local: { options: compose_member_options_for_select(unassignment_label:) },
+                 data: { deferred_selectize_reassignment_buttons_target: "select",
+                         deferred_selectize_select_field_instant_submit_target: "selectField" },
+               )
       button.d-none type="submit" Hidden save
   - elsif currently_assigned_account.present?
     .w-100.text-start data-bs-toggle="tooltip" title=tooltip_title

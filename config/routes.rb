@@ -98,10 +98,6 @@ Rails.application.routes.draw do
         get :fetch_locations
       end
 
-      resource :members, only: [] do
-        get :fetch_members
-      end
-
       resource :positions, only: [] do
         get :fetch_positions
       end
