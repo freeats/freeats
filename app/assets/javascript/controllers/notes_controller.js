@@ -12,12 +12,6 @@ export default class extends Controller {
     "noteForm",
   ];
 
-  initialize() {
-    $(document).on("changed.bs.select", ".select-picker", (e) => {
-      $(e.target).parent().find(".dropdown-menu input").val("");
-    });
-  }
-
   connect() {
     this.addClickOnDropdownItemListener();
     this.addClickOnCollapseButtonListeners();

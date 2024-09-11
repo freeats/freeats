@@ -1,15 +1,5 @@
 /# locals: (thread:, all_active_members:, modal_id:, form_options:)
 
-ruby:
-  all_members = [
-    current_member,
-    *thread.mentioned_members,
-    *thread.members,
-    *all_active_members
-  ].uniq.map { |member| [member.account.name, member.id] }
-  unchangeable_members = [current_member, *thread.participants, *thread.mentioned_members].uniq.map(&:id)
-  selected_members = [*unchangeable_members, *thread.members.map(&:id)]
-
 - content_for :title do
   | Change note thread visibility
 
@@ -24,13 +14,10 @@ ruby:
                    for: "note_thread_#{thread.id}_hidden_true"
   .row.me-6.mb-3 style="margin-left: 11px;"
     .col
-      = select_tag "note_thread[members]",
-                    options_for_select(all_members, selected: selected_members, disabled: unchangeable_members),
-                    include_blank: false,
-                    class: "form-control select-picker members-select-picker",
-                    multiple: true,
-                    data: { live_search: true,
-                            note_thread_target: "selectPicker" }
+      = render MultipleSelectComponent.new( \
+                 "note_thread[members]",
+                 local: { options: note_thread_compose_user_options_for_select(thread:, all_active_members:) } \
+               )
   .row
     .col
       = radio_button_tag "note_thread[hidden]", false, false, required: true,

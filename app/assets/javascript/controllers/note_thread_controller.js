@@ -6,13 +6,8 @@ export default class extends Controller {
     "collapsedNotes",
     "collapseButton",
     "replyTab",
-    "collapsedStateIcon",
-    "selectPicker",
+    "collapsedStateIcon"
   ];
-
-  selectPickerTargetConnected() {
-    $(this.selectPickerTarget).selectpicker("refresh");
-  }
 
   showReplyTab(e) {
     e.preventDefault();
