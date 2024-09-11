@@ -28,7 +28,7 @@ class NoteThreadsControllerTest < ActionDispatch::IntegrationTest
     note_thread = NoteThread.create!(hidden: true, notable: candidates(:john))
     note_thread.members = [members(:hiring_manager_member)]
 
-    new_members = [members(:employee_member), members(:new_employee_member)]
+    new_members = [members(:employee_member), members(:helen_member)]
     Note.create!(
       note_thread:,
       member: current_account.member

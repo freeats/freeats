@@ -68,8 +68,8 @@ class Tasks::Change
   def watchers
     watchers =
       if params[:watcher_ids].present?
-        [task.assignee, *Member.active.where(id: [*params[:watcher_ids], params[:assignee_id]])]
-      elsif params[:assignee_id].present? && task.assignee.id != params[:assignee_id]
+        [task.assignee, *Member.active.where(id: params[:watcher_ids])]
+      elsif params[:assignee_id].present? && task.assignee_id != params[:assignee_id]
         [*task.watchers, Member.find_by(id: params[:assignee_id])]
       else
         [*task.watchers]

@@ -30,5 +30,5 @@ inactive_first_email_address:
   address: inactive@mail.com
 
 new_employee_first_email_address:
-  member: new_employee_member
+  member: helen_member
   address: new_employee@mail.com

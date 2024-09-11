@@ -7,8 +7,7 @@ position:
   description: For additional information visit https://www.toughbyte.com/
   repeat_interval: daily
   watchers:
-    - hiring_manager_member
-    - interviewer_member
+    - admin_member
 
 position_closed:
   name: Fill in description
@@ -18,8 +17,7 @@ position_closed:
   due_date: <%= Time.zone.today %>
   description: For additional information visit https://www.toughbyte.com/
   watchers:
-    - hiring_manager_member
-    - interviewer_member
+    - admin_member
 
 candidate:
   name: Conduct first interview
@@ -29,8 +27,7 @@ candidate:
   due_date: <%= Time.zone.yesterday %>
   description: For additional information visit https://www.toughbyte.com/
   watchers:
-    - hiring_manager_member
-    - interviewer_member
+    - admin_member
 
 candidate2:
   name: Conduct second interview
@@ -40,8 +37,7 @@ candidate2:
   due_date: <%= Time.zone.today %>
   description: For additional information visit https://www.toughbyte.com/
   watchers:
-    - hiring_manager_member
-    - interviewer_member
+    - admin_member
 
 candidate3:
   name: Conduct interview with a client
@@ -51,8 +47,7 @@ candidate3:
   due_date: <%= Time.zone.tomorrow %>
   description: For additional information visit https://www.toughbyte.com/
   watchers:
-    - hiring_manager_member
-    - interviewer_member
+    - admin_member
 
 candidate4:
   name: Present candidate
@@ -62,8 +57,7 @@ candidate4:
   due_date: <%= 3.days.after %>
   description: For additional information visit https://www.toughbyte.com/
   watchers:
-    - hiring_manager_member
-    - interviewer_member
+    - admin_member
 
 candidate5:
   name: Hire candidate
@@ -73,8 +67,7 @@ candidate5:
   due_date: <%= 9.days.after %>
   description: For additional information visit https://www.toughbyte.com/
   watchers:
-    - hiring_manager_member
-    - interviewer_member
+    - admin_member
 
 no_taskable:
   name: Process inbound candidates
@@ -82,4 +75,6 @@ no_taskable:
   assignee: admin_member
   due_date: <%= Time.zone.today %>
   description: For additional information visit https://www.toughbyte.com/
-  watchers: admin_member
+  watchers:
+    - employee_member
+    - admin_member

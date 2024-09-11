@@ -25,8 +25,12 @@ class NotesController < ApplicationController
         .find(note.note_thread_id)
 
       notes_stream = build_turbo_stream_notes(note_thread:, action: :create)
+      if note_thread.notable_type == "Task"
+        since = params[:render_time].to_datetime
+        latest_activities_stream = add_turbo_stream_latest_activities(note_thread:, since:)
+      end
 
-      render_turbo_stream([notes_stream])
+      render_turbo_stream([notes_stream, latest_activities_stream])
     in Failure[:note_invalid, _e] | Failure[:note_not_unique, _e] |
        Failure[:note_thread_invalid, _e] | Failure[:note_thread_not_unique, _e]
       render_error _e, status: :unprocessable_entity
@@ -46,9 +50,13 @@ class NotesController < ApplicationController
         .includes(:members, notes: %i[member reacted_members])
         .find(note.note_thread_id)
 
-      notes_stream = build_turbo_stream_notes(note_thread:, action: :reply)
+      notes_stream = build_turbo_stream_notes(note_thread:, action: :reply, expanded: true)
+      if note_thread.notable_type == "Task"
+        since = params[:render_time].to_datetime
+        latest_activities_stream = add_turbo_stream_latest_activities(note_thread:, since:)
+      end
 
-      render_turbo_stream([notes_stream])
+      render_turbo_stream([notes_stream, latest_activities_stream])
     in Failure(:mentioned_in_hidden_thread, forbidden_member_ids)
       render_mentioned_in_hidden_thread_modal(action: :reply, forbidden_member_ids:)
     in Failure[:note_invalid, _e] | Failure[:note_not_unique, _e] |
@@ -73,7 +81,14 @@ class NotesController < ApplicationController
       expanded = note != note_thread.notes.min_by(&:created_at)
 
       notes_stream = build_turbo_stream_notes(note_thread:, action: :update, expanded:)
-      render_turbo_stream([notes_stream])
+      if note_thread.notable_type == "Task"
+        since = params[:render_time].to_datetime
+        event_id = note.events.where(type: "note_added").last.id
+        updates_stream = update_turbo_stream_activity(event_id)
+        latest_activities_stream = add_turbo_stream_latest_activities(note_thread:, since:)
+      end
+
+      render_turbo_stream([notes_stream, updates_stream, latest_activities_stream])
     in Failure(:mentioned_in_hidden_thread, forbidden_member_ids)
       render_mentioned_in_hidden_thread_modal(action: :update, forbidden_member_ids:)
     in Failure(:note_invalid, _e) | Failure(:note_thread_invalid, _e)
@@ -82,6 +97,8 @@ class NotesController < ApplicationController
   end
 
   def destroy
+    event_id =
+      Event.where(eventable_type: "Note", eventable_id: params[:id], type: "note_added").last.id
     case Notes::Destroy.new(
       id: params[:id],
       actor_account: current_account
@@ -93,7 +110,13 @@ class NotesController < ApplicationController
         .find(note.note_thread_id)
 
       notes_stream = build_turbo_stream_notes(note_thread:, action: :destroy)
-      render_turbo_stream([notes_stream])
+      if note_thread.notable_type == "Task"
+        since = params[:render_time].to_datetime
+        remove_stream = remove_turbo_stream_activity(event_id)
+        latest_activities_stream = add_turbo_stream_latest_activities(note_thread:, since:)
+      end
+
+      render_turbo_stream([notes_stream, remove_stream, latest_activities_stream])
     in Failure(:note_invalid, _e) | Failure(:note_thread_invalid, _e)
       render_error _e
     end
@@ -248,5 +271,28 @@ class NotesController < ApplicationController
     else
       raise "Unsupported action"
     end
+  end
+
+  def update_turbo_stream_activity(event_id)
+    turbo_stream.replace(
+      "event-#{event_id}",
+      partial: "ats/tasks/activity_event_row",
+      collection: Event.where(id: event_id),
+      as: :event
+    )
+  end
+
+  def remove_turbo_stream_activity(event_id)
+    turbo_stream.remove("event-#{event_id}")
+  end
+
+  def add_turbo_stream_latest_activities(note_thread:, since:)
+    task = note_thread.notable
+    turbo_stream.prepend(
+      "turbo_task_event_list",
+      partial: "ats/tasks/activity_event_row",
+      collection: task.activities(since:),
+      as: :event
+    )
   end
 end

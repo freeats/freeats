@@ -43,6 +43,8 @@ module ATS::TasksHelper
         "added a note <blockquote class='activity-quote #{
           'text-truncate' if oneline}'>#{
           event.eventable&.text&.truncate(180)}</blockquote>"
+      when "note_removed"
+        "removed a note"
       when "task_added"
         "created task"
       when "task_changed"

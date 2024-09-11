@@ -6,8 +6,10 @@ class ATS::TasksController < ApplicationController
   layout "ats/application"
 
   before_action { @nav_item = :tasks }
+  before_action :set_task, only: %i[show show_modal update update_status]
+  before_action :set_taskable, only: %i[new new_modal]
+  before_action :set_time_before_update, only: %i[update update_status]
   before_action :authorize!
-  before_action :set_variables, only: %i[show update update_status]
 
   def index
     session[:ats_tasks_grid_params] = params[:ats_tasks_grid]&.to_unsafe_h
@@ -32,11 +34,7 @@ class ATS::TasksController < ApplicationController
   end
 
   def new_modal
-    taskable =
-      [Candidate, Position]
-      .find { _1.name == params[:taskable_type] }
-      &.find(params[:taskable_id])
-    taskable_name = params[:taskable_type] == "Position" ? taskable&.name : taskable&.full_name
+    taskable_name = @taskable.try(:name) || @taskable.try(:full_name) if @taskable
     modal_options = {
       partial: "new",
       layout: "modal",
@@ -45,24 +43,23 @@ class ATS::TasksController < ApplicationController
         form_options: { url: ats_tasks_path, data: { turbo_frame: :turbo_tasks_grid } },
         modal_size: "modal-lg",
         assignee_options:,
-        default_assignee: default_assignee(taskable, current_member),
-        default_watchers: Task.default_watchers(taskable).map(&:id),
+        default_assignee:,
+        default_watchers: Task.default_watchers(@taskable).map(&:id),
         current_member:,
-        taskable:,
+        taskable: @taskable,
         taskable_name:,
         hidden_fields: { path_ending: "new" }
       }
     }
-    if taskable
+    if @taskable
       modal_options[:locals][:hidden_fields].merge!(
-        { "task[taskable_id]": taskable.id, "task[taskable_type]": taskable.class.name }
+        { "task[taskable_id]": @taskable.id, "task[taskable_type]": @taskable.class.name }
       )
     end
     render(modal_options)
   end
 
   def show_modal
-    @task = Task.find(params[:id])
     # TODO: include 'added_event' once 'note_added' is added to event types.
     note_threads =
       NoteThread
@@ -138,9 +135,9 @@ class ATS::TasksController < ApplicationController
     assignees.uniq
   end
 
-  def default_assignee(taskable, current_member)
-    if taskable.is_a?(Candidate) || taskable.is_a?(Position)
-      return taskable.recruiter&.active? ? taskable.recruiter_id : current_member.id
+  def default_assignee
+    if (@taskable.is_a?(Candidate) || @taskable.is_a?(Position)) && @taskable.recruiter&.active?
+      return @taskable.recruiter_id
     end
 
     current_member.id
@@ -244,8 +241,18 @@ class ATS::TasksController < ApplicationController
     )
   end
 
-  def set_variables
+  def set_task
     @task = Task.find(params[:id])
+  end
+
+  def set_taskable
+    @taskable =
+      [Candidate, Position]
+      .find { _1.name == params[:taskable_type] }
+      &.find(params[:taskable_id])
+  end
+
+  def set_time_before_update
     @time_before_update = Time.zone.now
   end
 

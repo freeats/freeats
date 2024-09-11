@@ -1,4 +1,9 @@
-/# locals: (task:, assignee_options:, added_by_account:, added_on_time:, grid:)
+/# locals: (task:,
+/ assignee_options:,
+/ added_by_account:,
+/ added_on_time:,
+/ grid:
+/)
 
 - label_classes = "col-lg-3 col-form-label-sm text-gray-600"
 
@@ -59,7 +64,7 @@
       .col-lg-9
         = f.select :watcher_ids,
                    assignee_options,
-                   { selected: task.watchers.ids, disabled: task.assignee.id },
+                   { selected: task.watchers.ids, disabled: task.assignee_id },
                    include_blank: true,
                    class: "form-control selectpicker",
                    multiple: true,

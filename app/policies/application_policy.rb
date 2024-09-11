@@ -26,7 +26,7 @@ class ApplicationPolicy < ActionPolicy::Base
   end
 
   def available_for_employee?
-    member.employee? || member.admin?
+    (member.employee? && available_for_active_member?) || member.admin?
   end
 
   def available_for_admin?

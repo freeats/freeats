@@ -18,6 +18,10 @@ inactive_member:
   account: inactive_account
   access_level: inactive
 
-new_employee_member:
-  account: new_employee_account
+helen_member:
+  account: helen_account
+  access_level: employee
+
+george_member:
+  account: george_account
   access_level: employee

@@ -23,6 +23,10 @@ inactive_account:
   name: Jimmy Bean
 
 # Only has an account created and a member record.
-new_employee_account:
+helen_account:
   email: new_employee@mail.com
-  name: New Employee
+  name: Helen Booker
+
+george_account:
+  email: sam_slow@mail.com
+  name: George Slow

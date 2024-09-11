@@ -1,5 +1,14 @@
-/# locals: (modal_id:, form_options:, modal_size:, assignee_options:, default_assignee:, default_watchers:,
-            current_member:, taskable:, taskable_name:, hidden_fields:)
+/# locals: (modal_id:,
+/ form_options:,
+/ modal_size:,
+/ assignee_options:,
+/ default_assignee:,
+/ default_watchers:,
+/ current_member:,
+/ taskable:,
+/ taskable_name:,
+/ hidden_fields:
+/)
 
 - taskable ||= nil
 
@@ -11,7 +20,7 @@
 
 - content_for :body
   .container [data-controller="turbo-modal-tasks"
-      data-turbo-modal-tasks-current-member-value=current_member.id ]
+      data-turbo-modal-tasks-current-member-value=current_member.id]
     / First row
     .hstack.gap-3
       / Title edit

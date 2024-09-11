@@ -8,7 +8,7 @@ class Tasks::Add
       name: Types::Strict::String,
       due_date: Types::Strict::String | Types::Instance(Date),
       description?: Types::Strict::String,
-      repeat_interval: Types::String.enum(*Task.repeat_intervals.keys),
+      repeat_interval?: Types::String.enum(*Task.repeat_intervals.keys),
       taskable_id?: Types::Strict::String.optional,
       taskable_type?: Types::Strict::String.optional,
       assignee_id: Types::Strict::String.optional,

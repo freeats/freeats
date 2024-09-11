@@ -92,7 +92,7 @@ class RodauthOauthTest < ActionDispatch::IntegrationTest
   end
 
   test "account with no identity should login creating a new identity" do
-    account = accounts(:new_employee_account)
+    account = accounts(:helen_account)
     modify_oauth_mock(
       "info" => { "email" => account.email },
       "uid" => "new_employee"
