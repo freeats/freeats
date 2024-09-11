@@ -3,8 +3,11 @@
 class ApplicationController < ActionController::Base
   include ErrorHandler
 
+  set_current_tenant_through_filter
+
   before_action :check_gmail_blank_tokens
   before_action :set_selector_id_for_page
+  before_action :set_tenant
   rescue_from ActionPolicy::Unauthorized, with: :user_not_authorized
 
   add_flash_types :warning
@@ -66,6 +69,11 @@ class ApplicationController < ActionController::Base
   # Dummy method for action_policy, shouldn't be used anywhere.
   def current_user
     current_account
+  end
+
+  def set_tenant
+    current_tenant = current_account&.tenant
+    set_current_tenant(current_tenant)
   end
 
   helper_method :current_account, :current_member, :current_user

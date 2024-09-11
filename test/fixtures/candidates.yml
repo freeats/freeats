@@ -2,23 +2,34 @@ john:
   full_name: John Doe
   location: helsinki_city
   recruiter: admin_member
+  tenant: toughbyte_tenant
 
 jane:
   full_name: Jane Doe
   location: helsinki_city
+  tenant: toughbyte_tenant
 
 jake:
   full_name: Jake Trujillo
   location: haridwar_city
   recruiter: admin_member
+  tenant: toughbyte_tenant
 
 sam:
   full_name: Sam Smith
   location: dublin_city
   recruiter: admin_member
   candidate_source: headhunter
+  tenant: toughbyte_tenant
 
 john_duplicate:
   full_name: John Doe Duplicate
   location: helsinki_city
   blacklisted: true
+  tenant: toughbyte_tenant
+
+ilia_liamshin:
+  full_name: Ilia Liamshin
+  location: nizhniy_novgorod_city
+  candidate_source: headhunter
+  tenant: suroviy_byte_tenant

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EmailMessageAddress < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   belongs_to :email_message
 
   enum field: %i[from to cc bcc].index_with(&:to_s), _suffix: true

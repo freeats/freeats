@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class NoteThread < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   has_and_belongs_to_many :members
 
   has_many :notes, dependent: :destroy

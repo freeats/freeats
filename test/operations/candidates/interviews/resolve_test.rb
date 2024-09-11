@@ -5,6 +5,10 @@ require "test_helper"
 class Candidates::Interviews::ResolveTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
+  setup do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
+  end
+
   test "should create resolved event only if resolved event isn't exists" do
     status = "passed"
     scheduled_event = events(:john_candidate_interview_scheduled).becomes(Candidate::Interview)

@@ -1,5 +1,7 @@
 linkedin:
   name: LinkedIn
+  tenant: toughbyte_tenant
 
 headhunter:
   name: HeadHunter
+  tenant: toughbyte_tenant

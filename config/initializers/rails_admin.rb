@@ -52,7 +52,8 @@ RailsAdmin.config do |config|
   config.label_methods.unshift(:rails_admin_name)
 
   config.model("Account") do
-    include_fields :id, :name, :email, :member, :avatar, :linkedin_url, :calendar_url, :female
+    include_fields :id, :name, :email, :member, :avatar, :linkedin_url, :calendar_url,
+                   :female, :tenant
 
     edit do
       exclude_fields :member
@@ -61,12 +62,12 @@ RailsAdmin.config do |config|
 
   config.model("Member") do
     list do
-      include_fields :id, :account, :access_level, :created_at
+      include_fields :id, :account, :access_level, :created_at, :tenant
       search_by :rails_admin_search
     end
 
     show_edit_fieilds = %i[id account access_level updated_at created_at
-                           collaborator_positions positions]
+                           collaborator_positions positions tenant]
     show do
       include_fields(*show_edit_fieilds)
     end

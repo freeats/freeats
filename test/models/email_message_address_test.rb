@@ -8,7 +8,8 @@ class EmailMessageAddressTest < ActiveSupport::TestCase
       field: :to,
       address: "john@gmail.com",
       position: 2,
-      email_message: email_messages(:john_msg1)
+      email_message: email_messages(:john_msg1),
+      tenant: tenants(:toughbyte_tenant)
     )
   end
 end

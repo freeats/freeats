@@ -5,6 +5,10 @@ require "test_helper"
 class NoteTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
+  setup do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
+  end
+
   test "should create note, note thread, if it doesn't already exist and event" do
     assert_difference "Event.where(type: 'note_added').count" do
       assert_difference "Note.count" do

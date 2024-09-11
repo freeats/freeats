@@ -6,6 +6,7 @@ position:
   due_date: <%= Time.zone.today %>
   description: For additional information visit https://www.toughbyte.com/
   repeat_interval: daily
+  tenant: toughbyte_tenant
   watchers:
     - admin_member
 
@@ -16,6 +17,7 @@ position_closed:
   assignee: admin_member
   due_date: <%= Time.zone.today %>
   description: For additional information visit https://www.toughbyte.com/
+  tenant: toughbyte_tenant
   watchers:
     - admin_member
 
@@ -26,6 +28,7 @@ candidate:
   assignee: admin_member
   due_date: <%= Time.zone.yesterday %>
   description: For additional information visit https://www.toughbyte.com/
+  tenant: toughbyte_tenant
   watchers:
     - admin_member
 
@@ -36,6 +39,7 @@ candidate2:
   assignee: admin_member
   due_date: <%= Time.zone.today %>
   description: For additional information visit https://www.toughbyte.com/
+  tenant: toughbyte_tenant
   watchers:
     - admin_member
 
@@ -46,6 +50,7 @@ candidate3:
   assignee: admin_member
   due_date: <%= Time.zone.tomorrow %>
   description: For additional information visit https://www.toughbyte.com/
+  tenant: toughbyte_tenant
   watchers:
     - admin_member
 
@@ -56,6 +61,7 @@ candidate4:
   assignee: admin_member
   due_date: <%= 3.days.after %>
   description: For additional information visit https://www.toughbyte.com/
+  tenant: toughbyte_tenant
   watchers:
     - admin_member
 
@@ -66,6 +72,7 @@ candidate5:
   assignee: admin_member
   due_date: <%= 9.days.after %>
   description: For additional information visit https://www.toughbyte.com/
+  tenant: toughbyte_tenant
   watchers:
     - admin_member
 
@@ -75,6 +82,18 @@ no_taskable:
   assignee: admin_member
   due_date: <%= Time.zone.today %>
   description: For additional information visit https://www.toughbyte.com/
+  tenant: toughbyte_tenant
   watchers:
     - employee_member
     - admin_member
+
+candidate6:
+  name: One-handed clap
+  status: open
+  taskable: ilia_liamshin (Candidate)
+  assignee: suroviy_alex_member
+  due_date: <%= Time.zone.yesterday %>
+  description: For additional information visit https://www.toughbyte.com/
+  tenant: suroviy_byte_tenant
+  watchers:
+    - suroviy_grigoriy_member

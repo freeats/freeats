@@ -3,6 +3,10 @@
 require "test_helper"
 
 class PositionTest < ActiveSupport::TestCase
+  setup do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
+  end
+
   test "should create position with events and default position_stages" do
     actor_account = accounts(:admin_account)
     params = {

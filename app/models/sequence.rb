@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Sequence < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   has_many :events, as: :eventable, dependent: :destroy
   belongs_to :member_email_address, class_name: "Member::EmailAddress"
   belongs_to :placement

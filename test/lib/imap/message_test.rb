@@ -9,6 +9,10 @@ class ImapMessageTest < ActiveSupport::TestCase
 
   ITH = ImapTestHelper
 
+  setup do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
+  end
+
   test "should parse message" do
     message = Imap::Message.new_from_api(ITH::SIMPLE_MESSAGE, MESSAGE_UID, MESSAGE_FLAGS)
 

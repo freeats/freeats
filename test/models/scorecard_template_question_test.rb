@@ -6,6 +6,7 @@ class ScorecardTemplateQuestionTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
   test "should create only one scorecard template question with the same list_index" do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     scorecard_template = scorecard_templates(:ruby_position_sourced_scorecard_template)
     params = {
       scorecard_template:,

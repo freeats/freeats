@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CandidateLink < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   belongs_to :candidate
   belongs_to :created_by, class_name: "Member", optional: true
 

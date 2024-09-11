@@ -3,15 +3,32 @@ ruby_position:
   name: Ruby developer
   status: active
   change_status_reason: filled
+  tenant: toughbyte_tenant
 
 golang_position:
   name: Golang developer
   status: active
   change_status_reason: filled
   hiring_managers: [hiring_manager_member]
+  tenant: toughbyte_tenant
 
 closed_position:
   recruiter: admin_member
   name: Java developer
   status: closed
   change_status_reason: other
+  tenant: toughbyte_tenant
+
+suroviy_active_position:
+  recruiter: suroviy_grigoriy_member
+  name: OCaml developer
+  status: active
+  change_status_reason: filled
+  tenant: suroviy_byte_tenant
+
+suroviy_close_position:
+  recruiter: suroviy_grigoriy_member
+  name: Haskell developer
+  status: closed
+  change_status_reason: no_longer_relevant
+  tenant: suroviy_byte_tenant

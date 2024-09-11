@@ -2,36 +2,43 @@ sam_ruby_replied:
   position: ruby_position
   candidate: sam
   position_stage: ruby_position_replied
+  tenant: toughbyte_tenant
 
 sam_ruby_contacted:
   position: ruby_position
   candidate: sam
   position_stage: ruby_position_contacted
+  tenant: toughbyte_tenant
 
 sam_golang_sourced:
   position: golang_position
   candidate: sam
   position_stage: golang_position_sourced
   status: no_reply
+  tenant: toughbyte_tenant
 
 sam_golang_replied:
   position: golang_position
   candidate: sam
   position_stage: golang_position_replied
+  tenant: toughbyte_tenant
 
 john_ruby_replied:
   position: ruby_position
   candidate: john
   position_stage: ruby_position_replied
   created_at: <%= 1.hour.ago %>
+  tenant: toughbyte_tenant
 
 john_ruby_hired:
   position: ruby_position
   candidate: john
   position_stage: ruby_position_hired
   created_at: <%= Time.zone.now %>
+  tenant: toughbyte_tenant
 
 jake_golang_sourced:
   position: golang_position
   candidate: jake
   position_stage: golang_position_sourced
+  tenant: toughbyte_tenant

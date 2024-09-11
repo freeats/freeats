@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EmailMessage < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   MAIL_SERVICE_ADDRESSES = %w[
     mailer-daemon@googlemail.com
     mailer-daemon@yahoo.com

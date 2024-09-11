@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CandidatePhone < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   self.inheritance_column = nil
 
   # Numbers in E164 format.

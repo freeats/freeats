@@ -15,7 +15,8 @@ class EmailMessageTest < ActiveSupport::TestCase
       html_body: "<h1>html</h1>",
       plain_mime_type: "text/plain",
       sent_via: :gmail,
-      references: []
+      references: [],
+      tenant: tenants(:toughbyte_tenant)
     )
   end
 end

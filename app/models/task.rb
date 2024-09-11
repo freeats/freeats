@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Task < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   has_and_belongs_to_many :watchers,
                           class_name: "Member",
                           join_table: :tasks_watchers,

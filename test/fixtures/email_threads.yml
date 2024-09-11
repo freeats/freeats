@@ -1,3 +1,5 @@
-john: {}
+john:
+  tenant: toughbyte_tenant
 
-jane: {}
+jane:
+  tenant: toughbyte_tenant

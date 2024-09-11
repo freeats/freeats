@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Position < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   DEFAULT_STAGES = %w[Sourced Contacted Replied Hired].freeze
   LATEST_STAGE_NAME = "Hired"
 

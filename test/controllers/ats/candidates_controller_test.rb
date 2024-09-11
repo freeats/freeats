@@ -218,6 +218,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_not candidate.cv
 
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     attachment.change_cv_status
 
     assert candidate.cv
@@ -704,8 +705,11 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal visible_stage_names, %w[Sourced Contacted Replied]
 
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     # Stage "Hired" do not have scorecard template
-    Placements::ChangeStage.new(placement: ruby_placement, new_stage: "Hired").call.value!
+    Placements::ChangeStage.new(
+      placement: ruby_placement, new_stage: "Hired"
+    ).call.value!
 
     get tab_ats_candidate_path(candidate, :scorecards)
 

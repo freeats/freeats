@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SequenceTemplateStage < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   belongs_to :sequence_template
 
   has_rich_text :body

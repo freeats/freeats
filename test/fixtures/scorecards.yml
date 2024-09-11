@@ -5,6 +5,7 @@ ruby_position_contacted_scorecard:
   visible_to_interviewer: true
   placement: sam_ruby_contacted
   score: "good"
+  tenant: toughbyte_tenant
 
 ruby_position_replied_scorecard:
   position_stage: ruby_position_replied
@@ -13,3 +14,4 @@ ruby_position_replied_scorecard:
   visible_to_interviewer: true
   placement: sam_ruby_replied
   score: "good"
+  tenant: toughbyte_tenant

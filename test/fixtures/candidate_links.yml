@@ -2,23 +2,28 @@ john_link:
   candidate: john
   url: "https://www.linkedin.com/in/john/"
   status: current
+  tenant: toughbyte_tenant
 
 john_duplicate_link:
   candidate: john_duplicate
   url: "https://www.linkedin.com/in/john/"
   status: current
+  tenant: toughbyte_tenant
 
 jane_link:
   candidate: jane
   url: "https://www.linkedin.com/in/jane/"
   status: current
+  tenant: toughbyte_tenant
 
 sam_link1:
   candidate: sam
   url: "https://hh.ru/resume/sam"
   status: current
+  tenant: toughbyte_tenant
 
 sam_link2:
   candidate: sam
   url: "https://www.linkedin.com/in/sam/"
   status: current
+  tenant: toughbyte_tenant

@@ -5,6 +5,10 @@ require "test_helper"
 class ScorecardTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
+  setup do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
+  end
+
   test "should create scorecard" do
     actor_account = accounts(:admin_account)
     member = members(:employee_member)

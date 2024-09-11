@@ -11,7 +11,8 @@ class CandidateEmailAddressTest < ActiveSupport::TestCase
         list_index: 2,
         type: :personal,
         source: :other,
-        status: :outdated
+        status: :outdated,
+        tenant: tenants(:toughbyte_tenant)
       )
     end
   end
@@ -25,7 +26,8 @@ class CandidateEmailAddressTest < ActiveSupport::TestCase
         list_index: 1,
         type: :personal,
         source: :other,
-        status: :outdated
+        status: :outdated,
+        tenant: tenants(:toughbyte_tenant)
       )
     end
   end
@@ -38,7 +40,8 @@ class CandidateEmailAddressTest < ActiveSupport::TestCase
         list_index: 2,
         type: :personal,
         source: :other,
-        status: :outdated
+        status: :outdated,
+        tenant: tenants(:toughbyte_tenant)
       )
     end
   end

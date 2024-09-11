@@ -6,6 +6,7 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
   test "should create only one scorecard template" do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     position_stage = position_stages(:ruby_position_hired)
     actor_account = accounts(:admin_account)
 
@@ -57,6 +58,7 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
   end
 
   test "should return failure with invalid event" do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     position_stage = position_stages(:ruby_position_hired)
     actor_account = accounts(:admin_account)
 

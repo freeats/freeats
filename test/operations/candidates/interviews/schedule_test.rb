@@ -6,6 +6,7 @@ class Candidates::Interviews::ScheduleTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
   test "should create schedule event" do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     candidate = candidates(:jane)
     selected_time = Time.zone.now.to_datetime
     actor_account = accounts(:admin_account)

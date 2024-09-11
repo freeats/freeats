@@ -1,27 +1,44 @@
 admin_member:
   account: admin_account
   access_level: admin
+  tenant: toughbyte_tenant
 
 hiring_manager_member:
   account: hiring_manager_account
   access_level: hiring_manager
+  tenant: toughbyte_tenant
 
 employee_member:
   account: employee_account
   access_level: employee
+  tenant: toughbyte_tenant
 
 interviewer_member:
   account: interviewer_account
   access_level: interviewer
+  tenant: toughbyte_tenant
 
 inactive_member:
   account: inactive_account
   access_level: inactive
+  tenant: toughbyte_tenant
 
 helen_member:
   account: helen_account
   access_level: employee
+  tenant: toughbyte_tenant
 
 george_member:
   account: george_account
   access_level: employee
+  tenant: toughbyte_tenant
+
+suroviy_grigoriy_member:
+  account: suroviy_grigoriy_account
+  access_level: employee
+  tenant: suroviy_byte_tenant
+
+suroviy_alex_member:
+  account: suroviy_alex_account
+  access_level: employee
+  tenant: suroviy_byte_tenant

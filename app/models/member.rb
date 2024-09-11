@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Member < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   has_and_belongs_to_many :reacted_notes,
                           class_name: "Note",
                           join_table: :note_reactions

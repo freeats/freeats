@@ -6,6 +6,7 @@ class SequenceTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
   setup do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     @actor_account = accounts(:employee_account)
     @sequence_template = sequence_templates(:ruby_position_sequence_template)
     @member_email_address = member_email_addresses(:admin_first_email_address)

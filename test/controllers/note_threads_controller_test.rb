@@ -6,11 +6,18 @@ class NoteThreadsControllerTest < ActionDispatch::IntegrationTest
   test "should update note thread" do
     current_account = accounts(:admin_account)
     sign_in current_account
-    note_thread = NoteThread.create!(hidden: false, notable: candidates(:john))
+
+    note_thread =
+      NoteThread.create!(
+        hidden: false,
+        notable: candidates(:john),
+        tenant: tenants(:toughbyte_tenant)
+      )
     note_thread.members = [members(:hiring_manager_member)]
     Note.create!(
       note_thread:,
-      member: current_account.member
+      member: current_account.member,
+      tenant: tenants(:toughbyte_tenant)
     )
 
     patch note_thread_path(note_thread.id),
@@ -23,15 +30,22 @@ class NoteThreadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update thread's members" do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     current_account = accounts(:admin_account)
     sign_in current_account
-    note_thread = NoteThread.create!(hidden: true, notable: candidates(:john))
+    note_thread =
+      NoteThread.create!(
+        hidden: true,
+        notable: candidates(:john),
+        tenant: tenants(:toughbyte_tenant)
+      )
     note_thread.members = [members(:hiring_manager_member)]
 
     new_members = [members(:employee_member), members(:helen_member)]
     Note.create!(
       note_thread:,
-      member: current_account.member
+      member: current_account.member,
+      tenant: tenants(:toughbyte_tenant)
     )
 
     patch note_thread_path(note_thread.id),

@@ -6,6 +6,7 @@ class Candidates::MergeTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
   setup do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     @candidate = candidates(:john)
     @candidate_duplicate = candidates(:john_duplicate)
     @actor_account = accounts(:admin_account)

@@ -4,6 +4,7 @@ require "test_helper"
 
 class Tasks::ChangeTest < ActiveSupport::TestCase
   test "should add and remove task watchers" do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     actor_account = accounts(:employee_account)
     task = tasks(:no_taskable)
     old_watcher = members(:employee_member)

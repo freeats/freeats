@@ -8,6 +8,10 @@ class EmailSynchronization::ProcessSingleMessageTest < ActiveSupport::TestCase
 
   ITH = ImapTestHelper
 
+  setup do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
+  end
+
   test "should work" do
     result = EmailSynchronization::ProcessSingleMessage.new(
       message: ITH::PARSED_CANDIDATE_MESSAGE

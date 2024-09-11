@@ -13,6 +13,7 @@ class CandidateTest < ActiveSupport::TestCase
   end
 
   test "should return all duplicates" do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     candidate = candidates(:john)
     candidates(:john_duplicate).destroy!
     email_address = candidate.candidate_email_addresses.first
@@ -46,6 +47,7 @@ class CandidateTest < ActiveSupport::TestCase
   end
 
   test "should not show duplicates for a person with same invalid phone/email" do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     candidate = candidates(:jane)
 
     assert_empty candidate.duplicates

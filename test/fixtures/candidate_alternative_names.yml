@@ -1,11 +1,19 @@
 john_alt_name:
   candidate: john
   name: Jehan
+  tenant: toughbyte_tenant
 
 jane_alt_name:
   candidate: jane
   name: Jenek
+  tenant: toughbyte_tenant
 
 jake_alt_name:
   candidate: jake
   name: Vanya
+  tenant: toughbyte_tenant
+
+ilia_alt_name:
+  candidate: ilia_liamshin
+  name: Ilya
+  tenant: suroviy_byte_tenant

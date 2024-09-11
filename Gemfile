@@ -6,6 +6,7 @@ ruby file: ".ruby-version"
 
 gem "action_policy"
 gem "active_record_union"
+gem "acts_as_tenant"
 # TODO: remove version restriction after fixing URL validation in the gem
 # https://github.com/sporkmonger/addressable/issues/511
 gem "addressable", "2.8.1"

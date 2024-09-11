@@ -1,13 +1,16 @@
 ruby_position_sourced_scorecard_template:
   position_stage: ruby_position_sourced
   title: Sourced stage scorecard template
+  tenant: toughbyte_tenant
 
 ruby_position_contacted_scorecard_template:
   position_stage: ruby_position_contacted
   title: Contacted stage scorecard template
   visible_to_interviewer: true
+  tenant: toughbyte_tenant
 
 ruby_position_replied_scorecard_template:
   position_stage: ruby_position_replied
   title: Replied stage scorecard template
   visible_to_interviewer: true
+  tenant: toughbyte_tenant

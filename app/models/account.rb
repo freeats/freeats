@@ -4,6 +4,8 @@ class Account < ApplicationRecord
   include Rodauth::Model(RodauthMain)
   include Avatar
 
+  acts_as_tenant(:tenant)
+
   has_many :identities, dependent: :destroy
   has_one :member, dependent: :destroy
 

@@ -4,6 +4,7 @@ require "test_helper"
 
 class Tasks::ChangeStatusTest < ActiveSupport::TestCase
   test "closing repeated task should reopen it and change due date" do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     task = tasks(:position)
 
     assert_equal task.due_date, Time.zone.today

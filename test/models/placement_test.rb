@@ -5,6 +5,10 @@ require "test_helper"
 class PlacementTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
+  setup do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
+  end
+
   test "should add placement and create event" do
     candidate = candidates(:jane)
     position = positions(:ruby_position)

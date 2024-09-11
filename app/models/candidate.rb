@@ -4,6 +4,7 @@ class Candidate < ApplicationRecord
   include Dry::Monads[:result]
   include Locatable
   include Avatar
+  acts_as_tenant(:tenant)
 
   has_many :placements, dependent: :restrict_with_exception
   has_many :candidate_links,

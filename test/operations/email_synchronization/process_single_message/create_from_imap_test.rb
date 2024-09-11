@@ -7,6 +7,7 @@ class EmailSynchronization::ProcessSingleMessage::CreateFromImapTest < ActiveSup
   include ActionMailer::TestHelper
 
   setup do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     @tested_class = EmailSynchronization::ProcessSingleMessage::CreateFromImap
   end
 

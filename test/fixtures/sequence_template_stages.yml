@@ -2,13 +2,16 @@ golang_position_first_stage:
   sequence_template: golang_position_sequence_template
   position: 1
   delay_in_days: null
+  tenant: toughbyte_tenant
 
 golang_position_second_stage:
   sequence_template: golang_position_sequence_template
   position: 2
   delay_in_days: 2
+  tenant: toughbyte_tenant
 
 ruby_position_first_stage:
   sequence_template: ruby_position_sequence_template
   position: 1
   delay_in_days: null
+  tenant: toughbyte_tenant

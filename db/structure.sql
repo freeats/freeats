@@ -308,6 +308,16 @@ CREATE TYPE public.task_status AS ENUM (
 
 
 --
+-- Name: tenant_locale; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.tenant_locale AS ENUM (
+    'en',
+    'ru'
+);
+
+
+--
 -- Name: array_deduplicate(anyarray); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -482,7 +492,8 @@ CREATE TABLE public.accounts (
     name character varying NOT NULL,
     linkedin_url character varying DEFAULT ''::character varying NOT NULL,
     calendar_url character varying DEFAULT ''::character varying NOT NULL,
-    female boolean DEFAULT false NOT NULL
+    female boolean DEFAULT false NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -864,7 +875,8 @@ CREATE TABLE public.candidate_alternative_names (
     candidate_id bigint NOT NULL,
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -904,7 +916,8 @@ CREATE TABLE public.candidate_email_addresses (
     updated_at timestamp(6) without time zone NOT NULL,
     added_at timestamp(6) without time zone DEFAULT clock_timestamp() NOT NULL,
     created_via public.candidate_contact_created_via DEFAULT 'manual'::public.candidate_contact_created_via NOT NULL,
-    created_by_id bigint
+    created_by_id bigint,
+    tenant_id bigint
 );
 
 
@@ -940,7 +953,8 @@ CREATE TABLE public.candidate_links (
     updated_at timestamp(6) without time zone NOT NULL,
     added_at timestamp(6) without time zone DEFAULT clock_timestamp() NOT NULL,
     created_via public.candidate_contact_created_via DEFAULT 'manual'::public.candidate_contact_created_via NOT NULL,
-    created_by_id bigint
+    created_by_id bigint,
+    tenant_id bigint
 );
 
 
@@ -979,7 +993,8 @@ CREATE TABLE public.candidate_phones (
     updated_at timestamp(6) without time zone NOT NULL,
     added_at timestamp(6) without time zone DEFAULT clock_timestamp() NOT NULL,
     created_via public.candidate_contact_created_via DEFAULT 'manual'::public.candidate_contact_created_via NOT NULL,
-    created_by_id bigint
+    created_by_id bigint,
+    tenant_id bigint
 );
 
 
@@ -1010,7 +1025,8 @@ CREATE TABLE public.candidate_sources (
     id bigint NOT NULL,
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1051,7 +1067,8 @@ CREATE TABLE public.candidates (
     headline character varying DEFAULT ''::character varying NOT NULL,
     telegram character varying DEFAULT ''::character varying NOT NULL,
     skype character varying DEFAULT ''::character varying NOT NULL,
-    candidate_source_id bigint
+    candidate_source_id bigint,
+    tenant_id bigint
 );
 
 
@@ -1086,7 +1103,8 @@ CREATE TABLE public.email_message_addresses (
     "position" integer NOT NULL,
     name character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1127,7 +1145,8 @@ CREATE TABLE public.email_messages (
     sent_via public.email_message_sent_via,
     "references" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1157,7 +1176,8 @@ ALTER SEQUENCE public.email_messages_id_seq OWNED BY public.email_messages.id;
 CREATE TABLE public.email_threads (
     id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1196,7 +1216,8 @@ CREATE TABLE public.events (
     changed_to jsonb,
     properties jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1344,7 +1365,8 @@ CREATE TABLE public.member_email_addresses (
     refresh_token character varying DEFAULT ''::character varying NOT NULL,
     last_email_synchronization_uid integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1376,7 +1398,8 @@ CREATE TABLE public.members (
     account_id bigint NOT NULL,
     access_level public.member_access_level NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1429,7 +1452,8 @@ CREATE TABLE public.note_threads (
     notable_id bigint NOT NULL,
     hidden boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1462,7 +1486,8 @@ CREATE TABLE public.notes (
     note_thread_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    member_id bigint NOT NULL
+    member_id bigint NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1497,7 +1522,8 @@ CREATE TABLE public.placements (
     status public.placement_status DEFAULT 'qualified'::public.placement_status NOT NULL,
     greenhouse_id integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1531,7 +1557,8 @@ CREATE TABLE public.position_stages (
     list_index integer NOT NULL,
     greenhouse_id integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1565,7 +1592,8 @@ CREATE TABLE public.positions (
     change_status_reason public.position_change_status_reason DEFAULT 'new_position'::public.position_change_status_reason NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    recruiter_id bigint
+    recruiter_id bigint,
+    tenant_id bigint
 );
 
 
@@ -1637,7 +1665,8 @@ CREATE TABLE public.scorecard_questions (
     question character varying NOT NULL,
     list_index integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1670,7 +1699,8 @@ CREATE TABLE public.scorecard_template_questions (
     question character varying NOT NULL,
     list_index integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1704,7 +1734,8 @@ CREATE TABLE public.scorecard_templates (
     greenhouse_id integer,
     visible_to_interviewer boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1741,7 +1772,8 @@ CREATE TABLE public.scorecards (
     visible_to_interviewer boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    interviewer_id bigint NOT NULL
+    interviewer_id bigint NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1775,6 +1807,7 @@ CREATE TABLE public.sequence_template_stages (
     "position" integer DEFAULT 1 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint,
     CONSTRAINT position_and_delay_in_days_must_be_valid CHECK (((("position" = 1) AND (delay_in_days IS NULL)) OR (("position" > 1) AND (delay_in_days IS NOT NULL) AND (delay_in_days > 0))))
 );
 
@@ -1809,7 +1842,8 @@ CREATE TABLE public.sequence_templates (
     name character varying DEFAULT ''::character varying NOT NULL,
     archived boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -1852,6 +1886,7 @@ CREATE TABLE public.sequences (
     status public.sequence_status DEFAULT 'running'::public.sequence_status NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint,
     CONSTRAINT current_stage_must_not_be_negative CHECK ((current_stage >= 0))
 );
 
@@ -2187,7 +2222,8 @@ CREATE TABLE public.tasks (
     assignee_id bigint NOT NULL,
     due_date date NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
 );
 
 
@@ -2218,6 +2254,38 @@ CREATE TABLE public.tasks_watchers (
     task_id bigint NOT NULL,
     watcher_id bigint NOT NULL
 );
+
+
+--
+-- Name: tenants; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tenants (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    locale public.tenant_locale NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: tenants_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.tenants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tenants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.tenants_id_seq OWNED BY public.tenants.id;
 
 
 --
@@ -2568,6 +2636,13 @@ ALTER TABLE ONLY public.solid_queue_semaphores ALTER COLUMN id SET DEFAULT nextv
 --
 
 ALTER TABLE ONLY public.tasks ALTER COLUMN id SET DEFAULT nextval('public.tasks_id_seq'::regclass);
+
+
+--
+-- Name: tenants id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenants ALTER COLUMN id SET DEFAULT nextval('public.tenants_id_seq'::regclass);
 
 
 --
@@ -2987,6 +3062,14 @@ ALTER TABLE ONLY public.tasks
 
 
 --
+-- Name: tenants tenants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tenants
+    ADD CONSTRAINT tenants_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: idx_on_collaborator_id_position_id_d61c6081fc; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3026,6 +3109,13 @@ CREATE UNIQUE INDEX index_account_identities_on_provider_and_uid ON public.accou
 --
 
 CREATE UNIQUE INDEX index_accounts_on_email ON public.accounts USING btree (email);
+
+
+--
+-- Name: index_accounts_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_accounts_on_tenant_id ON public.accounts USING btree (tenant_id);
 
 
 --
@@ -3134,6 +3224,13 @@ CREATE UNIQUE INDEX index_candidate_alternative_names_on_candidate_id_and_name O
 
 
 --
+-- Name: index_candidate_alternative_names_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidate_alternative_names_on_tenant_id ON public.candidate_alternative_names USING btree (tenant_id);
+
+
+--
 -- Name: index_candidate_email_addresses_on_candidate_id_and_address; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3148,6 +3245,13 @@ CREATE INDEX index_candidate_email_addresses_on_created_by_id ON public.candidat
 
 
 --
+-- Name: index_candidate_email_addresses_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidate_email_addresses_on_tenant_id ON public.candidate_email_addresses USING btree (tenant_id);
+
+
+--
 -- Name: index_candidate_links_on_candidate_id_and_url; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3159,6 +3263,13 @@ CREATE UNIQUE INDEX index_candidate_links_on_candidate_id_and_url ON public.cand
 --
 
 CREATE INDEX index_candidate_links_on_created_by_id ON public.candidate_links USING btree (created_by_id);
+
+
+--
+-- Name: index_candidate_links_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidate_links_on_tenant_id ON public.candidate_links USING btree (tenant_id);
 
 
 --
@@ -3183,6 +3294,20 @@ CREATE UNIQUE INDEX index_candidate_phones_on_phone_and_candidate_id ON public.c
 
 
 --
+-- Name: index_candidate_phones_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidate_phones_on_tenant_id ON public.candidate_phones USING btree (tenant_id);
+
+
+--
+-- Name: index_candidate_sources_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidate_sources_on_tenant_id ON public.candidate_sources USING btree (tenant_id);
+
+
+--
 -- Name: index_candidates_on_candidate_source_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3204,6 +3329,13 @@ CREATE INDEX index_candidates_on_recruiter_id ON public.candidates USING btree (
 
 
 --
+-- Name: index_candidates_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_candidates_on_tenant_id ON public.candidates USING btree (tenant_id);
+
+
+--
 -- Name: index_email_message_addresses_on_address; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3215,6 +3347,13 @@ CREATE INDEX index_email_message_addresses_on_address ON public.email_message_ad
 --
 
 CREATE INDEX index_email_message_addresses_on_email_message_id ON public.email_message_addresses USING btree (email_message_id);
+
+
+--
+-- Name: index_email_message_addresses_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_message_addresses_on_tenant_id ON public.email_message_addresses USING btree (tenant_id);
 
 
 --
@@ -3239,6 +3378,20 @@ CREATE INDEX index_email_messages_on_message_id ON public.email_messages USING b
 
 
 --
+-- Name: index_email_messages_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_messages_on_tenant_id ON public.email_messages USING btree (tenant_id);
+
+
+--
+-- Name: index_email_threads_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_threads_on_tenant_id ON public.email_threads USING btree (tenant_id);
+
+
+--
 -- Name: index_events_on_actor_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3250,6 +3403,13 @@ CREATE INDEX index_events_on_actor_account_id ON public.events USING btree (acto
 --
 
 CREATE INDEX index_events_on_eventable_id_and_eventable_type ON public.events USING btree (eventable_id, eventable_type);
+
+
+--
+-- Name: index_events_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_tenant_id ON public.events USING btree (tenant_id);
 
 
 --
@@ -3400,6 +3560,13 @@ CREATE INDEX index_member_email_addresses_on_member_id ON public.member_email_ad
 
 
 --
+-- Name: index_member_email_addresses_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_member_email_addresses_on_tenant_id ON public.member_email_addresses USING btree (tenant_id);
+
+
+--
 -- Name: index_members_note_threads_on_member_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3421,6 +3588,13 @@ CREATE INDEX index_members_on_account_id ON public.members USING btree (account_
 
 
 --
+-- Name: index_members_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_members_on_tenant_id ON public.members USING btree (tenant_id);
+
+
+--
 -- Name: index_note_reactions_on_note_id_and_member_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3435,6 +3609,13 @@ CREATE INDEX index_note_threads_on_notable ON public.note_threads USING btree (n
 
 
 --
+-- Name: index_note_threads_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_note_threads_on_tenant_id ON public.note_threads USING btree (tenant_id);
+
+
+--
 -- Name: index_notes_on_member_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3446,6 +3627,13 @@ CREATE INDEX index_notes_on_member_id ON public.notes USING btree (member_id);
 --
 
 CREATE INDEX index_notes_on_note_thread_id ON public.notes USING btree (note_thread_id);
+
+
+--
+-- Name: index_notes_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notes_on_tenant_id ON public.notes USING btree (tenant_id);
 
 
 --
@@ -3477,6 +3665,13 @@ CREATE INDEX index_placements_on_position_stage_id ON public.placements USING bt
 
 
 --
+-- Name: index_placements_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_placements_on_tenant_id ON public.placements USING btree (tenant_id);
+
+
+--
 -- Name: index_position_stages_on_greenhouse_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3498,6 +3693,13 @@ CREATE UNIQUE INDEX index_position_stages_on_position_id_and_name ON public.posi
 
 
 --
+-- Name: index_position_stages_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_position_stages_on_tenant_id ON public.position_stages USING btree (tenant_id);
+
+
+--
 -- Name: index_positions_interviewers_on_position_id_and_interviewer_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3509,6 +3711,13 @@ CREATE UNIQUE INDEX index_positions_interviewers_on_position_id_and_interviewer_
 --
 
 CREATE INDEX index_positions_on_recruiter_id ON public.positions USING btree (recruiter_id);
+
+
+--
+-- Name: index_positions_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_positions_on_tenant_id ON public.positions USING btree (tenant_id);
 
 
 --
@@ -3526,10 +3735,24 @@ CREATE UNIQUE INDEX index_scorecard_questions_on_scorecard_id_and_list_index ON 
 
 
 --
+-- Name: index_scorecard_questions_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scorecard_questions_on_tenant_id ON public.scorecard_questions USING btree (tenant_id);
+
+
+--
 -- Name: index_scorecard_template_questions_on_scorecard_template_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_scorecard_template_questions_on_scorecard_template_id ON public.scorecard_template_questions USING btree (scorecard_template_id);
+
+
+--
+-- Name: index_scorecard_template_questions_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scorecard_template_questions_on_tenant_id ON public.scorecard_template_questions USING btree (tenant_id);
 
 
 --
@@ -3544,6 +3767,13 @@ CREATE INDEX index_scorecard_templates_on_greenhouse_id ON public.scorecard_temp
 --
 
 CREATE UNIQUE INDEX index_scorecard_templates_on_position_stage_id ON public.scorecard_templates USING btree (position_stage_id);
+
+
+--
+-- Name: index_scorecard_templates_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scorecard_templates_on_tenant_id ON public.scorecard_templates USING btree (tenant_id);
 
 
 --
@@ -3568,6 +3798,13 @@ CREATE INDEX index_scorecards_on_position_stage_id ON public.scorecards USING bt
 
 
 --
+-- Name: index_scorecards_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scorecards_on_tenant_id ON public.scorecards USING btree (tenant_id);
+
+
+--
 -- Name: index_sequence_template_stages_on_sequence_template_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3575,10 +3812,24 @@ CREATE INDEX index_sequence_template_stages_on_sequence_template_id ON public.se
 
 
 --
+-- Name: index_sequence_template_stages_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sequence_template_stages_on_tenant_id ON public.sequence_template_stages USING btree (tenant_id);
+
+
+--
 -- Name: index_sequence_templates_on_position_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_sequence_templates_on_position_id ON public.sequence_templates USING btree (position_id);
+
+
+--
+-- Name: index_sequence_templates_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sequence_templates_on_tenant_id ON public.sequence_templates USING btree (tenant_id);
 
 
 --
@@ -3607,6 +3858,13 @@ CREATE INDEX index_sequences_on_placement_id ON public.sequences USING btree (pl
 --
 
 CREATE INDEX index_sequences_on_sequence_template_id ON public.sequences USING btree (sequence_template_id);
+
+
+--
+-- Name: index_sequences_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sequences_on_tenant_id ON public.sequences USING btree (tenant_id);
 
 
 --
@@ -3782,6 +4040,13 @@ CREATE INDEX index_tasks_on_assignee_id_and_due_date ON public.tasks USING btree
 --
 
 CREATE INDEX index_tasks_on_taskable ON public.tasks USING btree (taskable_type, taskable_id);
+
+
+--
+-- Name: index_tasks_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_tasks_on_tenant_id ON public.tasks USING btree (tenant_id);
 
 
 --
@@ -4222,6 +4487,8 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240909141257'),
+('20240909131121'),
 ('20240904072749'),
 ('20240904065325'),
 ('20240904061514'),

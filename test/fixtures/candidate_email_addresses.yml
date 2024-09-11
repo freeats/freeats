@@ -8,6 +8,7 @@ john_email_address1:
   created_via: manual
   created_by: admin_member
   added_at: 2016-01-01
+  tenant: toughbyte_tenant
 
 john_email_address2:
   candidate: john
@@ -16,6 +17,7 @@ john_email_address2:
   type: personal
   source: linkedin
   status: current
+  tenant: toughbyte_tenant
 
 john_duplicate_email_address:
   candidate: john_duplicate
@@ -24,6 +26,7 @@ john_duplicate_email_address:
   type: personal
   source: linkedin
   status: current
+  tenant: toughbyte_tenant
 
 jane_email_address:
   candidate: jane
@@ -32,6 +35,7 @@ jane_email_address:
   type: work
   source: other
   status: current
+  tenant: toughbyte_tenant
 
 jake_email_address:
   candidate: jake
@@ -40,6 +44,7 @@ jake_email_address:
   type: personal
   source: other
   status: current
+  tenant: toughbyte_tenant
 
 sam_email_address:
   candidate: sam
@@ -48,3 +53,13 @@ sam_email_address:
   type: personal
   source: other
   status: current
+  tenant: toughbyte_tenant
+
+ilia_liamshin_email_address:
+  candidate: ilia_liamshin
+  address: lyamsh@yandex.kz
+  list_index: 1
+  type: personal
+  source: other
+  status: current
+  tenant: suroviy_byte_tenant

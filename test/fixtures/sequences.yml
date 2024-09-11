@@ -6,6 +6,7 @@ ruby_position_sam:
   status: running
   scheduled_at: <%= Time.zone.now %>
   parameters: {}
+  tenant: toughbyte_tenant
   data:
     - subject: Hey Sam, let's discuss the Scala Developer Position
       body: |
@@ -38,6 +39,7 @@ ruby_position_john:
   status: running
   scheduled_at: <%= Time.zone.now %>
   parameters: {}
+  tenant: toughbyte_tenant
   data:
     - subject: Hey John, let's discuss the Ruby Developer Position
       body: |

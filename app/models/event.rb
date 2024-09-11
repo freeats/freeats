@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   belongs_to :actor_account, class_name: "Account", optional: true
   belongs_to :eventable, polymorphic: true
   belongs_to :assigned_member,

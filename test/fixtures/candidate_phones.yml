@@ -5,6 +5,7 @@ john_phone:
   source: linkedin
   status: current
   list_index: 1
+  tenant: toughbyte_tenant
 
 jane_phone:
   candidate: jane
@@ -13,3 +14,4 @@ jane_phone:
   source: other
   status: current
   list_index: 1
+  tenant: toughbyte_tenant

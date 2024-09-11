@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EmailThread < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   DATE_RANGE_TYPES = [Date, DateTime, ActiveSupport::TimeWithZone, NilClass].freeze
 
   has_many :messages,

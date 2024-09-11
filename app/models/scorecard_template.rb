@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ScorecardTemplate < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   has_many :scorecard_template_questions,
            -> { order(:list_index) },
            dependent: :destroy,

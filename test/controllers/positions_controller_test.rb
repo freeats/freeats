@@ -175,6 +175,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
       Member
       .where(access_level: Position::COLLABORATORS_ACCESS_LEVEL)
       .where.not(id: position.recruiter_id)
+      .where(tenant: tenants(:toughbyte_tenant))
       .order("random()")
       .first(3)
       .pluck(:id) -
@@ -204,6 +205,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
       Member
       .where(access_level: Position::HIRING_MANAGERS_ACCESS_LEVEL)
       .where.not(id: position.recruiter_id)
+      .where(tenant: tenants(:toughbyte_tenant))
       .order("random()")
       .first(3)
       .pluck(:id) -
@@ -233,6 +235,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
       Member
       .where(access_level: Position::INTERVIEWERS_ACCESS_LEVEL)
       .where.not(id: position.recruiter_id)
+      .where(tenant: tenants(:toughbyte_tenant))
       .order("random()")
       .first(3)
       .pluck(:id) -

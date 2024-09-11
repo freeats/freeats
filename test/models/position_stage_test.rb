@@ -5,6 +5,10 @@ require "test_helper"
 class PositionStageTest < ActiveSupport::TestCase
   include Dry::Monads[:result]
 
+  setup do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
+  end
+
   test "should restrict to create position_stage with same name in same position" do
     position = positions(:ruby_position)
     sourced_position_stage = position_stages(:ruby_position_sourced)

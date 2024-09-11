@@ -83,6 +83,8 @@ GEM
       minitest (>= 5.1)
       mutex_m
       tzinfo (~> 2.0)
+    acts_as_tenant (1.0.1)
+      rails (>= 6.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
     after_commit_everywhere (1.4.0)
@@ -573,6 +575,7 @@ PLATFORMS
 DEPENDENCIES
   action_policy
   active_record_union
+  acts_as_tenant
   addressable (= 2.8.1)
   aws-sdk-s3
   blazer

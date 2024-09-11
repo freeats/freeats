@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SequenceTemplate < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   DEFAULT_STAGES = [
     { position: 1, delay_in_days: 0 },
     { position: 2, delay_in_days: 3 },

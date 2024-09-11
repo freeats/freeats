@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PositionStage < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   has_many :scorecards, dependent: :restrict_with_exception
   has_many :moved_to_events,
            lambda { where(type: :placement_changed, changed_field: :stage) },
