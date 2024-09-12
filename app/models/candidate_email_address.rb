@@ -101,7 +101,7 @@ class CandidateEmailAddress < ApplicationRecord
   def address_must_be_valid
     return if CandidateEmailAddress.valid_email?(address)
 
-    error_message = "have invalid value"
+    error_message = "have invalid value: #{address}"
 
     candidate.errors.add(:address, error_message)
     errors.add(:address, error_message)

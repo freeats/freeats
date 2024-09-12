@@ -59,37 +59,32 @@ class Candidates::Change
 
     prepared_params = prepare_params(candidate:, params:, old_values:, actor_account:, namespace:)
 
-    result = Try[ActiveRecord::RecordInvalid] do
-      ActiveRecord::Base.transaction do
-        candidate.assign_attributes(prepared_params.except(:alternative_names))
-        candidate.save!
+    ActiveRecord::Base.transaction do
+      candidate.assign_attributes(prepared_params.except(:alternative_names))
+      candidate.save!
 
-        if prepared_params.key?(:alternative_names)
-          yield Candidates::AlternativeNames::Change.new(
-            candidate:,
-            actor_account:,
-            alternative_names: prepared_params[:alternative_names]
-          ).call
-        end
-
-        if candidate.recruiter_id != old_values[:recruiter_id]
-          add_recruiter_changed_events(
-            candidate:,
-            actor_account:,
-            old_recruiter_id: old_values[:recruiter_id]
-          )
-        end
-
-        add_changed_events(candidate:, actor_account:, old_values:)
+      if prepared_params.key?(:alternative_names)
+        yield Candidates::AlternativeNames::Change.new(
+          candidate:,
+          actor_account:,
+          alternative_names: prepared_params[:alternative_names]
+        ).call
       end
-    end.to_result
 
-    case result
-    in Success(_)
-      Success(candidate.reload)
-    in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:candidate_invalid, candidate.errors.full_messages.presence || e.to_s]
+      if candidate.recruiter_id != old_values[:recruiter_id]
+        add_recruiter_changed_events(
+          candidate:,
+          actor_account:,
+          old_recruiter_id: old_values[:recruiter_id]
+        )
+      end
+
+      add_changed_events(candidate:, actor_account:, old_values:)
     end
+
+    Success(candidate.reload)
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+    Failure[:candidate_invalid, candidate.errors.full_messages.presence || e.to_s]
   end
 
   private
