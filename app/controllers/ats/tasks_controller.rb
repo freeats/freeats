@@ -12,7 +12,7 @@ class ATS::TasksController < ApplicationController
   before_action :authorize!
 
   def index
-    session[:ats_tasks_grid_params] = params[:ats_tasks_grid]&.to_unsafe_h
+    session[:ats_tasks_grid_params] = task_grid_params
     set_tasks_grid
   end
 
@@ -163,7 +163,9 @@ class ATS::TasksController < ApplicationController
   end
 
   def set_tasks_grid(grid_params: nil)
-    grid_params = params.fetch(:ats_tasks_grid, {}) if grid_params.nil?
+    grid_params ||=
+      task_grid_params || {}
+    grid_params = grid_params.symbolize_keys
     grid_params[:current_member_id] = current_member.id
     grid_params[:assignee] ||= current_member.id
     @tasks_grid = ATS::TasksGrid.new(
@@ -269,5 +271,12 @@ class ATS::TasksController < ApplicationController
         :assignee_id,
         watcher_ids: []
       )
+  end
+
+  def task_grid_params
+    params
+      .fetch(:ats_tasks_grid, nil)
+      &.permit(:assignee, :name, :status, :due_date, :watched)
+      &.to_h
   end
 end
