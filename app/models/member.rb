@@ -27,8 +27,8 @@ class Member < ApplicationRecord
            inverse_of: :recruiter,
            foreign_key: :recruiter_id,
            dependent: :restrict_with_exception
-  has_many :email_addresses, dependent: :destroy
   has_many :notes, dependent: :destroy
+  has_many :sequences, dependent: :restrict_with_exception
   has_many :assigned_events,
            lambda { where(type: %i[position_recruiter_assigned candidate_recruiter_assigned]) },
            class_name: "Event",
@@ -80,24 +80,35 @@ class Member < ApplicationRecord
     active.includes(user: :identities).where(users: { identities: { provider: "toughbyte" } })
   }
   scope :with_linked_email_service, -> {
-    joins(:email_addresses).where.not(email_addresses: { refresh_token: "" }).distinct
+    where.not(refresh_token: "")
   }
 
   def self.find_by_address(address)
-    left_joins(:account, :email_addresses)
-      .where(account: { email: address })
-      .or(
-        where(email_addresses: { address: })
-      )
-      .first
+    joins(:account).find_by(account: { email: address })
   end
 
   def self.imap_accounts
-    includes(:email_addresses)
-      .where.not(email_addresses: { refresh_token: "" })
-      .map(&:email_addresses)
-      .flatten
-      .map(&:imap_account)
+    with_linked_email_service.map(&:imap_account)
+  end
+
+  # Gmail accounts are mutated during request, changes should be persisted back to database.
+  def self.postprocess_imap_account(imap_account, update_imap_uid: true)
+    if imap_account.status != :succeeded
+      find_by_address(imap_account.email)
+        .reset_email_service_tokens
+    elsif update_imap_uid
+      find_by_address(imap_account.email)
+        .update!(last_email_synchronization_uid: imap_account.last_message_uid)
+    end
+  end
+
+  def imap_account
+    Imap::Account.new(
+      email: email_address,
+      access_token: token,
+      refresh_token:,
+      last_email_synchronization_uid:
+    )
   end
 
   def active?
@@ -119,11 +130,19 @@ class Member < ApplicationRecord
     account.name
   end
 
+  def email_address
+    account.email
+  end
+
   def reacted_to_note?(note)
     reacted_notes.find { _1.id == note.id }
   end
 
-  def any_email_service_linked?
-    email_addresses.where.not(refresh_token: "").exists?
+  def email_service_linked?
+    refresh_token.present?
+  end
+
+  def reset_email_service_tokens
+    update!(token: "", refresh_token: "")
   end
 end

@@ -4,7 +4,7 @@ class EmailSynchronization::Synchronize
   include Dry::Monads[:result, :do]
 
   include Dry::Initializer.define -> do
-    option :imap_accounts, [Types::Instance(Imap::Account)]
+    option :imap_account, Types::Instance(Imap::Account)
     option :only_for_email_addresses, [Types::Strict::String], default: proc { [] }
   end
 
@@ -14,7 +14,7 @@ class EmailSynchronization::Synchronize
     if only_for_email_addresses.present?
       Imap::Message.message_batches_related_to(
         only_for_email_addresses,
-        from_accounts: imap_accounts,
+        from_account: imap_account,
         batch_size: BATCH_SIZE
       ).each do |message_batch|
         message_batch.each do |message|
@@ -23,7 +23,7 @@ class EmailSynchronization::Synchronize
       end
     else
       Imap::Message.new_message_batches(
-        from_accounts: imap_accounts,
+        from_account: imap_account,
         batch_size: BATCH_SIZE
       ).each do |message_batch|
         message_batch.each do |message|
@@ -32,7 +32,7 @@ class EmailSynchronization::Synchronize
       end
     end
 
-    Member::EmailAddress.postprocess_imap_accounts(imap_accounts)
+    Member.postprocess_imap_account(imap_account)
 
     Success()
   end
@@ -55,8 +55,8 @@ class EmailSynchronization::Synchronize
       logger.error("Received a message with no 'from' addresses", **extra)
     in Failure(:no_to_addresses)
       logger.error("Received a message with no 'to' addresses", **extra)
-    in Failure(:message_does_not_contain_member_email_addresses)
-      logger.error("Received a message with no member addresses at all", **extra)
+    in Failure(:message_does_not_contain_member_email_address)
+      logger.error("Received a message with no member address at all", **extra)
     in Failure(:bad_threading)
       logger.error("Failed to thread a message", **extra)
     in Failure[:no_candidate_participants, payload]

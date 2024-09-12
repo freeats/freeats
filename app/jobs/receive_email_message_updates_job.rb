@@ -8,8 +8,8 @@ class ReceiveEmailMessageUpdatesJob < ApplicationJob
   queue_as :high
 
   def perform(member_id)
-    imap_accounts = Member::EmailAddress.where(member_id:).map(&:imap_account)
+    Member.find(member_id).imap_account
 
-    EmailSynchronization::Synchronize.new(imap_accounts:).call
+    EmailSynchronization::Synchronize.new(imap_accounts: [imap_account]).call
   end
 end

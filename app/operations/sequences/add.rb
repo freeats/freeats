@@ -5,7 +5,7 @@ class Sequences::Add
 
   include Dry::Initializer.define -> do
     option :params, Types::Strict::Hash.schema(
-      member_email_address: Types.Instance(Member::EmailAddress),
+      member: Types.Instance(Member),
       sequence_template: Types.Instance(SequenceTemplate),
       placement: Types.Instance(Placement),
       to: Types::Strict::String,
@@ -15,7 +15,7 @@ class Sequences::Add
   end
 
   def call
-    yield verify_token(params[:member_email_address])
+    yield verify_token(params[:member])
 
     to = params[:to]
     yield verify_recipient(to)
@@ -46,9 +46,9 @@ class Sequences::Add
 
   private
 
-  def verify_token(member_email_address)
-    if member_email_address.token.blank?
-      Failure[:token_is_blank, "Token is blank for #{member_email_address.address}."]
+  def verify_token(member)
+    if member.token.blank?
+      Failure[:token_is_blank, "Token is blank for #{member.email_address}."]
     else
       Success()
     end

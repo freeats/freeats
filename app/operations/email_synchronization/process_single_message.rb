@@ -100,7 +100,7 @@ class EmailSynchronization::ProcessSingleMessage
     elsif (member = Member.find_by_address(message.clean_bcc_emails))
       Success(EmailSynchronization::MessageMember.new(field: :bcc, member:))
     else
-      Failure(:message_does_not_contain_member_email_addresses)
+      Failure(:message_does_not_contain_member_email_address)
     end
   end
 

@@ -23,7 +23,7 @@ class EmailSynchronization::ProcessSingleMessageTest < ActiveSupport::TestCase
   test "upload attachments should work" do
     raw_message = ITH::MESSAGE_WITH_ATTACHMENT.tap do |msg|
       msg.from = [candidate_email_addresses(:john_email_address1).address]
-      msg.to = ["admin@admin.com"]
+      msg.to = ["admin@mail.com"]
     end
     message = Imap::Message.new_from_api(
       raw_message,
@@ -40,7 +40,7 @@ class EmailSynchronization::ProcessSingleMessageTest < ActiveSupport::TestCase
   test "shouldn't work if message without address from db" do
     raw_message = ITH::MESSAGE_WITH_ATTACHMENT.tap do |msg|
       msg.from = ["unknown@gmail.com"]
-      msg.to = ["admin@admin.com"]
+      msg.to = ["admin@mail.com"]
     end
     message = Imap::Message.new_from_api(
       raw_message,
@@ -68,7 +68,7 @@ class EmailSynchronization::ProcessSingleMessageTest < ActiveSupport::TestCase
       message:
     ).call
 
-    assert_equal result, Failure(:message_does_not_contain_member_email_addresses)
+    assert_equal result, Failure(:message_does_not_contain_member_email_address)
   end
 
   test "shouldn't process if message with service address" do

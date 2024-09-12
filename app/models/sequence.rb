@@ -4,7 +4,7 @@ class Sequence < ApplicationRecord
   acts_as_tenant(:tenant)
 
   has_many :events, as: :eventable, dependent: :destroy
-  belongs_to :member_email_address, class_name: "Member::EmailAddress"
+  belongs_to :member
   belongs_to :placement
   belongs_to :sequence_template
   belongs_to :email_thread, optional: true

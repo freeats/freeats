@@ -16,9 +16,9 @@ class EmailSynchronization::SynchronizeTest < ActiveSupport::TestCase
     oauth_client_mock.expect :fetch_access_token!, true
     oauth_client_mock.expect :access_token, "token"
 
-    imap_accounts = nil
+    imap_account = nil
     Gmail::Auth.stub :with_tokens, oauth_client_mock do
-      imap_accounts = [member_email_addresses(:admin_first_email_address).imap_account]
+      imap_account = members(:admin_member).imap_account
     end
 
     message_mock = Minitest::Mock.new
@@ -26,17 +26,17 @@ class EmailSynchronization::SynchronizeTest < ActiveSupport::TestCase
       :call,
       [message_list],
       [only_for_email_addresses],
-      from_accounts: imap_accounts,
+      from_account: imap_account,
       batch_size: EmailSynchronization::Synchronize::BATCH_SIZE
     )
 
     postprocess_mock = Minitest::Mock.new
-    postprocess_mock.expect(:call, nil, [imap_accounts])
+    postprocess_mock.expect(:call, nil, [imap_account])
 
-    Member::EmailAddress.stub(:postprocess_imap_accounts, postprocess_mock) do
+    Member.stub(:postprocess_imap_account, postprocess_mock) do
       Imap::Message.stub(:message_batches_related_to, message_mock) do
         result = EmailSynchronization::Synchronize.new(
-          imap_accounts:,
+          imap_account:,
           only_for_email_addresses:
         ).call
 
@@ -52,9 +52,9 @@ class EmailSynchronization::SynchronizeTest < ActiveSupport::TestCase
     oauth_client_mock.expect :fetch_access_token!, true
     oauth_client_mock.expect :access_token, "token"
 
-    imap_accounts = nil
+    imap_account = nil
     Gmail::Auth.stub :with_tokens, oauth_client_mock do
-      imap_accounts = [member_email_addresses(:admin_first_email_address).imap_account]
+      imap_account = members(:admin_member).imap_account
     end
 
     message_mock = Minitest::Mock.new
@@ -62,17 +62,17 @@ class EmailSynchronization::SynchronizeTest < ActiveSupport::TestCase
       :call,
       [message_list],
       [],
-      from_accounts: imap_accounts,
+      from_account: imap_account,
       batch_size: EmailSynchronization::Synchronize::BATCH_SIZE
     )
 
     postprocess_mock = Minitest::Mock.new
-    postprocess_mock.expect(:call, nil, [imap_accounts])
+    postprocess_mock.expect(:call, nil, [imap_account])
 
-    Member::EmailAddress.stub(:postprocess_imap_accounts, postprocess_mock) do
+    Member.stub(:postprocess_imap_account, postprocess_mock) do
       Imap::Message.stub(:new_message_batches, message_mock) do
         result = EmailSynchronization::Synchronize.new(
-          imap_accounts:
+          imap_account:
         ).call
 
         assert_equal result, Success()

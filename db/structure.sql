@@ -1354,42 +1354,6 @@ ALTER SEQUENCE public.locations_id_seq OWNED BY public.locations.id;
 
 
 --
--- Name: member_email_addresses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.member_email_addresses (
-    id bigint NOT NULL,
-    member_id bigint NOT NULL,
-    address public.citext NOT NULL,
-    token character varying DEFAULT ''::character varying NOT NULL,
-    refresh_token character varying DEFAULT ''::character varying NOT NULL,
-    last_email_synchronization_uid integer,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
-);
-
-
---
--- Name: member_email_addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.member_email_addresses_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: member_email_addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.member_email_addresses_id_seq OWNED BY public.member_email_addresses.id;
-
-
---
 -- Name: members; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1399,7 +1363,10 @@ CREATE TABLE public.members (
     access_level public.member_access_level NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint,
+    refresh_token character varying DEFAULT ''::character varying NOT NULL,
+    token character varying DEFAULT ''::character varying NOT NULL,
+    last_email_synchronization_uid integer
 );
 
 
@@ -1872,7 +1839,6 @@ ALTER SEQUENCE public.sequence_templates_id_seq OWNED BY public.sequence_templat
 
 CREATE TABLE public.sequences (
     id bigint NOT NULL,
-    member_email_address_id bigint NOT NULL,
     placement_id bigint NOT NULL,
     sequence_template_id bigint NOT NULL,
     email_thread_id bigint,
@@ -1887,6 +1853,7 @@ CREATE TABLE public.sequences (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     tenant_id bigint,
+    member_id bigint NOT NULL,
     CONSTRAINT current_stage_must_not_be_negative CHECK ((current_stage >= 0))
 );
 
@@ -2471,13 +2438,6 @@ ALTER TABLE ONLY public.locations ALTER COLUMN id SET DEFAULT nextval('public.lo
 
 
 --
--- Name: member_email_addresses id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.member_email_addresses ALTER COLUMN id SET DEFAULT nextval('public.member_email_addresses_id_seq'::regclass);
-
-
---
 -- Name: members id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2859,14 +2819,6 @@ ALTER TABLE ONLY public.location_hierarchies
 
 ALTER TABLE ONLY public.locations
     ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
-
-
---
--- Name: member_email_addresses member_email_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.member_email_addresses
-    ADD CONSTRAINT member_email_addresses_pkey PRIMARY KEY (id);
 
 
 --
@@ -3546,27 +3498,6 @@ CREATE INDEX index_locations_on_type ON public.locations USING btree (type);
 
 
 --
--- Name: index_member_email_addresses_on_address; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_member_email_addresses_on_address ON public.member_email_addresses USING btree (address);
-
-
---
--- Name: index_member_email_addresses_on_member_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_member_email_addresses_on_member_id ON public.member_email_addresses USING btree (member_id);
-
-
---
--- Name: index_member_email_addresses_on_tenant_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_member_email_addresses_on_tenant_id ON public.member_email_addresses USING btree (tenant_id);
-
-
---
 -- Name: index_members_note_threads_on_member_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3840,10 +3771,10 @@ CREATE INDEX index_sequences_on_email_thread_id ON public.sequences USING btree 
 
 
 --
--- Name: index_sequences_on_member_email_address_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_sequences_on_member_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_sequences_on_member_email_address_id ON public.sequences USING btree (member_email_address_id);
+CREATE INDEX index_sequences_on_member_id ON public.sequences USING btree (member_id);
 
 
 --
@@ -4113,19 +4044,19 @@ ALTER TABLE ONLY public.candidate_phones
 
 
 --
--- Name: sequences fk_rails_2803439625; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sequences
-    ADD CONSTRAINT fk_rails_2803439625 FOREIGN KEY (member_email_address_id) REFERENCES public.member_email_addresses(id);
-
-
---
 -- Name: positions_hiring_managers fk_rails_28b240935e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.positions_hiring_managers
     ADD CONSTRAINT fk_rails_28b240935e FOREIGN KEY (position_id) REFERENCES public.positions(id);
+
+
+--
+-- Name: sequences fk_rails_2a31e129ba; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sequences
+    ADD CONSTRAINT fk_rails_2a31e129ba FOREIGN KEY (member_id) REFERENCES public.members(id);
 
 
 --
@@ -4206,14 +4137,6 @@ ALTER TABLE ONLY public.sequences
 
 ALTER TABLE ONLY public.sequence_templates
     ADD CONSTRAINT fk_rails_4fe3f5ed40 FOREIGN KEY (position_id) REFERENCES public.positions(id);
-
-
---
--- Name: member_email_addresses fk_rails_51bc8df779; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.member_email_addresses
-    ADD CONSTRAINT fk_rails_51bc8df779 FOREIGN KEY (member_id) REFERENCES public.members(id);
 
 
 --
@@ -4487,6 +4410,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240911051822'),
 ('20240909141257'),
 ('20240909131121'),
 ('20240904072749'),

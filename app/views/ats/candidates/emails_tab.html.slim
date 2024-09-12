@@ -1,6 +1,6 @@
 ruby:
   compose_state =
-    if !current_member.any_email_service_linked?
+    if !current_member.email_service_linked?
       :email_not_linked
     elsif @mail_to_address.blank?
       :candidate_no_emails

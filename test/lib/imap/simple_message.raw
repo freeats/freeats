@@ -62,7 +62,7 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          xQ2g==
 ARC-Authentication-Results: i=2; mx.google.com;
        dkim=pass header.i=@toughbyte.com header.s=google header.b=TzxdsK4Z;
-       spf=pass (google.com: domain of admin.second@admin.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=admin.second@admin.com;
+       spf=pass (google.com: domain of admin@mail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=admin@mail.com;
        dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toughbyte.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=toughbyte.com; s=google; t=1706147976; x=1706752776; darn=toughbyte.com;
@@ -122,29 +122,29 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          UcSw==
 ARC-Authentication-Results: i=1; mx.google.com;
        dkim=pass header.i=@toughbyte.com header.s=google header.b=TzxdsK4Z;
-       spf=pass (google.com: domain of admin.second@admin.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=admin.second@admin.com;
+       spf=pass (google.com: domain of admin@mail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=admin@mail.com;
        dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toughbyte.com
 Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
         by mx.google.com with SMTPS id o16-20020a198c10000000b005101c043967sor55353lfd.12.2024.01.24.17.59.33
         for <developers@toughbyte.com>
         (Google Transport Security);
         Wed, 24 Jan 2024 17:59:33 -0800 (PST)
-Received-SPF: pass (google.com: domain of admin.second@admin.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Received-SPF: pass (google.com: domain of admin@mail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
 X-Received: by 2002:ac2:4288:0:b0:510:10e0:cc91 with SMTP id
  m8-20020ac24288000000b0051010e0cc91mr65018lfh.112.1706147972931; Wed, 24 Jan
  2024 17:59:32 -0800 (PST)
 MIME-Version: 1.0
-From: Admin Second <admin.second@admin.com>
+From: Admin Admin <admin@mail.com>
 Date: Thu, 25 Jan 2024 07:59:22 +0600
 Message-ID: <CAHj9ApeDMFnA-nGED5MGsLr3kM3ZF7qztj75To_CxO5Ft7jF+Q@mail.gmail.com>
 Subject: Report for 25.01.24
 To: Developers <developers@toughbyte.com>
 Content-Type: multipart/alternative; boundary="000000000000dc78cd060fbb87e8"
-X-Original-Sender: admin.second@admin.com
+X-Original-Sender: admin@mail.com
 X-Original-Authentication-Results: mx.google.com;       dkim=pass
  header.i=@toughbyte.com header.s=google header.b=TzxdsK4Z;       spf=pass
- (google.com: domain of admin.second@admin.com designates
- 209.85.220.41 as permitted sender) smtp.mailfrom=admin.second@admin.com;
+ (google.com: domain of admin@mail.com designates
+ 209.85.220.41 as permitted sender) smtp.mailfrom=admin@mail.com;
        dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toughbyte.com
 Precedence: list
 Mailing-list: list developers@toughbyte.com; contact developers+owners@toughbyte.com

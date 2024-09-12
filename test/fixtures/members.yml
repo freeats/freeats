@@ -2,6 +2,9 @@ admin_member:
   account: admin_account
   access_level: admin
   tenant: toughbyte_tenant
+  token: dummy
+  refresh_token: dummy
+  last_email_synchronization_uid: 1712128953
 
 hiring_manager_member:
   account: hiring_manager_account

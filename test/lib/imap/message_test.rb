@@ -88,7 +88,7 @@ class ImapMessageTest < ActiveSupport::TestCase
     message = Imap::Message.new_from_api(ITH::SIMPLE_MESSAGE, MESSAGE_UID, MESSAGE_FLAGS)
 
     assert_equal message.to, ["Developers <developers@toughbyte.com>"]
-    assert_equal message.from, ["Admin Second <admin.second@admin.com>"]
+    assert_equal message.from, ["Admin Admin <admin@mail.com>"]
     assert_equal message.subject, "Report for 25.01.24"
     assert_equal message.timestamp, Time.parse("Thu, 25 Jan 2024 07:59:22 +0600").to_i
     assert_equal message.plain_mime_type, "text/plain"
@@ -196,7 +196,7 @@ class ImapMessageTest < ActiveSupport::TestCase
 
       Imap::Message.message_batches_related_to(
         %w[travis.hodge@toughbyte.com],
-        from_accounts: [account]
+        from_account: account
       ).each do |message_batch|
         assert_includes message_batch, ITH::SIMPLE_MESSAGE
       end
@@ -226,7 +226,7 @@ class ImapMessageTest < ActiveSupport::TestCase
         account = Imap::Account.new(**account_params)
 
         Imap::Message.new_message_batches(
-          from_accounts: [account]
+          from_account: account
         ).each do |message_batch|
           assert_includes message_batch, ITH::SIMPLE_MESSAGE
         end
@@ -257,7 +257,7 @@ class ImapMessageTest < ActiveSupport::TestCase
         account = Imap::Account.new(**account_params)
 
         Imap::Message.new_message_batches(
-          from_accounts: [account]
+          from_account: account
         ).each do |message_batch|
           assert_includes message_batch, ITH::SIMPLE_MESSAGE
         end

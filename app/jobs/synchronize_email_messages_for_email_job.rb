@@ -14,10 +14,10 @@ class SynchronizeEmailMessagesForEmailJob < ApplicationJob
       return
     end
 
-    imap_accounts = Member::EmailAddress.where(member_id:).map(&:imap_account)
+    imap_account = Member.find(member_id).imap_account
 
     EmailSynchronization::Synchronize.new(
-      imap_accounts:,
+      imap_accounts: [imap_account],
       only_for_email_addresses: addresses
     ).call
   end

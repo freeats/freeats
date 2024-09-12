@@ -82,18 +82,12 @@ class ApplicationController < ActionController::Base
     return if params[:controller]&.include?(mission_control_jobs_path)
     return if current_member.blank?
     return unless allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
+    return if current_member.email_service_linked?
 
-    addresses =
-      current_member
-      .email_addresses
-      .where(refresh_token: "")
-      .order(:address)
-      .pluck(:address)
-    return if addresses.blank?
+    address = current_member.email_address
 
     @email_blank_tokens_alert =
-      %(#{'Email'.pluralize(addresses.size)} #{addresses.to_sentence}
-        #{'is'.pluralize(addresses.size)} not linked. Please press <i>Link Gmail</i> button in
+      %(Email #{address} is not linked. Please press <i>Link Gmail</i> button in
         <a href="#{ats_profile_url}">your profile</a> to synchronize emails.)
   end
 

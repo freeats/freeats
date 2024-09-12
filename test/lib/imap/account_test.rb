@@ -17,7 +17,7 @@ class ImapAccountTest < ActiveSupport::TestCase
 
     Gmail::Auth.stub :with_tokens, oauth_client_mock do
       Imap::Account.stub_const(:AUTHORIZATION_RETRY_DELAY, 0) do
-        assert_not_equal member_email_addresses(:admin_first_email_address).imap_account.imap_service, nil
+        assert_not_equal members(:admin_member).imap_account.imap_service, nil
       end
     end
 

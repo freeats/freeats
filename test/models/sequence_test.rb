@@ -9,7 +9,7 @@ class SequenceTest < ActiveSupport::TestCase
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     @actor_account = accounts(:employee_account)
     @sequence_template = sequence_templates(:ruby_position_sequence_template)
-    @member_email_address = member_email_addresses(:admin_first_email_address)
+    @member = members(:admin_member)
     @placement = placements(:sam_ruby_replied)
   end
 
@@ -19,7 +19,7 @@ class SequenceTest < ActiveSupport::TestCase
 
     params = {
       sequence_template: @sequence_template,
-      member_email_address: @member_email_address,
+      member: @member,
       placement: @placement,
       to: "sam@smith.com"
     }
@@ -31,7 +31,7 @@ class SequenceTest < ActiveSupport::TestCase
 
         assert_equal sequence.status, "running"
         assert_equal sequence.current_stage, 0
-        assert_equal sequence.member_email_address_id, @member_email_address.id
+        assert_equal sequence.member_id, @member.id
         assert_equal sequence.placement_id, @placement.id
         assert_equal sequence.sequence_template_id, @sequence_template.id
         assert_equal sequence.to, params[:to]
@@ -57,7 +57,7 @@ class SequenceTest < ActiveSupport::TestCase
 
     params = {
       sequence_template: @sequence_template,
-      member_email_address: @member_email_address,
+      member: @member,
       placement: @placement,
       to: blacklisted_candidate.all_emails(status: :current).first
     }
@@ -78,7 +78,7 @@ class SequenceTest < ActiveSupport::TestCase
 
     params = {
       sequence_template: @sequence_template,
-      member_email_address: @member_email_address,
+      member: @member,
       placement: @placement,
       to: "sam@smith.com"
     }
@@ -101,7 +101,7 @@ class SequenceTest < ActiveSupport::TestCase
 
     params = {
       sequence_template: @sequence_template,
-      member_email_address: @member_email_address,
+      member: @member,
       placement: @placement,
       to: running_sequence.to
     }
@@ -114,14 +114,14 @@ class SequenceTest < ActiveSupport::TestCase
     end
   end
 
-  test "should not create a sequence if the token is blank for the member email address" do
-    member_email_address = member_email_addresses(:admin_second_email_address)
+  test "should not create a sequence if the token is blank for the member" do
+    member = members(:employee_member)
 
-    assert_predicate member_email_address.token, :blank?
+    assert_predicate member.token, :blank?
 
     params = {
       sequence_template: @sequence_template,
-      member_email_address:,
+      member:,
       placement: @placement,
       to: "sam@smith.com"
     }
@@ -129,7 +129,7 @@ class SequenceTest < ActiveSupport::TestCase
     assert_no_difference "Sequence.count" do
       case Sequences::Add.new(params:, actor_account: @actor_account).call
       in Failure[:token_is_blank, error]
-        assert_equal error, "Token is blank for #{member_email_address.address}."
+        assert_equal error, "Token is blank for #{member.email_address}."
       end
     end
   end

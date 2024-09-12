@@ -9,7 +9,7 @@ class EmailSynchronization::RetrieveGmailTokensTest < ActiveSupport::TestCase
     Faraday.default_connection = nil
   end
 
-  test "should fetch and set tokens from Gmail for new record" do
+  test "should fetch different email and return failure" do
     stubs = Faraday::Adapter::Test::Stubs.new do |stub|
       stub.post("https://oauth2.googleapis.com/token") do |_env|
         [200, { "Content-type" => "application/json; charset=utf-8" },
@@ -30,23 +30,19 @@ class EmailSynchronization::RetrieveGmailTokensTest < ActiveSupport::TestCase
       Rails.application.routes.url_helpers.link_gmail_ats_profile_url(host: "localhost:3000")
     current_member = members(:employee_member)
 
-    assert_difference "Member::EmailAddress.where(address: '#{EMAIL_ADDRESS}').count" do
+    assert_no_difference "Account.where(email: EMAIL_ADDRESS).count" do
       rs = EmailSynchronization::RetrieveGmailTokens.new(
         current_member:,
         code: "secret-gmail-code",
         redirect_uri:
       ).call
 
-      assert_equal rs, Success()
+      assert_equal rs, Failure[:emails_not_match, EMAIL_ADDRESS]
     end
 
-    mea = Member::EmailAddress.last
-
-    assert_equal mea.address, EMAIL_ADDRESS
-    assert_equal mea.member_id, current_member.id
-    assert_equal mea.token, ACCESS_TOKEN
-    assert_equal mea.refresh_token, REFRESH_TOKEN
-    assert_nil mea.last_email_synchronization_uid
+    assert_not_equal current_member.email_address, EMAIL_ADDRESS
+    assert_not_equal current_member.token, ACCESS_TOKEN
+    assert_not_equal current_member.refresh_token, REFRESH_TOKEN
 
     stubs.verify_stubbed_calls
   end
@@ -71,28 +67,23 @@ class EmailSynchronization::RetrieveGmailTokensTest < ActiveSupport::TestCase
     redirect_uri =
       Rails.application.routes.url_helpers.link_gmail_ats_profile_url(host: "localhost:3000")
     current_member = members(:employee_member)
-    mea = Member::EmailAddress.create!(
-      member: current_member,
-      address: EMAIL_ADDRESS
-    )
+    current_member.account.update!(email: EMAIL_ADDRESS)
 
-    assert_empty mea.token
-    assert_empty mea.refresh_token
+    assert_empty current_member.token
+    assert_empty current_member.refresh_token
 
-    assert_no_difference "Member::EmailAddress.where(address: '#{EMAIL_ADDRESS}').count" do
-      rs = EmailSynchronization::RetrieveGmailTokens.new(
-        current_member:,
-        code: "secret-gmail-code",
-        redirect_uri:
-      ).call
+    rs = EmailSynchronization::RetrieveGmailTokens.new(
+      current_member:,
+      code: "secret-gmail-code",
+      redirect_uri:
+    ).call
 
-      assert_equal rs, Success()
-    end
+    assert_equal rs, Success()
 
-    mea.reload
+    current_member.reload
 
-    assert_equal mea.token, ACCESS_TOKEN
-    assert_equal mea.refresh_token, REFRESH_TOKEN
+    assert_equal current_member.token, ACCESS_TOKEN
+    assert_equal current_member.refresh_token, REFRESH_TOKEN
 
     stubs.verify_stubbed_calls
   end

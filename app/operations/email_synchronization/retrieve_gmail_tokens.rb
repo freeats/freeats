@@ -11,9 +11,10 @@ class EmailSynchronization::RetrieveGmailTokens
 
   def call
     access_token, refresh_token = yield fetch_tokens
-    email_address = yield retrieve_email_address(access_token)
-    yield persist_tokens(email_address, access_token, refresh_token)
-    Success()
+    linked_email_address = yield retrieve_email_address(access_token)
+    yield check_email_same_as_current(current_member.email_address, linked_email_address)
+
+    persist_tokens(access_token, refresh_token)
   end
 
   private
@@ -39,11 +40,16 @@ class EmailSynchronization::RetrieveGmailTokens
     Failure[:failed_to_retrieve_email_address, e]
   end
 
-  def persist_tokens(address, token, refresh_token)
-    member_email_address = current_member.email_addresses.create_or_find_by!(address:)
-    member_email_address.update!(token:, refresh_token:)
+  def check_email_same_as_current(current_email, retrieved_email)
+    return Success() if current_email == retrieved_email
+
+    Failure[:emails_not_match, retrieved_email]
+  end
+
+  def persist_tokens(token, refresh_token)
+    current_member.update!(token:, refresh_token:)
     Success()
   rescue ActiveRecord::RecordInvalid => e
-    Failure[:invalid_member_email_address, e]
+    Failure[:new_tokens_are_not_saved, e]
   end
 end

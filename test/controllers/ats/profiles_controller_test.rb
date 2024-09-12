@@ -30,17 +30,27 @@ class ATS::ProfilesControllerTest < ActionDispatch::IntegrationTest
     sign_in accounts(:employee_account)
     exc = RuntimeError.new
     exc.set_backtrace([])
+    new_email = "random@email.com"
     retrieve_gmail_tokens_mock = Minitest::Mock.new
     retrieve_gmail_tokens_mock.expect(:call, Failure[:failed_to_fetch_tokens, exc], [])
     retrieve_gmail_tokens_mock.expect(:call, Failure[:failed_to_retrieve_email_address, exc], [])
-    retrieve_gmail_tokens_mock.expect(:call, Failure[:invalid_member_email_address, exc], [])
+    retrieve_gmail_tokens_mock.expect(:call, Failure[:emails_not_match, new_email], [])
+    retrieve_gmail_tokens_mock.expect(:call, Failure[:new_tokens_are_not_saved, exc], [])
+
+    flash_messages = [
+      "Something went wrong, please contact support.",
+      "Something went wrong, please contact support.",
+      "The linked email #{new_email} does not match the current email.",
+      "Something went wrong, please contact support."
+    ]
 
     EmailSynchronization::RetrieveGmailTokens.stub(:new, ->(*) { retrieve_gmail_tokens_mock }) do
-      3.times do
+      4.times do |i|
         get link_gmail_ats_profile_url, params: { code: "OAuthcode" }
 
         assert_response :redirect
         assert_not_empty flash[:alert]
+        assert_equal flash[:alert], flash_messages[i]
       end
     end
 

@@ -24,63 +24,59 @@ module Imap
     self::NAME_AND_ADDRESS_REGEX = /^(?:['"]?\\?['"]?([^<]*[^'"\\])\\?['"]{0,2}\s)?<([^>]+)>$/i
     class << self
       # @return [Enumerator] with args [Array<Imap::Message>] messages
-      # containing `target_emails` in `from_accounts`.
+      # containing `target_emails` in `from_account`.
       # @param target_emails [Array<String>] emails that are queried for.
-      # @param from_accounts [Array<Imap::Account>] accounts which are queried from.
+      # @param from_account [Imap::Account] account which are queried from.
       # @param batch_size [Integer] maximum number of messages which will be fetched per request.
       def message_batches_related_to(
         target_emails,
-        from_accounts:,
+        from_account:,
         batch_size: Imap::Account::DEFAULT_BATCH_SIZE
       )
         Enumerator.new do |y|
-          from_accounts.each do |account|
-            loop do
-              messages = account.fetch_all_messages_related_to(
-                target_emails,
-                batch_size:
-              )
-              y << messages
+          loop do
+            messages = from_account.fetch_all_messages_related_to(
+              target_emails,
+              batch_size:
+            )
+            y << messages
 
-              break if messages.size < batch_size
-            end
+            break if messages.size < batch_size
           end
         end
       end
 
       # @return [Enumerator] with args [Array<Imap::Message>] messages containing
-      # updates from `from_accounts`.
-      # @param from_accounts [Array<Imap::Account>] accounts which are queried from.
+      # updates from `from_account`.
+      # @param from_account [Imap::Account] account which are queried from.
       # @param batch_size [Integer] maximum number of messages which will be fetched per request.
       def new_message_batches(
-        from_accounts:,
+        from_account:,
         batch_size: Imap::Account::DEFAULT_BATCH_SIZE
       )
         Enumerator.new do |y|
-          from_accounts.each do |account|
-            fetch_messages_method =
-              if account.last_email_synchronization_uid.present?
-                lambda do |batch_size|
-                  account.fetch_updates(
-                    batch_size:
-                  )
-                end
-              else
-                lambda do |batch_size|
-                  account.fetch_messages_for_last(
-                    # TODO: change to `10.days.ago` after first running.
-                    3.days.ago,
-                    batch_size:
-                  )
-                end
+          fetch_messages_method =
+            if from_account.last_email_synchronization_uid.present?
+              lambda do |batch_size|
+                from_account.fetch_updates(
+                  batch_size:
+                )
               end
-
-            loop do
-              messages = fetch_messages_method.call(batch_size)
-              y << messages
-
-              break if messages.size < batch_size
+            else
+              lambda do |batch_size|
+                from_account.fetch_messages_for_last(
+                  # TODO: change to `10.days.ago` after first running.
+                  3.days.ago,
+                  batch_size:
+                )
+              end
             end
+
+          loop do
+            messages = fetch_messages_method.call(batch_size)
+            y << messages
+
+            break if messages.size < batch_size
           end
         end
       end

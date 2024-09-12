@@ -1,6 +1,6 @@
 ruby_position_sam:
   sequence_template: ruby_position_sequence_template
-  member_email_address: admin_second_email_address
+  member: admin_member
   placement: sam_ruby_replied
   to: sam@gmail.com
   status: running
@@ -33,7 +33,7 @@ ruby_position_sam:
 
 ruby_position_john:
   sequence_template: ruby_position_sequence_template
-  member_email_address: admin_second_email_address
+  member: admin_member
   placement: john_ruby_replied
   to: john@gmail.com
   status: running
