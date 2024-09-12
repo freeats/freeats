@@ -77,10 +77,15 @@ class LocationParser
       possible_names = possible_names_from_raw_string.sort_by { |name| - name.split.size }
 
       if possible_names.size > 250
-        Sentry.capture_message("Location raw_string has too many possible names", extra: {
-                                 raw_string: @raw_string,
-                                 possible_names_size: possible_names.size
-                               })
+        ATS::Logger
+          .new(where: "LocationParser#parse")
+          .external_log(
+            "Location raw_string has too many possible names",
+            extra: {
+              raw_string: @raw_string,
+              possible_names_size: possible_names.size
+            }
+          )
         return
       end
     end

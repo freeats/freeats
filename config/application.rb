@@ -21,6 +21,10 @@ module ATS
 
     config.active_record.schema_format = :sql
 
+    config.after_initialize do
+      Rails.error.subscribe(ErrorSubscriber.new)
+    end
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
