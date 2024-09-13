@@ -132,7 +132,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     candidate.reload
 
     assert_predicate candidate.files, :attached?
-    assert_match(%r{uploads/candidate/#{candidate.id}/.*\.png}, candidate.files.first.blob.key)
+    assert_match(%r{uploads/files/.*/.*\.png}, candidate.files.first.blob.key)
     assert_predicate candidate.last_activity_at, :tomorrow?
 
     travel_to Time.zone.now.days_since(2) do

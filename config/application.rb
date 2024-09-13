@@ -37,7 +37,7 @@ module ATS
     config.eager_load_paths << Rails.root.join("test/components/previews")
 
     config.to_prepare do
-      ActiveStorage::Blob.singleton_class.prepend(ActiveStorageBlob)
+      ActiveStorage::Attached::Changes::CreateOne.prepend(ActiveStorageCreateOne)
       ActiveSupport.on_load(:active_storage_attachment) { include ActiveStorageAttachment }
     end
   end
