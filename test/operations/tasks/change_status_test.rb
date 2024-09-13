@@ -15,7 +15,7 @@ class Tasks::ChangeStatusTest < ActiveSupport::TestCase
 
     task.reload
 
-    assert_equal task.due_date, Time.zone.today + 1.day
+    assert_equal task.due_date, Time.zone.today.next_weekday
     assert_equal task.repeat_interval, "daily"
     assert_equal task.status, "open"
   end
