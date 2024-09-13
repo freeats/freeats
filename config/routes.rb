@@ -122,10 +122,10 @@ Rails.application.routes.draw do
     get :change_visibility_modal, on: :member
   end
 
+  mount RailsAdmin::Engine => "admin", as: "rails_admin"
+
   # rubocop:disable Style/SymbolProc
   constraints(Rodauth::Rails.authenticate { |rodauth| rodauth.admin? }) do
-    mount RailsAdmin::Engine => "admin", as: "rails_admin"
-
     mount Lookbook::Engine, at: "lookbook" unless Rails.env.test?
 
     mount PgHero::Engine, at: "pghero"
