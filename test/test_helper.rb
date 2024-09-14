@@ -11,8 +11,7 @@ module ActiveSupport
   class TestCase
     include FactoryBot::Syntax::Methods
 
-    # parallelize if ENV["CI"].blank? # Disable parallelization for continuous integration.
-    parallelize(workers: :number_of_processors)
+    parallelize if ENV["CI"].blank? # Disable parallelization for continuous integration.
 
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
