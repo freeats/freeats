@@ -54,12 +54,6 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
 
-      # Required to compile Ruby gems
-      - name: Install Ubuntu packages
-        run: |
-          sudo apt-get install libvips -y
-          sudo apt-get install postgresql-client -y
-
       - name: Get yarn cache directory
         id: yarn-cache-dir-path
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
