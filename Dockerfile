@@ -24,7 +24,7 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential curl libpq-dev node-gyp pkg-config python-is-python3 git
 
 # Install libvips library to process images.
-RUN apt-get install libvips
+RUN apt-get install libvips -y
 
 # Install JavaScript dependencies
 ARG NODE_VERSION=22.7.0
