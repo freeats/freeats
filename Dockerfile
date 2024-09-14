@@ -23,7 +23,7 @@ ENV BUNDLE_DEPLOYMENT="1" \
     HOST_URL="ats.toughbyte.com"
 
 # Install bundler
-RUN gem install -N bundler
+RUN gem install -N bundler:2.5.3
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
