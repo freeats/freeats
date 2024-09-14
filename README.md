@@ -134,7 +134,7 @@ it is responsible for the "default" key. Environment-specific keys are located
 at `config/credentials/`, they override any default values in the master
 credentials.
 
-You can edit credentials:
+You can edit the credentials:
 
 ```shell
 # Edit master credentials
