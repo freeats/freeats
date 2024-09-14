@@ -29,7 +29,10 @@ RUN gem install -N bundler
 FROM base AS build
 
 # Install packages needed to build gems and node modules
-RUN apt-get update -qq && \
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean \
+    && apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential curl libpq-dev node-gyp pkg-config python-is-python3 git
 
 # Install libvips library to process images.
