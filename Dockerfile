@@ -11,7 +11,8 @@ WORKDIR /rails
 ENV BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development:test" \
-    RAILS_ENV="production"
+    RAILS_ENV="production" \
+    HOST_URL="ats.toughbyte.com"
 
 # Install bundler
 RUN gem install -N bundler
