@@ -58,7 +58,6 @@ jobs:
       - name: Install Ubuntu packages
         run: |
           sudo apt-get update
-          sudo apt-get install libpq-dev -y
           sudo apt-get install libvips -y
           sudo apt-get install postgresql-client -y
 
