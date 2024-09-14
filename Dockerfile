@@ -4,6 +4,14 @@
 ARG RUBY_VERSION=3.3.3
 FROM ruby:$RUBY_VERSION-slim AS base
 
+ARG NODE_ENV=production
+ARG RAILS_MASTER_KEY
+
+# assign it to an environment variable
+# we can wrap the variable in brackets
+ENV NODE_ENV ${NODE_ENV}
+ENV RAILS_MASTER_KEY ${RAILS_MASTER_KEY}
+
 # Rails app lives here
 WORKDIR /rails
 
