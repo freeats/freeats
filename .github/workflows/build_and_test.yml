@@ -92,7 +92,7 @@ jobs:
 
       - name: Create DBs
         run: |
-          for i in {0..8}; do createdb -h $DATABASE_HOST -U $DATABASE_USERNAME -p $PGPORT ats_test_$i; done
+          for i in {0..8}; do createdb -h $DATABASE_HOST -U $DATABASE_USERNAME -p $PGPORT ats_test-$i; done
           bin/rails db:create db:schema:load
         env:
           PGPORT: ${{ job.services.postgres.ports[5432] }}
