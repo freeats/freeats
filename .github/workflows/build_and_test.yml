@@ -32,7 +32,7 @@ jobs:
           - 5432/tcp
         # User needs to be set to postgres for this to work without errors
         # Healthcheck needed because the postgres container does not provide a healthcheck
-        options: --user postgres --health-cmd pg_isready --health-interval 1s --health-timeout 1s --health-retries 10
+        options: --user postgres --health-cmd pg_isready --health-interval 0s --health-timeout 1s --health-retries 10
 
     steps:
       - uses: actions/checkout@v4
