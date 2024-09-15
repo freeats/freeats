@@ -14,14 +14,11 @@ ENV RAILS_ENV=${RAILS_ENV}
 ENV NODE_ENV=${NODE_ENV}
 ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
+ENV HOST_URL="ats.toughbyte.com"
+ENV BUNDLE_PATH="/usr/local/bundle"
+
 # Rails app lives here
 WORKDIR /rails
-
-# Set production environment
-ENV BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development:test" \
-    HOST_URL="ats.toughbyte.com"
 
 # Install bundler
 RUN gem install -N bundler:2.5.3
