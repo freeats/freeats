@@ -7,12 +7,12 @@ FROM ruby:$RUBY_VERSION-slim AS base
 ARG RAILS_ENV=production
 ARG NODE_ENV=production
 ARG RAILS_MASTER_KEY
+ARG CI
 
-# assign it to an environment variable
-# we can wrap the variable in brackets
 ENV RAILS_ENV=${RAILS_ENV}
 ENV NODE_ENV=${NODE_ENV}
 ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+ENV CI=${CI}
 
 ENV HOST_URL="ats.toughbyte.com"
 ENV BUNDLE_PATH="/usr/local/bundle"
