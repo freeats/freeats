@@ -17,6 +17,7 @@ ENV BUNDLE_PATH="/usr/local/bundle"
 WORKDIR /rails
 
 # Install bundler
+# Version needs to match the one in Gemfile.lock 
 RUN gem install -N bundler:2.5.3
 
 # Install packages needed to build gems and node modules
@@ -50,14 +51,14 @@ COPY --link . .
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
-# Precompiling assets
+# Precompile assets
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Deployment options
 ENV LD_PRELOAD="libjemalloc.so.2" \
     MALLOC_CONF="dirty_decay_ms:1000,narenas:2,background_thread:true"
 
-# Entrypoint prepares the database.
+# Entrypoint prepares the database
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
