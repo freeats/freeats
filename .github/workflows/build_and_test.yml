@@ -96,9 +96,9 @@ jobs:
       - name: Run ESLint
         run: |
           docker run --rm ats:latest /bin/sh -c \
-          "yarn eslint ."
+          "./node_modules/.bin/eslint ."
 
       - name: Run Prettier
         run: |
           docker run --rm ats:latest /bin/sh -c \
-          "yarn prettier -c ."
+          "./node_modules/.bin/prettier -c ."
