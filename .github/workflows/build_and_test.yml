@@ -104,4 +104,4 @@ jobs:
       - name: Run Prettier
         run: |
           docker run --rm --env-file docker.env ats:latest /bin/sh -c \
-          "yarn prettier -c \"app/assets/*/**\""
+          "yarn prettier -c ."
