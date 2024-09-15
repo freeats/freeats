@@ -57,6 +57,7 @@ jobs:
           tags: ats:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
 
       # Multiple test databases need to be created for parallel testing
       # This ensures that we don't see errors form Postgres in the Stop containers step
