@@ -62,11 +62,11 @@ jobs:
             RAILS_ENV=${{ env.RAILS_ENV }}
             RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
 
-      # Multiple test databases need to be created for parallel testing
-      # This ensures that we don't see errors form Postgres in the Stop containers step
       - name: Create DBs
         run: |
           docker run --rm \
+            -e CI=${{ env.CI }} \
+            -e RAILS_ENV=${{ env.DATABASE_HOST }} \
             -e DATABASE_HOST=${{ env.DATABASE_HOST }} \
             -e DATABASE_USERNAME=${{ env.DATABASE_USERNAME }} \
             -e PGPORT=${{ job.services.postgres.ports[5432] }} \
@@ -76,6 +76,8 @@ jobs:
       - name: Run tests
         run: |
           docker run --rm \
+            -e CI=${{ env.CI }} \
+            -e RAILS_ENV=${{ env.DATABASE_HOST }} \
             -e DATABASE_HOST=${{ env.DATABASE_HOST }} \
             -e DATABASE_USERNAME=${{ env.DATABASE_USERNAME }} \
             -e PGPORT=${{ job.services.postgres.ports[5432] }} \
