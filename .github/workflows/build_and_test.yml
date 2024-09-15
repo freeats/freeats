@@ -64,7 +64,6 @@ jobs:
 
       - name: Create DBs
         run: |
-          for i in $(seq 0 $(($(nproc)-1))); do createdb -h ${{ env.DATABASE_HOST }} -U ${{ env.DATABASE_USERNAME }} -p ${{ env.PGPORT }} ats_test-$i; done
           docker run --rm \
             -e RAILS_ENV=${{ env.RAILS_ENV }} \
             -e DATABASE_HOST=${{ env.DATABASE_HOST }} \
@@ -72,7 +71,8 @@ jobs:
             -e PGPORT=${{ job.services.postgres.ports[5432] }} \
             -e PGPASSWORD=${{ env.PGPASSWORD }} \
             -e CI=${{ env.CI }} \
-            ats:latest /bin/sh -c "bin/rails db:create db:schema:load"
+            ats:latest /bin/sh -c \
+            "for i in $(seq 0 $(($(nproc)-1))); do createdb -h $DATABASE_HOST ats_test-$i; done && bin/rails db:create db:schema:load"
 
       - name: Run tests
         run: |
