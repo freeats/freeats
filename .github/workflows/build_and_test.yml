@@ -64,6 +64,7 @@ jobs:
 
       - name: Create DBs
         run: |
+          for i in $(seq 0 $(($(nproc)-1))); do createdb -h ${{ env.DATABASE_HOST }} -U ${{ env.DATABASE_USERNAME }} -p ${{ env.PGPORT }} ats_test-$i; done
           docker run --rm \
             -e RAILS_ENV=${{ env.RAILS_ENV }} \
             -e DATABASE_HOST=${{ env.DATABASE_HOST }} \
