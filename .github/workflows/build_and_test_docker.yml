@@ -1,6 +1,8 @@
 name: Build and test using Docker
 
-on: push
+on:
+  push:
+  workflow_dispatch:
 
 env:
   # Use 172.17.0.1 when runs-on is self-hosted
