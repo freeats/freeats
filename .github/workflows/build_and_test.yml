@@ -76,7 +76,7 @@ jobs:
       - name: Create test DBs
         run: |
           docker run --rm --env-file docker.env ats:latest /bin/bash -c \
-          "for i in $(seq 0 $(($(nproc)-1))); do createdb -h $DATABASE_HOST -U $DATABASE_USERNAME -p $PGPORT ats_test-$i; done"
+          "for i in \$(seq 0 \$((\$(nproc)-1))); do createdb -h \$DATABASE_HOST -U \$DATABASE_USERNAME -p \$PGPORT ats_test-\$i; done"
 
       - name: Create DB
         run: |
