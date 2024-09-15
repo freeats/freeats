@@ -87,3 +87,18 @@ jobs:
         run: |
           docker run --rm --env-file docker.env ats:latest /bin/sh -c \
           "bundle exec rails test"
+
+      - name: Run system tests
+        run: |
+          docker run --rm --env-file docker.env ats:latest /bin/sh -c \
+          "bundle exec rails test:system"
+
+      - name: Run ESLint
+        run: |
+          docker run --rm ats:latest /bin/sh -c \
+          "yarn eslint ."
+
+      - name: Run Prettier
+        run: |
+          docker run --rm ats:latest /bin/sh -c \
+          "yarn prettier -c ."
