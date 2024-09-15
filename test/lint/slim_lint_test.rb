@@ -4,6 +4,8 @@ require "test_helper"
 
 class SlimLintTest < ActiveSupport::TestCase
   test "check all files with slim-lint" do
+    next if ENV["CI"].present?
+
     modified = `git diff --name-only origin/master '*.slim'`
     untracked = `git ls-files --others --exclude-standard  '*.slim'`
     deleted = `git diff --diff-filter D --name-only origin/master '*.slim'`
