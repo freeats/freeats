@@ -24,7 +24,7 @@ jobs:
     runs-on: self-hosted
     services:
       postgres:
-        image: postgres:14.9
+        image: postgres:latest
         env:
           POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
         ports:
@@ -75,6 +75,8 @@ jobs:
           PGPORT=${{ job.services.postgres.ports[5432] }}
           EOF
 
+      # Multiple test databases need to be created for parallel testing
+      # This ensures that we don't see errors form Postgres in the Stop containers step
       - name: Create DBs
         run: |
           docker run --rm --env-file docker.env ats:latest /bin/bash -c \
