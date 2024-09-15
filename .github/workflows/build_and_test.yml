@@ -99,9 +99,9 @@ jobs:
       - name: Run ESLint
         run: |
           docker run --rm --env-file docker.env ats:latest /bin/sh -c \
-          "yarn eslint . --ignore-pattern "public/assets/*""
+          "yarn eslint \"app/assets/**\""
 
       - name: Run Prettier
         run: |
           docker run --rm --env-file docker.env ats:latest /bin/sh -c \
-          "yarn prettier -c ."
+          "yarn prettier -c \"app/assets/*/**\""
