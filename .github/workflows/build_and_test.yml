@@ -5,6 +5,7 @@ on: push
 env:
   CI: 1
   RAILS_ENV: test
+  NODE_ENV: development
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
   # Use 172.17.0.1 when runs-on is self-hosted
   # Use localhost when runs-on is ubuntu, a GitHub hosted runner
@@ -52,6 +53,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           build-args: |
             RAILS_ENV=${{ env.RAILS_ENV }}
+            NODE_ENV=${{ env.NODE_ENV }}
             RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
 
       # Temp fix
@@ -67,6 +69,7 @@ jobs:
           cat << EOF > docker.env
           CI=${{ env.CI }}
           RAILS_ENV=${{ env.RAILS_ENV }}
+          NODE_ENV=${{ env.NODE_ENV }}
           DATABASE_HOST=${{ env.DATABASE_HOST }}
           DATABASE_USERNAME=${{ env.DATABASE_USERNAME }}
           PGPASSWORD=${{ env.PGPASSWORD }}
@@ -95,10 +98,10 @@ jobs:
 
       - name: Run ESLint
         run: |
-          docker run --rm ats:latest /bin/sh -c \
-          "./node_modules/.bin/eslint ."
+          docker run --rm --env-file docker.env ats:latest /bin/sh -c \
+          "yarn eslint ."
 
       - name: Run Prettier
         run: |
-          docker run --rm ats:latest /bin/sh -c \
-          "./node_modules/.bin/prettier -c ."
+          docker run --rm --env-file docker.env ats:latest /bin/sh -c \
+          "yarn prettier -c ."
