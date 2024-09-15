@@ -24,7 +24,8 @@ jobs:
     runs-on: self-hosted
     services:
       postgres:
-        image: postgres:latest
+        # This should match the version used in production
+        image: postgres:16.4
         env:
           POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
         ports:
