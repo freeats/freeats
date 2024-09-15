@@ -249,6 +249,8 @@ endpoints to authenticate as different roles:
 
 ### Dokku
 
+Note: these instructions are outdated and we now use Dockerfile based deployes.
+
 Install Dokku by running the following command on the server:
 
 ```shell
