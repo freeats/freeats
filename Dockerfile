@@ -4,11 +4,13 @@
 ARG RUBY_VERSION=3.3.3
 FROM ruby:$RUBY_VERSION-slim AS base
 
+ARG RAILS_ENV=production
 ARG NODE_ENV=production
 ARG RAILS_MASTER_KEY
 
 # assign it to an environment variable
 # we can wrap the variable in brackets
+ENV RAILS_ENV ${RAILS_ENV}
 ENV NODE_ENV ${NODE_ENV}
 ENV RAILS_MASTER_KEY ${RAILS_MASTER_KEY}
 
@@ -19,7 +21,6 @@ WORKDIR /rails
 ENV BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development:test" \
-    RAILS_ENV="production" \
     HOST_URL="ats.toughbyte.com"
 
 # Install bundler
