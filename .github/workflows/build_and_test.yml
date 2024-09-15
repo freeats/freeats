@@ -64,22 +64,22 @@ jobs:
 
       - name: Create DBs
         run: |
-          docker run --rm -e \
-            RAILS_ENV=${{ env.RAILS_ENV }} \
-            DATABASE_HOST=${{ env.DATABASE_HOST }} \
-            DATABASE_USERNAME=${{ env.DATABASE_USERNAME }} \
-            PGPORT=${{ job.services.postgres.ports[5432] }} \
-            PGPASSWORD=${{ env.PGPASSWORD }} \
-            CI=${{ env.CI }} \
+          docker run --rm \
+            -e RAILS_ENV=${{ env.RAILS_ENV }} \
+            -e DATABASE_HOST=${{ env.DATABASE_HOST }} \
+            -e DATABASE_USERNAME=${{ env.DATABASE_USERNAME }} \
+            -e PGPORT=${{ job.services.postgres.ports[5432] }} \
+            -e PGPASSWORD=${{ env.PGPASSWORD }} \
+            -e CI=${{ env.CI }} \
             ats:latest /bin/sh -c "bin/rails db:create db:schema:load"
 
       - name: Run tests
         run: |
-          docker run --rm -e \
-            RAILS_ENV=${{ env.RAILS_ENV }} \
-            DATABASE_HOST=${{ env.DATABASE_HOST }} \
-            DATABASE_USERNAME=${{ env.DATABASE_USERNAME }} \
-            PGPORT=${{ job.services.postgres.ports[5432] }} \
-            PGPASSWORD=${{ env.PGPASSWORD }} \
-            CI=${{ env.CI }} \
+          docker run --rm \
+            -e RAILS_ENV=${{ env.RAILS_ENV }} \
+            -e DATABASE_HOST=${{ env.DATABASE_HOST }} \
+            -e DATABASE_USERNAME=${{ env.DATABASE_USERNAME }} \
+            -e PGPORT=${{ job.services.postgres.ports[5432] }} \
+            -e PGPASSWORD=${{ env.PGPASSWORD }} \
+            -e CI=${{ env.CI }} \
             ats:latest /bin/sh -c "bundle exec rails test"
