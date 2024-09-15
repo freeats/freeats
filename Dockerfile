@@ -6,12 +6,10 @@ FROM ruby:$RUBY_VERSION-slim AS base
 
 ARG RAILS_ENV=production
 ARG NODE_ENV=production
-ARG RAILS_MASTER_KEY
 ARG CI
 
 ENV RAILS_ENV=${RAILS_ENV}
 ENV NODE_ENV=${NODE_ENV}
-ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 ENV CI=${CI}
 
 ENV HOST_URL="ats.toughbyte.com"
@@ -55,7 +53,7 @@ COPY --link . .
 RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production
-RUN ./bin/rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Deployment options
 ENV LD_PRELOAD="libjemalloc.so.2" \
