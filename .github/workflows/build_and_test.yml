@@ -75,11 +75,6 @@ jobs:
           PGPORT=${{ job.services.postgres.ports[5432] }}
           EOF
 
-      - name: Run ESLint
-        run: |
-          docker run --rm --env-file docker.env ats:latest /bin/sh -c \
-          "yarn eslint --config eslint.config.mjs"
-
       - name: Create DBs
         run: |
           docker run --rm --env-file docker.env ats:latest /bin/bash -c \
@@ -99,6 +94,11 @@ jobs:
         run: |
           docker run --rm --env-file docker.env ats:latest /bin/sh -c \
           "bundle exec rails test:system"
+
+      - name: Run ESLint
+        run: |
+          docker run --rm --env-file docker.env ats:latest /bin/sh -c \
+          "yarn eslint ."
 
       - name: Run Prettier
         run: |
