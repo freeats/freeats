@@ -94,7 +94,7 @@ jobs:
       # This ensures that we don't see errors form Postgres in the Stop containers step
       - name: Create DBs
         run: |
-          for i in $(seq 0 $(($(nproc)-1))); do createdb -h $DATABASE_HOST -U $DATABASE_USERNAME -p $PGPORT ats_test_$i; done
+          for i in $(seq 0 $(($(nproc)-1))); do createdb -h $DATABASE_HOST -U $DATABASE_USERNAME -p $PGPORT ats_test-$i; done
           bin/rails db:create db:schema:load
         env:
           PGPORT: ${{ job.services.postgres.ports[5432] }}
