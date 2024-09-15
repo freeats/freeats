@@ -6,7 +6,6 @@ env:
   CI: 1
   RAILS_ENV: test
   NODE_ENV: development
-  RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
   # Use 172.17.0.1 when runs-on is self-hosted
   # Use localhost when runs-on is ubuntu, a GitHub hosted runner
   # Use postgres otherwise
@@ -70,6 +69,7 @@ jobs:
           CI=${{ env.CI }}
           RAILS_ENV=${{ env.RAILS_ENV }}
           NODE_ENV=${{ env.NODE_ENV }}
+          RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
           DATABASE_HOST=${{ env.DATABASE_HOST }}
           DATABASE_USERNAME=${{ env.DATABASE_USERNAME }}
           PGPASSWORD=${{ env.PGPASSWORD }}
