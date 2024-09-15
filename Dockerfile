@@ -4,15 +4,16 @@
 ARG RUBY_VERSION=3.3.3
 FROM ruby:$RUBY_VERSION-slim AS base
 
+ARG CI
 ARG RAILS_ENV=production
 ARG NODE_ENV=production
-ARG CI
+ARG HOST_URL="ats.toughbyte.com"
 
+ENV CI=${CI}
 ENV RAILS_ENV=${RAILS_ENV}
 ENV NODE_ENV=${NODE_ENV}
-ENV CI=${CI}
+ENV HOST_URL=${HOST_URL}
 
-ENV HOST_URL="ats.toughbyte.com"
 ENV BUNDLE_PATH="/usr/local/bundle"
 
 # Rails app lives here
