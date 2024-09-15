@@ -78,7 +78,7 @@ jobs:
       - name: Run ESLint
         run: |
           docker run --rm --env-file docker.env ats:latest /bin/sh -c \
-          "yarn eslint ."
+          "yarn eslint --config path/to/your/eslint.config.mjs"
 
       - name: Create DBs
         run: |
