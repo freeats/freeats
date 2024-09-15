@@ -3,6 +3,9 @@ name: Build and test
 on: push
 
 env:
+  CI: 1
+  RAILS_ENV: test
+  RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
   # Use 172.17.0.1 when runs-on is self-hosted
   # Use localhost when runs-on is ubuntu, a GitHub hosted runner
   # Use postgres otherwise
@@ -11,9 +14,6 @@ env:
   DATABASE_USERNAME: postgres
   # PGPASSWORD is passed directly to libpq, not referenced within Rails app
   PGPASSWORD: postgres
-  RAILS_ENV: test
-  RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-  CI: 1
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -65,12 +65,12 @@ jobs:
       - name: Set up Docker env file
         run: |
           cat << EOF > docker.env
+          CI=${{ env.CI }}
           RAILS_ENV=${{ env.RAILS_ENV }}
           DATABASE_HOST=${{ env.DATABASE_HOST }}
           DATABASE_USERNAME=${{ env.DATABASE_USERNAME }}
-          PGPORT=${{ job.services.postgres.ports[5432] }}
           PGPASSWORD=${{ env.PGPASSWORD }}
-          CI=${{ env.CI }}
+          PGPORT=${{ job.services.postgres.ports[5432] }}
           EOF
 
       - name: Create DBs
