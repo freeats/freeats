@@ -22,6 +22,7 @@ export default [
       "app/assets/builds/",
       "**/node_modules/",
       "**/vendor/",
+      "public/assets/",
     ],
   },
   ...compat.extends("eslint:recommended"),
