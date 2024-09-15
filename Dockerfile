@@ -10,9 +10,9 @@ ARG RAILS_MASTER_KEY
 
 # assign it to an environment variable
 # we can wrap the variable in brackets
-ENV RAILS_ENV ${RAILS_ENV}
-ENV NODE_ENV ${NODE_ENV}
-ENV RAILS_MASTER_KEY ${RAILS_MASTER_KEY}
+ENV RAILS_ENV=${RAILS_ENV}
+ENV NODE_ENV=${NODE_ENV}
+ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
 # Rails app lives here
 WORKDIR /rails
