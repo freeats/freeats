@@ -66,12 +66,12 @@ jobs:
       - name: Create DBs
         run: |
           for i in $(seq 0 $(($(nproc)-1))); do createdb -h $DATABASE_HOST -U $DATABASE_USERNAME -p $PGPORT ats_test-$i; done
-          docker run --rm my-app:latest /bin/sh -c "bin/rails db:create db:schema:load"
+          docker run --rm ats:latest /bin/sh -c "bin/rails db:create db:schema:load"
         env:
           PGPORT: ${{ job.services.postgres.ports[5432] }}
 
       - name: Run tests
         run: |
-          docker run --rm my-app:latest /bin/sh -c "bundle exec rails test"
+          docker run --rm ats:latest /bin/sh -c "bundle exec rails test"
         env:
           PGPORT: ${{ job.services.postgres.ports[5432] }}
