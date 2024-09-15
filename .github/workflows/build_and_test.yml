@@ -73,12 +73,12 @@ jobs:
           PGPORT=${{ job.services.postgres.ports[5432] }}
           EOF
 
-      - name: Create test DBs
+      - name: Create DBs
         run: |
           docker run --rm --env-file docker.env ats:latest /bin/bash -c \
           "for i in \$(seq 0 \$((\$(nproc)-1))); do createdb -h \$DATABASE_HOST -U \$DATABASE_USERNAME -p \$PGPORT ats_test-\$i; done"
 
-      - name: Create DB
+      - name: Load schema
         run: |
           docker run --rm --env-file docker.env ats:latest /bin/sh -c \
           "bin/rails db:create db:schema:load"
