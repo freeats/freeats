@@ -48,8 +48,8 @@ jobs:
           context: .
           load: true
           tags: ats:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=registry,ref=ats:latest
+          cache-to: type=inline
           build-args: |
             RAILS_ENV=${{ env.RAILS_ENV }}
             RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
