@@ -194,9 +194,8 @@ class LocationParser
   private
 
   def possible_names_from_raw_string
-    possible_names = []
     tokens = tokenize(@raw_string).filter { |tk| SPLITTABLES.exclude?(tk) }
-    combinations(tokens).each { |c| possible_names << c }
+    possible_names = combinations(tokens)
     tokens_reduced = tokenize(@raw_string, regex: REDUCED_PATTERN).filter do |tk|
       REDUCED_SPLITTABLES.exclude?(tk)
     end

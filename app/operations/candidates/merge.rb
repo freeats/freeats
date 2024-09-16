@@ -550,10 +550,8 @@ class Candidates::Merge < ApplicationOperation
     duplicates_note_threads:,
     duplicates_note_removed_events:
   )
-    result = []
-
-    duplicates_note_threads.each do |note_thread|
-      result << AL.save_record(note_thread.tap { _1.notable_id = target_id })
+    result = duplicates_note_threads.map do |note_thread|
+      AL.save_record(note_thread.tap { _1.notable_id = target_id })
     end
     duplicates_note_removed_events.each do |event|
       result << AL.save_record(event.tap { _1.eventable_id = target_id })

@@ -29,7 +29,7 @@ class Task < ApplicationRecord
   validates :status, presence: true
   validates_with MergedCandidateIsReadOnlyValidator
 
-  scope :past_or_present, -> { where("due_date <= ?", Time.zone.today) }
+  scope :past_or_present, -> { where(due_date: ..Time.zone.today) }
   scope :pending, -> { open.past_or_present }
   scope :pending_for, ->(member) { pending.where(assignee: member) }
 

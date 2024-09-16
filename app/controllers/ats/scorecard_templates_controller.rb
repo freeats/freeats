@@ -76,11 +76,7 @@ class ATS::ScorecardTemplatesController < ApplicationController
       .to_h
       .deep_symbolize_keys
       .values
-      .filter_map do |hash|
-      next if hash[:question].blank?
-
-      hash
-    end
+      .reject { |hash| hash[:question].blank? }
   end
 
   def set_scorecard_template
