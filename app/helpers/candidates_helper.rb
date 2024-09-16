@@ -24,39 +24,33 @@ module CandidatesHelper
   def candidate_display_activity(event)
     actor_account_name = compose_actor_account_name(event)
 
-    text = "#{actor_account_name} "
+    text = [actor_account_name]
 
     text <<
       case event.type
       when "candidate_added"
         "added the candidate"
       when "candidate_changed"
-        # Otherwise the string is frozen and returns error upon calling <<
-        message = +""
         to = event.changed_to
         from = event.changed_from
         field = event.changed_field.humanize(capitalize: false)
         if to.is_a?(Array) && from.is_a?(Array)
           removed = from - to
           added = to - from
-          message << [
+          message = [
             ("removed <b>#{removed.join(', ')}</b> " if removed.any?),
             ("added <b>#{added.join(', ')}</b> " if added.any?)
           ].compact.join(" and ")
           message << field.singularize.pluralize([removed, added].max_by(&:size).size)
         elsif from.in?([true, false]) && to.in?([true, false])
-          message << "#{to ? 'added' : 'removed'} <b>Blacklisted</b> status"
-        else
-          message <<
-          if to.present? && from.present?
-            "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
-          elsif to.present?
-            "added <b>#{to}</b> #{field}"
-          elsif from.present?
-            "removed <b>#{from}</b> #{field}"
-          end
+          "#{to ? 'added' : 'removed'} <b>Blacklisted</b> status"
+        elsif to.present? && from.present?
+          "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
+        elsif to.present?
+          "added <b>#{to}</b> #{field}"
+        elsif from.present?
+          "removed <b>#{from}</b> #{field}"
         end
-        message
       when "candidate_recruiter_assigned"
         <<~TEXT
           assigned the candidate to
@@ -96,8 +90,46 @@ module CandidatesHelper
         "<b>#{event.eventable.name}</b> task"
       when "task_changed"
         ats_task_changed_display_activity(event)
+      when "candidate_interview_scheduled"
+        "#{actor_account_name} appointed interview for " \
+        "#{event.properties['scheduled_for'].to_datetime.in_time_zone.to_fs(:datetime)}"
+      when "candidate_interview_resolved"
+        scheduled_event = event.becomes(Candidate::Interview).pair_event
+        scheduled =
+          "scheduled for #{scheduled_event.scheduled_for.to_fs(:datetime)}"
+        case event.properties["status"]
+        when "passed"
+          "#{actor_account_name} conducted interview #{scheduled} " \
+          "and candidate <b>passed</b>"
+        when "failed"
+          "#{actor_account_name} conducted interview #{scheduled} " \
+          "and candidate <b>failed</b>"
+        when "canceled_by_candidate"
+          "Candidate canceled interview with #{actor_account_name} #{scheduled}"
+        when "canceled_by_recruiter"
+          "#{actor_account_name} canceled interview #{scheduled}"
+        when "missed_by_candidate"
+          "Candidate missed interview with #{actor_account_name} #{scheduled}"
+        when "canceled"
+          "Interview with #{actor_account_name} #{scheduled} was canceled"
+        else
+          "Unknown status for interview, please contact support"
+        end
+      else
+        Log.tagged("candidate_display_activity") do |log|
+          log.external_log("unhandled event type #{event.type}")
+        end
+        return
       end
-    sanitize(text)
+
+    left_datetime_element = tag.span(class: "fw-light me-2") do
+      event.performed_at.to_fs(:datetime)
+    end
+    right_event_info_element = tag.span(sanitize(text.join(" ")))
+
+    tag.li(class: "list-group-item", id: "event-#{event.id}") do
+      safe_join([left_datetime_element, right_event_info_element])
+    end
   end
 
   private

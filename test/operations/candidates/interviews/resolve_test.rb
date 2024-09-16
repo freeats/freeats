@@ -11,7 +11,7 @@ class Candidates::Interviews::ResolveTest < ActiveSupport::TestCase
 
   test "should create resolved event only if resolved event isn't exists" do
     status = "passed"
-    scheduled_event = events(:john_candidate_interview_scheduled).becomes(Candidate::Interview)
+    scheduled_event = events(:jake_candidate_interview_scheduled).becomes(Candidate::Interview)
     actor_account = accounts(:admin_account)
 
     Candidates::Interviews::Resolve.new(

@@ -56,7 +56,7 @@ class Candidate::Interview < Event
     else
       return if properties["pair_event_id"].blank?
 
-      Interview.find_by(id: properties["pair_event_id"])
+      self.class.find_by(id: properties["pair_event_id"])
     end
   end
 end
