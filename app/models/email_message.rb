@@ -300,7 +300,7 @@ class EmailMessage < ApplicationRecord
     when "candidates"
       Rails.application.routes.url_helpers.tab_ats_candidate_url(**path_params)
     else
-      raise "Unsupported model"
+      raise NotImplementedError, "Unsupported model"
     end
   end
 end

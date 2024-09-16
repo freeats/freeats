@@ -66,7 +66,7 @@ class Note < ApplicationRecord
         protocol: ATS::Application.config.force_ssl ? "https" : "http"
       )
     else
-      raise "Unsupported model"
+      raise NotImplementedError, "Unsupported model"
     end
   end
 end

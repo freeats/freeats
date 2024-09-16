@@ -155,7 +155,7 @@ class ActionList
       if record.persisted?
         record.update_columns(record.attributes.except("created_at", "updated_at"))
       else
-        raise "Event for insert must not have ID" unless record.id.nil?
+        raise ArgumentError, "Event for insert must not have ID" unless record.id.nil?
 
         performed_at = record.performed_at.present? ? "" : "performed_at"
 

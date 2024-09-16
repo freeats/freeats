@@ -44,7 +44,7 @@ class ATS::TasksGrid
     placeholder: "Due date"
   ) do |due_date|
     # Remove this after adding a new option for the due_date filter.
-    raise "Wrong due date" unless due_date == "today"
+    raise ArgumentError, "Wrong due date" unless due_date == "today"
 
     past_or_present
   end
@@ -107,7 +107,7 @@ class ATS::TasksGrid
     when Position
       link_to(model.taskable_name, tab_ats_position_path(model.taskable, :info), **opts)
     else
-      raise "Unsupported class"
+      raise NotImplementedError, "Unsupported class"
     end
   end
 

@@ -19,7 +19,7 @@ ruby:
     model_id = @task.id
     namespace = "task_#{@task.id}"
   else
-    raise "Unsupported model"
+    raise NotImplementedError, "Unsupported model"
   end
 
 .col-12.mt-2 data-controller="notes"

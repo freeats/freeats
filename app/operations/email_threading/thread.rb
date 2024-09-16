@@ -37,7 +37,10 @@ class EmailThreading::Thread
     end
 
     def remove_child(child)
-      raise "Removing non-existant child of #{message.inspect}" if @children.delete(child).nil?
+      if @children.delete(child).nil?
+        raise ArgumentError,
+              "Removing non-existent child of #{message.inspect}"
+      end
 
       child.parent = nil
     end
@@ -254,7 +257,7 @@ class EmailThreading::Thread
       # Return our root container back.
       container
     else
-      raise "Unreachable"
+      raise NotImplementedError, "Unreachable"
     end
   end
   # rubocop:enable Layout/EmptyLinesAroundBlockBody, Style/Next

@@ -269,7 +269,7 @@ class NotesController < ApplicationController
     elsif action == :destroy && note_thread.notes.blank?
       turbo_stream.remove(dom_id)
     else
-      raise "Unsupported action"
+      raise NotImplementedError, "Unsupported action"
     end
   end
 
