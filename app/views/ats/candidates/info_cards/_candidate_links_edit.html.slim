@@ -15,12 +15,10 @@ ruby:
       data-controller="update-requirement-attribute-for-select-field"]
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
-          .col-12.col-sm-8
-            = render TextInputComponent.new(links_form, method: :url, size: :small,
-                                            placeholder: "Link", type: :url,
-                                            value: Addressable::URI.unencode(links_form.object&.url),
-                                            "data-update-requirement-attribute-for-select-field-target": "mainField")
-          = render "ats/candidates/info_cards/candidate_links_select_field", links_form:
+          = render TextInputComponent.new(links_form, method: :url, size: :small,
+                                          placeholder: "Link", type: :url,
+                                          value: Addressable::URI.unencode(links_form.object&.url),
+                                          "data-update-requirement-attribute-for-select-field-target": "mainField")
           - if links_form.object.id.present?
             = links_form.hidden_field(:id)
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
@@ -37,11 +35,9 @@ ruby:
     = form.fields_for(:candidate_links, CandidateLink.new, child_index: "id") do |links_form|
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
-          .col-12.col-sm-8
-            = render TextInputComponent.new(links_form, method: :url, size: :small,
-                                            placeholder: "Link", type: :url,
-                                            "data-update-requirement-attribute-for-select-field-target": "mainField")
-          = render "ats/candidates/info_cards/candidate_links_select_field", links_form:
+          = render TextInputComponent.new(links_form, method: :url, size: :small,
+                                          placeholder: "Link", type: :url,
+                                          "data-update-requirement-attribute-for-select-field-target": "mainField")
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"
             class="candidate-delete-link-button"

@@ -17,10 +17,9 @@
           = render TextInputComponent.new(phones_form, method: :phone, size: :small,
                                           placeholder: "Phone",
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
-          .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
-            = render "ats/candidates/info_cards/candidate_phones_select_fields", phones_form:
-            - if phones_form.object.id.present?
-              = phones_form.hidden_field(:id)
+          = phones_form.hidden_field(:type, value: :personal)
+          - if phones_form.object.id.present?
+            = phones_form.hidden_field(:id)
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"
             class="candidate-delete-phone-button"
@@ -38,8 +37,7 @@
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
           = render TextInputComponent.new(phones_form, method: :phone, size: :small, placeholder: "Phone",
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
-          .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
-            = render "ats/candidates/info_cards/candidate_phones_select_fields", phones_form:
+          = phones_form.hidden_field(:type, value: :personal)
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"
             class="candidate-delete-phone-button"

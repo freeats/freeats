@@ -26,7 +26,7 @@ class Candidates::Change
       links?: Types::Strict::Array.of(
         Types::Strict::Hash.schema(
           url: Types::Strict::String,
-          status: Types::Strict::String
+          status?: Types::Strict::String
         ).optional
       ),
       alternative_names?: Types::Strict::Array.of(
@@ -37,17 +37,17 @@ class Candidates::Change
       emails?: Types::Strict::Array.of(
         Types::Strict::Hash.schema(
           address: Types::Strict::String,
-          status: Types::Strict::String,
+          status?: Types::Strict::String,
           url?: Types::Strict::String,
-          source: Types::Strict::String,
+          source?: Types::Strict::String,
           type: Types::Strict::String
         ).optional
       ),
       phones?: Types::Strict::Array.of(
         Types::Strict::Hash.schema(
           phone: Types::Strict::String,
-          status: Types::Strict::String,
-          source: Types::Strict::String,
+          status?: Types::Strict::String,
+          source?: Types::Strict::String,
           type: Types::Strict::String
         ).optional
       )
