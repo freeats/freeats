@@ -80,14 +80,13 @@ class Task < ApplicationRecord
   end
 
   def activities(since: nil)
-    # TODO: add note events.
     note_events_query =
       Event
       .joins(<<~SQL)
-        JOIN notes ON notes.id = events.eventable_id
+        JOIN notes ON notes.id = events.eventable_id AND events.eventable_type = 'Note'
         JOIN note_threads ON note_threads.id = notes.note_thread_id
       SQL
-      .where(note_threads: { notable_id: id })
+      .where(note_threads: { notable_id: id, notable_type: "Task" })
     note_events_query = note_events_query.where("performed_at > ?", since) if since
 
     task_events_query =
