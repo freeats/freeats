@@ -23,14 +23,14 @@ class ATS::CandidatesController < ApplicationController
                                          upload_file change_cv_status delete_file
                                          delete_cv_file download_cv_file upload_cv_file
                                          assign_recruiter synchronize_email_messages
-                                         merge_duplicates_modal merge_duplicates]
+                                         merge_duplicates_modal merge_duplicates destroy]
   before_action :authorize!, only: %i[create new index]
   before_action -> { authorize!(@candidate) },
                 only: %i[show show_header edit_header update_header
                          show_card edit_card update_card remove_avatar
                          upload_file change_cv_status delete_file
                          delete_cv_file download_cv_file upload_cv_file
-                         assign_recruiter synchronize_email_messages]
+                         assign_recruiter synchronize_email_messages destroy]
 
   def index
     @candidates_grid = ATS::CandidatesGrid.new(
@@ -523,6 +523,15 @@ class ATS::CandidatesController < ApplicationController
     end
 
     redirect_to tab_ats_candidate_path(@candidate, :info)
+  end
+
+  def destroy
+    if @candidate.remove
+      redirect_to ats_candidates_path, notice: t("ats.candidates.successful_deletion")
+      return
+    end
+
+    render_error @candidate.errors.full_messages
   end
 
   private

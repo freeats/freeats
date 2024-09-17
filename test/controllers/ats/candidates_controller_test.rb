@@ -806,4 +806,21 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_empty duplicate1.reload.files
     assert_empty duplicate2.reload.files
   end
+
+  test "should delete a candidate" do
+    sign_out
+
+    account = accounts(:admin_account)
+    candidate = candidates(:john)
+
+    assert_equal candidate.tenant_id, account.tenant_id
+
+    sign_in account
+    assert_difference "Candidate.count", -1 do
+      delete ats_candidate_path(candidate)
+    end
+
+    assert_redirected_to ats_candidates_path
+    assert_equal flash[:notice], I18n.t("ats.candidates.successful_deletion")
+  end
 end

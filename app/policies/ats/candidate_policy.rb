@@ -3,6 +3,7 @@
 class ATS::CandidatePolicy < ApplicationPolicy
   alias_rule :show_header?, :show_card?,
              :show_info?, :show_tasks?, :show_scorecards?, :show_files?, to: :show?
+  alias_rule :destroy?, to: :available_for_admin?
 
   def show?
     available_for_employee? || visible_for_hiring_manager? || visible_for_interviewer?

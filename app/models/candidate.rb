@@ -6,7 +6,7 @@ class Candidate < ApplicationRecord
   include Avatar
   acts_as_tenant(:tenant)
 
-  has_many :placements, dependent: :restrict_with_exception
+  has_many :placements, dependent: :destroy
   has_many :candidate_links,
            class_name: "CandidateLink",
            dependent: :destroy,
@@ -178,6 +178,13 @@ class Candidate < ApplicationRecord
       )
       .where("positions_hiring_managers.hiring_manager_id = ? " \
              "OR positions_interviewers.interviewer_id = ?", member_id, member_id)
+  end
+
+  def remove
+    destroy!
+  rescue ActiveRecord::RecordNotDestroyed => e
+    errors.add(:base, e.message.to_s)
+    false
   end
 
   def candidate_emails
