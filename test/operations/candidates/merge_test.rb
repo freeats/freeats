@@ -90,7 +90,7 @@ class Candidates::MergeTest < ActiveSupport::TestCase
       ).call.value!
     end
 
-    assert_equal @candidate.last_activity_at, last_activity_at
+    assert_in_delta @candidate.last_activity_at, last_activity_at
   end
 
   test "should blacklist candidate if one of the duplicates is blacklisted" do
@@ -186,6 +186,33 @@ class Candidates::MergeTest < ActiveSupport::TestCase
     assert_predicate @candidate.files, :attached?
     assert_not_predicate @candidate_duplicate.reload.files, :attached?
     assert_equal @candidate.files.blobs.ids.sort, blob_ids.sort
+  end
+
+  test "should transfer cv from duplicates during merge and create event if target has no cv" do
+    file = Rails.root.join("test/fixtures/files/empty.pdf").open
+    @candidate_duplicate.files.attach(file)
+    AttachmentInformations::Add.new(
+      params: { active_storage_attachment_id: @candidate_duplicate.files.first.id, is_cv: true }
+    ).call.value!
+
+    assert @candidate_duplicate.cv
+    assert_empty @candidate.files
+
+    assert_difference "Event.where(type: 'candidate_changed', changed_field: 'cv').count" do
+      Candidates::Merge.new(
+        target: @candidate,
+        actor_account_id: accounts(:admin_account).id
+      ).call.value!
+    end
+
+    event = Event.where(type: "candidate_changed", changed_field: "cv").last
+
+    assert_equal event.eventable, @candidate
+    assert_equal event.changed_from, ""
+    assert_equal event.changed_to, "empty.pdf"
+
+    assert @candidate.cv
+    assert_empty @candidate_duplicate.reload.files
   end
 
   test "should find the most relevant location from target and duplicates" do

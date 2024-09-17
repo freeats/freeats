@@ -26,7 +26,7 @@ class Candidates::RemoveFile
               actor_account:
             }
         ).call
-        candidate.destroy_file(file.id)
+        file.remove
       end
 
       nil

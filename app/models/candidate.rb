@@ -184,15 +184,6 @@ class Candidate < ApplicationRecord
     candidate_email_addresses.pluck(:address)
   end
 
-  def destroy_file(file_id)
-    file = files.find(file_id)
-
-    transaction do
-      file.attachment_information&.destroy!
-      file.purge
-    end
-  end
-
   def names
     [full_name, *candidate_alternative_names.pluck(:name)]
   end

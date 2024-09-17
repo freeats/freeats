@@ -742,4 +742,68 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_empty css_select("#placement-#{ruby_placement.id}")
   end
+
+  test "merge should transfer all files and associated events from duplicates " \
+       "and take cv from the most recently active duplicate as current cv" do
+    candidate = candidates(:john)
+    duplicate1 = candidates(:john_duplicate)
+    duplicate2 = candidates(:john_duplicate).dup
+    duplicate_email_address = candidate_email_addresses(:john_email_address1)
+    duplicate2.update!(emails: [duplicate_email_address.slice(:address, :type, :tenant)])
+
+    assert_empty candidate.files
+    assert_empty duplicate1.files
+    assert_empty duplicate2.files
+    assert_equal candidate.duplicates.sort, [duplicate1, duplicate2].sort
+
+    cv1 = fixture_file_upload("empty.pdf", "application/pdf")
+    cv2 = fixture_file_upload("cv_with_links.pdf", "application/pdf")
+    assert_difference "Event.where(type: 'active_storage_attachment_added').count", 3 do
+      assert_difference "Event.where(type: 'candidate_changed', changed_field: 'cv').count", 3 do
+        post upload_cv_file_ats_candidate_path(candidate), params: { candidate: { file: cv1 } }
+        post upload_cv_file_ats_candidate_path(duplicate1), params: { candidate: { file: cv2 } }
+        post upload_cv_file_ats_candidate_path(duplicate2), params: { candidate: { file: cv1 } }
+      end
+    end
+
+    file = fixture_file_upload("app/assets/images/icons/user.png", "image/png")
+    assert_difference "Event.where(type: 'active_storage_attachment_added').count", 2 do
+      post upload_file_ats_candidate_path(duplicate1), params: { candidate: { file: } }
+      post upload_file_ats_candidate_path(duplicate2), params: { candidate: { file: } }
+    end
+
+    file_id_to_remove = duplicate2.files.find { _1.cv? == false }.id
+    assert_difference "Event.where(type: 'active_storage_attachment_removed').count" do
+      delete delete_file_ats_candidate_path(duplicate2), params: { candidate: { file_id_to_remove: } }
+    end
+    file_removed_event = Event.where(type: "active_storage_attachment_removed").last
+
+    assert_equal file_removed_event.eventable, duplicate2
+
+    assert candidate.cv
+    assert_equal candidate.files.count, 1
+    assert duplicate1.cv
+    assert_equal duplicate1.files.count, 2
+    assert duplicate2.cv
+    assert_equal duplicate2.files.count, 1
+
+    duplicate1.update!(last_activity_at: 1.year.ago)
+    duplicate2.update!(last_activity_at: 2.years.ago)
+    candidate.update!(last_activity_at: 3.years.ago)
+
+    most_recent_cv_blob_id = duplicate1.cv.blob_id
+
+    assert_no_difference ["ActiveStorage::Attachment.count", "AttachmentInformation.count"] do
+      Candidates::Merge.new(
+        target: candidate,
+        actor_account_id: accounts(:admin_account).id
+      ).call.value!
+    end
+
+    assert_equal candidate.files.count, 4
+    assert_equal candidate.files.attachments.count(&:attachment_information), 3
+    assert_equal candidate.cv.blob_id, most_recent_cv_blob_id
+    assert_empty duplicate1.reload.files
+    assert_empty duplicate2.reload.files
+  end
 end

@@ -57,4 +57,11 @@ module ActiveStorageAttachment
 
     attachment_information.is_cv
   end
+
+  def remove
+    transaction do
+      attachment_information&.destroy!
+      purge
+    end
+  end
 end

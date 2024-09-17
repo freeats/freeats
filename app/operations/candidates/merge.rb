@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Candidates::Merge < ApplicationOperation
-  include Dry::Monads[:result, :do]
+  include Dry::Monads[:result]
 
   # target is used to perform the merge on a list of candidates: target + duplicates.
   option :target, Types::Instance(Candidate)
@@ -20,14 +20,22 @@ class Candidates::Merge < ApplicationOperation
 
     return Failure(:no_duplicates) if duplicates.empty?
 
+    duplicates.sort_by!(&:last_activity_at)
+    candidates = [target, *duplicates]
+
+    target.with_lock do
+      merge(target:, candidates:, duplicates:)
+    end
+  end
+
+  private
+
+  def merge(target:, candidates:, duplicates:)
     action_list = ActionList.new(
       target_candidate_id: target.id,
       actor_account_id:,
       logger:
     )
-
-    duplicates.sort_by!(&:last_activity_at)
-    candidates = [target, *duplicates]
 
     # Simple fields
     action_list[:full_name] = merge_attribute_if_not_default(:full_name, target, candidates)
@@ -107,6 +115,7 @@ class Candidates::Merge < ApplicationOperation
 
     action_list << merge_candidate_alternative_names(
       target_id: target.id,
+      tenant_id: target.tenant_id,
       target_candidate_alternative_names: target.candidate_alternative_names,
       duplicates_candidate_alternative_names: duplicates.map(&:candidate_alternative_names).flatten,
       duplicates_full_names: duplicates.map(&:full_name)
@@ -135,26 +144,22 @@ class Candidates::Merge < ApplicationOperation
 
     target.assign_attributes(action_list.changeset)
 
-    ActiveRecord::Base.transaction do
-      target.save!
+    target.save!
 
-      action_list.execute_actions
+    action_list.execute_actions
 
-      if (persisted_duplicates = duplicates.filter(&:persisted?)).present?
-        purge_duplicates(persisted_duplicates)
+    if (persisted_duplicates = duplicates.filter(&:persisted?)).present?
+      purge_duplicates(persisted_duplicates)
 
-        # Here we don't want to save `duplicate` because it has associations in memory still
-        # assigned to it, while in fact they were already transfered to the `target`.
-        # rubocop:disable Rails/SkipsModelValidations
-        Candidate.where(id: persisted_duplicates.map(&:id)).update_all(merged_to: target.id)
-        # rubocop:enable Rails/SkipsModelValidations
-      end
+      # Here we don't want to save `duplicate` because it has associations in memory still
+      # assigned to it, while in fact they were already transfered to the `target`.
+      # rubocop:disable Rails/SkipsModelValidations
+      Candidate.where(id: persisted_duplicates.map(&:id)).update_all(merged_to: target.id)
+      # rubocop:enable Rails/SkipsModelValidations
     end
 
-    Success(target:, duplicates:)
+    Success(target:)
   end
-
-  private
 
   # Base merge logic
   def merge_attribute_if_not_default(field, target, candidates)
@@ -214,19 +219,53 @@ class Candidates::Merge < ApplicationOperation
   end
 
   def merge_files(target, duplicates)
-    files = duplicates.map(&:files)
+    duplicates_ids = duplicates.map(&:id)
+    duplicates_attachments =
+      ActiveStorage::Attachment
+      .joins("JOIN candidates ON active_storage_attachments.record_type = 'Candidate' " \
+             "AND active_storage_attachments.record_id = candidates.id")
+      .where(candidates: { id: duplicates_ids })
+      .includes(:attachment_information)
 
-    return AL::NONE if files.empty?
+    return AL::NONE if duplicates_attachments.blank?
+
+    target_old_cv = target.cv
+
+    most_recent_cv_data =
+      Candidate
+      .select("ai.id AS info_id, asb.id AS blob_id, asb.filename, asa.id AS attachment_id")
+      .joins("JOIN active_storage_attachments AS asa ON asa.record_type = 'Candidate' " \
+             "AND asa.record_id = candidates.id")
+      .joins("JOIN attachment_informations AS ai ON ai.active_storage_attachment_id = asa.id")
+      .joins("JOIN active_storage_blobs AS asb ON asa.blob_id = asb.id")
+      .where(candidates: { id: [*duplicates_ids, target.id] })
+      .where(ai: { is_cv: true })
+      .order("candidates.last_activity_at DESC NULLS LAST")
+      .first
+
+    # Move attachments and associated events to the target.
+    duplicates_attachments.each { _1.update!(record_id: target.id) }
+
+    return AL::NONE if most_recent_cv_data.blank?
 
     result = []
 
-    files.each { |file| target.files.attach(file.blobs) }
-    result << AL.save_record(target)
+    duplicates_attachments
+      .reject { _1.id == most_recent_cv_data.attachment_id }
+      .each do |attachment|
+      attachment.attachment_information&.update!(is_cv: false)
+    end
 
-    duplicates.each do |duplicate|
-      duplicate.files.purge
-
-      result << AL.save_record(duplicate)
+    if target_old_cv.present? && most_recent_cv_data.blob_id != target_old_cv.blob_id
+      target_old_cv.attachment_information.update!(is_cv: false)
+    elsif target_old_cv.blank?
+      result << AL.fill_event(
+        build_candidate_changed_event(
+          changed_field: :cv,
+          changed_from: "",
+          changed_to: most_recent_cv_data.filename.to_s
+        )
+      )
     end
 
     result
@@ -445,6 +484,7 @@ class Candidates::Merge < ApplicationOperation
 
   def merge_candidate_alternative_names(
     target_id:,
+    tenant_id:,
     target_candidate_alternative_names:,
     duplicates_candidate_alternative_names:,
     duplicates_full_names:
@@ -460,7 +500,8 @@ class Candidates::Merge < ApplicationOperation
     new_alternative_names.each do |name|
       alternative_name = CandidateAlternativeName.new(
         candidate_id: target_id,
-        name:
+        name:,
+        tenant_id:
       )
       result << AL.save_record(alternative_name)
     end
