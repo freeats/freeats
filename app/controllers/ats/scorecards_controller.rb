@@ -109,7 +109,6 @@ class ATS::ScorecardsController < ApplicationController
         :summary,
         :position_stage_id,
         :placement_id,
-        :visible_to_interviewer,
         scorecard_questions_attributes: %i[id question answer]
       )
       .to_h

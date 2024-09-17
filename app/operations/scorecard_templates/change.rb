@@ -5,7 +5,6 @@ class ScorecardTemplates::Change
 
   include Dry::Initializer.define -> do
     option :params, Types::Strict::Hash.schema(
-      visible_to_interviewer?: Types::Params::Bool,
       title?: Types::String
     )
     option :questions_params, Types::Strict::Array.of(
@@ -17,7 +16,6 @@ class ScorecardTemplates::Change
 
   def call
     old_values = {
-      visible_to_interviewer: scorecard_template.visible_to_interviewer,
       title: scorecard_template.title,
       questions_params: existing_questions_params(scorecard_template)
     }
@@ -83,8 +81,7 @@ class ScorecardTemplates::Change
   end
 
   def scorecard_template_changed?(old_values:, scorecard_template:)
-    old_values[:visible_to_interviewer] != scorecard_template.visible_to_interviewer ||
-      old_values[:title] != scorecard_template.title ||
+    old_values[:title] != scorecard_template.title ||
       old_values[:questions_params] != existing_questions_params(scorecard_template)
   end
 

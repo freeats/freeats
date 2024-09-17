@@ -117,7 +117,7 @@ class ATS::PositionsGrid
     include_blank: "Hiring manager",
     placeholder: "Hiring manager"
   ) do |hiring_manager_id|
-    visible_for_hiring_manager(hiring_manager_id)
+    joins(:hiring_managers).where(positions_hiring_managers: { hiring_manager_id: })
   end
 
   #

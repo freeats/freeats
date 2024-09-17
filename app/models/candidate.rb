@@ -169,17 +169,6 @@ class Candidate < ApplicationRecord
       )
   end
 
-  def self.visible_for_hiring_manager(member_id)
-    joins(placements: :position)
-      .joins(
-        "LEFT JOIN positions_hiring_managers " \
-        "ON positions_hiring_managers.position_id = positions.id " \
-        "LEFT JOIN positions_interviewers ON positions_interviewers.position_id = positions.id"
-      )
-      .where("positions_hiring_managers.hiring_manager_id = ? " \
-             "OR positions_interviewers.interviewer_id = ?", member_id, member_id)
-  end
-
   def remove
     destroy!
   rescue ActiveRecord::RecordNotDestroyed => e

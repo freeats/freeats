@@ -8,7 +8,7 @@ admin_member:
 
 hiring_manager_member:
   account: hiring_manager_account
-  access_level: hiring_manager
+  access_level: employee
   tenant: toughbyte_tenant
 
 employee_member:
@@ -18,7 +18,7 @@ employee_member:
 
 interviewer_member:
   account: interviewer_account
-  access_level: interviewer
+  access_level: employee
   tenant: toughbyte_tenant
 
 inactive_member:

@@ -18,8 +18,7 @@ class ScorecardTest < ActiveSupport::TestCase
       score: "good",
       interviewer_id: member.id,
       title: "Ruby position contacted scorecard template scorecard",
-      position_stage_id: position_stages(:ruby_position_replied).id,
-      visible_to_interviewer: true
+      position_stage_id: position_stages(:ruby_position_replied).id
     }
     questions_params = [{ question: "How was the candidate's communication?", answer: "good" }]
 
@@ -28,7 +27,6 @@ class ScorecardTest < ActiveSupport::TestCase
 
       assert_equal scorecard.title, params[:title]
       assert_equal scorecard.position_stage_id, params[:position_stage_id]
-      assert_equal [scorecard.visible_to_interviewer, params[:visible_to_interviewer]].uniq, [true]
 
       scorecard_questions = scorecard.scorecard_questions
 
@@ -53,8 +51,7 @@ class ScorecardTest < ActiveSupport::TestCase
       score: "good",
       interviewer_id: member.id,
       placement_id: placements(:sam_ruby_replied).id,
-      position_stage_id: position_stages(:ruby_position_replied).id,
-      visible_to_interviewer: true
+      position_stage_id: position_stages(:ruby_position_replied).id
     }
     questions_params = [{ question: "Invalid question" }]
 
@@ -83,8 +80,6 @@ class ScorecardTest < ActiveSupport::TestCase
     assert_equal scorecard_new.placement_id, placement.id
     assert_equal scorecard_new.scorecard_questions.map(&:question),
                  scorecard_template.scorecard_template_questions.pluck(:question)
-    assert_equal [scorecard_new.visible_to_interviewer, scorecard_template.visible_to_interviewer].uniq,
-                 [true]
   end
 
   test "should change scorecard and scorecard questions" do

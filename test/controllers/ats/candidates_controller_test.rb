@@ -46,15 +46,6 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should not allow interviewer to get index" do
-    sign_in accounts(:interviewer_account)
-
-    get ats_candidates_url
-
-    assert_response :redirect
-    assert_redirected_to "/"
-  end
-
   test "should create candidate" do
     full_name = "Bernard Smith"
     assert_difference "Candidate.count" do

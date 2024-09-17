@@ -10,8 +10,7 @@ class Scorecards::Add
       score: Types::Params::String,
       summary?: Types::Params::String,
       position_stage_id: Types::Params::Integer,
-      placement_id: Types::Params::Integer,
-      visible_to_interviewer: Types::Params::Bool
+      placement_id: Types::Params::Integer
     )
     option :questions_params, Types::Strict::Array.of(
       Types::Strict::Hash.schema(

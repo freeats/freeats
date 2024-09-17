@@ -61,7 +61,6 @@ class ATS::ScorecardTemplatesController < ApplicationController
       .require(:scorecard_template)
       .permit(
         :title,
-        :visible_to_interviewer,
         :position_stage_id
       )
       .to_h

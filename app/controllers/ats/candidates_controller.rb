@@ -40,12 +40,7 @@ class ATS::CandidatesController < ApplicationController
         :last_activity
       )
     ) do |scope|
-      authorized_scope(
-        scope,
-        type: :hiring_manager,
-        scope_options: { member_id: current_member.id }
-      )
-        .page(params[:page])
+      scope.page(params[:page])
     end
 
     @candidates_count = @candidates_grid.assets.unscope(:offset, :order, :limit).size

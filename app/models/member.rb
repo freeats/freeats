@@ -65,7 +65,7 @@ class Member < ApplicationRecord
 
   belongs_to :account
 
-  enum access_level: %i[inactive interviewer hiring_manager employee admin].index_with(&:to_s)
+  enum access_level: %i[inactive employee admin].index_with(&:to_s)
 
   validates :access_level, presence: true
 

@@ -33,12 +33,7 @@ class ATS::PositionsController < ApplicationController
       &.filter { |k, _v| ATS::PositionsGrid.datagrid_attributes.include?(k) } || {}
     @positions_grid =
       ATS::PositionsGrid.new(@positions_grid_params.merge(current_account:)) do |scope|
-        authorized_scope(
-          scope,
-          type: :hiring_manager,
-          scope_options: { member_id: current_member.id }
-        )
-          .order("color_code ASC")
+        scope.order("color_code ASC")
       end
 
     positions = @positions_grid.assets.unscope(:order)

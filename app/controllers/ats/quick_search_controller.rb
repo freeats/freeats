@@ -28,9 +28,6 @@ class ATS::QuickSearchController < ApplicationController
       .search_by_names_or_emails(params[:q])
       .order(last_activity_at: :desc)
       .limit(limit)
-    if current_member.hiring_manager?
-      @dataset = @dataset.visible_for_hiring_manager(current_member.id)
-    end
 
     @partials = @dataset.map do |element|
       render_to_string(
@@ -65,9 +62,6 @@ class ATS::QuickSearchController < ApplicationController
       .search_by_name(params[:q])
       .order(:color_code)
       .limit(limit)
-    if current_member.hiring_manager?
-      @dataset = @dataset.visible_for_hiring_manager(current_member.id)
-    end
 
     @partials = @dataset.map do |element|
       render_to_string(

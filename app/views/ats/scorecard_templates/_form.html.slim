@@ -29,13 +29,6 @@ ruby:
                    form:, for_field: :title)
     = render TextInputComponent.new(form, method: :title, size: :small, required: true)
 
-  = render LabeledComponent.new(class: "mb-4",
-                                left_layout_class: "col-12 col-md-auto",
-                                right_layout_class: "col-12 col-md d-flex align-items-center") do |c|
-    - c.with_label("Visible to interviewer", size: :small, style: "min-width: 137px;",
-                   form:, for_field: :visible_to_interviewer)
-    - form.check_box :visible_to_interviewer, {}, "true", "false"
-
   .card
     .card-header
       .card-title.mb-0

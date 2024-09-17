@@ -3,12 +3,6 @@
 #profile.row
   .col-12.col-lg-7.col-xl-8
     .h1.mb-3 = @scorecard_template.title
-    = render LabeledComponent.new(class: "mb-2",
-                                  left_layout_class: "col-auto", right_layout_class: "col",
-                                  right_class: "ps-0 col-form-label-sm") do |c|
-      - c.with_label("Visible to interviewer", size: :small, style: "min-width: 137px;")
-      = @scorecard_template.visible_to_interviewer ? "Yes" : "No"
-
     = render LabeledComponent.new(left_layout_class: "col-auto", right_layout_class: "col",
                                    right_class: "ps-0 col-form-label-sm") do |c|
       - c.with_label("Position", size: :small, style: "min-width: 137px;")

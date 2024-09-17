@@ -12,8 +12,7 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
 
     params = {
       title: "Replied stage scorecard template",
-      position_stage_id: position_stage.id,
-      visible_to_interviewer: true
+      position_stage_id: position_stage.id
     }
     questions_params = [{ question: "How was the candidate's communication?" }]
 
@@ -23,7 +22,6 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
 
       assert_equal scorecard_template.title, "Replied stage scorecard template"
       assert_equal scorecard_template.position_stage_id, position_stage.id
-      assert_equal [scorecard_template.visible_to_interviewer, params[:visible_to_interviewer]].uniq, [true]
 
       scorecard_template_questions = scorecard_template.scorecard_template_questions
 
@@ -64,8 +62,7 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
 
     params = {
       title: "Replied stage scorecard template",
-      position_stage_id: position_stage.id,
-      visible_to_interviewer: true
+      position_stage_id: position_stage.id
     }
 
     error = "Event is invalid"
@@ -89,6 +86,5 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
 
     assert_equal scorecard_template_new.title, "Replied stage scorecard template"
     assert_equal scorecard_template_new.position_stage_id, position_stage_id
-    assert_equal scorecard_template_new.visible_to_interviewer, true
   end
 end

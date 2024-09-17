@@ -34,8 +34,8 @@ class Position < ApplicationRecord
 
   RECRUITER_ACCESS_LEVEL = %w[admin employee].freeze
   COLLABORATORS_ACCESS_LEVEL = %w[admin employee].freeze
-  HIRING_MANAGERS_ACCESS_LEVEL = %w[admin employee hiring_manager].freeze
-  INTERVIEWERS_ACCESS_LEVEL = %w[admin employee hiring_manager interviewer].freeze
+  HIRING_MANAGERS_ACCESS_LEVEL = %w[admin employee].freeze
+  INTERVIEWERS_ACCESS_LEVEL = %w[admin employee].freeze
 
   has_and_belongs_to_many :collaborators,
                           class_name: "Member",
@@ -77,11 +77,6 @@ class Position < ApplicationRecord
     no_longer_relevant
     cancelled
   ].index_with(&:to_s)
-
-  validate :recruiter_access_level
-  validate :collaborators_access_level
-  validate :hiring_managers_access_level
-  validate :interviewers_access_level
 
   strip_attributes collapse_spaces: true, allow_empty: true, only: :name
 
@@ -137,13 +132,6 @@ class Position < ApplicationRecord
     ).joins(position_joins.join_sources)
   end
 
-  def self.visible_for_hiring_manager(member_id)
-    joins(
-      "JOIN positions_hiring_managers ON positions_hiring_managers.position_id = positions.id"
-    )
-      .where(positions_hiring_managers: { hiring_manager_id: member_id })
-  end
-
   def warnings
     @warnings ||= ActiveModel::Errors.new(self)
   end
@@ -159,61 +147,5 @@ class Position < ApplicationRecord
   rescue ActiveRecord::RecordNotDestroyed => e
     errors.add(:base, e.message.to_s)
     false
-  end
-
-  private
-
-  def recruiter_access_level
-    if recruiter.blank? ||
-       recruiter.access_level.in?([*Position::RECRUITER_ACCESS_LEVEL, "inactive"])
-      return
-    end
-
-    errors.add(
-      :base,
-      "Recruiter must be #{Position::RECRUITER_ACCESS_LEVEL.join(' or ')}"
-    )
-  end
-
-  def collaborators_access_level
-    if collaborators.blank? ||
-       collaborators.all? do |c|
-         c.access_level.in?([*Position::COLLABORATORS_ACCESS_LEVEL, "inactive"])
-       end
-      return
-    end
-
-    errors.add(
-      :base,
-      "Collaborators must be #{Position::COLLABORATORS_ACCESS_LEVEL.join(' or ')}"
-    )
-  end
-
-  def hiring_managers_access_level
-    if hiring_managers.blank? ||
-       hiring_managers.all? do |c|
-         c.access_level.in?([*Position::HIRING_MANAGERS_ACCESS_LEVEL, "inactive"])
-       end
-      return
-    end
-
-    errors.add(
-      :base,
-      "Hiring managers must be #{Position::HIRING_MANAGERS_ACCESS_LEVEL.join(' or ')}"
-    )
-  end
-
-  def interviewers_access_level
-    if interviewers.blank? ||
-       interviewers.all? do |c|
-         c.access_level.in?([*Position::INTERVIEWERS_ACCESS_LEVEL, "inactive"])
-       end
-      return
-    end
-
-    errors.add(
-      :base,
-      "Interviewers must be #{Position::INTERVIEWERS_ACCESS_LEVEL.join(' or ')}"
-    )
   end
 end

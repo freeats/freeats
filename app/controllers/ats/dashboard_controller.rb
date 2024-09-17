@@ -11,36 +11,25 @@ class ATS::DashboardController < ApplicationController
 
     @dashboard_positions_grid =
       ATS::DashboardPositionsGrid.new do |scope|
-        positions = scope.where(id: nil) if current_member.interviewer?
-
-        if current_member.access_level.in?(%w[admin employee hiring_manager])
-          positions = scope.visible_for_hiring_manager(current_member.id)
-
-          unless current_member.hiring_manager?
-            positions =
-              positions
-              .union(scope.where(positions: { recruiter_id: current_member.id }))
-              .union(
-                scope
-                  .joins(:collaborators)
-                  .where(positions_collaborators: { collaborator_id: current_member.id })
-              )
-          end
-        end
-
-        positions
+        recruiter_id = current_member.id
+        scope
+          .where(positions: { recruiter_id: })
+          .union(
+            scope
+              .joins(:collaborators)
+              .where(positions_collaborators: { collaborator_id: recruiter_id })
+          )
           .with_color_codes
           .order(
             ActiveRecord::Base.sanitize_sql_for_order(
               [
                 Arel.sql(
                   <<~SQL
-                    id,
                     positions.recruiter_id != ?,
                     color_code ASC
                 SQL
                 ),
-                current_member.id
+                recruiter_id
               ]
             )
           )

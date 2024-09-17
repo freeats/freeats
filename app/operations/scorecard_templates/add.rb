@@ -6,7 +6,6 @@ class ScorecardTemplates::Add
   include Dry::Initializer.define -> do
     option :params, Types::Params::Hash.schema(
       position_stage_id: Types::Params::Integer,
-      visible_to_interviewer: Types::Params::Bool,
       title: Types::Params::String
     )
     option :questions_params, Types::Strict::Array.of(

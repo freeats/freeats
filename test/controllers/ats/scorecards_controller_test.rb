@@ -14,8 +14,6 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
     scorecard_template_question =
       scorecard_template_questions(:ruby_position_contacted_first_scorecard_template_question)
 
-    assert_equal scorecard_template.visible_to_interviewer, true
-
     assert_no_difference "Scorecard.count" do
       get new_ats_scorecard_path(position_stage_id: position_stage.id, placement_id: placement.id)
     end
@@ -27,13 +25,11 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
     assert_equal doc.at_css("#scorecard_position_stage_id").attr(:value), position_stage.id.to_s
     assert_equal doc.at_css("#scorecard_placement_id").attr(:value), placement.id.to_s
     assert_equal doc.at_css("#scorecard_title").attr(:value), "#{scorecard_template.title} scorecard"
-    assert_equal doc.at_css("#scorecard_visible_to_interviewer").attr(:value),
-                 scorecard_template.visible_to_interviewer.to_s
 
     assert_includes doc.css(".card-title").text, scorecard_template_question.question
   end
 
-  test "should create the scorecard with question and visible to interviewer" do
+  test "should create the scorecard with question" do
     scorecard_template = scorecard_templates(:ruby_position_contacted_scorecard_template)
     scorecard_template_question =
       scorecard_template_questions(:ruby_position_contacted_first_scorecard_template_question)
@@ -45,7 +41,6 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
       title: "#{scorecard_template.title} scorecard",
       position_stage_id: position_stage.id,
       placement_id: placement.id,
-      visible_to_interviewer: true,
       interviewer_id: member.id,
       score: "good",
       scorecard_questions_attributes:
@@ -68,39 +63,6 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
                  ["What is your favorite color?"]
     assert_equal scorecard.scorecard_questions.map { _1.answer.to_s },
                  ["<div class=\"trix-content\">\n  Yes\n</div>\n"]
-    assert_equal [scorecard.visible_to_interviewer, params[:visible_to_interviewer]].uniq,
-                 [true]
-  end
-
-  test "should create the scorecard without question and do not visible to interviewer" do
-    scorecard_template = scorecard_templates(:ruby_position_contacted_scorecard_template)
-    position_stage = position_stages(:ruby_position_contacted)
-    placement = placements(:sam_ruby_contacted)
-    member = members(:employee_member)
-
-    params = {
-      title: "#{scorecard_template.title} scorecard",
-      position_stage_id: position_stage.id,
-      placement_id: placement.id,
-      visible_to_interviewer: false,
-      interviewer_id: member.id,
-      score: "good"
-    }
-
-    assert_difference "Scorecard.count" do
-      post(ats_scorecards_path, params: { scorecard: params })
-    end
-
-    assert_response :redirect
-
-    scorecard = Scorecard.last
-
-    assert_equal scorecard.title, params[:title]
-    assert_equal scorecard.position_stage_id, position_stage.id
-    assert_equal scorecard.placement_id, placement.id
-    assert_empty scorecard.scorecard_questions
-    assert_equal [scorecard.visible_to_interviewer, params[:visible_to_interviewer]].uniq,
-                 [false]
   end
 
   test "should not create the scorecard without required params" do
@@ -114,7 +76,6 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
       title: "#{scorecard_template.title} scorecard",
       position_stage_id: position_stage.id,
       placement_id: placement.id,
-      visible_to_interviewer: false,
       interviewer_id: member.id
     }
 
@@ -131,7 +92,6 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
       title: "#{scorecard_template.title} scorecard",
       position_stage_id: position_stage.id,
       placement_id: placement.id,
-      visible_to_interviewer: false,
       score: "good"
     }
 
@@ -141,23 +101,6 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
       end
 
       assert_equal error.message, ":interviewer_id is missing in Hash input"
-    end
-
-    # without visible_to_interviewer
-    params = {
-      title: "#{scorecard_template.title} scorecard",
-      position_stage_id: position_stage.id,
-      placement_id: placement.id,
-      interviewer_id: member.id,
-      score: "good"
-    }
-
-    assert_no_difference "Scorecard.count" do
-      error = assert_raises(Dry::Types::MissingKeyError) do
-        post(ats_scorecards_path, params: { scorecard: params })
-      end
-
-      assert_equal error.message, ":visible_to_interviewer is missing in Hash input"
     end
   end
 

@@ -204,8 +204,6 @@ CREATE TYPE public.location_type AS ENUM (
 
 CREATE TYPE public.member_access_level AS ENUM (
     'inactive',
-    'interviewer',
-    'hiring_manager',
     'employee',
     'admin'
 );
@@ -1763,7 +1761,6 @@ CREATE TABLE public.scorecard_templates (
     position_stage_id bigint NOT NULL,
     title character varying NOT NULL,
     greenhouse_id integer,
-    visible_to_interviewer boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     tenant_id bigint
@@ -1800,7 +1797,6 @@ CREATE TABLE public.scorecards (
     title character varying NOT NULL,
     score public.scorecard_score NOT NULL,
     greenhouse_id integer,
-    visible_to_interviewer boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     interviewer_id bigint NOT NULL,
@@ -4520,6 +4516,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240913152510'),
 ('20240912084504'),
 ('20240911051822'),
 ('20240909141257'),

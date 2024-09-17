@@ -21,23 +21,11 @@ class ApplicationPolicy < ActionPolicy::Base
   # More info in https://actionpolicy.evilmartians.io/#/aliases
   alias_rule :index?, :create?, :new?, to: :available_for_employee?
 
-  def available_for_active_member?
-    !member.inactive?
-  end
-
   def available_for_employee?
-    (member.employee? && available_for_active_member?) || member.admin?
+    member.employee? || member.admin?
   end
 
   def available_for_admin?
     member.admin?
-  end
-
-  def available_for_interviewer?
-    member.interviewer?
-  end
-
-  def available_for_hiring_manager?
-    member.hiring_manager?
   end
 end

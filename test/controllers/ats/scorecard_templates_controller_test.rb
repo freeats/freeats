@@ -20,7 +20,6 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal doc.at_css("#scorecard_template_position_stage_id").attr(:value), position_stage.id.to_s
     assert_equal doc.at_css("#scorecard_template_title").attr(:value), "Contacted stage scorecard template"
-    assert_equal doc.at_css("#scorecard_template_visible_to_interviewer").attr(:value), "true"
   end
 
   test "should get show" do
@@ -31,33 +30,12 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should update scorecard_template to became visible to interviewer and add event" do
-    scorecard_template = scorecard_templates(:ruby_position_sourced_scorecard_template)
-
-    assert_not scorecard_template.visible_to_interviewer
-
-    assert_difference "Event.count" do
-      patch ats_scorecard_template_url(scorecard_template),
-            params: { scorecard_template: { visible_to_interviewer: true } }
-    end
-
-    new_event = Event.last
-
-    assert_equal new_event.actor_account_id, accounts(:employee_account).id
-    assert_equal new_event.type, "scorecard_template_updated"
-    assert_equal new_event.eventable_id, scorecard_template.id
-
-    assert_response :redirect
-    assert scorecard_template.reload.visible_to_interviewer
-  end
-
   test "should not create event if scorecard_template was not changed" do
     scorecard_template = scorecard_templates(:ruby_position_sourced_scorecard_template)
 
     assert_empty scorecard_template.scorecard_template_questions
 
     params = { scorecard_template: {
-      visible_to_interviewer: scorecard_template.visible_to_interviewer,
       title: scorecard_template.title,
       scorecard_template_questions_attributes: {}
     } }
@@ -127,7 +105,6 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
     params = { scorecard_template: {
       title: "Sourced stage scorecard template",
       position_stage_id: position_stage.id,
-      visible_to_interviewer: true,
       scorecard_template_questions_attributes: { "0": { question: "How was the candidate's communication?" } }
     } }
     assert_difference "ScorecardTemplate.count" => 1, "Event.count" => 1, "ScorecardTemplateQuestion.count" => 1 do
@@ -141,7 +118,6 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal scorecard_template.position_stage_id, position_stage.id
     assert_equal scorecard_template.title, params[:scorecard_template][:title]
-    assert_equal scorecard_template.visible_to_interviewer, true
 
     assert_equal scorecard_template_question.scorecard_template_id, scorecard_template.id
     assert_equal scorecard_template_question.question,
