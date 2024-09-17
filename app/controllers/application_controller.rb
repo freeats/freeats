@@ -102,13 +102,13 @@ class ApplicationController < ActionController::Base
   def switch_locale(&)
     # TODO: use organization's locale for signed in users.
     locale = params[:locale]
-    locale = I18n.default_locale if !locale || !locale.in?(I18n.available_locales)
+    locale = I18n.default_locale unless locale&.to_sym&.in?(I18n.available_locales)
     I18n.with_locale(locale, &)
   end
 
   # Should add locale to each url if it's explicitly passed on the first request or is not default.
   def default_url_options
-    locale = params[:locale] if params[:locale]&.in?(I18n.available_locales)
+    locale = params[:locale] if params[:locale]&.to_sym&.in?(I18n.available_locales)
     locale ||= I18n.locale if I18n.locale != I18n.default_locale
     return {} if locale.blank?
 

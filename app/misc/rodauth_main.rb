@@ -6,10 +6,15 @@ class RodauthMain < Rodauth::Rails::Auth
   # rubocop:disable Layout/LineLength
   configure do
     # List of authentication features that are loaded.
-    enable :login, :logout, :remember, :omniauth_base
+    enable :login, :logout, :remember, :omniauth_base,
+           :create_account, :verify_account, :verify_account_grace_period,
+           :reset_password, :change_password
 
     login_route :sign_in
     logout_route :sign_out
+    create_account_route :register
+    verify_account_route :verify_email
+    verify_account_resend_route :verify_email_resend
 
     translate do |key, default|
       I18n.t("rodauth.#{key}") || default
@@ -36,6 +41,9 @@ class RodauthMain < Rodauth::Rails::Auth
     # verify_login_change_table :user_login_change_keys
     # reset_password_table :user_password_reset_keys
     # remember_table :user_remember_keys
+    # rodauth-model by default uses column with name "status", while rodauth-omniauth
+    # be default expects column status_id, so need to specify column name explicitly.
+    account_status_column :status
 
     # The secret key used for hashing public-facing tokens for various features.
     # Defaults to Rails `secret_key_base`, but you can use your own secret key.

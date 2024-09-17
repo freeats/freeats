@@ -60,6 +60,12 @@ RailsAdmin.config do |config|
     edit do
       exclude_fields :member
     end
+
+    configure :status do
+      enum do
+        { unverified: 1, verified: 2, closed: 3 }
+      end
+    end
   end
 
   config.model("Member") do

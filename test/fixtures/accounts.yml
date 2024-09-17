@@ -1,11 +1,15 @@
 admin_account:
   email: admin@mail.com
   name: Admin Admin
+  password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
+  status: verified
   tenant: toughbyte_tenant
 
 hiring_manager_account:
   email: hiring_manager@mail.com
   name: Travis Hodge
+  password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
+  status: verified
   tenant: toughbyte_tenant
 
 employee_account:
@@ -14,41 +18,57 @@ employee_account:
   female: true
   linkedin_url: https://www.linkedin.com/in/employee
   calendar_url: https://calendar.google.com/employee
+  password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
+  status: verified
   tenant: toughbyte_tenant
 
 interviewer_account:
   email: interviewer@mail.com
   name: Michael Interviewer
+  password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
+  status: verified
   tenant: toughbyte_tenant
 
 # Inactive account doesn't have any identities.
 inactive_account:
   email: inactive@mail.com
   name: Jimmy Bean
+  password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
+  status: verified
   tenant: toughbyte_tenant
 
 # Only has an account created and a member record.
 helen_account:
   email: helen_booker@mail.com
   name: Helen Booker
+  password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
+  status: verified
   tenant: toughbyte_tenant
 
 george_account:
   email: george_slow@mail.com
   name: George Slow
+  password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
+  status: verified
   tenant: toughbyte_tenant
 
 admin_ru_account:
   email: admin@mail.ru
   name: Админ Админ
+  password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
+  status: verified
   tenant: suroviy_byte_tenant
 
 suroviy_grigoriy_account:
   email: grigoriy@mail.com
   name: Grigoriy Grigoriyov
+  password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
+  status: verified
   tenant: suroviy_byte_tenant
 
 suroviy_alex_account:
   email: alex@mail.com
   name: Alex Alexandov
+  password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
+  status: verified
   tenant: suroviy_byte_tenant

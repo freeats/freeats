@@ -9,6 +9,8 @@ class Account < ApplicationRecord
   has_many :identities, dependent: :destroy
   has_one :member, dependent: :destroy
 
+  enum :status, unverified: 1, verified: 2, closed: 3
+
   validates :name, presence: true
   validates :email, presence: true
 

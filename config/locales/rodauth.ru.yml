@@ -40,6 +40,8 @@ ru:
     email_auth_page_title: Войдите в систему
     email_auth_request_button: Отправьте ссылку для входа по электронной почте
     email_auth_request_error_flash: Произошла ошибка при запросе ссылки по электронной почте для аутентификации
+    email_input_placeholder: Email
+    email_label: Email
     email_subject_prefix: ""
     expired_jwt_access_token_message: токен доступа JWT с истекшим сроком действия
     global_logout_label: Выйдите из всех зарегистрированных сеансов?
@@ -103,14 +105,15 @@ ru:
     otp_setup_notice_flash: теперь настроена аутентификация TOTP
     otp_setup_page_title: Настройка аутентификации TOTP
     password_authentication_required_error_flash: Вам необходимо подтвердить свой пароль, прежде чем продолжить
-    пароль изменен на адрес электронной почты: Пароль изменен
+    password_changed_email_subject: Пароль изменен
     password_confirm_label: Подтвердите %{password_label}
     password_does_not_meet_requirements_message: неверный пароль, не соответствует требованиям
     password_expiration_error_flash: срок действия вашего пароля истек, и его необходимо изменить
     password_in_dictionary_message: это слово из словаря
+    password_input_placeholder: Password
     password_invalid_pattern_message: содержит общую последовательность символов
     password_is_one_of_the_most_common_message: пароль к сообщению является одним из самых распространенных паролей
-    password_label: Пароль
+    password_label: Password
     password_not_changeable_yet_error_flash: Ваш пароль пока не может быть изменен
     password_not_enough_character_groups_message: не содержит заглавных, строчных букв и цифр
     password_same_as_previous_password_message: совпадает с предыдущим паролем

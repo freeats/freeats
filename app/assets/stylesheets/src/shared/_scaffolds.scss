@@ -343,6 +343,15 @@ a {
   margin-top: 0.75rem;
 }
 
+#settings.card {
+  border-radius: 0.5rem;
+  width: 100%;
+
+  @include media-breakpoint-up(md) {
+    width: 460px;
+  }
+}
+
 .card-body ul {
   margin-bottom: 0px;
 }

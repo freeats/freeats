@@ -40,6 +40,8 @@ en:
     email_auth_page_title: Sign in
     email_auth_request_button: Send Sign in Link Via Email
     email_auth_request_error_flash: There was an error requesting an email link to authenticate
+    email_input_placeholder: Email
+    email_label: Email
     email_subject_prefix: ""
     expired_jwt_access_token_message: expired JWT access token
     global_logout_label: Sign out all Signed in Sessions?
@@ -111,6 +113,7 @@ en:
     password_invalid_pattern_message: includes common character sequence
     password_is_one_of_the_most_common_message: is one of the most common passwords
     password_label: Password
+    password_input_placeholder: Password
     password_not_changeable_yet_error_flash: Your password cannot be changed yet
     password_not_enough_character_groups_message: does not include uppercase letters, lowercase letters, and numbers
     password_same_as_previous_password_message: same as previous password

@@ -1,7 +1,20 @@
-h1 style="font-size: 24px; line-height: 32px; font-weight: 700;"
-  = t("rodauth.login_label")
+.d-flex.justify-content-center
+  #settings.card
+    .card-body.p-4.vstack.gap-3
+      h1
+        = rodauth.login_label
+      = form_with url: rodauth.login_path, method: :post, class: "vstack gap-3" do |form|
+        = render TextInputComponent.new(form,
+                                        method: :email,
+                                        type: :email,
+                                        size: :small,
+                                        required: true,
+                                        placeholder: t("rodauth.email_input_placeholder"),
+                                        aria: { label: t("rodauth.email_label") })
 
-= form_with url: rodauth.omniauth_request_path(:google_oauth2), data: { turbo: false }
-  .form-group.mt-3
-    = render ButtonComponent.new(size: :large)
-      | Sign in with Google
+        = render TextInputComponent.new(form, method: :password, type: :password, size: :small,
+                                        autocomplete: "current-password",
+                                        placeholder: t("rodauth.password_input_placeholder"),
+                                        aria: { label: t("rodauth.password_label") })
+        = render ButtonComponent.new(class: "justify-content-center")
+          = rodauth.login_button

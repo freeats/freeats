@@ -453,6 +453,37 @@ ALTER SEQUENCE public.account_identities_id_seq OWNED BY public.account_identiti
 
 
 --
+-- Name: account_password_reset_keys; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.account_password_reset_keys (
+    id bigint NOT NULL,
+    key character varying NOT NULL,
+    deadline timestamp(6) without time zone NOT NULL,
+    email_last_sent timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+--
+-- Name: account_password_reset_keys_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.account_password_reset_keys_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: account_password_reset_keys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.account_password_reset_keys_id_seq OWNED BY public.account_password_reset_keys.id;
+
+
+--
 -- Name: account_remember_keys; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -483,6 +514,37 @@ ALTER SEQUENCE public.account_remember_keys_id_seq OWNED BY public.account_remem
 
 
 --
+-- Name: account_verification_keys; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.account_verification_keys (
+    id bigint NOT NULL,
+    key character varying NOT NULL,
+    requested_at timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    email_last_sent timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+--
+-- Name: account_verification_keys_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.account_verification_keys_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: account_verification_keys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.account_verification_keys_id_seq OWNED BY public.account_verification_keys.id;
+
+
+--
 -- Name: accounts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -493,7 +555,9 @@ CREATE TABLE public.accounts (
     linkedin_url character varying DEFAULT ''::character varying NOT NULL,
     calendar_url character varying DEFAULT ''::character varying NOT NULL,
     female boolean DEFAULT false NOT NULL,
-    tenant_id bigint
+    tenant_id bigint,
+    password_hash character varying,
+    status integer DEFAULT 1 NOT NULL
 );
 
 
@@ -2263,10 +2327,24 @@ ALTER TABLE ONLY public.account_identities ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: account_password_reset_keys id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_password_reset_keys ALTER COLUMN id SET DEFAULT nextval('public.account_password_reset_keys_id_seq'::regclass);
+
+
+--
 -- Name: account_remember_keys id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.account_remember_keys ALTER COLUMN id SET DEFAULT nextval('public.account_remember_keys_id_seq'::regclass);
+
+
+--
+-- Name: account_verification_keys id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_verification_keys ALTER COLUMN id SET DEFAULT nextval('public.account_verification_keys_id_seq'::regclass);
 
 
 --
@@ -2614,11 +2692,27 @@ ALTER TABLE ONLY public.account_identities
 
 
 --
+-- Name: account_password_reset_keys account_password_reset_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_password_reset_keys
+    ADD CONSTRAINT account_password_reset_keys_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: account_remember_keys account_remember_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.account_remember_keys
     ADD CONSTRAINT account_remember_keys_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: account_verification_keys account_verification_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_verification_keys
+    ADD CONSTRAINT account_verification_keys_pkey PRIMARY KEY (id);
 
 
 --
@@ -4068,6 +4162,14 @@ ALTER TABLE ONLY public.positions
 
 
 --
+-- Name: account_verification_keys fk_rails_2e3b612008; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_verification_keys
+    ADD CONSTRAINT fk_rails_2e3b612008 FOREIGN KEY (id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: candidate_email_addresses fk_rails_3561be77a4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4332,6 +4434,14 @@ ALTER TABLE ONLY public.placements
 
 
 --
+-- Name: account_password_reset_keys fk_rails_ccaeb37cea; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_password_reset_keys
+    ADD CONSTRAINT fk_rails_ccaeb37cea FOREIGN KEY (id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: candidate_phones fk_rails_cfcc7aa34d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4410,6 +4520,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240912084504'),
 ('20240911051822'),
 ('20240909141257'),
 ('20240909131121'),

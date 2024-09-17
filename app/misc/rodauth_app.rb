@@ -7,35 +7,9 @@ class RodauthApp < Rodauth::Rails::App
   route do |r|
     rodauth.load_memory # autologin remembered users
 
-    # Automatic authentication in development.
-    if Rails.env.development? && !ENV.fetch("AUTH_NOLOGIN", false)
-      auth_email = ENV.fetch("AUTH_EMAIL", "admin@mail.com")
-      if rodauth.authenticated?
-        rodauth.account_from_session
-        if rodauth.account[:email] != auth_email
-          rodauth.logout
-          rodauth.account_from_login(auth_email)
-          rodauth.login("omniauth")
-        end
-      else
-        rodauth.account_from_login(auth_email)
-        rodauth.login("omniauth")
-      end
-    end
-
     # Authentication in testing.
     if Rails.env.test?
       r.on "test-environment-only" do
-        r.is "please-login" do
-          rodauth.account_from_login(r.params["email"])
-          rodauth.login("omniauth")
-        end
-      end
-    end
-
-    # Authentication in staging.
-    if Rails.env.staging?
-      r.on "staging-environment-only" do
         r.is "please-login" do
           rodauth.account_from_login(r.params["email"])
           rodauth.login("omniauth")
