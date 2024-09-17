@@ -205,10 +205,6 @@ class Candidate < ApplicationRecord
       "&type=Users&ref=advsearch&l=&l="
   end
 
-  def gmail_search_url
-    "https://mail.google.com/mail/u/0/#search/#{encoded_names.join(' OR ')}"
-  end
-
   def google_search_url
     google_query =
       [*names, *candidate_email_addresses.pluck(:address)]
@@ -222,11 +218,6 @@ class Candidate < ApplicationRecord
 
   def linkedin_search_url
     "https://www.linkedin.com/search/results/people/?keywords=#{encoded_names.join(' OR ')}"
-  end
-
-  def vk_search_url
-    query = names.join("%20")
-    "https://vk.com/search/people?q=#{query}"
   end
 
   def sorted_links(status: nil)
