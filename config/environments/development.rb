@@ -43,8 +43,6 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
-
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
@@ -79,5 +77,21 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   config.active_job.queue_adapter = :solid_queue
+
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+  # Emails are saved to tmp/mails by default. Change to :smtp and add environment variables for
+  # user_name and password to test as it works in production.
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.smtp_settings = {
+    user_name: Rails.application.credentials.sendgrid.username!,
+    password: Rails.application.credentials.sendgrid.password!,
+    address: "smtp.sendgrid.net",
+    port: 587,
+    domain: Rails.application.credentials.sendgrid.domain!,
+    authentication: "plain",
+    enable_starttls_auto: true
+  }
+
   ENV["HOST_URL"] = "localhost:3000"
 end

@@ -29,12 +29,12 @@ inactive_account:
 
 # Only has an account created and a member record.
 helen_account:
-  email: new_employee@mail.com
+  email: helen_booker@mail.com
   name: Helen Booker
   tenant: toughbyte_tenant
 
 george_account:
-  email: sam_slow@mail.com
+  email: george_slow@mail.com
   name: George Slow
   tenant: toughbyte_tenant
 

@@ -23,11 +23,15 @@ module ActiveSupport
     Faraday.default_adapter = :test
 
     def sign_in(account)
-      post("/test-environment-only/please-login", params: { email: account.email })
+      # We have to set the host because for some reason this request addresses the `example.com` domain,
+      # and we did not find a better way to fix this.
+      post("http://localhost:3000/test-environment-only/please-login", params: { email: account.email })
     end
 
     def sign_out
-      post("/sign_out")
+      # We have to set the host because for some reason this request addresses the `example.com` domain,
+      # and we did not find a better way to fix this.
+      post("http://localhost:3000/sign_out")
     end
   end
 end

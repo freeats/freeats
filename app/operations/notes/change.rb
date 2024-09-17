@@ -12,6 +12,10 @@ class Notes::Change
 
   def call
     note = Note.find(id)
+
+    prev_mentioned_member_emails =
+      note.not_hidden_mentioned_members.includes(:account).map(&:email_address)
+
     note.text = text
 
     note_thread = note.note_thread
@@ -28,20 +32,16 @@ class Notes::Change
       note_thread.members = Member.where(id: [*note_thread.members.ids, *forbidden_member_ids])
     end
 
-    result = Try[ActiveRecord::RecordInvalid] do
-      ActiveRecord::Base.transaction do
-        note.save!
-        note_thread.save!
-        # TODO: add events
-      end
-    end.to_result
-
-    case result
-    in Success(_)
-      Success(note)
-    in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:note_invalid, note.errors.full_messages.presence || e.to_s]
+    ActiveRecord::Base.transaction do
+      note.save!
+      note_thread.save!
     end
+
+    send_notifications(note:, actor_account:, prev_mentioned_member_emails:)
+
+    Success(note)
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:note_invalid, note.errors.full_messages.presence || e.to_s]
   end
 
   private
@@ -57,5 +57,19 @@ class Notes::Change
     else
       []
     end
+  end
+
+  def send_notifications(note:, actor_account:, prev_mentioned_member_emails:)
+    type = note.task_note? ? "task_mentioned" : "mentioned"
+    emails_to_notify =
+      note
+      .not_hidden_mentioned_members
+      .includes(:account)
+      .to_set(&:email_address)
+      .subtract(prev_mentioned_member_emails)
+      .delete(actor_account.email)
+      .to_a
+
+    note.send_member_note_notifications(emails_to_notify, current_account: actor_account, type:)
   end
 end

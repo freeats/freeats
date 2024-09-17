@@ -9,6 +9,7 @@ position:
   tenant: toughbyte_tenant
   watchers:
     - admin_member
+    - employee_member
 
 position_closed:
   name: Fill in description

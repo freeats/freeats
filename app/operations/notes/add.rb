@@ -33,37 +33,33 @@ class Notes::Add
 
     note = Note.new(text:, member: actor_account.member)
 
-    result = Try[ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique] do
-      ActiveRecord::Base.transaction do
-        note_thread ||=
-          yield NoteThreads::Add.new(
-            params: note_thread_params,
-            actor_account:
-          ).call
-
-        note.note_thread = note_thread
-        note.save!
-
-        yield Events::Add.new(
-          params:
-            {
-              type: :note_added,
-              eventable: note,
-              actor_account:
-            }
+    ActiveRecord::Base.transaction do
+      note_thread ||=
+        yield NoteThreads::Add.new(
+          params: note_thread_params,
+          actor_account:
         ).call
-        note
-      end
-    end.to_result
 
-    case result
-    in Success(note)
-      Success(note)
-    in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:note_invalid, note.errors.full_messages.presence || e.to_s]
-    in Failure[ActiveRecord::RecordNotUnique => e]
-      Failure[:note_not_unique, note.errors.full_messages.presence || e.to_s]
+      note.note_thread = note_thread
+      note.save!
+
+      yield Events::Add.new(
+        params:
+          {
+            type: :note_added,
+            eventable: note,
+            actor_account:
+          }
+      ).call
     end
+
+    send_notifications(note:, actor_account:)
+
+    Success(note)
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:note_invalid, note.errors.full_messages.presence || e.to_s]
+  rescue ActiveRecord::RecordNotUnique => e
+    Failure[:note_not_unique, note.errors.full_messages.presence || e.to_s]
   end
 
   private
@@ -79,5 +75,90 @@ class Notes::Add
     else
       []
     end
+  end
+
+  def send_notifications(note:, actor_account:)
+    mentioned_member_emails =
+      note
+      .not_hidden_mentioned_members
+      .includes(:account)
+      .map(&:email_address) - [actor_account.email]
+    note.send_member_note_notifications(
+      mentioned_member_emails,
+      current_account: actor_account,
+      type: note.task_note? ? "task_mentioned" : "mentioned"
+    )
+
+    task_notify_emails, reply_type, created_type =
+      if note.task_note?
+        [
+          note.note_thread.notable.notification_recipients(current_member: actor_account.member),
+          "task_replied",
+          "task_created"
+        ]
+      else
+        [[], "replied", "created"]
+      end
+
+    notified_on_reply_member_emails = []
+    if note.note_thread.notes.size > 1
+      note_thread_participant_member_emails =
+        Member
+        .active
+        .includes(:account)
+        .joins(:notes)
+        .where(notes: { note_thread_id: note.note_thread.id })
+        .map(&:email_address)
+      note_thread_mentioned_member_emails =
+        note.note_thread.notes.each_with_object([]) do |nt_note, memo|
+          memo.concat(
+            nt_note
+            .not_hidden_mentioned_members
+            .includes(:account)
+            .map(&:email_address)
+          )
+        end
+      notified_on_reply_member_emails =
+        (note_thread_participant_member_emails + note_thread_mentioned_member_emails +
+         task_notify_emails - [actor_account.email] - mentioned_member_emails).uniq
+
+      note.send_member_note_notifications(
+        notified_on_reply_member_emails,
+        current_account: actor_account,
+        type: reply_type
+      )
+    end
+
+    responsible_for_notable_member =
+      case note.note_thread.notable_type
+      when "Candidate"
+        note.note_thread.notable.recruiter
+      when "Task"
+        note.note_thread.notable.assignee
+      else
+        raise ArgumentError, "Note thread must belong to either candidate or task."
+      end
+
+    recruiter_and_or_manager_emails =
+      if responsible_for_notable_member&.active?
+        [responsible_for_notable_member.email_address]
+      else
+        []
+      end
+    notify_on_create_emails =
+      (recruiter_and_or_manager_emails | task_notify_emails) - mentioned_member_emails -
+      notified_on_reply_member_emails - [actor_account.email]
+
+    return if notify_on_create_emails.blank?
+
+    if note.note_thread.hidden?
+      # Remove members that the thread is not visible to
+      notify_on_create_emails &= note.note_thread.members.includes(:account).map(&:email_address)
+    end
+    note.send_member_note_notifications(
+      notify_on_create_emails,
+      current_account: actor_account,
+      type: created_type
+    )
   end
 end

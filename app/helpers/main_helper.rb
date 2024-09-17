@@ -6,6 +6,18 @@ module MainHelper
       Rails.root.join("config/email_templates/email_template_variables.yml").read
     )
 
+  def plain_format(text, html_options = {}, options = {})
+    simple_format(
+      Rinku.auto_link(
+        text.strip.gsub(/\r?\n/, "<br>"),
+        :all,
+        'target="_blank" rel="noopener noreferrer"'
+      ),
+      html_options,
+      options
+    )
+  end
+
   # By default use plain_format unless specified otherwise in business requirements.
   def preformatted_plain_format(text, member_links: false)
     tag.div(style: "white-space: pre-wrap;") do

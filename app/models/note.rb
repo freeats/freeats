@@ -69,4 +69,27 @@ class Note < ApplicationRecord
       raise NotImplementedError, "Unsupported model"
     end
   end
+
+  def not_hidden_mentioned_members
+    members = Member.active.mentioned_in(text)
+
+    return members unless note_thread.hidden
+
+    members.where(id: note_thread.members.select(:id))
+  end
+
+  def send_member_note_notifications(emails_to_notify, current_account:, type:, cc: nil)
+    return if emails_to_notify.blank?
+
+    MemberNoteMailer.with(
+      current_account:,
+      to: emails_to_notify,
+      note: self,
+      cc:
+    ).public_send(type).deliver_later
+  end
+
+  def task_note?
+    note_thread.notable_type == "Task"
+  end
 end

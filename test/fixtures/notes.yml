@@ -8,7 +8,7 @@ admin_member_short_note:
 
 admin_member_long_note:
   text: |
-    @Travis Hodge
+    @Adrian Barton
     Long note note long note note long note note long note
     Long note note long note note long note note long note
     Long note note long note note long note note long note
@@ -32,4 +32,10 @@ interviewer_reply:
   text: reply
   member: interviewer_member
   note_thread: thread_one
+  tenant: toughbyte_tenant
+
+note_task:
+  text: "Note task"
+  member: admin_member
+  note_thread: thread_task
   tenant: toughbyte_tenant

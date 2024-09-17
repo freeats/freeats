@@ -155,7 +155,7 @@ class NotesController < ApplicationController
           )
         )
       end
-      format.html { redirect_back(fallback_location: note.url) }
+      format.html { redirect_back(fallback_location: @note.url) }
     end
   end
 

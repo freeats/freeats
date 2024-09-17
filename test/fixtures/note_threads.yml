@@ -5,3 +5,8 @@ thread_one:
 thread_two:
   notable: john (Candidate)
   tenant: toughbyte_tenant
+
+thread_task:
+  notable: position (Task)
+  hidden: false
+  tenant: toughbyte_tenant

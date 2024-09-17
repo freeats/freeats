@@ -102,4 +102,8 @@ class Task < ApplicationRecord
     task_events_query = task_events_query.where("performed_at > ?", since) if since
     task_events_query
   end
+
+  def notification_recipients(current_member:)
+    (watchers.includes(:account) - [current_member]).filter_map { _1.email_address if _1.active? }
+  end
 end

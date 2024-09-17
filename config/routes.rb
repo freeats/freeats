@@ -111,6 +111,9 @@ Rails.application.routes.draw do
   end
 
   resources :notes, only: %i[create update destroy] do
+    # Will be called from email messages since POST is not allowed there.
+    get :add_reaction, on: :member
+    # Will be called from ats
     post :add_reaction, on: :member
     post :remove_reaction, on: :member
     get :show_edit_view, on: :member

@@ -1,0 +1,13 @@
+p
+  b => @current_account.name
+  | mentioned you on task
+  = @task_prefix
+  | :
+  =< link_to @model_name, ats_task_url(@model)
+= mailer_blockquote
+  = plain_format(Note.mark_mentions(@note.text))
+table border="0" cellspacing="0" cellpadding="5"
+  tr
+    td = mailer_button_link_to "View note", @note.url
+    td = mailer_button_link_to "Reply", @note.url(reply: true)
+    td = mailer_button_link_to "Like", add_reaction_note_url(@note)
