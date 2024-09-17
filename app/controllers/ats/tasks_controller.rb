@@ -276,7 +276,7 @@ class ATS::TasksController < ApplicationController
   def task_grid_params
     params
       .fetch(:ats_tasks_grid, nil)
-      &.permit(:assignee, :name, :status, :due_date, :watched)
+      &.permit(:assignee, :name, :status, :due_date, watched: [])
       &.to_h
   end
 end
