@@ -362,4 +362,36 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal event.changed_field, "description"
     assert_equal event.changed_to, html_description
   end
+
+  test "should delete a position owned by the same tenant" do
+    sign_out
+
+    account = accounts(:admin_account)
+    position = positions(:ruby_position)
+
+    assert_equal position.tenant_id, account.tenant_id
+
+    sign_in account
+    assert_difference "Position.count", -1 do
+      delete ats_position_path(position)
+    end
+
+    assert_redirected_to ats_positions_path
+  end
+
+  test "should return not_found when trying to delete a position belonging to another tenant" do
+    sign_out
+
+    account = accounts(:suroviy_grigoriy_account)
+    position = positions(:ruby_position)
+
+    assert_not_equal position.tenant_id, account.tenant_id
+
+    sign_in account
+    assert_no_difference "Position.count" do
+      delete ats_position_path(position)
+    end
+
+    assert_response :not_found
+  end
 end

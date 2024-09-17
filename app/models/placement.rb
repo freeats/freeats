@@ -7,8 +7,8 @@ class Placement < ApplicationRecord
     %w[availability team_fit remote_only location no_reply not_interested workload other_offer
        overpriced overqualified underqualified position_closed other].freeze
   has_many :events, as: :eventable, dependent: :destroy
-  has_many :scorecards, dependent: :restrict_with_exception
-  has_many :sequences, dependent: :restrict_with_exception
+  has_many :scorecards, dependent: :destroy
+  has_many :sequences, dependent: :destroy
 
   has_one :added_event,
           -> { where(type: "placement_added") },

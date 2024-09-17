@@ -1,0 +1,20 @@
+/# locals: (object:)
+
+ruby:
+  delete_params =
+    case object
+    in Position
+      { path: ats_position_path(object), object_class_name: object.class.name }
+    end
+
+// HACK: to use nested form.
+form/
+= form_with url: delete_params[:path], method: :delete
+  = render ButtonComponent.new(variant: :danger,
+                               size: :tiny,
+                               data: { toggle: "ats-confirmation",
+                                       title: "Delete #{delete_params[:object_class_name]}?",
+                                       btn_cancel_label: "Cancel",
+                                       btn_ok_label: "Delete",
+                                       btn_ok_class: "btn btn-danger btn-small" })
+    | Delete #{delete_params[:object_class_name]}

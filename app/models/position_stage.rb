@@ -3,7 +3,7 @@
 class PositionStage < ApplicationRecord
   acts_as_tenant(:tenant)
 
-  has_many :scorecards, dependent: :restrict_with_exception
+  has_many :scorecards, dependent: :destroy
   has_many :moved_to_events,
            lambda { where(type: :placement_changed, changed_field: :stage) },
            class_name: "Event",
@@ -14,7 +14,8 @@ class PositionStage < ApplicationRecord
            class_name: "Event",
            inverse_of: :stage_from,
            dependent: :destroy
-  has_one :scorecard_template, dependent: :restrict_with_exception
+  has_many :placements, dependent: :destroy
+  has_one :scorecard_template, dependent: :destroy
   belongs_to :position
 
   before_save :update_list_index_for_hired_stage

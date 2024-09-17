@@ -154,6 +154,13 @@ class Position < ApplicationRecord
     recruiter_id.present? ? result.where(candidates: { recruiter_id: }) : result
   end
 
+  def remove
+    destroy!
+  rescue ActiveRecord::RecordNotDestroyed => e
+    errors.add(:base, e.message.to_s)
+    false
+  end
+
   private
 
   def recruiter_access_level

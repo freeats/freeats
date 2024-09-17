@@ -128,9 +128,12 @@ class ATS::PositionsController < ApplicationController
   end
 
   def destroy
-    @position.destroy!
-    redirect_to ats_positions_path,
-                notice: "The position was successfully deleted."
+    if @position.remove
+      redirect_to ats_positions_path, notice: t("ats.positions.successful_deletion")
+      return
+    end
+
+    render_error @position.errors.full_messages
   end
 
   def update_side_header

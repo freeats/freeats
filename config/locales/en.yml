@@ -72,6 +72,8 @@ en:
       deactivate_member:
         menu: "Deactivate"
   ats:
+    positions:
+      successful_deletion: The position was successfully deleted.
     placements:
       disqualify_statuses:
         availability: >-

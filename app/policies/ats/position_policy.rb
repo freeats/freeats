@@ -2,6 +2,7 @@
 
 class ATS::PositionPolicy < ApplicationPolicy
   alias_rule :show_header?, :show_card?, to: :show?
+  alias_rule :destroy?, to: :available_for_admin?
 
   def show?
     available_for_employee? ||
