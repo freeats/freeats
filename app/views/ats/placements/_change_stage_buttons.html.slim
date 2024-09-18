@@ -1,14 +1,24 @@
-/# locals: (placement:, dropdown_item: false, with_text: false, with_forward_button: false, square_button: false, position_pipeline_card: false)
+/# locals: (placement:, dropdown_item: false, position_pipeline_card: false, direction: :forward)
 
 = form_with url: change_stage_ats_placement_path(placement, position_pipeline_card:),
             data: { turbo_frame: :turbo_modal_window },
             class: ("d-inline-block" unless dropdown_item)
-  - if with_forward_button && placement.next_stage.present?
-    - square_button_classes = square_button ? "btn-light placement-button" : "btn-outline-light"
-    span type="button"
-      = button_tag name: "stage", value: placement.next_stage,
-                   class: "btn #{dropdown_item ? 'dropdown-item' : square_button_classes}",
-                   data: { bs_toggle: "tooltip", bs_title: placement.next_stage, bs_placement: "bottom" }
-        - if with_text
-          span.me-2 = sanitize placement.next_stage
-        i.fa-arrow-right class=(dropdown_item ? "fa-light" : "far")
+  - if direction == :forward && placement.next_stage.present?
+    = button_tag name: "stage", value: placement.next_stage,
+                 class: "btn #{dropdown_item ? 'dropdown-item' : 'btn-light placement-button'}",
+                 data: { bs_toggle: "tooltip", bs_title: placement.next_stage, bs_placement: "bottom" }
+      - if dropdown_item
+        span.me-2 = sanitize placement.next_stage
+      i.fa-arrow-right class=(dropdown_item ? "fa-light" : "far")
+  - elsif direction == :backward && placement.prev_stage.present?
+    ruby:
+      tooltip_options =
+        unless dropdown_item
+          { bs_toggle: "tooltip", bs_title: placement.prev_stage, bs_placement: "bottom" }
+        end
+    = button_tag name: "stage", value: placement.prev_stage,
+                 class: "btn #{'dropdown-item' if dropdown_item}",
+                 data: tooltip_options
+      i.fa-arrow-left class=(dropdown_item ? "fa-light" : "far") style="width: 20px;"
+      - if dropdown_item
+        span.ms-2 = sanitize placement.prev_stage

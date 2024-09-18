@@ -36,11 +36,7 @@ ruby:
         .btn-group.placement-buttons
           - if placement.qualified? && !placement.hired?
             .btn-group
-              = render "ats/placements/change_stage_buttons",
-                       placement:,
-                       with_forward_button: true,
-                       with_text: false,
-                       square_button: true
+              = render "ats/placements/change_stage_buttons", placement:
 
           .btn-group
             = render "ats/placements/disrequalify_buttons",
@@ -65,6 +61,11 @@ ruby:
                     data-bs-title="More" data-bs-placement="bottom"]
                   i.far.fa-ellipsis-h
               ul.dropdown-menu.dropdown-menu-end
+                - if allowed_to?(:change_stage?, placement, with: ATS::PlacementPolicy) && placement.prev_stage.present?
+                  li =< render "ats/placements/change_stage_buttons",
+                               placement:,
+                               dropdown_item: true,
+                               direction: :backward
                 - if placement.qualified?
                   li =< render "ats/placements/reserve_buttons", placement:, dropdown_item: true
 
