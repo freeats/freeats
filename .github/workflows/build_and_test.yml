@@ -14,7 +14,6 @@ env:
   DATABASE_USERNAME: postgres
   # PGPASSWORD is passed directly to libpq, not referenced within Rails app
   PGPASSWORD: postgres
-  NAME: ${{ github.event.repository.name }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -49,7 +48,7 @@ jobs:
         with:
           context: .
           load: true
-          tags: ${{ env.NAME }}:latest
+          tags: app
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           build-args: |
@@ -81,30 +80,30 @@ jobs:
       # This ensures that we don't see errors form Postgres in the Stop containers step
       - name: Create DBs
         run: |
-          docker run --rm --env-file docker.env ${{ env.NAME }}:latest /bin/bash -c \
-          "for i in \$(seq 0 \$((\$(nproc)-1))); do createdb -h \$DATABASE_HOST -U \$DATABASE_USERNAME -p \$PGPORT ${{ env.NAME }}_test-\$i; done"
+          docker run --rm --env-file docker.env app /bin/bash -c \
+          "for i in \$(seq 0 \$((\$(nproc)-1))); do createdb -h \$DATABASE_HOST -U \$DATABASE_USERNAME -p \$PGPORT  ${{ github.event.repository.name }}_test-\$i; done"
 
       - name: Load schema
         run: |
-          docker run --rm --env-file docker.env ${{ env.NAME }}:latest /bin/sh -c \
+          docker run --rm --env-file docker.env app /bin/sh -c \
           "bin/rails db:create db:schema:load"
 
       - name: Run tests
         run: |
-          docker run --rm --env-file docker.env ${{ env.NAME }}:latest /bin/sh -c \
+          docker run --rm --env-file docker.env app /bin/sh -c \
           "bundle exec rails test"
 
       - name: Run system tests
         run: |
-          docker run --rm --env-file docker.env ${{ env.NAME }}:latest /bin/sh -c \
+          docker run --rm --env-file docker.env app /bin/sh -c \
           "bundle exec rails test:system"
 
       - name: Run ESLint
         run: |
-          docker run --rm --env-file docker.env ${{ env.NAME }}:latest /bin/sh -c \
+          docker run --rm --env-file docker.env app /bin/sh -c \
           "yarn eslint ."
 
       - name: Run Prettier
         run: |
-          docker run --rm --env-file docker.env ${{ env.NAME }}:latest /bin/sh -c \
+          docker run --rm --env-file docker.env app /bin/sh -c \
           "yarn prettier -c ."
