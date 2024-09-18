@@ -48,3 +48,4 @@ esbuild_meta.json
 /.byebug_history
 
 /config/credentials/test.key
+/config/credentials/production.key
