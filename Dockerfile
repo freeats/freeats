@@ -27,8 +27,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     && apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential curl node-gyp pkg-config git \
-    libjemalloc2 postgresql-client \
-    python-is-python3 libpq-dev libvips 
+    libjemalloc2 libpq-dev postgresql-client \
+    python-is-python3 libvips 
 
 # Install JavaScript dependencies
 ARG NODE_VERSION=22.7.0
