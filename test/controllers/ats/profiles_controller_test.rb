@@ -13,6 +13,8 @@ class ATS::ProfilesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should link Gmail" do
+    skip "This functionality is currently hidden."
+
     sign_in accounts(:employee_account)
     retrieve_gmail_tokens_mock = Minitest::Mock.new
     retrieve_gmail_tokens_mock.expect(:call, Success(), [])
@@ -27,6 +29,8 @@ class ATS::ProfilesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should report error if something goes wrong when linking Gmail" do
+    skip "This functionality is currently hidden."
+
     sign_in accounts(:employee_account)
     exc = RuntimeError.new
     exc.set_backtrace([])

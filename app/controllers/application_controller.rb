@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
 
   set_current_tenant_through_filter
 
-  before_action :check_gmail_blank_tokens
   before_action :set_selector_id_for_page
   before_action :set_tenant
   rescue_from ActionPolicy::Unauthorized, with: :user_not_authorized
@@ -77,19 +76,6 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :current_account, :current_member, :current_user
-
-  def check_gmail_blank_tokens
-    return if params[:controller]&.include?(mission_control_jobs_path)
-    return if current_member.blank?
-    return unless allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
-    return if current_member.email_service_linked?
-
-    address = current_member.email_address
-
-    @email_blank_tokens_alert =
-      %(Email #{address} is not linked. Please press <i>Link Gmail</i> button in
-        <a href="#{ats_profile_url}">your profile</a> to synchronize emails.)
-  end
 
   def set_selector_id_for_page
     controller = params[:controller] #=> "ats/candidates"
