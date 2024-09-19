@@ -88,7 +88,7 @@ Rails.application.configure do
     password: Rails.application.credentials.sendgrid.password!,
     address: "smtp.sendgrid.net",
     port: 587,
-    domain: Rails.application.credentials.sendgrid.domain!,
+    domain: "ats.toughbyte.com",
     authentication: "plain",
     enable_starttls_auto: true
   }
