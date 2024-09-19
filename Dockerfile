@@ -8,8 +8,11 @@ ARG NODE_VERSION=22.7.0
 ARG YARN_VERSION=1.22.22
 ARG PACKAGES="python-is-python3 libvips"
 
-ENV RAILS_ENV=production
-ENV NODE_ENV=production
+ARG RAILS_ENV=production
+ARG NODE_ENV=production
+
+ENV RAILS_ENV=${RAILS_ENV}
+ENV NODE_ENV=${NODE_ENV}
 
 ENV BUNDLE_PATH="/usr/local/bundle"
 
