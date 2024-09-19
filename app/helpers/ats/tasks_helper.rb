@@ -86,10 +86,10 @@ module ATS::TasksHelper
     end
 
     if task_card
-      "changed #{field.humanize} from #{from} to #{to}"
+      "changed #{field.humanize} from <b>#{from}</b> to <b>#{to}</b>"
     else
       "changed <b>#{event.eventable.name}</b> task's #{field.humanize} " \
-        "from #{from} to #{to}"
+        "from <b>#{from}</b> to <b>#{to}</b>"
     end
   end
 end
