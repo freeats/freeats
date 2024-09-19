@@ -52,7 +52,7 @@ module ATS::PositionsHelper
   def ats_position_color_class_for_status(status)
     colors = {
       "active" => "code-green",
-      "passive" => "code-gray",
+      "on_hold" => "code-blue",
       "closed" => "code-black"
     }
     colors[status]
@@ -104,13 +104,13 @@ module ATS::PositionsHelper
     colors = {
       -3 => "code-black",
       -1 => "code-green",
-      3 => "code-gray",
+      3 => "code-blue",
       6 => "code-black"
     }
     tooltips = {
       -3 => "Draft",
       -1 => "Active",
-      3 => "Passive#{tooltip_status_reason_text}",
+      3 => "On hold#{tooltip_status_reason_text}",
       6 => "Closed#{tooltip_status_reason_text}"
     }
     tooltip = controller.render_to_string(

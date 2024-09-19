@@ -57,13 +57,13 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
 
   test "shouldn't update a model without change_status_modal param" do
     position = positions(:ruby_position)
-    patch change_status_ats_position_path(position, new_status: "passive")
+    patch change_status_ats_position_path(position, new_status: "on_hold")
 
-    assert_not_equal position.reload.status, "passive"
+    assert_not_equal position.reload.status, "on_hold"
     assert_response :success
   end
 
-  test "should change status to closed, active and passive and create event" do
+  test "should change status to closed, active and on_hold and create event" do
     comment = "Status change explanation"
     position = positions(:ruby_position)
     new_status_reason = "other"
@@ -91,7 +91,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
       assert_equal event.properties["change_status_reason"], new_status_reason
     end
 
-    new_status = "passive"
+    new_status = "on_hold"
     assert_difference "Event.count" do
       patch change_status_ats_position_path(position), params: {
         change_status_modal: "1",

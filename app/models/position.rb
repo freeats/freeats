@@ -27,7 +27,7 @@ class Position < ApplicationRecord
     other
   ].freeze
 
-  PASSIVE_REASONS = %i[
+  ON_HOLD_REASONS = %i[
     deprioritized
     other
   ].freeze
@@ -68,7 +68,7 @@ class Position < ApplicationRecord
 
   accepts_nested_attributes_for :stages
 
-  enum status: %i[draft active passive closed].index_with(&:to_s)
+  enum status: %i[draft active on_hold closed].index_with(&:to_s)
   enum change_status_reason: %i[
     other
     new_position
@@ -104,7 +104,7 @@ class Position < ApplicationRecord
         Arel::Nodes::Case
           .new(positions[:status])
           .when("draft").then(-3)
-          .when("passive").then(3)
+          .when("on_hold").then(3)
           .when("closed").then(6)
           .when("active").then(-1)
           .as("code"),

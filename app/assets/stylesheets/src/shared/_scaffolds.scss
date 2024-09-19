@@ -91,6 +91,9 @@ footer .container-fluid {
 .code-green {
   color: $green;
 }
+.code-blue {
+  color: $blue;
+}
 .code-gray {
   color: $gray-500;
 }
@@ -377,4 +380,9 @@ picture {
     padding-top: 1rem;
     line-height: 1.3125rem;
   }
+}
+
+ul.dropdown-menu {
+  --bs-dropdown-font-size: 0.875rem;
+  --bs-dropdown-min-width: 100%;
 }

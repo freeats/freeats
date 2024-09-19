@@ -255,7 +255,7 @@ CREATE TYPE public.position_change_status_reason AS ENUM (
 CREATE TYPE public.position_status AS ENUM (
     'draft',
     'active',
-    'passive',
+    'on_hold',
     'closed'
 );
 
@@ -4554,6 +4554,7 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240919035839'),
+('20240917131723'),
 ('20240916132738'),
 ('20240913152510'),
 ('20240912084504'),
