@@ -3441,6 +3441,27 @@ CREATE INDEX index_events_on_actor_account_id ON public.events USING btree (acto
 
 
 --
+-- Name: index_events_on_changed_field; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_changed_field ON public.events USING btree (changed_field) WHERE (changed_field IS NOT NULL);
+
+
+--
+-- Name: index_events_on_changed_from; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_changed_from ON public.events USING gin (changed_from);
+
+
+--
+-- Name: index_events_on_changed_to; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_changed_to ON public.events USING gin (changed_to);
+
+
+--
 -- Name: index_events_on_eventable_id_and_eventable_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3448,10 +3469,24 @@ CREATE INDEX index_events_on_eventable_id_and_eventable_type ON public.events US
 
 
 --
+-- Name: index_events_on_properties; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_properties ON public.events USING gin (properties);
+
+
+--
 -- Name: index_events_on_tenant_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_tenant_id ON public.events USING btree (tenant_id);
+
+
+--
+-- Name: index_events_on_type_and_performed_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_type_and_performed_at ON public.events USING btree (type, performed_at DESC);
 
 
 --
@@ -4516,6 +4551,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240919035839'),
 ('20240913152510'),
 ('20240912084504'),
 ('20240911051822'),
