@@ -47,6 +47,7 @@ class ButtonComponent < ApplicationComponent
     d-inline-flex
     gap-2
     align-items-center
+    justify-content-center
     text-nowrap
   ].freeze
 

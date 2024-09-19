@@ -4,28 +4,22 @@
     --bs-btn-color: var(--bs-gray-900);
   }
 
-  &-tiny {
+  &-small {
     --bs-btn-font-size: 12px;
     --bs-btn-padding-x: 8px;
     --bs-btn-padding-y: 4px;
   }
 
-  &-small {
+  &-medium {
     --bs-btn-font-size: 14px;
     --bs-btn-padding-x: 9px;
     --bs-btn-padding-y: 4.5px;
   }
 
-  &-medium {
+  &-large {
     --bs-btn-font-size: 16px;
     --bs-btn-padding-x: 14px;
     --bs-btn-padding-y: 7px;
-  }
-
-  &-large {
-    --bs-btn-font-size: 18px;
-    --bs-btn-padding-x: 19px;
-    --bs-btn-padding-y: 9.5px;
   }
 }
 
@@ -54,28 +48,25 @@
 
   &-subscript {
     color: $gray-600;
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  &-tiny {
-    padding: 4px 8px;
     font-size: 12px;
+    line-height: 1.5;
   }
 
   &-small {
     padding: 4.5px 9px;
     font-size: 14px;
+    padding: 4px 8px;
+    font-size: 12px;
   }
 
   &-medium {
-    padding: 7px 14px;
-    font-size: 16px;
+    padding: 4.5px 9px;
+    font-size: 14px;
   }
 
   &-large {
-    padding: 9.5px 19px;
-    font-size: 18px;
+    padding: 7px 14px;
+    font-size: 16px;
   }
 }
 

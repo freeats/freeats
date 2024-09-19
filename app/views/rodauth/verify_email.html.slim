@@ -1,0 +1,8 @@
+.authentication-container.mx-auto.card
+  .card-body.p-4
+    h1.mb-3 Verify your email
+    | Please check your inbox for a verification email. Click the link in the email to verify
+      your email address.
+    = form_with url: "#", class: "mt-4 vstack"
+      = render(ButtonComponent.new(variant: :secondary))
+        | Resend verification email

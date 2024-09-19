@@ -2,17 +2,47 @@
 
 require "sequel/core"
 
+# https://rodauth.jeremyevans.net/rdoc/files/doc/create_account_rdoc.html
+# https://rodauth.jeremyevans.net/rdoc/files/doc/guides/registration_field_rdoc.html
+module CreateAccount
+  extend ActiveSupport::Concern
+
+  included do
+    configure do
+      enable :create_account
+      create_account_route :register
+      create_account_redirect "/"
+
+      before_create_account do
+        unless (name = param_or_nil("full_name"))
+          throw_error_status(422, "full_name", "must be present")
+        end
+        throw_error_status(422, "company_name", "must be present") if param("company_name").empty?
+
+        account[:name] = name
+      end
+
+      after_create_account do
+        tenant = Tenant.create!(name: param("company_name"), locale: I18n.locale)
+        Account.find(account_id).update!(tenant_id: tenant.id)
+        Member.create!(account_id:, tenant:, access_level: :admin)
+      end
+    end
+  end
+end
+
 class RodauthMain < Rodauth::Rails::Auth
+  include CreateAccount
+
   # rubocop:disable Layout/LineLength
   configure do
     # List of authentication features that are loaded.
     enable :login, :logout, :remember, :omniauth_base,
-           :create_account, :verify_account, :verify_account_grace_period,
+           :verify_account, :verify_account_grace_period,
            :reset_password, :change_password
 
     login_route :sign_in
     logout_route :sign_out
-    create_account_route :register
     verify_account_route :verify_email
     verify_account_resend_route :verify_email_resend
 
@@ -54,6 +84,7 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Specify the controller used for view rendering, CSRF, and callbacks.
     rails_controller { RodauthController }
+    rails_account_model { Account }
 
     # Make built-in page titles accessible in your views via an instance variable.
     title_instance_variable :@page_title
@@ -157,22 +188,6 @@ class RodauthMain < Rodauth::Rails::Auth
     # Extend user's remember period when remembered via a cookie
     extend_remember_deadline? true
 
-    # ==> Hooks
-    # Validate custom fields in the create account form.
-    # before_create_account do
-    #   throw_error_status(422, "name", "must be present") if param("name").empty?
-    # end
-
-    # Perform additional actions after the account is created.
-    # after_create_account do
-    #   Profile.create!(account_id: account_id, name: param("name"))
-    # end
-
-    # Do additional cleanup after the account is closed.
-    # after_close_account do
-    #   Profile.find_by!(account_id: account_id).destroy
-    # end
-
     # ==> Redirects
     # Redirect to home page after logout.
     logout_redirect "/"
@@ -208,6 +223,6 @@ class RodauthMain < Rodauth::Rails::Auth
   end
 
   def member
-    @member = Member.find_by(account_id: rails_account[:id])
+    @member ||= Member.find_by(account_id: rails_account[:id])
   end
 end

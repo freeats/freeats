@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  get "register-mockup" => "rodauth#register"
+  get "verify-email-mockup" => "rodauth#verify_email"
+
   namespace :ats do
     resources :candidates, except: %i[show edit] do
       get "/", to: redirect("/ats/candidates/%{id}/info"), on: :member, id: /\d+/

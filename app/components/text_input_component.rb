@@ -33,7 +33,7 @@ class TextInputComponent < ApplicationComponent
          default: -> { :medium }
   option :disabled, Types::Strict::Bool, optional: true, default: -> { false }
   option :readonly, Types::Strict::Bool, optional: true, default: -> { false }
-  option :placeholder, Types::Strict::String, optional: true
+  option :placeholder, Types::Strict::String | Types::Strict::Bool, optional: true
 
   def call
     additional_options[:aria] = { describedby: subscript.id } if subscript
@@ -71,7 +71,7 @@ class TextInputComponent < ApplicationComponent
       ],
       disabled:,
       readonly:,
-      placeholder:,
+      placeholder: placeholder_computed,
       **additional_options
     )
   end
@@ -88,7 +88,7 @@ class TextInputComponent < ApplicationComponent
       ],
       disabled:,
       readonly:,
-      placeholder:,
+      placeholder: placeholder_computed,
       **additional_options
     )
   end
@@ -99,5 +99,18 @@ class TextInputComponent < ApplicationComponent
 
   def disabled_class
     "text-input-component-disabled" if disabled || readonly
+  end
+
+  # When `placeholder` is `true`, use a humanized field name.
+  def placeholder_computed
+    if placeholder.is_a?(String)
+      placeholder
+    elsif placeholder == true
+      if form_or_name.is_a?(String)
+        form_or_name.humanize
+      elsif method.present?
+        method.humanize
+      end
+    end
   end
 end

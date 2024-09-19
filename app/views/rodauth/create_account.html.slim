@@ -1,0 +1,33 @@
+.authentication-container.mx-auto.card
+  .card-body.p-4
+    h1.mb-4 Register
+    = form_with url: rodauth.create_account_path, method: :post, data: { turbo: false }, class: "vstack gap-3"
+      = render(TextInputComponent.new("full_name", placeholder: true, required: true, value: params["full_name"]))
+      - if rodauth.field_error("full_name")
+        span.invalid-feedback = rodauth.field_error("full_name")
+
+      = render(TextInputComponent.new("company_name", placeholder: true, required: true, value: params["company_name"]))
+      - if rodauth.field_error("company_name")
+        span.invalid-feedback = rodauth.field_error("company_name")
+
+      = render(TextInputComponent.new(rodauth.login_param, placeholder: "Work email", type: :email,
+          autocomplete: "email", required: true, value: params[rodauth.login_confirm_param],
+          class: ("is-invalid" if rodauth.field_error(rodauth.login_param))))
+      - if rodauth.field_error(rodauth.login_param)
+        span.invalid-feedback = rodauth.field_error(rodauth.login_param)
+
+      = render(TextInputComponent.new(rodauth.password_param, placeholder: "Password", type: :password,
+          autocomplete: rodauth.password_field_autocomplete_value, required: true))
+      - if rodauth.field_error(rodauth.login_param)
+        span.invalid-feedback = rodauth.field_error(rodauth.password_param)
+
+      = render(TextInputComponent.new(rodauth.password_confirm_param, placeholder: "Confirm password",
+          type: :password))
+      - if rodauth.field_error(rodauth.login_param)
+        span.invalid-feedback = rodauth.field_error(rodauth.password_confirm_param)
+
+      = render(ButtonComponent.new(class: "mt-2"))
+        | Register
+    .mt-2
+      |> Already have an account?
+      a href="#" Sign in

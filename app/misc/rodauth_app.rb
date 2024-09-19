@@ -2,7 +2,7 @@
 
 # rubocop:disable Style/MethodCallWithArgsParentheses, Rails
 class RodauthApp < Rodauth::Rails::App
-  configure RodauthMain, render: false
+  configure RodauthMain
 
   route do |r|
     rodauth.load_memory # autologin remembered users
