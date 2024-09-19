@@ -1,7 +1,11 @@
 # syntax = docker/dockerfile:1
 
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.3.3
+ARG NODE_VERSION=22.7.0
+ARG YARN_VERSION=1.22.22
+ARG PACKAGES="python-is-python3 libvips"
+
 FROM ruby:$RUBY_VERSION-slim AS base
 
 ARG RAILS_ENV=production
@@ -15,11 +19,7 @@ ENV BUNDLE_PATH="/usr/local/bundle"
 # Rails app lives here
 WORKDIR /rails
 
-# Install bundler
-# Version needs to match the one in Gemfile.lock 
-RUN gem install -N bundler:2.5.3
-
-# Install packages needed to build gems and node modules
+# Install packages needed to build gems and Node modules
 RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     --mount=target=/var/cache/apt,type=cache,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean \
@@ -27,7 +27,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     apt-get install --no-install-recommends -y \
     build-essential curl node-gyp pkg-config git \
     libjemalloc2 libpq-dev postgresql-client \
-    python-is-python3 libvips 
+    $PACKAGES
 
 # Install JavaScript dependencies
 ARG NODE_VERSION=22.7.0
@@ -38,12 +38,15 @@ RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz
     npm install -g yarn@$YARN_VERSION && \
     rm -rf /tmp/node-build-master
 
-# Install application gems
+# Install bundler
 COPY .ruby-version Gemfile Gemfile.lock ./
+RUN gem install -N bundler:$(awk '/BUNDLED WITH/{getline; print $1}' Gemfile.lock)
+
+# Install application gems
 RUN bundle install && \
     bundle exec bootsnap precompile --gemfile
 
-# Install node modules
+# Install Node modules
 COPY --link package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
