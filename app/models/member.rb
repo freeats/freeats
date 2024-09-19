@@ -39,6 +39,16 @@ class Member < ApplicationRecord
            class_name: "Event",
            inverse_of: :unassigned_member,
            dependent: :destroy
+  has_many :added_as_watcher_events,
+           lambda { where(type: :task_watcher_added) },
+           class_name: "Event",
+           inverse_of: :added_watcher,
+           dependent: :destroy
+  has_many :removed_as_watcher_events,
+           lambda { where(type: :task_watcher_removed) },
+           class_name: "Event",
+           inverse_of: :removed_watcher,
+           dependent: :destroy
   has_many :tasks,
            inverse_of: :assignee,
            foreign_key: :assignee_id,

@@ -114,14 +114,6 @@ module ApplicationHelper
     end
   end
 
-  def event_actor_account_name_for_assignment(event:, member:)
-    if event.actor_account&.member == member
-      "themselves"
-    else
-      tag.b(member.name)
-    end
-  end
-
   def unescape_link_tags(html)
     # Captures everything between closest openings and closings of <a> tag and unescapes it.
     html.gsub(/(<a(?:(?!<a|>)[\s\S])*>)/) { CGI.unescape(Regexp.last_match(1)) }

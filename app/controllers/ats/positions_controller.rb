@@ -455,6 +455,7 @@ class ATS::PositionsController < ApplicationController
         Event
         .where(eventable_type: "Task")
         .where(eventable_id: @position.tasks.ids)
+        .where(type: Event::TASK_TYPES_FOR_PROFILE_ACTIVITY_TAB)
       )
       .includes(
         :eventable,

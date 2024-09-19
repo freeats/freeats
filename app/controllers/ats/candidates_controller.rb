@@ -148,6 +148,7 @@ class ATS::CandidatesController < ApplicationController
               Event
               .where(eventable_type: "Task")
               .where(eventable_id: @candidate.tasks.ids)
+              .where(type: Event::TASK_TYPES_FOR_PROFILE_ACTIVITY_TAB)
             )
             .union(
               Event

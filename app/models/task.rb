@@ -96,7 +96,12 @@ class Task < ApplicationRecord
       SQL
       .where(tasks: { id: })
       .union(note_events_query)
-      .includes(:eventable, actor_account: :member)
+      .includes(
+        :eventable,
+        actor_account: :member,
+        added_watcher: :account,
+        removed_watcher: :account
+      )
       .order(performed_at: :desc)
     task_events_query = task_events_query.where("performed_at > ?", since) if since
     task_events_query

@@ -181,7 +181,9 @@ CREATE TYPE public.event_type AS ENUM (
     'sequence_stopped',
     'task_added',
     'task_changed',
-    'task_status_changed'
+    'task_status_changed',
+    'task_watcher_added',
+    'task_watcher_removed'
 );
 
 
@@ -4552,6 +4554,7 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240919035839'),
+('20240916132738'),
 ('20240913152510'),
 ('20240912084504'),
 ('20240911051822'),

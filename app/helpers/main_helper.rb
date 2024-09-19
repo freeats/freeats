@@ -68,4 +68,12 @@ module MainHelper
       ]
     )
   end
+
+  def event_actor_account_name_for_assignment(event:, member:)
+    if event.actor_account&.member == member
+      "themselves"
+    else
+      tag.b(member.name)
+    end
+  end
 end

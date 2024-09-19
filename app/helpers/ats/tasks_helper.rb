@@ -51,6 +51,14 @@ module ATS::TasksHelper
         ats_task_changed_display_activity(event, task_card: true)
       when "task_status_changed"
         "#{event.changed_to == 'open' ? 'reopened' : 'closed'} task"
+      when "task_watcher_added"
+        "added #{
+          event_actor_account_name_for_assignment(event:, member: event.added_watcher)
+        } as watcher"
+      when "task_watcher_removed"
+        "removed #{
+          event_actor_account_name_for_assignment(event:, member: event.removed_watcher)
+        } as watcher"
       end
 
     sanitize(text, attributes: %w[data-turbo-frame href])
@@ -75,27 +83,6 @@ module ATS::TasksHelper
       if (to_member = Member.find_by(id: to)).present?
         to = to_member.name
       end
-    when "watcher_ids"
-      to_members = Member.joins(:account).where(id: to).pluck("accounts.name")
-      from_members = Member.joins(:account).where(id: from).pluck("accounts.name")
-      added_members = to_members - from_members
-      removed_members = from_members - to_members
-
-      text =
-        if added_members.present? && removed_members.present?
-          "added #{added_members.to_sentence} and " \
-            "removed #{removed_members.to_sentence}</b> as watchers"
-        elsif added_members.present?
-          "added #{added_members.to_sentence} as " \
-            "#{'watcher'.pluralize(added_members.size)}"
-        elsif removed_members.present?
-          "removed #{removed_members.to_sentence} " \
-            "as #{'watcher'.pluralize(removed_members.size)}"
-        end
-
-      text << " for <b>#{event.eventable.name}</b> task" unless task_card
-
-      return text
     end
 
     if task_card

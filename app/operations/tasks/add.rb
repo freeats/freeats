@@ -53,15 +53,20 @@ class Tasks::Add
 
     yield Events::Add.new(params: task_added_params).call
 
-    return Success() if task.watchers.empty?
+    return Success() if (task_watchers = task.watchers).empty?
 
-    Events::AddChangedEvent.new(
-      eventable: task,
-      changed_field: :watcher_ids,
-      old_value: [],
-      new_value: task.watchers.ids,
-      actor_account:
-    ).call
+    task_watchers.each do |watcher|
+      Events::Add.new(
+        params:
+          {
+            eventable: task,
+            changed_field: :watcher,
+            type: :task_watcher_added,
+            changed_to: watcher.id,
+            actor_account:
+          }
+      ).call
+    end
 
     Success()
   end

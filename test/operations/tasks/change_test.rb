@@ -11,9 +11,14 @@ class Tasks::ChangeTest < ActiveSupport::TestCase
     new_watchers = [members(:helen_member), members(:george_member)]
     assignee = members(:admin_member)
 
-    assert_difference ["task.watchers.count", "Event.where(type: :task_changed).count"] do
-      Tasks::Change.new(task:, params: { watcher_ids: new_watchers.map { _1.id.to_s } },
-                        actor_account:).call.value!
+    assert_equal task.watchers.sort, [old_watcher, assignee].sort
+
+    # Assignee can not be removed from watchers normally.
+    assert_difference ["task.watchers.count", "Event.where(type: :task_watcher_removed).count"] do
+      assert_difference "Event.where(type: :task_watcher_added).count", 2 do
+        Tasks::Change.new(task:, params: { watcher_ids: new_watchers.map { _1.id.to_s } },
+                          actor_account:).call.value!
+      end
     end
 
     task.reload
@@ -22,18 +27,29 @@ class Tasks::ChangeTest < ActiveSupport::TestCase
     assert_equal task.watchers.sort, (new_watchers + [assignee]).sort
     assert_equal task.assignee, assignee
 
-    Event.last.tap do |task_watchers_changed_event|
-      assert_equal task_watchers_changed_event.type, "task_changed"
-      assert_equal task_watchers_changed_event.actor_account_id, actor_account.id
-      assert_equal task_watchers_changed_event.changed_field, "watcher_ids"
-      assert_equal task_watchers_changed_event.changed_from.sort, [old_watcher.id, assignee.id].sort
-      assert_equal task_watchers_changed_event.changed_to.sort,
-                   [*new_watchers.map(&:id), assignee.id].sort
-    end
+    watcher_added_events = Event.where(type: :task_watcher_added).last(2)
+
+    assert_equal watcher_added_events.first.actor_account_id, actor_account.id
+    assert_equal watcher_added_events.first.changed_field, "watcher"
+    assert_equal watcher_added_events.first.changed_to, new_watchers.first.id
+    assert_equal watcher_added_events.first.eventable, task
+
+    assert_equal watcher_added_events.second.actor_account_id, actor_account.id
+    assert_equal watcher_added_events.second.changed_field, "watcher"
+    assert_equal watcher_added_events.second.changed_to, new_watchers.second.id
+    assert_equal watcher_added_events.second.eventable, task
+
+    watcher_removed_event = Event.where(type: :task_watcher_removed).last
+
+    assert_equal watcher_removed_event.actor_account_id, actor_account.id
+    assert_equal watcher_removed_event.changed_field, "watcher"
+    assert_equal watcher_removed_event.changed_from, old_watcher.id
+    assert_equal watcher_removed_event.eventable, task
 
     new_assignee = new_watchers.first
 
-    assert_no_difference ["Event.where(type: :task_changed, changed_field: 'watcher_ids').count",
+    assert_no_difference ["Event.where(type: :task_watcher_added, changed_field: 'watchers').count",
+                          "Event.where(type: :task_watcher_removed, changed_field: 'watchers').count",
                           "task.watchers.count"] do
       assert_difference "Event.where(type: :task_changed).count" do
         Tasks::Change.new(task:, params: { assignee_id: new_assignee.id.to_s }, actor_account:).call.value!

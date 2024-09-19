@@ -50,16 +50,40 @@ class Tasks::Change
   def add_task_changed_events(old_values:, task:, actor_account:)
     old_values.each do |field, old_value|
       new_value = task.public_send(field)
-      field_type = field == :watcher_ids ? :plural : :singular
-
-      Events::AddChangedEvent.new(
-        eventable: task,
-        changed_field: field,
-        field_type:,
-        old_value:,
-        new_value:,
-        actor_account:
-      ).call
+      if field == :watcher_ids
+        (new_value - old_value).each do |new_watcher|
+          Events::Add.new(
+            params:
+              {
+                eventable: task,
+                changed_field: :watcher,
+                type: :task_watcher_added,
+                changed_to: new_watcher,
+                actor_account:
+              }
+          ).call
+        end
+        (old_value - new_value).each do |removed_watcher|
+          Events::Add.new(
+            params:
+              {
+                eventable: task,
+                changed_field: :watcher,
+                type: :task_watcher_removed,
+                changed_from: removed_watcher,
+                actor_account:
+              }
+          ).call
+        end
+      else
+        Events::AddChangedEvent.new(
+          eventable: task,
+          changed_field: field,
+          old_value:,
+          new_value:,
+          actor_account:
+        ).call
+      end
     end
 
     Success()

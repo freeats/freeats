@@ -3,6 +3,8 @@
 class Event < ApplicationRecord
   acts_as_tenant(:tenant)
 
+  TASK_TYPES_FOR_PROFILE_ACTIVITY_TAB = %i[task_added task_changed task_status_changed].freeze
+
   belongs_to :actor_account, class_name: "Account", optional: true
   belongs_to :eventable, polymorphic: true
   belongs_to :assigned_member,
@@ -15,6 +17,16 @@ class Event < ApplicationRecord
              optional: true,
              foreign_key: :changed_from,
              inverse_of: :unassigned_events
+  belongs_to :added_watcher,
+             class_name: "Member",
+             optional: true,
+             foreign_key: :changed_to,
+             inverse_of: :added_as_watcher_events
+  belongs_to :removed_watcher,
+             class_name: "Member",
+             optional: true,
+             foreign_key: :changed_from,
+             inverse_of: :removed_as_watcher_events
   belongs_to :stage_from,
              class_name: "PositionStage",
              optional: true,
@@ -62,6 +74,8 @@ class Event < ApplicationRecord
     task_added
     task_changed
     task_status_changed
+    task_watcher_added
+    task_watcher_removed
   ].index_with(&:to_s)
 
   self.inheritance_column = nil
