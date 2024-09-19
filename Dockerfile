@@ -2,17 +2,14 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.3.3
+FROM ruby:$RUBY_VERSION-slim AS base
+
 ARG NODE_VERSION=22.7.0
 ARG YARN_VERSION=1.22.22
 ARG PACKAGES="python-is-python3 libvips"
 
-FROM ruby:$RUBY_VERSION-slim AS base
-
-ARG RAILS_ENV=production
-ARG NODE_ENV=production
-
-ENV RAILS_ENV=${RAILS_ENV}
-ENV NODE_ENV=${NODE_ENV}
+ENV RAILS_ENV=production
+ENV NODE_ENV=production
 
 ENV BUNDLE_PATH="/usr/local/bundle"
 
@@ -30,8 +27,6 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     $PACKAGES
 
 # Install JavaScript dependencies
-ARG NODE_VERSION=22.7.0
-ARG YARN_VERSION=1.22.22
 ENV PATH=/rails/bin:/usr/local/node/bin:$PATH
 RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
     /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
