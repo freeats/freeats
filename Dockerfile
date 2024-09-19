@@ -10,7 +10,6 @@ ARG NODE_ENV=production
 ENV RAILS_ENV=${RAILS_ENV}
 ENV NODE_ENV=${NODE_ENV}
 
-ENV HOST_URL="ats.toughbyte.com"
 ENV BUNDLE_PATH="/usr/local/bundle"
 
 # Rails app lives here
