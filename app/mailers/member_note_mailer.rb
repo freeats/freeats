@@ -9,8 +9,7 @@ class MemberNoteMailer < ApplicationMailer
 
     @reply_to = "doreply@toughbyte.com"
 
-    host_url = Rails.application.credentials.host_url!
-    thread_unique_id = "<note_threads/#{@note.note_thread.id}@#{host_url}>"
+    thread_unique_id = "<note_threads/#{@note.note_thread.id}@#{ENV.fetch('HOST_URL', 'domain')}>"
     headers({ "In-Reply-To" => thread_unique_id, "References" => thread_unique_id })
   end
 
