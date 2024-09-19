@@ -20,6 +20,8 @@ class PositionStage < ApplicationRecord
 
   before_save :update_list_index_for_hired_stage
 
+  accepts_nested_attributes_for :scorecard_template, allow_destroy: true
+
   validates :name, uniqueness: { scope: :position_id }
 
   private
