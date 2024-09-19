@@ -22,16 +22,14 @@ class ATS::Logger
 
     private
 
-    def production_log(exception_or_message, **)
-      # TODO: set up external logging.
-      # payload[:where] = where if where.present?
-      # case exception_or_message
-      # when String then Sentry.capture_message(exception_or_message, extra: payload)
-      # when StandardError then Sentry.capture_exception(exception_or_message, extra: payload)
-      # else
-      #   Sentry.capture_message(exception_or_message.inspect, extra: payload)
-      # end
-      logger.warn(exception_or_message, **)
+    def production_log(exception_or_message, **payload)
+      payload[:where] = where if where.present?
+      case exception_or_message
+      when String then Sentry.capture_message(exception_or_message, extra: payload)
+      when StandardError then Sentry.capture_exception(exception_or_message, extra: payload)
+      else
+        Sentry.capture_message(exception_or_message.inspect, extra: payload)
+      end
     end
 
     def development_log(exception_or_message, **)

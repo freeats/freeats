@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   set_current_tenant_through_filter
 
+  before_action :set_sentry_account_context
+  before_action :set_sentry_context
   before_action :set_selector_id_for_page
   before_action :set_tenant
   rescue_from ActionPolicy::Unauthorized, with: :user_not_authorized
@@ -99,5 +101,22 @@ class ApplicationController < ActionController::Base
     return {} if locale.blank?
 
     { locale: }
+  end
+
+  def set_sentry_account_context
+    if current_account
+      Sentry.set_user(
+        id: current_account.id,
+        username: current_account.name,
+        email: current_account.email,
+        ip_address: "{{auto}}"
+      )
+    else
+      Sentry.set_user(ip_address: "{{auto}}")
+    end
+  end
+
+  def set_sentry_context
+    Sentry.set_extras(params: params.to_unsafe_h, url: request.url)
   end
 end
