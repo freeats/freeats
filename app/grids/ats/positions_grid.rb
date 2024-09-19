@@ -22,6 +22,19 @@ class ATS::PositionsGrid
   end
 
   filter(
+    :locations,
+    :string,
+    multiple: true,
+    placeholder: I18n.t("core.location"),
+    autocomplete: {
+      type: :multiple_locations,
+      location_types: %w[country city]
+    }
+  ) do |location_ids|
+    in_location(location_ids)
+  end
+
+  filter(
     :status,
     :enum,
     select: -> { Position.statuses.transform_keys(&:humanize) },
@@ -140,6 +153,15 @@ class ATS::PositionsGrid
     html: true
   ) do |model|
     link_to model.name, tab_ats_position_path(model, :info)
+  end
+
+  column(
+    :city,
+    header: I18n.t("core.city"),
+    html: true,
+    order: false
+  ) do |model|
+    model&.location&.short_name
   end
 
   column(

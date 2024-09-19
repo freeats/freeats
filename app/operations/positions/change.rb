@@ -8,6 +8,7 @@ class Positions::Change
     option :params, Types::Strict::Hash.schema(
       name?: Types::Strict::String,
       recruiter_id?: Types::Strict::String.optional,
+      location_id?: Types::Strict::String.optional,
       collaborator_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
       hiring_manager_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
       interviewer_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
@@ -20,6 +21,7 @@ class Positions::Change
     old_values = {
       name: position.name,
       recruiter_id: position.recruiter_id,
+      location: position.location,
       description: position.description.to_s,
       collaborator_ids: position.collaborators.pluck(:collaborator_id),
       hiring_manager_ids: position.hiring_managers.pluck(:hiring_manager_id),
@@ -157,6 +159,14 @@ class Positions::Change
 
       yield Events::Add.new(params: position_changed_params).call
     end
+
+    Events::AddChangedEvent.new(
+      eventable: position,
+      changed_field: "location",
+      old_value: old_values[:location]&.short_name,
+      new_value: position.location&.short_name,
+      actor_account:
+    ).call
 
     Success()
   end

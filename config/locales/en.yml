@@ -28,6 +28,9 @@
 #       enabled: "ON"
 
 en:
+  core:
+    city: City
+    location: Location
   datetime:
     distance_in_words:
       short:

@@ -1624,7 +1624,8 @@ CREATE TABLE public.positions (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     recruiter_id bigint,
-    tenant_id bigint
+    tenant_id bigint,
+    location_id bigint
 );
 
 
@@ -3765,6 +3766,13 @@ CREATE UNIQUE INDEX index_positions_interviewers_on_position_id_and_interviewer_
 
 
 --
+-- Name: index_positions_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_positions_on_location_id ON public.positions USING btree (location_id);
+
+
+--
 -- Name: index_positions_on_recruiter_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4299,6 +4307,14 @@ ALTER TABLE ONLY public.placements
 
 
 --
+-- Name: positions fk_rails_7c4f309ff7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.positions
+    ADD CONSTRAINT fk_rails_7c4f309ff7 FOREIGN KEY (location_id) REFERENCES public.locations(id);
+
+
+--
 -- Name: positions_collaborators fk_rails_7ef0cdb0c5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4554,6 +4570,7 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240919035839'),
+('20240918105348'),
 ('20240917131723'),
 ('20240916132738'),
 ('20240913152510'),

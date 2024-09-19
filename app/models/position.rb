@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Position < ApplicationRecord
+  include Locatable
+
   acts_as_tenant(:tenant)
 
   DEFAULT_STAGES = %w[Sourced Contacted Replied Hired].freeze
@@ -62,6 +64,7 @@ class Position < ApplicationRecord
   has_many :tasks, as: :taskable, dependent: :destroy
   has_many :sequence_templates, dependent: :nullify
 
+  belongs_to :location, optional: true
   belongs_to :recruiter, optional: true, class_name: "Member"
 
   has_rich_text :description
@@ -79,6 +82,8 @@ class Position < ApplicationRecord
   ].index_with(&:to_s)
 
   strip_attributes collapse_spaces: true, allow_empty: true, only: :name
+
+  validate :location_must_be_city, if: :location_id_changed?
 
   scope :join_last_placement_added_or_changed_event, lambda {
     joins(
@@ -147,5 +152,13 @@ class Position < ApplicationRecord
   rescue ActiveRecord::RecordNotDestroyed => e
     errors.add(:base, e.message.to_s)
     false
+  end
+
+  private
+
+  def location_must_be_city
+    return if location&.type == "city" || location.blank?
+
+    errors.add(:location, "must be city.")
   end
 end

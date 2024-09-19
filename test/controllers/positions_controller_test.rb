@@ -385,4 +385,25 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
   end
+
+  test "should update position location" do
+    position = positions(:ruby_position)
+    new_location = locations(:valencia_city)
+    old_location = position.location
+
+    assert_not_equal position.location_id, new_location.id
+
+    assert_difference "Event.count" do
+      patch update_header_ats_position_path(position), params: { position: { location_id: new_location.id } }
+    end
+
+    assert_equal position.reload.location_id, new_location.id
+
+    event = Event.last
+
+    assert_equal event.type, "position_changed"
+    assert_equal event.changed_field, "location"
+    assert_equal event.changed_to, new_location.short_name
+    assert_equal event.changed_from, old_location.short_name
+  end
 end

@@ -5,6 +5,16 @@
       = render LabeledComponent.new(class: "mb-2") do |c|
         - c.with_label("Name", size: :small, form:, for_field: :name)
         = render TextInputComponent.new(form, method: :name, size: :small)
+      = render LabeledComponent.new(class: "mb-2") do |c|
+        - c.with_label(t("core.city"), size: :small, form:, for_field: :location_id)
+        = render SingleSelectComponent.new( \
+            form,
+            method: :location_id,
+            remote: { \
+              search_url: fetch_locations_api_v1_locations_path(types: "city", q: "QUERY"),
+              options: compose_location_option_for_select(@position.location),
+            },
+          )
 
       - if allowed_to?(:destroy?, @position, with: ATS::PositionPolicy)
         = render LabeledComponent.new(class: "mt-3")

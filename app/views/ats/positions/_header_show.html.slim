@@ -35,7 +35,9 @@
       h1.mb-0
         = position_html_status_circle(@position, tooltip_placement: "top")
         = @position.name
-
+      - if @position.location_id?
+        .mt-2.font-body
+          = @position.location.short_name
       / ACTIVITY
       .row.font-small.text-secondary.mt-2.gx-2
         / TODO: use commented line after added events

@@ -4,6 +4,7 @@ ruby_position:
   status: active
   change_status_reason: filled
   tenant: toughbyte_tenant
+  location: helsinki_city
 
 golang_position:
   name: Golang developer
@@ -32,3 +33,4 @@ suroviy_close_position:
   status: closed
   change_status_reason: no_longer_relevant
   tenant: suroviy_byte_tenant
+  location: copenhagen_city

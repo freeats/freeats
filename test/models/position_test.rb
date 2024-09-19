@@ -94,4 +94,24 @@ class PositionTest < ActiveSupport::TestCase
 
     assert_predicate position, :valid?
   end
+
+  test "location validation should only allow city or empty value" do
+    position = positions(:ruby_position)
+
+    position.location = nil
+
+    assert_predicate position, :valid?
+
+    position.location = locations(:ta_xbiex_city)
+
+    assert_predicate position, :valid?
+
+    position.location = locations(:armenia_country)
+
+    assert_not position.valid?
+
+    position.location = locations(:wien_admin_region1)
+
+    assert_not position.valid?
+  end
 end

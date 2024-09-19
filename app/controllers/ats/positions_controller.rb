@@ -326,6 +326,7 @@ class ATS::PositionsController < ApplicationController
     params.require(:position)
           .permit(
             :name,
+            :location_id,
             :recruiter_id,
             :description,
             stages_attributes: {},

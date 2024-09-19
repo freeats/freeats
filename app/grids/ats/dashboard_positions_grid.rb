@@ -45,6 +45,15 @@ class ATS::DashboardPositionsGrid
   end
 
   column(
+    :city,
+    header: I18n.t("core.city"),
+    html: true,
+    order: false
+  ) do |model|
+    model&.location&.short_name
+  end
+
+  column(
     :recruiter,
     html: true,
     preload: { recruiter: :account }
