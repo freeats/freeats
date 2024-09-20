@@ -76,6 +76,21 @@ jobs:
           PGPORT=${{ job.services.postgres.ports[5432] }}
           EOF
 
+      - name: Run Prettier
+        run: |
+          docker run --rm --env-file docker.env app /bin/sh -c \
+          "yarn prettier -c ."
+          
+      - name: Run ESLint
+        run: |
+          docker run --rm --env-file docker.env app /bin/sh -c \
+          "yarn eslint ."
+
+      - name: Run Rubocop
+        run: |
+          docker run --rm --env-file docker.env app /bin/sh -c \
+          "bundle exec rubocop"
+
       # Multiple test databases need to be created for parallel testing
       # This ensures that we don't see errors form Postgres in the Stop containers step
       - name: Create DBs
@@ -97,18 +112,3 @@ jobs:
         run: |
           docker run --rm --env-file docker.env app /bin/sh -c \
           "bundle exec rails test:system"
-
-      - name: Run Rubocop
-        run: |
-          docker run --rm --env-file docker.env app /bin/sh -c \
-          "bundle exec rubocop"
-
-      - name: Run ESLint
-        run: |
-          docker run --rm --env-file docker.env app /bin/sh -c \
-          "yarn eslint ."
-
-      - name: Run Prettier
-        run: |
-          docker run --rm --env-file docker.env app /bin/sh -c \
-          "yarn prettier -c ."
