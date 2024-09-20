@@ -88,7 +88,7 @@ class EmailSynchronization::RetrieveGmailTokensTest < ActiveSupport::TestCase
     stubs.verify_stubbed_calls
   end
 
-  ACCESS_TOKEN = "ya29.a0Ad52N39SN2DaO4LxiiwTq2LjDtujHtg_pr05Vdu8jYXLrqzKe6v4BR2dG3LPpkKmoqO8-iT24mNaVWk4vmAwjCQDmVD6323_Kfnbj46v_31VJM8DFvz974NOenitKG-5sQFDrcbY7wh0X9rbgZIA20691k_OW2rn_ZwOaCgYKAaASARMSFQHGX2MimjcXoivYLBa2mMv9E0MEEQ0171" # rubocop:disable Style/LineLength
+  ACCESS_TOKEN = "ya29.a0Ad52N39SN2DaO4LxiiwTq2LjDtujHtg_pr05Vdu8jYXLrqzKe6v4BR2dG3LPpkKmoqO8-iT24mNaVWk4vmAwjCQDmVD6323_Kfnbj46v_31VJM8DFvz974NOenitKG-5sQFDrcbY7wh0X9rbgZIA20691k_OW2rn_ZwOaCgYKAaASARMSFQHGX2MimjcXoivYLBa2mMv9E0MEEQ0171" # rubocop:disable Layout/LineLength
   REFRESH_TOKEN = "1//04z4abcdefghijSNwF-L9IrAviFjutCcM_vofXBQmGIeHtGqJHuzqI4v6GkwDLU07W0hmcdGWngRhHDLJaWq5DMHT0"
   EXCHANGE_CODE_FOR_TOKENS_RESPONSE = <<~JSON.freeze
     {
