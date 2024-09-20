@@ -8,9 +8,13 @@ AllCops:
   TargetRubyVersion: 3.3.3
   DisplayCopNames: true
   Exclude:
-    - "vendor/**/*"
     - "bin/*"
+    - "db/schema.rb"
+    - "db/seeds.rb"
     - "node_modules/**/*"
+    - "scripts/*"
+    - "test/fixtures/files/*"
+    - "vendor/**/*"
   NewCops: enable
 
 # Enabled cops suited for our needs.
