@@ -80,7 +80,7 @@ jobs:
         run: |
           docker run --rm --env-file docker.env app /bin/sh -c \
           "yarn prettier -c ."
-          
+
       - name: Run ESLint
         run: |
           docker run --rm --env-file docker.env app /bin/sh -c \
