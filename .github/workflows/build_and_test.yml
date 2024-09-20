@@ -98,6 +98,11 @@ jobs:
           docker run --rm --env-file docker.env app /bin/sh -c \
           "bundle exec rails test:system"
 
+      - name: Run Rubocop
+        run: |
+          docker run --rm --env-file docker.env app /bin/sh -c \
+          "bundle exec rubocop"
+
       - name: Run ESLint
         run: |
           docker run --rm --env-file docker.env app /bin/sh -c \
