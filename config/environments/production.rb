@@ -94,16 +94,9 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.default_url_options = { host: "ats.toughbyte.com" }
-  smtp_user_name, smtp_password =
-    if ENV["SECRET_KEY_BASE_DUMMY"].blank?
-      [Rails.application.credentials.sendgrid.username!,
-       Rails.application.credentials.sendgrid.password!]
-    else
-      %w[dummy dummy]
-    end
   config.action_mailer.smtp_settings = {
-    user_name: smtp_user_name,
-    password: smtp_password,
+    user_name: Rails.application.credentials.sendgrid.username!,
+    password: Rails.application.credentials.sendgrid.password!,
     address: "smtp.sendgrid.net",
     port: 587,
     domain: "ats.toughbyte.com",

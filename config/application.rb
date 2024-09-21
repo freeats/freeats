@@ -40,6 +40,25 @@ module ATS
       ActiveStorage::Attached::Changes::CreateOne.prepend(ActiveStorageCreateOne)
       ActiveSupport.on_load(:active_storage_attachment) { include ActiveStorageAttachment }
     end
+
+    config.before_configuration do
+      if ENV["SECRET_KEY_BASE_DUMMY"].present?
+        module DummyCredentials
+          def credentials = RecursiveDummy.new
+        end
+
+        class RecursiveDummy
+          def method_missing(*) = self
+          def respond_to_missing?(*) = true
+          def to_ary = [""]
+          def to_s = ""
+          def to_str = ""
+          def inspect = ""
+        end
+
+        Rails.application.singleton_class.prepend(DummyCredentials)
+      end
+    end
   end
 end
 # rubocop:enable Style/ClassAndModuleChildren

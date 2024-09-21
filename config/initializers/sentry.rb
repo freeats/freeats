@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
 Sentry.init do |config|
-  config.dsn =
-    if ENV["SECRET_KEY_BASE_DUMMY"].blank?
-      Rails.application.credentials.sentry.dsn!
-    else
-      "dummy"
-    end
+  config.dsn = Rails.application.credentials.sentry.dsn!
 
   config.breadcrumbs_logger = [:active_support_logger]
 
