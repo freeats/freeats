@@ -41,11 +41,11 @@ COPY .ruby-version Gemfile Gemfile.lock ./
 RUN gem install -N bundler:$(awk '/BUNDLED WITH/{getline; print $1}' Gemfile.lock)
 
 # Install application gems
-RUN bundle install && \
+RUN bundle install --jobs=$(nproc) && \
     bundle exec bootsnap precompile --gemfile
 
 # Install Node modules
-COPY --link package.json yarn.lock ./
+COPY --link package.json yarn.lock .npmrc ./
 RUN yarn install --frozen-lockfile
 
 # Copy application code
