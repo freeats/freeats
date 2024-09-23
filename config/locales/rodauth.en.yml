@@ -28,11 +28,12 @@ en:
     confirm_password_notice_flash: Your password has been confirmed
     confirm_password_page_title: Confirm Password
     contains_null_byte_message: contains null byte
-    create_account_button: Create Account
+    create_account_button: Register
     create_account_error_flash: There was an error creating your account
     create_account_link_text: Create a New Account
     create_account_notice_flash: Your account has been created
-    create_account_page_title: Create Account
+    create_account_page_title: Register
+    create_account_page_text_before_sign_in_link: Already have an account?
     email_auth_email_recently_sent_error_flash: An email has recently been sent to you with a link to login
     email_auth_email_sent_notice_flash: An email has been sent to you with a link to login to your account
     email_auth_email_subject: Sign in Link
@@ -71,6 +72,7 @@ en:
     logout_button: Sign out
     logout_notice_flash: Signed out successfully, hope to see you back again soon.
     logout_page_title: Sign out
+    login_page_text_before_create_account_link: Don't have an account?
     multi_phase_login_page_title: Sign in
     need_password_notice_flash: Login recognized, please enter your password
     new_password_label: New Password

@@ -33,6 +33,7 @@ ru:
     create_account_link_text: Создайте новую учетную запись
     create_account_notice_flash: Ваша учетная запись создана
     create_account_page_title: Создать учетную запись
+    create_account_page_text_before_sign_in_link: Уже есть аккаунт?
     email_auth_email_recently_sent_error_flash: Недавно вам было отправлено электронное письмо со ссылкой для входа в систему
     email_auth_email_sent_notice_flash: Вам отправлено электронное письмо со ссылкой для входа в вашу учетную запись
     email_auth_email_subject: Ссылка для входа
@@ -64,6 +65,7 @@ ru:
     login_not_valid_email_message: неверный адрес электронной почты
     login_notice_flash: Авторизовался успешно, приятного просмотра!
     login_page_title: Войдите в систему
+    login_page_text_before_create_account_link: Нет аккаунта?
     login_too_long_message: не более %{максимальная длина логина} символов
     login_too_many_bytes_message: максимальное количество символов в %{login_maximum_bytes} байтах
     login_too_short_message: минимальное количество символов в %{login_minimum_length} символов

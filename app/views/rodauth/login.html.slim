@@ -1,6 +1,6 @@
 .authentication-container.mx-auto.card
-  .card-body.p-4.vstack.gap-3
-    h1
+  .card-body.p-4
+    h1.mb-4
       = rodauth.login_label
     = form_with url: rodauth.login_path, method: :post, class: "vstack gap-3"
       = render TextInputComponent.new("email", type: :email, required: true,
@@ -13,3 +13,7 @@
                                       aria: { label: t("rodauth.password_label") })
       = render ButtonComponent.new(class: "mt-2")
         = rodauth.login_button
+    .mt-2
+      => t("rodauth.login_page_text_before_create_account_link")
+      a href=rodauth.create_account_path
+        = t("rodauth.create_account_page_title")

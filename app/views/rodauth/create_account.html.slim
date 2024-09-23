@@ -1,6 +1,7 @@
 .authentication-container.mx-auto.card
   .card-body.p-4
-    h1.mb-4 Register
+    h1.mb-4
+      = t("rodauth.create_account_page_title")
     = form_with url: rodauth.create_account_path, method: :post, data: { turbo: false }, class: "vstack gap-3"
       = render(TextInputComponent.new("full_name", placeholder: true, required: true, value: params["full_name"]))
       - if rodauth.field_error("full_name")
@@ -27,7 +28,8 @@
         span.invalid-feedback = rodauth.field_error(rodauth.password_confirm_param)
 
       = render(ButtonComponent.new(class: "mt-2"))
-        | Register
+        = t("rodauth.create_account_button")
     .mt-2
-      |> Already have an account?
-      a href="#" Sign in
+      => t("rodauth.create_account_page_text_before_sign_in_link")
+      a href=rodauth.login_path
+        = t("rodauth.email_auth_page_title")
