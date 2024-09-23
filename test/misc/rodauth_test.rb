@@ -8,14 +8,20 @@ class RodauthTest < ActionDispatch::IntegrationTest
   end
 
   test "logs in with a user and a password" do
-    skip "TODO"
+    post "/sign_in", params: { email: @account.email, password: "password" }
 
-    tenant = tenants(:toughbyte_tenant)
-    newly_registered = Account.create!(name: "a", email: "a@a.ru", password: "password", tenant:)
-    Member.create!(tenant:, account: newly_registered, access_level: :admin)
-    post "/sign_in", params: { email: newly_registered.email, password: "password" }
-
+    assert_nil flash[:alert]
     assert_redirected_to "/"
+  end
+
+  test "log in with unverified account should return error" do
+    email = "myemail@mail.com"
+    register(email)
+
+    post "/sign_in", params: { email:, password: "password" }
+
+    assert_equal flash[:alert], I18n.t("rodauth.attempt_to_login_to_unverified_account_error_flash")
+    assert_response :forbidden
   end
 
   test "creates tenant owner with valid data" do
@@ -31,7 +37,7 @@ class RodauthTest < ActionDispatch::IntegrationTest
       post "/register", params:
     end
 
-    assert_redirected_to "/"
+    assert_redirected_to "/verify_email_resend"
 
     tenant = Tenant.last
     account = Account.last
@@ -53,5 +59,18 @@ class RodauthTest < ActionDispatch::IntegrationTest
     assert_no_difference ["Tenant.count", "Account.count", "Member.count"] do
       post "/register", params:
     end
+  end
+
+  private
+
+  def register(email)
+    params = {
+      full_name: "My name",
+      company_name: "My company",
+      email:,
+      password: "password",
+      "password-confirm": "password"
+    }
+    post("/register", params:)
   end
 end

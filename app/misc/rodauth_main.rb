@@ -11,7 +11,7 @@ module CreateAccount
     configure do
       enable :create_account
       create_account_route :register
-      create_account_redirect "/"
+      create_account_redirect { verify_account_resend_path }
 
       before_create_account do
         unless (name = param_or_nil("full_name"))
@@ -31,29 +31,101 @@ module CreateAccount
   end
 end
 
+# https://rodauth.jeremyevans.net/rdoc/files/doc/login_rdoc.html
+# https://rodauth.jeremyevans.net/rdoc/files/doc/logout_rdoc.html
+module LoginLogout
+  extend ActiveSupport::Concern
+
+  included do
+    configure do
+      enable :login, :logout
+      login_route :sign_in
+      logout_route :sign_out
+      login_param "email"
+      login_return_to_requested_location? true
+
+      # Redirect to home page after logout.
+      logout_redirect "/"
+
+      # Ensure requiring login follows login route changes.
+      require_login_redirect { login_path }
+
+      # Redirect to the app from login and registration pages if already logged in.
+      already_logged_in { redirect "/" }
+    end
+  end
+end
+
+# https://rodauth.jeremyevans.net/rdoc/files/doc/remember_rdoc.html
+module Remember
+  extend ActiveSupport::Concern
+
+  included do
+    configure do
+      enable :remember
+
+      # Remember all logged in users.
+      after_login { remember_login }
+
+      # Or only remember users that have ticked a "Remember Me" checkbox on login.
+      # after_login { remember_login if param_or_nil("remember") }
+
+      # Extend user's remember period when remembered via a cookie
+      extend_remember_deadline? true
+
+      remember_deadline_interval({ days: 7 })
+    end
+  end
+end
+
+# https://rodauth.jeremyevans.net/rdoc/files/doc/verify_account_rdoc.html
+# https://rodauth.jeremyevans.net/rdoc/files/doc/verify_account_grace_period_rdoc.html
+module VerifyAccount
+  extend ActiveSupport::Concern
+
+  included do
+    configure do
+      enable :verify_account
+      verify_account_route :verify_email
+      verify_account_resend_route :verify_email_resend
+      # Allow to set password for unverified account.
+      verify_account_set_password? false
+    end
+  end
+end
+
+# https://github.com/janko/rodauth-omniauth
+module Omniauth
+  extend ActiveSupport::Concern
+
+  included do
+    configure do
+      enable :omniauth_base
+
+      # Google OAuth 2.0
+      omniauth_provider :google_oauth2,
+                        Rails.application.credentials.google_oauth.client_id!,
+                        Rails.application.credentials.google_oauth.client_secret!,
+                        scope: "email", access_type: "online"
+    end
+  end
+end
+
 class RodauthMain < Rodauth::Rails::Auth
   include CreateAccount
+  include LoginLogout
+  include Omniauth
+  include Remember
+  include VerifyAccount
 
   # rubocop:disable Layout/LineLength
   configure do
     # List of authentication features that are loaded.
-    enable :login, :logout, :remember, :omniauth_base,
-           :verify_account, :verify_account_grace_period,
-           :reset_password, :change_password
-
-    login_route :sign_in
-    logout_route :sign_out
-    verify_account_route :verify_email
-    verify_account_resend_route :verify_email_resend
+    enable :reset_password, :change_password
 
     translate do |key, default|
       I18n.t("rodauth.#{key}") || default
     end
-    # Google OAuth 2.0
-    omniauth_provider :google_oauth2,
-                      Rails.application.credentials.google_oauth.client_id!,
-                      Rails.application.credentials.google_oauth.client_secret!,
-                      scope: "email", access_type: "online"
 
     # See the Rodauth documentation for the list of available config options:
     # http://rodauth.jeremyevans.net/documentation.html
@@ -99,12 +171,10 @@ class RodauthMain < Rodauth::Rails::Auth
     # verify_account_set_password? false
 
     # Change some default param keys.
-    login_param "email"
     # login_confirm_param "email-confirm"
     # password_confirm_param "confirm_password"
 
     # Redirect back to originally requested location after authentication.
-    login_return_to_requested_location? true
     # two_factor_auth_return_to_requested_location? true # if using MFA
 
     # Autologin the user after they have reset their password.
@@ -112,9 +182,6 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Delete the account record when the user has closed their account.
     # delete_account_on_close? true
-
-    # Redirect to the app from login and registration pages if already logged in.
-    already_logged_in { redirect "/" }
 
     # ==> Emails
     # Use a custom mailer for delivering authentication emails.
@@ -178,35 +245,17 @@ class RodauthMain < Rodauth::Rails::Auth
     #   end
     # end
 
-    # ==> Remember Feature
-    # Remember all logged in users.
-    after_login { remember_login }
-
-    # Or only remember users that have ticked a "Remember Me" checkbox on login.
-    # after_login { remember_login if param_or_nil("remember") }
-
-    # Extend user's remember period when remembered via a cookie
-    extend_remember_deadline? true
-
     # ==> Redirects
-    # Redirect to home page after logout.
-    logout_redirect "/"
-
     # Redirect to wherever login redirects to after account verification.
     # verify_account_redirect { login_redirect }
 
     # Redirect to login page after password reset.
     # reset_password_redirect { login_path }
 
-    # Ensure requiring login follows login route changes.
-    require_login_redirect { login_path }
-
     # ==> Deadlines
     # Change default deadlines for some actions.
-    # verify_account_grace_period 3.days.to_i
     # reset_password_deadline_interval Hash[hours: 6]
     # verify_login_change_deadline_interval Hash[days: 2]
-    remember_deadline_interval({ days: 7 })
   end
   # rubocop:enable Layout/LineLength
 

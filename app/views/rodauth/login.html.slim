@@ -1,16 +1,15 @@
-.d-flex.justify-content-center
-  #settings.card
-    .card-body.p-4.vstack.gap-3
-      h1
-        = rodauth.login_label
-      = form_with url: rodauth.login_path, method: :post, class: "vstack gap-3"
-        = render TextInputComponent.new("email", type: :email, required: true,
-                                        placeholder: t("rodauth.email_input_placeholder"),
-                                        aria: { label: t("rodauth.email_label") })
+.authentication-container.mx-auto.card
+  .card-body.p-4.vstack.gap-3
+    h1
+      = rodauth.login_label
+    = form_with url: rodauth.login_path, method: :post, class: "vstack gap-3"
+      = render TextInputComponent.new("email", type: :email, required: true,
+                                      placeholder: t("rodauth.email_input_placeholder"),
+                                      aria: { label: t("rodauth.email_label") })
 
-        = render TextInputComponent.new("password", type: :password, required: true,
-                                        autocomplete: "current-password",
-                                        placeholder: t("rodauth.password_input_placeholder"),
-                                        aria: { label: t("rodauth.password_label") })
-        = render ButtonComponent.new(class: "mt-2")
-          = rodauth.login_button
+      = render TextInputComponent.new("password", type: :password, required: true,
+                                      autocomplete: "current-password",
+                                      placeholder: t("rodauth.password_input_placeholder"),
+                                      aria: { label: t("rodauth.password_label") })
+      = render ButtonComponent.new(class: "mt-2")
+        = rodauth.login_button

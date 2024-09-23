@@ -315,7 +315,7 @@ button {
 }
 
 .hidden {
-  display: none; // does not include !important flag as bootstrap's d-none class
+  display: none; // does not include !important flag as bootstrap d-none class
 }
 
 h1 {
@@ -352,15 +352,6 @@ a {
   margin-top: 0.75rem;
 }
 
-#settings.card {
-  border-radius: 0.5rem;
-  width: 100%;
-
-  @include media-breakpoint-up(md) {
-    width: 460px;
-  }
-}
-
 .card-body ul {
   margin-bottom: 0px;
 }
@@ -389,7 +380,12 @@ picture {
 }
 
 .authentication-container {
-  width: 460px;
+  max-width: 460px;
+}
+// Alerts that precede the authentication-container should also be 460px in width.
+#alerts:has(+ .authentication-container) {
+  max-width: 460px;
+  margin: 0 auto;
 }
 
 ul.dropdown-menu {

@@ -215,10 +215,10 @@ en:
     verify_account_email_subject: Verify Account
     verify_account_error_flash: Unable to verify account
     verify_account_notice_flash: Your account has been verified
-    verify_account_page_title: Verify Account
-    verify_account_resend_button: Send Verification Email Again
+    verify_account_page_title: Verify your email
+    verify_account_resend_button: Resend verification email
     verify_account_resend_error_flash: Unable to resend verify account email
-    verify_account_resend_explanatory_text: "<p>If you no longer have the email to verify the account, you can request that it be resent to you:</p>"
+    verify_account_resend_explanatory_text: Please check your inbox for a verification email. Click the link in the email to verify your email address.
     verify_account_resend_link_text: Resend Verify Account Information
     verify_login_change_button: Verify Login Change
     verify_login_change_duplicate_account_error_flash: Unable to change login as there is already an account with the new login
