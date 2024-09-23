@@ -38,6 +38,7 @@ module ATS
 
     config.to_prepare do
       ActiveStorage::Attached::Changes::CreateOne.prepend(ActiveStorageCreateOne)
+      ActiveStorage::Blob.singleton_class.prepend(ActiveStorageBlob)
       ActiveSupport.on_load(:active_storage_attachment) { include ActiveStorageAttachment }
     end
 
