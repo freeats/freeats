@@ -51,10 +51,10 @@ module ATS
         class RecursiveDummy
           def method_missing(*) = self
           def respond_to_missing?(*) = true
-          def to_ary = [""]
-          def to_s = ""
-          def to_str = ""
-          def inspect = ""
+          def to_ary = ["dummy"]
+          def to_s = "dummy"
+          def to_str = "dummy"
+          def inspect = "dummy"
         end
 
         Rails.application.singleton_class.prepend(DummyCredentials)
