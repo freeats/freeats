@@ -3,7 +3,6 @@
 class AttachmentInformations::Add
   include Dry::Monads[:result]
 
-  # TODO: pass actor_user
   include Dry::Initializer.define -> do
     option :params, Types::Strict::Hash
   end

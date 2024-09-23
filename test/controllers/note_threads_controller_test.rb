@@ -7,18 +7,9 @@ class NoteThreadsControllerTest < ActionDispatch::IntegrationTest
     current_account = accounts(:admin_account)
     sign_in current_account
 
-    note_thread =
-      NoteThread.create!(
-        hidden: false,
-        notable: candidates(:john),
-        tenant: tenants(:toughbyte_tenant)
-      )
+    note_thread = create(:note_thread, notable: candidates(:john), tenant: tenants(:toughbyte_tenant))
     note_thread.members = [members(:hiring_manager_member)]
-    Note.create!(
-      note_thread:,
-      member: current_account.member,
-      tenant: tenants(:toughbyte_tenant)
-    )
+    create(:note, note_thread:, member: current_account.member, tenant: tenants(:toughbyte_tenant))
 
     patch note_thread_path(note_thread.id),
           params: { note_thread: { hidden: false, candidate_id: note_thread.notable_id } }
@@ -33,20 +24,10 @@ class NoteThreadsControllerTest < ActionDispatch::IntegrationTest
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     current_account = accounts(:admin_account)
     sign_in current_account
-    note_thread =
-      NoteThread.create!(
-        hidden: true,
-        notable: candidates(:john),
-        tenant: tenants(:toughbyte_tenant)
-      )
+    note_thread = create(:note_thread, notable: candidates(:john), tenant: tenants(:toughbyte_tenant))
     note_thread.members = [members(:hiring_manager_member)]
-
     new_members = [members(:employee_member), members(:helen_member)]
-    Note.create!(
-      note_thread:,
-      member: current_account.member,
-      tenant: tenants(:toughbyte_tenant)
-    )
+    create(:note, note_thread:, member: current_account.member, tenant: tenants(:toughbyte_tenant))
 
     patch note_thread_path(note_thread.id),
           params: { note_thread: { hidden: true, members: new_members.map(&:id),

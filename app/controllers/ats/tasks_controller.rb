@@ -60,10 +60,9 @@ class ATS::TasksController < ApplicationController
   end
 
   def show_modal
-    # TODO: include 'added_event' once 'note_added' is added to event types.
     note_threads =
       NoteThread
-      .includes(notes: %i[member reacted_members])
+      .includes(notes: %i[added_event member reacted_members])
       .preload(:members)
       .where(notable: @task)
       .order("note_threads.id DESC", "notes.id")

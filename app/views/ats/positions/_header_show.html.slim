@@ -40,9 +40,7 @@
           = @position.location.short_name
       / ACTIVITY
       .row.font-small.text-secondary.mt-2.gx-2
-        / TODO: use commented line after added events
-        / - position_added_performed_at = @position.added_event&.performed_at || @position.created_at
-        - position_added_performed_at = @position.created_at
+        - position_added_performed_at = @position.added_event&.performed_at || @position.created_at
         .col-auto.text-nowrap.mb-2 [data-bs-toggle="tooltip"
           title="Added on #{position_added_performed_at.to_fs(:datetime_full)}"]
           i.fas.fa-plus-square

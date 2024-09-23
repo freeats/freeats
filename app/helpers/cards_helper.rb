@@ -32,7 +32,6 @@ module CardsHelper
     raw(fragment.to_s) # rubocop:disable Rails/OutputSafety
   end
 
-  # TODO: remove this method
   def card_row(
     left,
     right,

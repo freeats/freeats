@@ -81,17 +81,14 @@ module ATS::PositionsHelper
   end
 
   def position_html_status_circle(position, tooltip_placement: "top")
-    # TODO: use commented code if events have been added.
     tooltip_status_reason_text =
       ", #{change_status_reason_tooltip_text(position)}"
     event_type, event_performed_at =
-      if position.draft? # || !position.last_position_status_changed_event
-        # ["Added on", position.added_event.performed_at.to_fs(:date)]
-        ["Added on", position.created_at.to_fs(:date)]
+      if position.draft? || !position.last_position_status_changed_event
+        ["Added on", position.added_event.performed_at.to_fs(:date)]
       else
-        # ["Status changed on",
-        # position.last_position_status_changed_event.performed_at.to_fs(:date)]
-        ["Status changed on", position.updated_at.to_fs(:date)]
+        ["Status changed on",
+         position.last_position_status_changed_event.performed_at.to_fs(:date)]
       end
     color_code =
       if position.respond_to?(:color_code)

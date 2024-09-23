@@ -123,6 +123,7 @@ class ActionList
   end
 
   def [](field_name)
+    # The todo copied from Hub.
     # TODO: make this work. Currently the problem is that every user of this method expects `nil`
     # when the field is not set and doesn't distinguish between "not set" and "set to nil".
     # if @changeset.key?(field_name)

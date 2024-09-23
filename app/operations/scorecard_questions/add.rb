@@ -3,7 +3,6 @@
 class ScorecardQuestions::Add
   include Dry::Monads[:result, :try]
 
-  # TODO: pass actor_account
   include Dry::Initializer.define -> do
     option :params, Types::Strict::Hash.schema(
       scorecard: Types.Instance(Scorecard),

@@ -6,9 +6,7 @@ ruby:
   # rubocop:disable Lint/UselessAssignment
   visibility_tooltip_title = thread.hidden? ? "Visible to:<br>#{visible_members}" : "Change visibility"
   # rubocop:enable Lint/UselessAssignment
-  # TODO: use policy
-  # change_visibility = "disabled" unless allowed_to?(:update?, thread, with: NoteThreadPolicy)
-  change_visibility = ""
+  change_visibility = "disabled" unless allowed_to?(:update?, thread, with: NoteThreadPolicy)
 
 = turbo_frame_tag dom_id(note, "turbo"), target: "_top"
   .tab-pane.note-show id="note-show-#{note.id}"
@@ -22,13 +20,9 @@ ruby:
               title=note.updated_at.to_fs(:datetime_full)]
             | Edited #{short_time_ago_in_words(note.updated_at)} ago
         - else
-          / TODO: use events
-          / span.text-secondary.ms-2 [data-bs-toggle="tooltip"
-          /   title=note.creation_event.performed_at.to_fs(:datetime_full)]
-          /   | #{short_time_ago_in_words(note.creation_event.performed_at)} ago
           span.text-secondary.ms-2 [data-bs-toggle="tooltip"
-            title=note.created_at.to_fs(:datetime_full)]
-            | #{short_time_ago_in_words(note.created_at)} ago
+            title=note.added_event.performed_at.to_fs(:datetime_full)]
+            | #{short_time_ago_in_words(note.added_event.performed_at)} ago
       .d-flex.align-items-right.ms-auto
         - if is_first_note && (allowed_to?(:reply?, context: { note_thread: thread }, with: NotePolicy))
           - unless hide_visibility_controls

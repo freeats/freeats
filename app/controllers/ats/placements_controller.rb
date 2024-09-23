@@ -135,6 +135,7 @@ class ATS::PlacementsController < ApplicationController
   # rubocop:disable Naming/AccessorMethodName
   def set_placements_variables(placement)
     # TODO: order by placement changed events
+    # https://github.com/toughbyte/ats/issues/471
     all_placements = placement.candidate.placements.includes(:position_stage, :position)
 
     @irrelevant_placements = all_placements.filter(&:disqualified?)

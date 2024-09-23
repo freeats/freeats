@@ -1,6 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
 
-// TODO: move the listener on 's' keydown here as well.
 export default class extends Controller {
   static visibleInput;
 

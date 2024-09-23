@@ -3,7 +3,6 @@
 class Scorecards::New
   include Dry::Monads[:result, :do]
 
-  # TODO: pass actor_account
   include Dry::Initializer.define -> do
     option :scorecard_template, Types.Instance(ScorecardTemplate)
     option :placement, Types.Instance(Placement)

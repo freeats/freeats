@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 class AccountLink
-  attr_reader :link
+  attr_reader :link, :uri
 
   def initialize(link)
-    @link = link
+    @link = link.is_a?(String) ? link&.strip : link
     @uri = Addressable::URI.parse(@link)
-    @normalized_link = normalize
+    @normalized_link = link.blank? ? link : normalize
   end
 
   def low_level_domain
-    @uri.hostname.split(".").first
+    uri.hostname.split(".").first
   end
 
   def domain
@@ -20,27 +20,27 @@ class AccountLink
   def normalize
     return @normalized_link if @normalized_link
 
-    @uri.hostname = @uri.hostname.downcase
+    uri.hostname = uri.hostname.downcase if uri.hostname.present?
 
     normalized_link =
-      case @uri.domain
+      case uri.domain
       when /hh\.(ru|kz)/
-        path = @uri.path.last == "/" ? @uri.path[0...-1] : @uri.path
-        "https://#{@uri.domain}#{path.downcase}"
+        path = uri.path.last == "/" ? uri.path[0...-1] : uri.path
+        "https://#{uri.domain}#{path.downcase}"
       when "github.com"
-        splited_path = @uri.path.split("/").filter(&:present?)
+        splited_path = uri.path.split("/").filter(&:present?)
         username = splited_path.shift
 
         downcased_url_part = [username].join("/").downcase
         other_url_part = splited_path.join("/")
 
-        normalized_link = "https://#{@uri.domain}/#{downcased_url_part}/#{other_url_part}"
+        normalized_link = "https://#{uri.domain}/#{downcased_url_part}/#{other_url_part}"
         normalized_link.last == "/" ? normalized_link[0...-1] : normalized_link
       when "gitlab.io"
         # Here we pull everything except `www` and `gitlab.io`
         # from the left side of the link.
-        host_parts = @uri.host.split(".").without("www")[...-2]
-        path_parts = @uri.path.split("/").compact_blank
+        host_parts = uri.host.split(".").without("www")[...-2]
+        path_parts = uri.path.split("/").compact_blank
 
         username =
           if host_parts.length.positive?
@@ -53,48 +53,57 @@ class AccountLink
 
         "https://gitlab.com/#{username}"
       when "twitter.com"
-        path = @uri.path
+        path = uri.path
         "https://x.com#{path}"
       when "linkedin.com"
-        path = @uri.path.last == "/" ? @uri.path : "#{@uri.path}/"
-        link_root = "https://www.#{@uri.domain}"
-        if path.downcase.start_with?("/in/", "/company/")
-          path = path.downcase.split("/")
+        path = (uri.path.last == "/" ? uri.path : "#{uri.path}/").downcase
+        link_root = "https://www.#{uri.domain}"
+        if path.starts_with?("/in/", "/company/", "/school/")
+          path = path.split("/")
           "#{[link_root, path[1], path[2]].compact.join('/')}/"
+        elsif path.starts_with?("/jobs/view/")
+          job_id = path.match(%r{[-/](\d+)}).captures.first
+          link_root + "/jobs/view/#{job_id}/"
         else
-          link_root + path.downcase
+          link_root + path
         end
       when "google.com"
         if @link.include?("developers.google.com/experts/people")
-          path = @uri.path.last == "/" ? @uri.path[0...-1] : @uri.path
+          path = uri.path.last == "/" ? uri.path[0...-1] : uri.path
           profile = path.downcase.split("/").last.tr!("-", "_")
-          "https://#{@uri.hostname}/community/experts/directory/profile/profile-#{profile}"
+          "https://#{uri.hostname}/community/experts/directory/profile/profile-#{profile}"
         elsif @link.match?(%r{play.google.com/store/apps/(details|developer)}i)
-          "https://play.google.com#{@uri.path.downcase}?#{@uri.query}"
+          "https://play.google.com#{uri.path.downcase}?#{uri.query}"
         else
-          @uri.fragment = nil
-          @uri.query = nil
-          @uri.to_s
+          uri.fragment = nil
+          uri.query = nil
+          uri.to_s
         end
       when "xing.com"
-        @uri.path.delete_suffix!("/cv") if @uri.path.ends_with?("/cv")
-        @uri.to_s
+        uri.path.delete_suffix!("/cv") if uri.path.ends_with?("/cv")
+        uri.to_s
       when "facebook.com", "fb.com"
-        @uri.path.downcase
-        if @uri.query&.starts_with?("id=")
-          @uri.to_s.split("&")[0]
+        uri.path.downcase
+        if uri.query&.starts_with?("id=")
+          uri.to_s.split("&")[0]
         else
-          @uri.fragment = nil
-          @uri.query = nil
-          @uri.to_s
+          uri.fragment = nil
+          uri.query = nil
+          uri.to_s
         end
       when "ycombinator.com"
-        @uri.to_s
+        uri.to_s
       else
-        @uri.fragment = nil
-        @uri.query = nil
-        @uri.to_s
+        uri.fragment = nil
+        uri.query = nil
+        uri.to_s
       end
+
+    # See issue https://github.com/sporkmonger/addressable/issues/511
+    if normalized_link.include?("´")
+      raise Addressable::URI::InvalidURIError, "Invalid character ´ in link"
+    end
+
     Addressable::URI.normalized_encode(normalized_link)
   end
 
@@ -246,7 +255,6 @@ class AccountLink
     http://www.goo.gl
     http://www.epam.com
     http://www.b.sc
-    http://www.upwork.com
     http://gist.github.io
     http://www.google.com
     http://www.t.co
@@ -261,7 +269,9 @@ class AccountLink
     http://www.microsoft.com
     http://www.coursera.org
     http://www.codeschool.com
+    http://www.upwork.com
     http://www.upwork.como/profiles/users/_
+    https://www.upwork.com/o/profiles/users/_
     http://www.upwork.com/freelancers
     https://www.facebook.com/app_scoped_user_id
     http://www.force.com
@@ -274,6 +284,7 @@ class AccountLink
     http://www.microsoft.net
     http://www.luxoft.com
     http://freelance.ru/users
+    http://www.youtu.be
     https://www.youtube.com/user/playlist
     https://www.youtube.com/user/embed
     http://m.in
@@ -291,7 +302,6 @@ class AccountLink
     http://www.gitlab.com
     http://www.nokia.com
     http://www.codewars.com
-    http://www.youtu.be
     http://www.certifications.ru
     http://www.cruisecontrol.net
     https://github.com

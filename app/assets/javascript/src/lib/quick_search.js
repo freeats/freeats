@@ -1,7 +1,6 @@
 import $ from "jquery";
 import { Turbo } from "@hotwired/turbo-rails";
 
-// TODO: move it to quick_search controller.
 export function enableQuickSearchListeners(document, selectize) {
   $(document).on("keydown.focusSearchField", (event) => {
     // Do not focus the quick search field if it is aluready focused.

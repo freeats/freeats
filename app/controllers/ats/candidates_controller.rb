@@ -700,6 +700,7 @@ class ATS::CandidatesController < ApplicationController
 
   def set_placements_variables
     # TODO: order by placement changed events
+    # https://github.com/toughbyte/ats/issues/471
     all_placements = @candidate.placements.includes(:position_stage, :position)
 
     @irrelevant_placements = all_placements.filter(&:disqualified?)

@@ -98,6 +98,7 @@ class Imap::Account
       count: batch_size
     ) do |fetched_message, _imap, uid, flags|
       message = Imap::Message.new_from_api(fetched_message, uid, flags)
+      # The todo copied from Hub.
       # TODO: remove after fixing issue with encode error #14455.
       messages << message if message
     end

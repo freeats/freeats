@@ -590,7 +590,7 @@ DEPENDENCIES
   action_policy
   active_record_union
   acts_as_tenant
-  addressable (= 2.8.1)
+  addressable
   aws-sdk-s3
   blazer
   bootsnap

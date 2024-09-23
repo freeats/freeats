@@ -4,6 +4,30 @@ ruby_position_added:
   eventable: ruby_position (Position)
   tenant: toughbyte_tenant
 
+golang_position_added:
+  type: :position_added
+  actor_account: admin_account
+  eventable: golang_position (Position)
+  tenant: toughbyte_tenant
+
+closed_position_added:
+  type: :position_added
+  actor_account: admin_account
+  eventable: closed_position (Position)
+  tenant: toughbyte_tenant
+
+suroviy_active_position_added:
+  type: :position_added
+  actor_account: suroviy_grigoriy_account
+  eventable: suroviy_active_position (Position)
+  tenant: suroviy_byte_tenant
+
+suroviy_close_position_added:
+  type: :position_added
+  actor_account: suroviy_grigoriy_account
+  eventable: suroviy_close_position (Position)
+  tenant: suroviy_byte_tenant
+
 ruby_position_recruiter_assigned:
   type: :position_recruiter_assigned
   actor_account: admin_account
@@ -158,6 +182,13 @@ interviewer_reply_added:
   actor_account: interviewer_account
   eventable: interviewer_reply (Note)
   performed_at: <%= 1.minute.ago %>
+  tenant: toughbyte_tenant
+
+note_task_added:
+  type: :note_added
+  actor_account: admin_account
+  eventable: note_task (Note)
+  performed_at: <%= 1.day.ago %>
   tenant: toughbyte_tenant
 
 jake_candidate_interview_scheduled:

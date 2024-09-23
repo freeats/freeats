@@ -367,20 +367,12 @@ class Candidate < ApplicationRecord
   end
 
   def emails=(new_email_addresses)
-    # @old_emails = emails
-
     new_candidate_email_addresses = CandidateEmailAddress.combine(
       old_email_addresses: candidate_email_addresses.to_a,
       new_email_addresses:,
       candidate_id: id
     )
-    # email_addresses_for_removal =
-    #   @old_emails.map { CandidateEmailAddress.trimmed_address(_1) } -
-    #   new_candidate_email_addresses.map { CandidateEmailAddress.trimmed_address(_1.address) }
     self.candidate_email_addresses = new_candidate_email_addresses
-
-    # TODO: adapt and uncomment.
-    # remove_orphaned_email_messages(email_addresses_for_removal)
   end
 
   def cv

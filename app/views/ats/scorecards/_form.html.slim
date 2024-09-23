@@ -17,6 +17,7 @@ ruby:
 
 / TODO: implement storing not saved scorecard data in local storage
 / Hub has callbacks on `evaluation-form` class.
+/ https://github.com/toughbyte/ats/issues/480
 = form_with model: scorecard, url: submit_path, local: true,
             html: { class: "form evaluation-form" }, data: { turbo: false } do |form|
   = form.hidden_field :position_stage_id, value: scorecard.position_stage_id

@@ -3,7 +3,6 @@
 class PositionStages::Add
   include Dry::Monads[:result, :try, :do]
 
-  # TODO: pass actor_account
   include Dry::Initializer.define -> do
     option :params, Types::Strict::Hash.schema(
       list_index: Types::Params::Integer,

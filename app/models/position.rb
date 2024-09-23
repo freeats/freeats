@@ -64,6 +64,19 @@ class Position < ApplicationRecord
   has_many :tasks, as: :taskable, dependent: :destroy
   has_many :sequence_templates, dependent: :nullify
 
+  has_one :added_event,
+          -> { where(type: :position_added) },
+          class_name: "Event",
+          as: :eventable,
+          inverse_of: false,
+          dependent: nil
+  has_one :last_position_status_changed_event,
+          -> { where(type: :position_changed, changed_field: :status).order(performed_at: :desc) },
+          class_name: "Event",
+          as: :eventable,
+          inverse_of: false,
+          dependent: nil
+
   belongs_to :location, optional: true
   belongs_to :recruiter, optional: true, class_name: "Member"
 
