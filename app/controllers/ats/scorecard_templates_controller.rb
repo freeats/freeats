@@ -5,10 +5,10 @@ class ATS::ScorecardTemplatesController < ApplicationController
 
   layout "ats/application"
 
-  before_action :set_scorecard_template, only: %i[show edit update]
+  before_action :set_scorecard_template, only: %i[show edit update destroy]
   before_action :authorize!, only: %i[new create]
   before_action -> { authorize!(@scorecard_template) },
-                only: %i[show edit update]
+                only: %i[show edit update destroy]
 
   def show; end
 
@@ -51,6 +51,18 @@ class ATS::ScorecardTemplatesController < ApplicationController
        Failure[:scorecard_template_question_invalid, _e] |
        Failure[:scorecard_template_question_not_unique, _e]
       render_error _e, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    case ScorecardTemplates::Destroy.new(
+      scorecard_template: @scorecard_template,
+      actor_account: current_account
+    ).call
+    in Success(position)
+      redirect_to ats_position_path(position)
+    in Failure[:scorecard_template_not_destroyed, _error] | Failure[:event_invalid, _error]
+      render_error _error, status: :unprocessable_entity
     end
   end
 

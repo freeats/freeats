@@ -10,6 +10,7 @@ require "minitest/stub_const"
 module ActiveSupport
   class TestCase
     include FactoryBot::Syntax::Methods
+    include Dry::Monads[:result]
 
     parallelize(workers: :number_of_processors)
 

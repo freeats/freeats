@@ -129,4 +129,47 @@ class ATS::ScorecardTemplatesControllerTest < ActionDispatch::IntegrationTest
     assert_equal new_event.type, "scorecard_template_added"
     assert_equal new_event.eventable_id, scorecard_template.id
   end
+
+  test "should allow to destroy scorecard templates to admins only" do
+    scorecard_template = scorecard_templates(:ruby_position_contacted_scorecard_template)
+    position = scorecard_template.position_stage.position
+    assert_no_difference "ScorecardTemplate.count" do
+      delete ats_scorecard_template_path(scorecard_template)
+    end
+
+    assert_response :redirect
+    assert_redirected_to "/"
+    assert scorecard_template.reload
+
+    sign_out
+    sign_in accounts(:admin_account)
+
+    assert_difference "ScorecardTemplate.count", -1 do
+      delete ats_scorecard_template_path(scorecard_template)
+    end
+
+    assert_response :redirect
+    assert_redirected_to ats_position_path(position)
+    assert_nil ScorecardTemplate.find_by(id: scorecard_template.id)
+  end
+
+  test "should render error if scorecard template was not destroyed" do
+    sign_out
+    sign_in accounts(:admin_account)
+    scorecard_template = scorecard_templates(:ruby_position_contacted_scorecard_template)
+
+    scorecard_template_destroy_mock = Minitest::Mock.new
+    scorecard_template_destroy_mock.expect(:call, Failure[:scorecard_template_not_destroyed, "error message"])
+
+    ScorecardTemplates::Destroy.stub(:new, ->(_params) { scorecard_template_destroy_mock }) do
+      err = assert_raises(RenderErrorExceptionForTests) do
+        delete(ats_scorecard_template_path(scorecard_template))
+      end
+
+      err_info = JSON.parse(err.message)
+
+      assert_equal err_info["message"], "error message"
+      assert_equal err_info["status"], "unprocessable_entity"
+    end
+  end
 end

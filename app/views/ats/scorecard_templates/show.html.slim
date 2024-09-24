@@ -22,9 +22,17 @@
           - else
             div class="text-gray-600"
               | No questions
-
-    - if allowed_to?(:edit?)
-      .hstack.flex-wrap.gap-2.mt-4.justify-content-between
-        .hstack.flex-wrap.gap-2
-          = render ButtonLinkComponent.new(edit_ats_scorecard_template_path(@scorecard_template), size: :small)
-            | Edit
+    .hstack.flex-wrap.gap-2.mt-4.justify-content-between
+      - if allowed_to?(:edit?)
+        = render ButtonLinkComponent.new(edit_ats_scorecard_template_path(@scorecard_template), size: :small)
+          | Edit
+      - if allowed_to?(:destroy?)
+        = form_with url: ats_scorecard_template_path(@scorecard_template), method: :delete
+          = render ButtonComponent.new(variant: :danger,
+                                       size: :small,
+                                       data: { toggle: "ats-confirmation",
+                                               title: "Delete scorecard template?",
+                                               btn_cancel_label: "Cancel",
+                                               btn_ok_label: "Delete",
+                                               btn_ok_class: "btn btn-danger btn-small" })
+            | Delete

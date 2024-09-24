@@ -63,6 +63,7 @@ class Event < ApplicationRecord
     position_stage_changed
     scorecard_added
     scorecard_template_added
+    scorecard_template_removed
     scorecard_template_updated
     scorecard_updated
     sequence_exited

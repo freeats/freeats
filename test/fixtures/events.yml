@@ -107,6 +107,13 @@ ruby_position_replied_scorecard_added:
   performed_at: <%= 1.week.ago %>
   tenant: toughbyte_tenant
 
+ruby_position_contacted_scorecard_template_added:
+  type: :scorecard_template_added
+  actor_account: admin_account
+  eventable: ruby_position_contacted_scorecard_template (ScorecardTemplate)
+  performed_at: <%= 1.week.ago %>
+  tenant: toughbyte_tenant
+
 position_task_added:
   type: :task_added
   actor_account: admin_account

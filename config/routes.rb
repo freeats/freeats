@@ -61,7 +61,7 @@ Rails.application.routes.draw do
       get :fetch_pipeline_placements, to: "placements#fetch_pipeline_placements"
     end
 
-    resources :scorecard_templates, only: %i[new create show edit update]
+    resources :scorecard_templates, only: %i[new create show edit update destroy]
     resources :scorecards, only: %i[new create show edit update]
 
     resource :profile, only: %i[show] do
