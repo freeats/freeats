@@ -4,7 +4,8 @@ ruby:
   is_first_note = note == thread.notes.min_by(&:created_at)
   visible_members = thread.members.map { _1.account.name }.join("<br>")
   # rubocop:disable Lint/UselessAssignment
-  visibility_tooltip_title = thread.hidden? ? "Visible to:<br>#{visible_members}" : "Change visibility"
+  visibility_tooltip_title =
+    thread.hidden? ? raw(t("notes.visible_to", members: visible_members)) : t("notes.change_visibility")
   # rubocop:enable Lint/UselessAssignment
   change_visibility = "disabled" unless allowed_to?(:update?, thread, with: NoteThreadPolicy)
 
@@ -18,11 +19,11 @@ ruby:
         - if note.updated_at - note.created_at > 5.minutes
           span.text-secondary.ms-2 [data-bs-toggle="tooltip"
               title=note.updated_at.to_fs(:datetime_full)]
-            | Edited #{short_time_ago_in_words(note.updated_at)} ago
+            = t("core.edited_time", time: short_time_ago_in_words(note.updated_at))
         - else
           span.text-secondary.ms-2 [data-bs-toggle="tooltip"
             title=note.added_event.performed_at.to_fs(:datetime_full)]
-            | #{short_time_ago_in_words(note.added_event.performed_at)} ago
+            = t("core.created_time", time: short_time_ago_in_words(note.added_event.performed_at))
       .d-flex.align-items-right.ms-auto
         - if is_first_note && (allowed_to?(:reply?, context: { note_thread: thread }, with: NotePolicy))
           - unless hide_visibility_controls
@@ -34,15 +35,17 @@ ruby:
                   i.fal.fa-eye-slash
                 - else
                   i.fal.fa-eye
-          = link_to "#note-thread-reply-#{thread.id}", class: "btn btn-light btn-sm note-button-reply ms-2",
-                    title: "Reply", data: { action: "click->note-thread#showReplyTab", bs_toggle: "tooltip" } do
+          = link_to "#note-thread-reply-#{thread.id}",
+                    class: "btn btn-light btn-sm note-button-reply ms-2",
+                    title: t("core.reply_button"),
+                    data: { action: "click->note-thread#showReplyTab", bs_toggle: "tooltip" } do
             i.fal.fa-reply
         - if allowed_to?(:toggle_reaction?, note)
           = render "shared/notes/note_reaction",
                     note:,
                     reacted_names: note.reacted_member_names(current_member),
                     member_react: current_member.reacted_to_note?(note)
-        span.ms-2 data-bs-toggle="tooltip" title="More"
+        span.ms-2 data-bs-toggle="tooltip" title=(t("core.more_button"))
           button.btn.btn-light.btn-sm [aria-expanded="false" aria-haspopup="true"
                                             data-bs-toggle="dropdown" type="button"]
             i.far.fa-ellipsis-h
@@ -50,15 +53,15 @@ ruby:
             li
               button.btn.btn-sm.dropdown-item [type="button"
                 data-controller="copy-to-clipboard"
-                data-clipboard-text=note.url data-bs-title="Copied!" data-bs-trigger="manual"]
+                data-clipboard-text=note.url data-bs-title=(t("notes.copied_placeholder")) data-bs-trigger="manual"]
                 i.fal.fa-link.fa-fw
-                span.ms-2 Copy link
+                span.ms-2 = t("core.copy_link_button")
             - if allowed_to?(:show_edit_view?, note)
               li = link_to show_edit_view_note_path(note, render_time: Time.zone.now),
                            class: "btn btn-sm dropdown-item",
                            data: { turbo_frame: dom_id(note, "turbo") }
                 i.fal.fa-pencil-alt.fa-fw
-                span.ms-2 Edit
+                span.ms-2 t("core.edit_button")
             - if allowed_to?(:destroy?, note)
               li = form_with url: note_path(note), method: :delete,
                              data: { action: "submit->candidate-notes#removeNoteCallback" } do |form|
@@ -66,12 +69,12 @@ ruby:
                 = form.button(class: "btn btn-sm dropdown-item",
                               data: { \
                                 toggle: "ats-confirmation",
-                                title: "Remove note?",
-                                btn_cancel_label: "Cancel",
-                                btn_ok_label: "Remove",
+                                title: t("notes.remote_note"),
+                                btn_cancel_label: t("core.cancel_button"),
+                                btn_ok_label: t("core.remove_button"),
                                 btn_ok_class: "btn btn-danger btn-small" \
                                 } \
                               )
                   i.fal.fa-trash-alt.fa-fw
-                  span.ms-2 Remove
+                  span.ms-2 = t("core.remove_button")
     = preformatted_plain_format(note.text)

@@ -1,15 +1,8 @@
 ruby:
-  compose_state =
-    if !current_member.email_service_linked?
-      :email_not_linked
-    elsif @mail_to_address.blank?
-      :candidate_no_emails
+  synchronize_button_tooltip_text =
+    unless current_member.email_service_linked?
+      t("user_accounts.email_not_linked")
     end
-  tooltip_text =
-    if compose_state.present?
-      t("ats.profiles.emails_tab.compose_button_disabled_tooltip.#{compose_state}")
-    end
-  synchronize_button_tooltip_text = tooltip_text if compose_state == :email_not_linked
 
 = render "ats/candidates/profile"
 
@@ -40,7 +33,6 @@ ruby:
                  as: :email_thread,
                  locals: { hashed_avatars: @hashed_avatars,
                            candidate_ids: @candidate.id,
-                           disabled_reason: (compose_state.presence if compose_state != :candidate_no_emails),
                            single_message: @single_message,
                            controller_name: }
     .row.mt-3

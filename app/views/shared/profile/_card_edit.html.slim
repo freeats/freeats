@@ -37,10 +37,10 @@ ruby:
                                          turbo_frame: :turbo_modal_window,
                                          profile_cards_activator_target: :shortcut \
                                        })
-            | Save
+            = t("core.save_button")
 
           = render ButtonLinkComponent.new(cancel_path, variant: :secondary, size: :tiny, type: :submit)
-            | Cancel
+            = t("core.cancel_button")
 
       .card-body.enter-turbo-submit
         = yield form

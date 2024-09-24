@@ -81,7 +81,8 @@ class ATS::SequenceTemplatesController < ApplicationController
     if @sequence_template.update!(archived: true)
       # running_sequences_count = @sequence_template.sequences.where(status: :running).count
 
-      notice = [@sequence_template.name, "has_been_successfully archived."]
+      notice =
+        t("positions.sequence_templates_archived", name: @sequence_template.name)
       # if running_sequences_count.positive?
       #   notice <<
       #     "There #{'is'.pluralize(running_sequences_count)} still #{running_sequences_count}
@@ -90,7 +91,7 @@ class ATS::SequenceTemplatesController < ApplicationController
 
       render_turbo_stream(
         [turbo_stream.replace("turbo_ats_email_templates_info", partial: "info")],
-        notice: notice.join(" ")
+        notice:
       )
       return
     end

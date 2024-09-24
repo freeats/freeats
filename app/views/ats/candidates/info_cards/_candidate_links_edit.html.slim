@@ -16,7 +16,7 @@ ruby:
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
           = render TextInputComponent.new(links_form, method: :url, size: :small,
-                                          placeholder: "Link", type: :url,
+                                          placeholder: t("candidates.link"), type: :url,
                                           value: Addressable::URI.unencode(links_form.object&.url),
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
           - if links_form.object.id.present?
@@ -36,7 +36,7 @@ ruby:
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
           = render TextInputComponent.new(links_form, method: :url, size: :small,
-                                          placeholder: "Link", type: :url,
+                                          placeholder: t("candidates.link"), type: :url,
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"

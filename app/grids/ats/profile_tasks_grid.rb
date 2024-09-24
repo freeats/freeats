@@ -31,13 +31,13 @@ class ATS::ProfileTasksGrid
 
   column(
     :notes,
-    header: "Notes",
+    header: I18n.t("core.notes"),
     &:notes_count
   )
 
   column(
     :due_date,
-    header: "Due",
+    header: I18n.t("core.due"),
     html: true,
     order: "due_date, name",
     order_desc: "due_date DESC, name"

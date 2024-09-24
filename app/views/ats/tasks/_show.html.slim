@@ -14,9 +14,9 @@
 ruby:
   title =
     if task.taskable
-      "Task for #{task.taskable_name}"
+      t("tasks.task_for", name: task.taskable_name)
     else
-      "Task"
+      t("core.task")
     end
 
 = turbo_frame_tag :turbo_modal_window, target: "_top"
@@ -46,11 +46,11 @@ ruby:
                     li.nav-item
                       a.nav-link.active [id="#{dom_id(task)}-notes" data-bs-toggle="tab" href="#notes-tab" role="tab"
                           aria-controls="notes" aria-selected="true"]
-                        | Notes
+                        = t("core.notes")
                     li.nav-item
                       a.nav-link [id="#{dom_id(task)}-activities" data-bs-toggle="tab" href="#activities-tab" role="tab"
                           aria-controls="activities" aria-selected="false"]
-                        | Activities
+                        = t("core.activities")
                   .tab-content
                     .tab-pane.fade.show.active.notes-block id="notes-tab" role="tabpanel" aria-labelledby="notes-tab"
                       #notes.row

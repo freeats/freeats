@@ -13,19 +13,19 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
       ul.navbar-nav.text-nowrap.gap-1.gap-lg-0.mb-1.mb-lg-0
         - if allowed_to?(:index?, with: ATS::DashboardPolicy)
           li.nav-item
-            = link_to "Dashboard", root_path,
+            = link_to t("core.dashboard"), root_path,
                       class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
         - if allowed_to?(:index?, with: ATS::TaskPolicy)
           li.nav-item
-            = link_to "Tasks", ats_tasks_path,
+            = link_to t("core.task"), ats_tasks_path,
                       class: "nav-link#{' nav-link-selected' if @nav_item == :tasks}"
         - if allowed_to?(:index?, with: ATS::CandidatePolicy)
           li.nav-item
-            = link_to "Candidates", ats_candidates_path,
+            = link_to t("core.candidates"), ats_candidates_path,
                       class: "nav-link#{' nav-link-selected' if @nav_item == :candidates}"
         - if allowed_to?(:index?, with: ATS::PositionPolicy)
           li.nav-item
-            = link_to "Positions", ats_positions_path,
+            = link_to t("core.position"), ats_positions_path,
                       class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
         / li.nav-item
           = link_to "Sequences", "/", # TODO: Replace with the correct path \
@@ -39,10 +39,10 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
         ul.navbar-nav.gap-1
           li.dropdown-divider.my-2 role="separator"
           li.nav-item
-            = link_to "Settings", ats_settings_path,
+            = link_to t("core.settings"), ats_settings_path,
                       class: "nav-link #{'nav-link-selected' if is_ats_profile}"
           li.nav-item
-            = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
+            = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "dropdown-item",
                         form_class: "pt-2", form: { data: { turbo: false } }
 
     / Quick search
@@ -50,7 +50,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
       .quick-search.flex-grow-1.flex-lg-grow-0.order-3
         = render HtmlSelectComponent.new( \
                    "quick_search",
-                   placeholder: "Search",
+                   placeholder: t("core.search"),
                    item_as_rich_text: true,
                    data: { controller: "quick-search",
                            action: "resize@window->quick-search#changePlaceholder" },
@@ -62,15 +62,15 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
     .dropdown.profile-button.order-4
       = picture_avatar_icon current_account.avatar, {},
                             class: "profile-avatar-thumbnail dropdown-toggle d-inline d-lg-none",
-                            alt: "Your photo"
+                            alt: t("user_accounts.your_photo")
       button.dropdown-toggle.btn.d-none.d-lg-block [aria-expanded="false" aria-haspopup="true"
                                                     data-bs-toggle="dropdown" role="button" type="button"]
         = picture_avatar_icon current_account.avatar, {},
                               class: "profile-avatar-thumbnail dropdown-toggle",
-                              alt: "Your photo"
+                              alt: t("user_accounts.your_photo")
       ul.dropdown-menu.dropdown-menu-end
-        li = link_to "Settings", ats_settings_path,
+        li = link_to t("core.settings"), ats_settings_path,
                      class: "dropdown-item #{'nav-link-selected' if is_ats_profile}"
         li
-          = button_to "Sign out", rodauth.logout_path, method: :post, class: "dropdown-item",
+          = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "dropdown-item",
                       form_class: "dropdown-item", form: { data: { turbo: false } }

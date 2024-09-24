@@ -48,13 +48,13 @@ class ApplicationController < ActionController::Base
         end
 
         redirect_back fallback_location: root_url,
-                      alert: "You are not allowed to perform this action."
+                      alert: t("errors.forbidden_action")
       end
       format.json do
-        render_error "You are not allowed to perform this action.", status: :forbidden
+        render_error t("errors.forbidden_action"), status: :forbidden
       end
       format.turbo_stream do
-        render_error "You are not allowed to perform this action.", status: :forbidden
+        render_error t("errors.forbidden_action"), status: :forbidden
       end
     end
   end

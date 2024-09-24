@@ -14,7 +14,7 @@ ruby:
       - if control_button == :edit && allowed_to?(:card_edit?, with: policy)
         = link_to public_send(edit_card_path, target_model, card_name:),
                   class: "btn control-grey-icon float-end px-2 p-0",
-                  data: { bs_toggle: "tooltip", bs_title: "Edit" }
+                  data: { bs_toggle: "tooltip", bs_title: t("core.edit_button") }
           i.fas.fa-pencil-alt``
     .card-body
       = yield

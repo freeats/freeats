@@ -11,7 +11,7 @@
           = picture_avatar_icon note.member.account.avatar, {}, class: "small-avatar-thumbnail"
           span.ms-2 = note.member.account.name
         = form.text_area(:text, class: "form-control enter-turbo-submit note-textarea", rows: 4,
-                         placeholder: "Edit...", required: true, id: "textarea-edit-#{note.id}",
+                         placeholder: t("notes.edit_placeholder"), required: true, id: "textarea-edit-#{note.id}",
                          data: { notes_target: "noteTextArea" })
         .d-flex.justify-content-end.gap-2.mt-3
           = render ButtonLinkComponent.new(show_show_view_note_path(note),
@@ -20,6 +20,6 @@
                                            type: :button,
                                            data: { action: "click->notes#resetNoteForm",
                                                    turbo_frame: dom_id(note, "turbo") })
-            | Cancel
+            = t("core.cancel_button")
           = render ButtonComponent.new(size: :tiny)
-            | Save
+            = t("core.save_button")

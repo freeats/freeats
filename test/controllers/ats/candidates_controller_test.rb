@@ -812,6 +812,6 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to ats_candidates_path
-    assert_equal flash[:notice], I18n.t("ats.candidates.successful_deletion")
+    assert_equal flash[:notice], I18n.t("candidates.candidate_deleted")
   end
 end

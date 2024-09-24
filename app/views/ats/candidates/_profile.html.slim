@@ -2,11 +2,11 @@
 - render_reassign_button = proc do |mobile: false|
   = render "shared/profile/reassign_button",
             currently_assigned_account: @assigned_recruiter&.account,
-            tooltip_title: "Recruiter",
+            tooltip_title: t("core.recruiter"),
             target_model: @candidate,
             target_url: assign_recruiter_ats_candidate_path(@candidate),
             input_button_name: "candidate[recruiter_id]",
-            unassignment_label: "Unassign recruiter",
+            unassignment_label: t("core.unassign_recruiter"),
             allowed_to_edit: allowed_to?(:assign_recruiter?),
             mobile:
 

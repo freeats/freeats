@@ -24,7 +24,7 @@
         h2.d-inline-block.mb-0 style="min-height: 32px;"
           = task.name
         button.btn.control-grey-icon.py-0.px-2.float-end [type="button" data-action="inline-edit-form#show"
-            data-bs-toggle="tooltip" title="Edit"]
+            data-bs-toggle="tooltip" title=t("core.edit_button")]
           i.fas.fa-pencil-alt
       / Title edit
       .col.hidden data-inline-edit-form-target="editView"
@@ -37,19 +37,19 @@
                                          data: { bs_toggle: "tooltip",
                                                  bs_title: "Ctrl + Enter",
                                                  inline_edit_form_target: "shortcut" })
-              | Save
+              = t("core.save_button")
             = render ButtonComponent.new(variant: :secondary,
                                          size: :small,
                                          type: :button,
                                          data: { action: "inline-edit-form#hide" })
-              | Cancel
+              = t("core.cancel_button")
 
   / Second row
   .d-flex.flex-wrap.mt-3.column-gap-4
     / Assignee
     = form_with model: task, url: ats_task_path(task, grid:),
                 class: "row flex-fill col-12 col-lg-6 turbo-instant-submit" do |f|
-      = f.label :assignee_id, "Assignee", class: label_classes
+      = f.label :assignee_id, t("core.assignee"), class: label_classes
       .col-lg-9
         = f.select :assignee_id, assignee_options, { include_blank: false },
                    class: "form-control selectpicker flex-fill",
@@ -60,7 +60,7 @@
     = form_with model: task, url: ats_task_path(task, grid:),
                 class: "row flex-fill col-12 col-lg-6",
                 data: { turbo_modal_tasks_target: "watchersForm" } do |f|
-      = f.label :watcher_ids, "Watchers", class: label_classes
+      = f.label :watcher_ids, t("core.watchers"), class: label_classes
       .col-lg-9
         = f.select :watcher_ids,
                    assignee_options,
@@ -76,7 +76,7 @@
     / Due date
     = form_with model: task, url: ats_task_path(task, grid:),
                 class: "row flex-fill col-12 col-lg-6 turbo-instant-submit" do |f|
-      = f.label :due_date_alt, "Due date", class: label_classes
+      = f.label :due_date_alt, t("core.due_date"), class: label_classes
       .col-lg-9 data-controller="humanized-datepicker"
           = render TextInputComponent.new("task[due_date]", size: :small, value: task.due_date, id: nil,
                                           data: { humanized_datepicker_target: "datepicker" },
@@ -87,7 +87,7 @@
     / Repeat
     = form_with model: task, url: ats_task_path(task, grid:),
                 class: "row flex-fill col-12 col-lg-6 turbo-instant-submit" do |f|
-      = f.label :repeat_interval, "Repeat", class: label_classes
+      = f.label :repeat_interval, t("tasks.repeat"), class: label_classes
       .col-lg-9
         = f.select :repeat_interval,
                    Task.repeat_intervals.transform_keys(&:humanize),
@@ -99,7 +99,7 @@
   .d-flex.flex-wrap.mt-3.column-gap-4
     / Added by
     .row.flex-fill.align-items-center.col-6
-      = label_tag :added_by, "Added by", class: ["col col-sm-4", label_classes]
+      = label_tag :added_by, t("core.added_by"), class: ["col col-sm-4", label_classes]
       .col.col-sm-8.col-lg-9.hstack.gap-2
         - if added_by_account.present?
           = picture_avatar_icon added_by_account.avatar, {}, class: "small-avatar-thumbnail"
@@ -112,7 +112,7 @@
 
     / Added on
     .row.flex-fill.align-items-center.col-6
-      = label_tag :added_on, "Added on", class: ["col col-sm-5", label_classes]
+      = label_tag :added_on, t("core.added_on"), class: ["col col-sm-5", label_classes]
       .col.col-sm-7.col-lg-9.hstack
         = added_on_time.to_fs(:date)
 
@@ -122,9 +122,9 @@
       / Description show
       .vstack.gap-2
         .hstack.justify-content-between style="height: 32px;"
-          = label_tag :description_show, "Description", class: "col-form-label-sm text-gray-600"
+          = label_tag :description_show, t("tasks.description"), class: "col-form-label-sm text-gray-600"
           button.btn.control-grey-icon.py-0.px-2.float-end [type="button" data-action="inline-edit-form#show"
-              data-bs-toggle="tooltip" title="Edit"]
+              data-bs-toggle="tooltip" title=t("core.edit_button")]
             i.fas.fa-pencil-alt
         .w-100 style="min-height: 2rem;"
           = preformatted_plain_format(task.description)
@@ -133,18 +133,19 @@
       / Description edit
       .vstack.gap-2
         .hstack.gap-2
-          = f.label :description, "Description", class: "col-form-label-sm flex-grow-1", style: "height: 32px;"
+          = f.label :description, t("tasks.description"),
+                    class: "col-form-label-sm flex-grow-1", style: "height: 32px;"
           = render ButtonComponent.new(size: :small,
                                        data: { action: "inline-edit-form#hide",
                                                bs_toggle: "tooltip",
                                                bs_title: "Ctrl + Enter",
                                                inline_edit_form_target: "shortcut" })
-            | Save
+            = t("core.save_button")
           = render ButtonComponent.new(variant: :secondary,
                                        size: :small,
                                        type: :button,
                                        data: { action: "inline-edit-form#hide" })
-            | Cancel
+            = t("core.cancel_button")
         .w-100
           = f.text_area :description, rows: 4, class: "form-control overflow-auto enter-turbo-submit",
                         data: { inline_edit_form_target: "focusInput" }

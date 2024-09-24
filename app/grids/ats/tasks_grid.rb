@@ -20,8 +20,8 @@ class ATS::TasksGrid
   filter(
     :name,
     :string,
-    header: "Name",
-    placeholder: "Name"
+    header: I18n.t("core.name"),
+    placeholder: I18n.t("core.name")
   ) do |name|
     where("name ILIKE ?", "%#{name}%")
   end
@@ -31,17 +31,17 @@ class ATS::TasksGrid
     :enum,
     select: -> { Task.statuses.transform_keys(&:capitalize) },
     default: "open",
-    include_blank: "Status",
-    placeholder: "Status"
+    include_blank: I18n.t("core.status"),
+    placeholder: I18n.t("core.status")
   )
 
   filter(
     :due_date,
     :enum,
-    select: [%w[Today today]],
+    select: [[I18n.t("core.today"), "today"]],
     default: "today",
-    include_blank: "Due date",
-    placeholder: "Due date"
+    include_blank: I18n.t("core.due_date"),
+    placeholder: I18n.t("core.due_date")
   ) do |due_date|
     # Remove this after adding a new option for the due_date filter.
     raise ArgumentError, "Wrong due date" unless due_date == "today"
@@ -71,14 +71,14 @@ class ATS::TasksGrid
         .order("accounts.name")
         .pluck("accounts.name", :id)
     },
-    include_blank: "Assignee",
-    placeholder: "Assignee"
+    include_blank: I18n.t("core.assignee"),
+    placeholder: I18n.t("core.assignee")
   )
 
   filter(
     :watched,
     :enum,
-    select: -> { { "Watched" => "true" } },
+    select: -> { { I18n.t("core.watched") => "true" } },
     default: "false",
     checkboxes: true
   ) do |val, scope, grid|
@@ -123,13 +123,13 @@ class ATS::TasksGrid
 
   column(
     :notes,
-    header: "Notes",
+    header: I18n.t("core.notes"),
     &:notes_count
   )
 
   column(
     :due_date,
-    header: "Due",
+    header: I18n.t("core.due"),
     html: true,
     order: "due_date, name",
     order_desc: "due_date DESC, name"

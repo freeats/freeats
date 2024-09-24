@@ -1,36 +1,63 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
+---
 en:
   core:
+    activities: Activities
+    add_button: Add
+    added_by: Added by
+    added_on: Added on %{time}
+    assign_button: Assign
+    assignee: Assignee
+    cancel_button: Cancel
+    candidate: Candidate
+    candidates: Candidates
     city: City
+    collaborator: Collaborator
+    company: Company
+    confirm_button: Confirm
+    copy_link_button: Copy link
+    create_button: Create
+    created_time: "%{time} ago"
+    dashboard: Dashboard
+    delete_button: Delete
+    drag_and_drop_tooltip: You can also drag a file directly to this button in order
+      to upload it
+    due: Due
+    due_date: Due date
+    edit_button: Edit
+    edited_time: Edited %{time} ago
+    hidden_save: Hidden save
+    hiring_manager: Hiring manager
+    last_activity: "%{time} ago"
+    last_activity_on: Last activity on %{time}
+    last_word_connector: " and "
     location: Location
+    more_button: More
+    name: Name
+    notes: Notes
+    outdated: Outdated
+    position: Position
+    profile: Profile
+    recruiter: Recruiter
+    remove_button: Remove
+    reply_button: Reply
+    save_button: Save
+    search: Search
+    send_button: Send
+    settings: Settings
+    stage: Stage
+    status: Status
+    task: Task
+    tasks: Tasks
+    today: Today
+    tomorrow: Tomorrow
+    unassign_recruiter: Unassign recruiter
+    updated_time: "%{time} ago"
+    upload_button: Upload
+    watched: Watched
+    watchers: Watchers
+    when: When
+    yesterday: Yesterday
+
   datetime:
     distance_in_words:
       short:
@@ -68,15 +95,139 @@ en:
         x_seconds:
           one: 1 second
           other: "%{count} seconds"
-  footer:
-    copyright: © %{current_year} Toughbyte
+
   admin:
     actions:
       deactivate_member:
-        menu: "Deactivate"
-  ats:
-    positions:
-      successful_deletion: The position was successfully deleted.
+        menu: Deactivate
+
+  candidates:
+    address: Address
+    advancement:
+      good_candidate: Good candidate
+      irrelevant: Completely irrelevant
+      might_be_irrelevant: Might be irrelevant
+      perfect_candidate: Perfect candidate
+    alternative_name: Alternative name
+    blacklisted: Blacklisted
+    candidate_contacting:
+    candidate_created: Candidate was successfully created.
+    candidate_deleted: The candidate was successfully deleted.
+    chats: Chats
+    cover_letter: Cover letter
+    cv: CV
+    cv_file_extension_alert: CV has <b>%{extension}</b> extension and cannot be displayed.
+      Please %{download_link} to view its content.
+    delete_avatar: Delete avatar?
+    delete_file: Delete file?
+    disabled_avatar_tooltip: You can't delete the avatar right now. It’s being processed.
+    disqualification:
+      disqualify_statuses:
+        availability: The candidate is not available for new opportunities at the
+          moment.
+        location: The candidate is not interested in our office locations.
+        no_reply: The candidate didn't reply to the first message or stopped replying
+          afterwards.
+        not_interested: The candidate wasn't interested due to an unspecified reason.
+        other: The candidate was rejected for some other reason.
+        other_offer: The candidate accepted another offer, a counteroffer from the
+          current employer or decided to pursue another career path.
+        overpriced: The candidate's salary expectations are higher than what can be
+          offered.
+        overqualified: The candidate has more experience than needed for the position
+          or they are interested in higher positions.
+        position_closed: The position was closed.
+        remote_only: The candidate prefers only remote work.
+        team_fit: There was a mismatch with the team culture.
+        underqualified: The candidate didn't have the required skills or level of
+          experience needed.
+        workload: The candidate's availability didn't match with position requirements.
+    download_file: download file
+    emails: Emails
+    full_name: Full name
+    headline: Headline
+    include_blacklisted: Include blacklisted
+    link: Link
+    links: Links
+    merge: Merge
+    merged_plofiles:
+      one:
+        Profile %{duplicate_names} will be merged with the current <b>%{current_candidate_name}</b>
+        profile.
+      other:
+        Profiles %{duplicate_names} will be merged with the current <b>%{current_candidate_name}</b>
+        profile.
+    merged_warning: Candidate you were trying to access was merged with this candidate.
+    no_duplicates_available_for_merge: No duplicates available for merge
+    outdated: Outdated
+    phone: Phone
+    phones: Phones
+    possible_duplicates: Possible duplicates
+    same_emails: "Same emails: %{emails}"
+    same_links: "Same links: %{links}"
+    same_phones: "Same phones: %{phones}"
+    source: Source
+    sourcing:
+      add_position: Add position?
+      disqualified_placement_exist: "<b>%{candidate_name}</b> was last assigned on
+        the <b>%{position_name}</b> on <b>%{date}</b> and is disqualified with reason
+        <b>%{reason}</b>"
+      qualified_placement_exist: "<b>%{candidate_name}</b> was last assigned on the
+        <b>%{position_name}</b> on <b>%{date}</b> and is still qualified on <b>%{stage}</b>
+        stage."
+      reserved_placement_exist: "<b>%{candidate_name}</b> was last assigned on the
+        <b>%{position_name}</b> on <b>%{date}</b> and is reserved."
+
+  errors:
+    forbidden_action: You are not allowed to perform this action.
+    general_error: |-
+      ATS Error
+      %{error}
+      Please contact support.
+    something_went_wrong: Something went wrong, please contact support.
+
+  footer:
+    copyright: "© %{current_year} Toughbyte"
+
+  notes:
+    change_thread_visibility: Change note thread visibility
+    change_visibility: Change visibility
+    copied_placeholder: Copied!
+    edit_placeholder: Edit...
+    hidden_thread:
+      body: "%{members} will be added to this hidden thread."
+      title:
+        one: Add hidden thread member?
+        other: Add hidden thread members?
+    like_button: Like
+    only_selected_members: Only the selected members will see this thread
+    remote_note: Remove note?
+    replies:
+      one: 1 reply
+      other: "%{count} replies"
+    reply_placeholder: Reply...
+    start_new_thread: Start a new thread...
+    visible_to: Visible to:<br>%{members}
+    visible_to_all_members: Visible to all members
+
+  positions:
+    succesfully_deleted: The position was successfully deleted.
+    successfully_created: Position draft was successfully created.
+    sequence_templates_archived: "%{name} has been successfully archived."
+
+  tasks:
+    add_task_button: Add task
+    description: Description
+    repeat: Repeat
+    successfully_created: Task was successfully created.
+    task_for: Task for %{name}
+    task_name: Task name
+
+  user_accounts:
+    email_not_linked: Email is not linked in Profile
+    gmail_linked: Gmail successfully linked.
+    gmail_unlinked: The linked email %{linked_email} does not match the current email.
+    your_photo: Your photo
     settings:
       show:
         title: Settings
@@ -84,47 +235,11 @@ en:
         email_linked: Linked
         email_not_linked: Link email
         save_form_button: Save
-        cancel_changes_form_button: Cancel
         change_password_link_text: Change password
-      account_info:
-        full_name_input_label: Full name
+      full_name_input_label: Full name
       update_account:
         successfully_updated: Account successfully updated.
       update_avatar:
         successfully_updated: Account avatar successfully updated.
       remove_avatar:
         successfully_removed: Account avatar successfully removed.
-
-    placements:
-      disqualify_statuses:
-        availability: >-
-          The candidate is not available for new opportunities at the moment.
-        team_fit: >-
-          There was a mismatch with the team culture.
-        remote_only: >-
-          The candidate prefers only remote work.
-        location: >-
-          The candidate is not interested in our office locations.
-        no_reply: >-
-          The candidate didn't reply to the first message or stopped replying afterwards.
-        not_interested: >-
-          The candidate wasn't interested due to an unspecified reason.
-        workload: >-
-          The candidate's availability didn't match with position requirements.
-        other_offer: >-
-          The candidate accepted another offer, a counteroffer from the current employer or decided to pursue another career path.
-        overpriced: >-
-          The candidate's salary expectations are higher than what can be offered.
-        overqualified: >-
-          The candidate has more experience than needed for the position or they are interested in higher positions.
-        underqualified: >-
-          The candidate didn't have the required skills or level of experience needed.
-        position_closed: >-
-          The position was closed.
-        other: >-
-          The candidate was rejected for some other reason.
-    profiles:
-      emails_tab:
-        compose_button_disabled_tooltip:
-          email_not_linked: Email is not linked in Profile
-          candidate_no_emails: Candidate doesn't have emails with status Current and type Personal

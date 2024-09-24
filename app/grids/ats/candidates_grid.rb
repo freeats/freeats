@@ -38,8 +38,8 @@ class ATS::CandidatesGrid
   filter(
     :candidate,
     :string,
-    header: "Candidate",
-    placeholder: "Search"
+    header: I18n.t("core.candidate"),
+    placeholder: I18n.t("core.search")
   ) do |query|
     search_by_names_or_emails(query).select(SELECTED_FIELDS)
   end
@@ -48,7 +48,7 @@ class ATS::CandidatesGrid
     :locations,
     :string,
     multiple: true,
-    placeholder: "Location",
+    placeholder: I18n.t("core.location"),
     autocomplete: {
       type: :multiple_locations,
       location_types: %w[country city]
@@ -64,8 +64,8 @@ class ATS::CandidatesGrid
       Position.order("positions.status ASC, positions.name ASC")
               .pluck(:name, :id)
     },
-    include_blank: "Position",
-    placeholder: "Position"
+    include_blank: I18n.t("core.position"),
+    placeholder: I18n.t("core.position")
   ) do |position_id|
     joins(:placements).where(placements: { position_id: }).distinct
   end
@@ -77,7 +77,7 @@ class ATS::CandidatesGrid
       PositionStage.group(:name).order("MIN(list_index)").pluck(:name).map { [_1, _1] }
     },
     multiple: true,
-    placeholder: "Stage"
+    placeholder: I18n.t("core.stage")
   ) do |stage_name|
     joins(placements: :position_stage)
       .where(placements: { position_stages: { name: stage_name } })
@@ -91,8 +91,8 @@ class ATS::CandidatesGrid
       Placement.statuses.map { |k, v| [k.humanize, v] }
                         .insert(1, %w[Disqualified disqualified])
     },
-    include_blank: "Status",
-    placeholder: "Status"
+    include_blank: I18n.t("core.status"),
+    placeholder: I18n.t("core.status")
   ) do |status|
     query =
       if status == "disqualified"
@@ -107,8 +107,8 @@ class ATS::CandidatesGrid
     :recruiter,
     :enum,
     select: -> { Member.active.order("accounts.name").pluck("accounts.name", :id) },
-    include_blank: "Recruiter",
-    placeholder: "Recruiter"
+    include_blank: I18n.t("core.recruiter"),
+    placeholder: I18n.t("core.recruiter")
   ) do |recruiter_id|
     where(recruiter_id:)
   end
@@ -116,7 +116,7 @@ class ATS::CandidatesGrid
   filter(
     :include_blacklisted,
     :enum,
-    select: [["Include blacklisted", true]],
+    select: [[I18n.t("candidates.include_blacklisted"), true]],
     default: ["false"],
     checkboxes: true
   ) do |val|
@@ -149,7 +149,7 @@ class ATS::CandidatesGrid
 
   column(
     :position_stage,
-    header: "Position - Stage",
+    header: "#{I18n.t('core.position')} - #{I18n.t('core.stage')}",
     preload: {
       placements: %i[position position_stage]
     },
@@ -160,7 +160,7 @@ class ATS::CandidatesGrid
 
   column(
     :recruiter,
-    header: "Recruiter",
+    header: I18n.t("core.recruiter"),
     html: true,
     preload: { recruiter: :account }
   ) do |model|
@@ -179,7 +179,7 @@ class ATS::CandidatesGrid
     added_date = model.created_at
     format(added_date.to_fs(:datetime_full)) do |value|
       tag.span(data: { bs_toggle: "tooltip", placement: "top" }, title: value) do
-        "#{short_time_ago_in_words(added_date)} ago"
+        I18n.t("core.created_time", time: short_time_ago_in_words(added_date))
       end
     end
   end
@@ -192,7 +192,7 @@ class ATS::CandidatesGrid
   ) do |model|
     tag.span(data: { bs_toggle: "tooltip", placement: "top" },
              title: model.last_activity_at.to_fs(:datetime_full)) do
-      "#{short_time_ago_in_words(model.last_activity_at)} ago"
+      I18n.t("core.last_activity", time: short_time_ago_in_words(model.last_activity_at))
     end
   end
 end

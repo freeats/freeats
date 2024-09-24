@@ -22,19 +22,19 @@ ruby:
 
   / Emails
   = render LabeledComponent.new(class: "mb-2") do |c|
-    - c.with_label("Emails", size: :small, form:)
+    - c.with_label(t("candidates.emails"), size: :small, form:)
     = render "ats/candidates/info_cards/candidate_email_addresses_edit",
              form:, candidate:
     /, pattern: regexp_to_pattern(Devise.email_regexp)
 
   / Phones
   = render LabeledComponent.new(class: "mb-2") do |c|
-    - c.with_label("Phones", size: :small, form:)
+    - c.with_label(t("candidates.phones"), size: :small, form:)
     = render "ats/candidates/info_cards/candidate_phones_edit", form:, candidate:
 
   / Links
   = render(LabeledComponent.new(class: "mb-2")) do |c|
-    - c.with_label("Links", size: :small, form:)
+    - c.with_label(t("candidates.links"), size: :small, form:)
     = render("ats/candidates/info_cards/candidate_links_edit", form:, candidate:)
 
   / Telegram

@@ -10,7 +10,7 @@
 ) do |form|
   button.btn.btn-primary.btn-small.file-upload-button data-bs-toggle="tooltip" title=drag_and_drop_tooltip
     span data-handle-upload-button-target="text"
-      | Upload
+      = t("core.upload_button")
     = form.file_field :file,
                       required: true,
                       class: "upload turbo-instant-submit",

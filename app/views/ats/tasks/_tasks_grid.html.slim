@@ -31,7 +31,9 @@ ruby:
       - if @tasks_grid.assets.total_pages > 1
         .col-12.col-lg-auto = paginate_form
       .col-12.col-lg
-        b> Tasks:
+        b
+          = t("core.tasks")
+          |> :
         = render PrettyNumberComponent.new(@tasks_grid.assets.total_count)
       .col-auto
         = ats_task_add_button

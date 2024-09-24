@@ -30,7 +30,7 @@ ruby:
         .profile-header-actions
           = link_to edit_header_ats_candidate_path(@candidate),
                     class: "btn",
-                    data: { bs_toggle: "tooltip", bs_title: "Edit" }
+                    data: { bs_toggle: "tooltip", bs_title: t("core.edit_button") }
             i.fas.fa-pencil-alt
 
     / BASE INFO
@@ -58,10 +58,12 @@ ruby:
       / ACTIVITY
       .row.font-small.text-secondary.mt-3.gx-2
         .col-auto.text-nowrap.mb-2 [data-bs-toggle="tooltip"
-            title="Added on #{@candidate.created_at.to_fs(:datetime_full)}"]
+            title=t("core.added_on", time: @candidate.created_at.to_fs(:datetime_full))]
           i.fas.fa-plus-square
-          | &nbsp;#{short_time_ago_in_words(@candidate.created_at)} ago
+          | &nbsp;
+          = t("core.created_time", time: short_time_ago_in_words(@candidate.created_at))
         .col-auto.text-nowrap.mb-2 [data-bs-toggle="tooltip"
-            title=("Last activity on #{@candidate.last_activity_at.to_fs(:datetime_full)}")]
+            title=t("core.last_activity_on", time: @candidate.last_activity_at.to_fs(:datetime_full))]
           i.fas.fa-hourglass-half
-          | &nbsp;#{short_time_ago_in_words(@candidate.last_activity_at)} ago
+          | &nbsp;
+          = t("core.last_activity", time: short_time_ago_in_words(@candidate.last_activity_at))

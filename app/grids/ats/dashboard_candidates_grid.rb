@@ -34,7 +34,7 @@ class ATS::DashboardCandidatesGrid
 
   column(
     :position_stage,
-    header: "Position - Stage",
+    header: "#{I18n.t('core.position')} - #{I18n.t('core.stage')}",
     preload: {
       placements: %i[position position_stage]
     },
@@ -45,7 +45,7 @@ class ATS::DashboardCandidatesGrid
 
   column(
     :recruiter,
-    header: "Recruiter",
+    header: I18n.t("core.recruiter"),
     html: true,
     preload: { recruiter: :account }
   ) do |model|
@@ -55,14 +55,14 @@ class ATS::DashboardCandidatesGrid
   column(:added, html: true) do |model|
     tag.span(data: { bs_toggle: "tooltip", placement: "top" },
              title: model.created_at.to_fs(:datetime_full)) do
-      "#{short_time_ago_in_words(model.created_at)} ago"
+      I18n.t("core.created_time", time: short_time_ago_in_words(model.created_at))
     end
   end
 
   column(:last_activity, html: true) do |model|
     tag.span(data: { bs_toggle: "tooltip", placement: "top" },
              title: model.last_activity_at.to_fs(:datetime_full)) do
-      "#{short_time_ago_in_words(model.last_activity_at)} ago"
+      I18n.t("core.last_activity", time: short_time_ago_in_words(model.last_activity_at))
     end
   end
 end

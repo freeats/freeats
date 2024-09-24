@@ -12,7 +12,7 @@ module ATS::EmailsHelper
       when "candidates"
         tab_ats_candidate_path(possible_id, :activities, event: event_id)
       end
-    link_to("#{short_time_ago_in_words(email_message.date)} ago",
+    link_to(t("core.created_time", time: short_time_ago_in_words(email_message.date)),
             profile_activities_path, data: { turbo: false })
   end
 end

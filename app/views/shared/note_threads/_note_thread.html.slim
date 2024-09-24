@@ -25,7 +25,7 @@ ruby:
             "px-0 pb-0 pt-2", data: { bs_toggle: "collapse", bs_target: "#other-thread-notes-thread-#{thread.id}",
             note_thread_target: "collapseButton" }, type: "button", aria: { expanded: expanded.to_s,
             controls: "other-thread-notes-thread-#{thread.id}" }) do
-            span #{pluralize(other_thread_notes_size, 'reply')}
+            span = t('notes.replies', count: other_thread_notes_size)
             span.icon-chevron-show.ms-2 class="#{'hidden' if expanded}" data-note-thread-target="collapsedStateIcon"
               i.far.fa-chevron-down
             span.icon-chevron-hide.ms-2 class="#{'hidden' unless expanded}" data-note-thread-target="collapsedStateIcon"

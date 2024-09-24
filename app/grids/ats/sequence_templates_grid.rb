@@ -12,6 +12,6 @@ class ATS::SequenceTemplatesGrid
   column(:subject, order: false, &:subject)
 
   column(:updated, html: true, order: false) do |model|
-    "#{short_time_ago_in_words(model.updated_at)} ago"
+    I18n.t("core.updated_time", time: short_time_ago_in_words(model.updated_at))
   end
 end

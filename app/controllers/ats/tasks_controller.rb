@@ -191,7 +191,7 @@ class ATS::TasksController < ApplicationController
           )
         end
       ],
-      notice: "Task was successfully created."
+      notice: t("tasks.successfully_created")
     )
   end
 

@@ -81,7 +81,7 @@ class API::V1::DocumentsController < ApplicationController
   end
 
   def error_message(error)
-    "ATS Error\n#{error}\nPlease contact support."
+    t("errors.general_error", error:)
   end
 
   def handle_error

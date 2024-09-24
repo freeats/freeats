@@ -42,7 +42,7 @@ ruby:
           = additional_create_param_input
           div id="note-textarea-#{model_id}"
             = note_form.text_area :text, class: "form-control enter-turbo-submit note-textarea new-note-area",
-              rows: 4, placeholder: "Start a new thread...", required: true,
+              rows: 4, placeholder: t("notes.start_new_thread"), required: true,
               data: { notes_target: "noteTextArea", model_id: }
       .card-footer
         = render ButtonComponent.new(size: :tiny,

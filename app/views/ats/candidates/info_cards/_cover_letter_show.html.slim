@@ -1,6 +1,6 @@
 /# locals: (candidate:)
 
-- header = card_header(title: "Cover letter", icon_style: "fa-envelope-open-text") do
+- header = card_header(title: t("candidates.cover_letter"), icon_style: "fa-envelope-open-text") do
   = candidate_card_cover_letter_copy_button(candidate)
 
 = card_show "cover_letter", target_model: candidate, header:

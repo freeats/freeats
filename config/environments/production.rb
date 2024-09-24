@@ -111,4 +111,7 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Raises error for missing translations.
+  config.i18n.raise_on_missing_translations = true
 end

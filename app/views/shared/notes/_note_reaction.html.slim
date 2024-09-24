@@ -2,7 +2,7 @@
 
 ruby:
   liked_members = reacted_names.join("<br>")
-  unpressed_like_tooltip = liked_members.empty? ? "Like" : liked_members
+  unpressed_like_tooltip = liked_members.empty? ? t("notes.like_button") : liked_members
   add_reaction_url = add_reaction_note_path(note)
   remove_reaction_url = remove_reaction_note_path(note)
 

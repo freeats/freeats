@@ -115,7 +115,7 @@ class ATS::PositionsController < ApplicationController
       warnings = position.warnings.full_messages
 
       redirect_to tab_ats_position_path(position, :info),
-                  notice: "Position draft was successfully created.",
+                  notice: t("positions.successfully_created"),
                   warning: warnings.presence
     in Failure[:position_invalid, _error] | Failure[:position_stage_invalid, _error]
       render_error _error
@@ -124,7 +124,7 @@ class ATS::PositionsController < ApplicationController
 
   def destroy
     if @position.remove
-      redirect_to ats_positions_path, notice: t("ats.positions.successful_deletion")
+      redirect_to ats_positions_path, notice: t("positions.succesfully_deleted")
       return
     end
 
@@ -165,11 +165,11 @@ class ATS::PositionsController < ApplicationController
     in Success[_]
       locals = {
         currently_assigned_account: @position.recruiter&.account,
-        tooltip_title: "Recruiter",
+        tooltip_title: t("core.recruiter"),
         target_model: @position,
         target_url: reassign_recruiter_ats_position_path(@position),
         input_button_name: "position[recruiter_id]",
-        unassignment_label: "Unassign recruiter",
+        unassignment_label: t("core.unassign_recruiter"),
         mobile: params[:mobile]
       }
       # rubocop:disable Rails/SkipsModelValidations

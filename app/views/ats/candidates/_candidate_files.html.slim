@@ -4,10 +4,10 @@
   table#files-table.table.mt-3
     thead
       tr
-        th scope="col" Name
-        th scope="col" Added by
-        th scope="col" When
-        th scope="col" style="width: 50px;" CV
+        th scope="col" = t("core.name")
+        th scope="col" = t("core.added_by")
+        th scope="col" = t("core.when")
+        th scope="col" style="width: 50px;" = t("candidates.cv")
         - if allowed_to?(:delete_file?)
           th scope="col"
 
@@ -51,9 +51,9 @@
                           method: :delete,
                           data: { \
                             toggle: "ats-confirmation",
-                            title: "Delete file?",
-                            btn_cancel_label: "Cancel",
-                            btn_ok_label: "Delete",
+                            title: t("candidates.delete_file"),
+                            btn_cancel_label: t("core.cancel_button"),
+                            btn_ok_label: t("core.delete_button"),
                             btn_ok_class: "btn btn-danger btn-small" \
                           }
                 i.fas.fa-trash-alt

@@ -27,7 +27,7 @@ ruby:
         = picture_avatar_icon currently_assigned_account.avatar, {}, class: "small-avatar-thumbnail me-1"
         = currently_assigned_account.name
       - else
-        | Assign
+        = t("core.assign_button")
     = form_with model: target_model, url: target_url, html: { class: "w-100 hidden" },
                 data: { "reassignment-buttons-target" => "form" }
       = render HtmlSelectComponent.new( \
@@ -40,7 +40,7 @@ ruby:
                  data: { deferred_selectize_reassignment_buttons_target: "select",
                          deferred_selectize_select_field_instant_submit_target: "selectField" },
                )
-      button.d-none type="submit" Hidden save
+      button.d-none type="submit" = t("core.hidden_save")
   - elsif currently_assigned_account.present?
     .w-100.text-start data-bs-toggle="tooltip" title=tooltip_title
       = picture_avatar_icon currently_assigned_account.avatar, {}, class: "small-avatar-thumbnail me-1"

@@ -8,8 +8,7 @@
                                      title: drag_and_drop_tooltip, \
                                      controller: "handle-upload-button" }) do |c|
   - c.with_icon("fas fa-upload", position: :right)
-  span data-handle-upload-button-target="text"
-    | Upload
+  span data-handle-upload-button-target="text" = t("core.upload_button")
   = form.file_field file_field,
                     accept: "image/*",
                     class: "upload d-inline",

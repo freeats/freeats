@@ -48,21 +48,4 @@ module CardsHelper
   def card_empty(card_name, target_model: nil, header: nil, path: nil, tooltip_text: nil)
     render "shared/profile/card_empty", card_name:, target_model:, header:, path:, tooltip_text:
   end
-
-  def card_help_text(company = nil)
-    public_company_link =
-      if company.nil? || company.client&.new_record? || company.anonymous?
-        "publicly visible"
-      else
-        link_to(
-          "publicly visible",
-          public_client_path(company.slug),
-          target: :_blank
-        )
-      end
-    tag.span(
-      safe_join(["Please note that the fields marked in bold are ", public_company_link]),
-      class: "form-text text-muted"
-    )
-  end
 end

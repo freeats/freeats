@@ -12,14 +12,15 @@
           button.btn-close aria-label="Close" data-bs-dismiss="modal" type="button"
         .modal-body
           p
-            => "Profile".pluralize(@duplicates.size)
-            => safe_join(@duplicates.map { |dup| tag.b(dup.full_name) }, ", ")
-            | will be merged with the current <b>#{@candidate.full_name}</b> profile.
+            = raw t("candidates.merged_plofiles",
+                    count: @duplicates.size,
+                    duplicate_names: safe_join(@duplicates.map { |dup| tag.b(dup.full_name) }, ", "),
+                    current_candidate_name: @candidate.full_name)
           - if @duplicate_recruiters.size > 1
             = render LabeledComponent.new(class: "mb-3",
                                           left_layout_class: "col-12",
                                           right_layout_class: "col-12") do |c|
-              - c.with_label("Recruiter", size: :small, class: "form-label", for_field: :new_recruiter_id)
+              - c.with_label(t("core.recruiter"), size: :small, class: "form-label", for_field: :new_recruiter_id)
               = ats_candidate_duplicates_merge_association_select(form, :new_recruiter_id, @duplicate_recruiters)
           - elsif @duplicate_recruiters.size == 1
             = form.hidden_field( \

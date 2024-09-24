@@ -3,9 +3,9 @@
 module ATS::TasksHelper
   def ats_task_due_date(task)
     case task.due_date
-    when Time.zone.yesterday then "Yesterday"
-    when Time.zone.today then "Today"
-    when Time.zone.tomorrow then "Tomorrow"
+    when Time.zone.yesterday then t("core.yesterday")
+    when Time.zone.today then t("core.today")
+    when Time.zone.tomorrow then t("core.tomorrow")
     else
       if task.due_date.before?(6.days.after) && task.due_date.future?
         task.due_date.strftime("%A")
@@ -28,7 +28,7 @@ module ATS::TasksHelper
       url: new_modal_ats_tasks_path(**url_opts),
       data: { action: "turbo:submit-end->tasks#changePath", turbo_frame: :turbo_modal_window }
     ) do
-      render ButtonComponent.new(size: :small).with_content("Add task")
+      render ButtonComponent.new(size: :small).with_content(t("tasks.add_task_button"))
     end
   end
 

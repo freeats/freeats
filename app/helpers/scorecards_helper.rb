@@ -9,7 +9,7 @@ module ScorecardsHelper
         if with_text
           concat(
             content_tag(:span, class: "ms-2") do
-              "Completely irrelevant"
+              t("candidates.advancement.irrelevant")
             end
           )
         end
@@ -20,7 +20,7 @@ module ScorecardsHelper
         if with_text
           concat(
             content_tag(:span, class: "ms-2") do
-              "Might be irrelevant"
+              t("candidates.advancement.might_be_irrelevant")
             end
           )
         end
@@ -31,7 +31,7 @@ module ScorecardsHelper
         if with_text
           concat(
             content_tag(:span, class: "ms-2") do
-              "Good candidate"
+              t("candidates.advancement.good_candidate")
             end
           )
         end
@@ -42,7 +42,7 @@ module ScorecardsHelper
         if with_text
           concat(
             content_tag(:span, class: "ms-2") do
-              "Perfect candidate"
+              t("candidates.advancement.perfect_candidate")
             end
           )
         end

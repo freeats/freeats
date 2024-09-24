@@ -18,7 +18,8 @@ li.list-group-item.note id="note-#{note.id}" data-controller="note-reactions"
               = hidden_field_tag "note[note_thread][id]", thread.id, id: "thread-reply-hidden-#{thread.id}"
               = hidden_field_tag "render_time", Time.zone.now
               = form.text_area(:text, class: "form-control enter-turbo-submit note-textarea", rows: 4,
-                               placeholder: "Reply...", required: true, id: "textarea-thread-reply-#{note.id}",
+                               placeholder: t("notes.reply_placeholder"), required: true,
+                               id: "textarea-thread-reply-#{note.id}",
                                data: { notes_target: "noteTextArea" })
               .d-flex.justify-content-end.gap-2.mt-3
                 = render ButtonComponent.new(variant: :cancel,
@@ -26,10 +27,10 @@ li.list-group-item.note id="note-#{note.id}" data-controller="note-reactions"
                                              type: :button,
                                              data: { action: "click->note-thread#cancelReply " \
                                                              "click->notes#resetNoteForm" })
-                  | Cancel
+                  = t("core.cancel_button")
                 = render ButtonComponent.new(size: :tiny,
                                              data: { bs_toggle: "tooltip",
                                                      bs_title: "Ctrl + Enter",
                                                      bs_placement: "top",
                                                      notes_target: "shortcut" })
-                  | Send
+                  = t("core.send_button")

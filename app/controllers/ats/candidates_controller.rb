@@ -13,7 +13,7 @@ class ATS::CandidatesController < ApplicationController
       contact_info: %w[source emails phones links telegram skype],
       cover_letter: %w[cover_letter]
     }.freeze
-  MERGED_WARNING = "Candidate you were trying to access was merged with this candidate."
+
   private_constant :INFO_CARDS
 
   before_action :set_gon_variables
@@ -216,7 +216,7 @@ class ATS::CandidatesController < ApplicationController
     ).call
     in Success(candidate)
       redirect_to tab_ats_candidate_path(candidate, :info),
-                  notice: "Candidate was successfully created."
+                  notice: t("candidates.candidate_created")
     in Failure[:candidate_invalid, candidate]
       redirect_to ats_candidates_path, alert: candidate.errors.full_messages
     end
@@ -372,11 +372,11 @@ class ATS::CandidatesController < ApplicationController
     in Success(_)
       locals = {
         currently_assigned_account: @candidate.recruiter&.account,
-        tooltip_title: "Recruiter",
+        tooltip_title: t("core.recruiter"),
         target_model: @candidate,
         target_url: assign_recruiter_ats_candidate_path(@candidate),
         input_button_name: "candidate[recruiter_id]",
-        unassignment_label: "Unassign recruiter",
+        unassignment_label: t("core.unassign_recruiter"),
         mobile: params[:mobile]
       }
       set_layout_variables
@@ -515,7 +515,7 @@ class ATS::CandidatesController < ApplicationController
       @candidate = target
     in Failure(:no_duplicates)
       return redirect_to tab_ats_candidate_path(@candidate, :info),
-                         alert: "No duplicates available for merge"
+                         alert: t("candidates.no_duplicates_available_for_merge")
     end
 
     redirect_to tab_ats_candidate_path(@candidate, :info)
@@ -523,7 +523,7 @@ class ATS::CandidatesController < ApplicationController
 
   def destroy
     if @candidate.remove
-      redirect_to ats_candidates_path, notice: t("ats.candidates.successful_deletion")
+      redirect_to ats_candidates_path, notice: t("candidates.candidate_deleted")
       return
     end
 
@@ -630,7 +630,7 @@ class ATS::CandidatesController < ApplicationController
     return if @candidate.merged_to.nil?
 
     redirect_to tab_ats_candidate_path(@candidate.merged_to, params[:tab] || :info),
-                warning: MERGED_WARNING
+                warning: t("candidates.merged_warning")
   end
 
   def suggested_members_names_for(active_members)

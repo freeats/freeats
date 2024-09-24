@@ -4,7 +4,7 @@
   .card-body
     .card-title.d-flex.align-items-center
       .flex-grow-1.text-danger
-        | Possible duplicates
+        = t("candidates.possible_duplicates")
       .flex-grow-0
         button.btn-close.close-card type="button" aria-label="Close"
     .card-text.d-flex.align-items-center
@@ -15,9 +15,18 @@
               same_emails = duplicate.same_addresses.compact
               same_links = duplicate.same_links.compact.map { Addressable::URI.unencode(_1) }
               same_phones = duplicate.same_phones.compact
-              same_emails_tooltip = "Same emails: #{same_emails.join(', ')}" if same_emails.present?
-              same_links_tooltip = "Same links: #{same_links.join(', ')}" if same_links.present?
-              same_phones_tooltip = "Same phones: #{same_phones.join(', ')}" if same_phones.present?
+              if same_emails.present?
+                same_emails_tooltip =
+                  t("candidates.same_emails", emails: same_emails.join(', '))
+              end
+              if same_links.present?
+                same_links_tooltip =
+                  t("candidates.same_links", links: same_links.join(', '))
+              end
+              if same_phones.present?
+                same_phones_tooltip =
+                  t("candidates.same_phones", phones: same_phones.join(', '))
+              end
               link_to duplicate.full_name,
                       tab_ats_candidate_path(duplicate, :info,
                                              candidates_carousel_keep_previous_candidate_id: candidate.id),
@@ -30,4 +39,4 @@
         - if duplicates.size > 10
           | and #{duplicates.size - 10} more
       = render ButtonLinkComponent.new(merge_duplicates_modal_ats_candidate_path(candidate),
-                                       size: :small).with_content("Merge")
+                                       size: :small).with_content(t("candidates.merge"))

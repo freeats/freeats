@@ -45,7 +45,7 @@ module AccountLinksHelper
     unless domain
       return tag.span(
         class: "#{klass} link-primary",
-        data: { "bs-toggle": "tooltip", "bs-title": "Outdated" },
+        data: { "bs-toggle": "tooltip", "bs-title": t("core.outdated") },
         style: "font-size: 18px; line-height: 20px"
       ) do
         tag.i(
@@ -72,7 +72,7 @@ module AccountLinksHelper
 
     tag.span(
       class: "d-flex text-decoration-none #{link_class}",
-      data: { "bs-toggle": "tooltip", "bs-title": "Outdated" }
+      data: { "bs-toggle": "tooltip", "bs-title": t("core.outdated") }
     ) do
       icon
     end

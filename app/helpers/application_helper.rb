@@ -103,7 +103,7 @@ module ApplicationHelper
   end
 
   def drag_and_drop_tooltip
-    "You can also drag a file directly to this button in order to upload it"
+    t("core.drag_and_drop_tooltip")
   end
 
   def compose_actor_account_name(event)

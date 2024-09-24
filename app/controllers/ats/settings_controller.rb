@@ -19,7 +19,7 @@ class ATS::SettingsController < ApplicationController
           partial: "account_info",
           locals: { account: current_account }
         ),
-        notice: t(".successfully_updated")
+        notice: t("user_accounts.settings.update_account.successfully_updated")
       )
       return
     end
@@ -35,7 +35,7 @@ class ATS::SettingsController < ApplicationController
           partial: "account_avatar",
           locals: { account: current_account }
         ),
-        notice: t(".successfully_updated")
+        notice: t("user_accounts.settings.update_avatar.successfully_updated")
       )
       return
     end
@@ -52,7 +52,7 @@ class ATS::SettingsController < ApplicationController
         partial: "account_avatar",
         locals: { account: current_account }
       ),
-      notice: t(".successfully_removed")
+      notice: t("user_accounts.settings.remove_avatar.successfully_removed")
     )
   rescue StandardError => e
     render_error e.message

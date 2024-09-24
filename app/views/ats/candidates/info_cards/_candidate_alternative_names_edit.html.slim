@@ -13,7 +13,7 @@
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.mb-2
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
           = render TextInputComponent.new(address_form, method: :name, size: :small,
-                                          placeholder: "Alternative name", pattern:,
+                                          placeholder: t("candidates.alternative_name"), pattern:,
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
             = address_form
             - if address_form.object.id.present?
@@ -33,7 +33,7 @@
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.mb-2
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
           = render TextInputComponent.new(address_form, method: :name, size: :small,
-                                          pattern:, placeholder: "Alternative name",
+                                          pattern:, placeholder: t("candidates.alternative_name"),
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"

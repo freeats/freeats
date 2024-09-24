@@ -8,4 +8,7 @@ Rails.application.configure do
 
   config.force_ssl = false
   config.assume_ssl = false
+
+  # Raises error for missing translations.
+  config.i18n.raise_on_missing_translations = true
 end

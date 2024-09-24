@@ -17,7 +17,7 @@ class ATS::PositionsGrid
   # Filters
   #
 
-  filter(:name, :string, placeholder: "Name") do |value|
+  filter(:name, :string, placeholder: I18n.t("core.name")) do |value|
     search_by_name(value)
   end
 
@@ -42,7 +42,7 @@ class ATS::PositionsGrid
     default: -> {
       %i[draft active on_hold]
     },
-    placeholder: "Status"
+    placeholder: I18n.t("core.status")
   ) do |statuses|
     where("positions.status IN ( ? )", statuses)
   end
@@ -69,8 +69,8 @@ class ATS::PositionsGrid
         .order("accounts.name")
         .pluck("accounts.name", :id)
     },
-    include_blank: "Recruiter",
-    placeholder: "Recruiter"
+    include_blank: I18n.t("core.recruiter"),
+    placeholder: I18n.t("core.recruiter")
   )
 
   filter(
@@ -97,8 +97,8 @@ class ATS::PositionsGrid
         .order("accounts.name")
         .pluck("accounts.name", :id)
     },
-    include_blank: "Collaborator",
-    placeholder: "Collaborator"
+    include_blank: I18n.t("core.collaborator"),
+    placeholder: I18n.t("core.collaborator")
   ) do |collaborator_id|
     joins(:collaborators).where(positions_collaborators: { collaborator_id: })
   end
@@ -127,8 +127,8 @@ class ATS::PositionsGrid
         .order("accounts.name")
         .pluck("accounts.name", :id)
     },
-    include_blank: "Hiring manager",
-    placeholder: "Hiring manager"
+    include_blank: I18n.t("core.hiring_manager"),
+    placeholder: I18n.t("core.hiring_manager")
   ) do |hiring_manager_id|
     joins(:hiring_managers).where(positions_hiring_managers: { hiring_manager_id: })
   end
