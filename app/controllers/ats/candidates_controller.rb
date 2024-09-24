@@ -722,11 +722,4 @@ class ATS::CandidatesController < ApplicationController
     num_of_activity = @all_activities.index { |activity| activity.id == event_id.to_i }.to_i + 1
     (num_of_activity.to_f / ACTIVITIES_PAGINATION_LIMIT).ceil
   end
-
-  def set_gon_variables
-    default_value_in_megabytes = Rails.env.production? ? 0 : 5
-
-    gon.nginx_file_size_limit_in_mega_bytes =
-      ENV.fetch("NGINX_FILE_SIZE_LIMIT_IN_MEGA_BYTES", default_value_in_megabytes)
-  end
 end

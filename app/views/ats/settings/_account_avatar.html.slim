@@ -1,0 +1,17 @@
+/# locals: (account:)
+
+#account_avatar.hstack.gap-2
+  .profile-avatar.img-thumbnail.profile-avatar-edit
+    - if account.avatar.attached?
+      = image_tag account.avatar.variant(:medium)
+    - else
+      = link_to image_tag(ApplicationController.helpers.asset_path("icons/user.png")),
+                ApplicationController.helpers.asset_path("icons/user.png")
+
+  = form_with model: account,
+              url: update_avatar_ats_settings_path,
+              method: :patch, class: "hstack gap-2 turbo-instant-submit" do |form|
+    = render "shared/profile/image_upload_button", file_field: :avatar, form:
+
+  - if account.avatar.present?
+    = render "shared/profile/image_delete_button", url: remove_avatar_ats_settings_path

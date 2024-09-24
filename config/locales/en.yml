@@ -77,6 +77,24 @@ en:
   ats:
     positions:
       successful_deletion: The position was successfully deleted.
+    settings:
+      show:
+        title: Settings
+        email_input_label: Email
+        email_linked: Linked
+        email_not_linked: Link email
+        save_form_button: Save
+        cancel_changes_form_button: Cancel
+        change_password_link_text: Change password
+      account_info:
+        full_name_input_label: Full name
+      update_account:
+        successfully_updated: Account successfully updated.
+      update_avatar:
+        successfully_updated: Account avatar successfully updated.
+      remove_avatar:
+        successfully_removed: Account avatar successfully removed.
+
     placements:
       disqualify_statuses:
         availability: >-

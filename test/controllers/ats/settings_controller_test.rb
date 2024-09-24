@@ -2,12 +2,12 @@
 
 require "test_helper"
 
-class ATS::ProfilesControllerTest < ActionDispatch::IntegrationTest
+class ATS::SettingsControllerTest < ActionDispatch::IntegrationTest
   include Dry::Monads[:result]
 
   test "should get show" do
     sign_in accounts(:employee_account)
-    get ats_profile_url
+    get ats_settings_url
 
     assert_response :success
   end
@@ -20,7 +20,7 @@ class ATS::ProfilesControllerTest < ActionDispatch::IntegrationTest
     retrieve_gmail_tokens_mock.expect(:call, Success(), [])
 
     EmailSynchronization::RetrieveGmailTokens.stub(:new, ->(*) { retrieve_gmail_tokens_mock }) do
-      get link_gmail_ats_profile_url, params: { code: "OAuthcode" }
+      get link_gmail_ats_settings_url, params: { code: "OAuthcode" }
     end
 
     assert_response :redirect
@@ -50,7 +50,7 @@ class ATS::ProfilesControllerTest < ActionDispatch::IntegrationTest
 
     EmailSynchronization::RetrieveGmailTokens.stub(:new, ->(*) { retrieve_gmail_tokens_mock }) do
       4.times do |i|
-        get link_gmail_ats_profile_url, params: { code: "OAuthcode" }
+        get link_gmail_ats_settings_url, params: { code: "OAuthcode" }
 
         assert_response :redirect
         assert_not_empty flash[:alert]

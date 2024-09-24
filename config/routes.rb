@@ -64,8 +64,11 @@ Rails.application.routes.draw do
     resources :scorecard_templates, only: %i[new create show edit update destroy]
     resources :scorecards, only: %i[new create show edit update]
 
-    resource :profile, only: %i[show] do
+    resource :settings, only: %i[show] do
       get :link_gmail, path: "link-gmail"
+      patch :update_account
+      patch :update_avatar
+      delete :remove_avatar
     end
 
     resource :lookbook, only: [], controller: "lookbook" do

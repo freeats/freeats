@@ -103,6 +103,13 @@ class ApplicationController < ActionController::Base
     { locale: }
   end
 
+  def set_gon_variables
+    default_value_in_megabytes = Rails.env.production? ? 0 : 5
+
+    gon.nginx_file_size_limit_in_mega_bytes =
+      ENV.fetch("NGINX_FILE_SIZE_LIMIT_IN_MEGA_BYTES", default_value_in_megabytes)
+  end
+
   def set_sentry_account_context
     if current_account
       Sentry.set_user(

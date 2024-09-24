@@ -1,0 +1,45 @@
+- ats_title(t(".title"))
+
+.d-flex.justify-content-center
+  #settings.card
+    .card-body.p-4.vstack.gap-3
+      h1 = t(".title")
+
+      / Inner card block
+      .vstack.gap-3
+
+        = render "account_avatar", account: current_account
+        = render "account_info", account: current_account
+
+        / Email input with a link button
+        = render LabeledComponent.new(left_layout_class: "col-12", right_layout_class: "col-12") do |c|
+          - c.with_label t(".email_input_label"), for_field: :email
+          .hstack.gap-2
+            = render TextInputComponent.new(:email,
+                                            type: :email,
+                                            readonly: true,
+                                            value: current_account.email,
+                                            aria: { label: t(".email_input_label") })
+
+            - if allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
+              = render ButtonLinkComponent.new(@link_gmail_uri,
+                                               variant: :secondary,
+                                               disabled: current_member.email_service_linked?)
+                - if current_member.email_service_linked?
+                  = t(".email_linked")
+                - else
+                  = t(".email_not_linked")
+
+        / Action buttons
+        .vstack.gap-2
+          .hstack.gap-2
+            = render ButtonComponent.new(class: "justify-content-center col", form: :settings_form)
+              = t(".save_form_button")
+            = render ButtonLinkComponent.new(ats_settings_path,
+                                             class: "justify-content-center col",
+                                             variant: :cancel)
+              = t(".cancel_changes_form_button")
+
+          // TODO: change link to a change_password path when its implemented
+          span
+            = link_to t(".change_password_link_text"), "#"
