@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class CandidateEmailAddress < ApplicationRecord
+  include EmailRegexp
+
   acts_as_tenant(:tenant)
 
   self.inheritance_column = nil
-
-  EMAIL_REGEXP = %r{\A(?:[\w!#$%&*+\-\/=?^'`{|}~]+\.?)+(?<!\.)@(?:[a-z\d-]+\.)+[a-z]+\z}
 
   belongs_to :candidate
   belongs_to :created_by, class_name: "Member", optional: true

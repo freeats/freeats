@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EmailMessageAddress < ApplicationRecord
+  include EmailRegexp
+
   acts_as_tenant(:tenant)
 
   belongs_to :email_message
@@ -8,7 +10,7 @@ class EmailMessageAddress < ApplicationRecord
   enum field: %i[from to cc bcc].index_with(&:to_s), _suffix: true
 
   validates :address, presence: true
-  validates :address, format: { with: CandidateEmailAddress::EMAIL_REGEXP }
+  validates :address, format: { with: EMAIL_REGEXP }
   validates :position, presence: true
   validates :position, numericality: { greater_than: 0 }
   validates :field, presence: true

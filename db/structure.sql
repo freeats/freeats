@@ -66,6 +66,15 @@ COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
+-- Name: access_token_context; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.access_token_context AS ENUM (
+    'member_invitation'
+);
+
+
+--
 -- Name: candidate_contact_created_via; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -421,6 +430,41 @@ $$;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: access_tokens; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.access_tokens (
+    id bigint NOT NULL,
+    hashed_token bytea NOT NULL,
+    sent_to public.citext NOT NULL,
+    sent_at timestamp(6) without time zone,
+    context public.access_token_context NOT NULL,
+    tenant_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: access_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.access_tokens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: access_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.access_tokens_id_seq OWNED BY public.access_tokens.id;
+
 
 --
 -- Name: account_identities; Type: TABLE; Schema: public; Owner: -
@@ -2320,6 +2364,13 @@ ALTER SEQUENCE public.tenants_id_seq OWNED BY public.tenants.id;
 
 
 --
+-- Name: access_tokens id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.access_tokens ALTER COLUMN id SET DEFAULT nextval('public.access_tokens_id_seq'::regclass);
+
+
+--
 -- Name: account_identities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2681,6 +2732,14 @@ ALTER TABLE ONLY public.tasks ALTER COLUMN id SET DEFAULT nextval('public.tasks_
 --
 
 ALTER TABLE ONLY public.tenants ALTER COLUMN id SET DEFAULT nextval('public.tenants_id_seq'::regclass);
+
+
+--
+-- Name: access_tokens access_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.access_tokens
+    ADD CONSTRAINT access_tokens_pkey PRIMARY KEY (id);
 
 
 --
@@ -3134,6 +3193,27 @@ CREATE UNIQUE INDEX idx_on_position_id_hiring_manager_id_39a4bc0c27 ON public.po
 --
 
 CREATE UNIQUE INDEX idx_on_scorecard_template_id_list_index_625d06ef82 ON public.scorecard_template_questions USING btree (scorecard_template_id, list_index);
+
+
+--
+-- Name: index_access_tokens_on_hashed_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_access_tokens_on_hashed_token ON public.access_tokens USING hash (hashed_token);
+
+
+--
+-- Name: index_access_tokens_on_sent_to; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_access_tokens_on_sent_to ON public.access_tokens USING btree (sent_to);
+
+
+--
+-- Name: index_access_tokens_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_access_tokens_on_tenant_id ON public.access_tokens USING btree (tenant_id);
 
 
 --
@@ -4324,6 +4404,14 @@ ALTER TABLE ONLY public.positions_collaborators
 
 
 --
+-- Name: access_tokens fk_rails_7f7e5b27bd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.access_tokens
+    ADD CONSTRAINT fk_rails_7f7e5b27bd FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
 -- Name: positions_hiring_managers fk_rails_800fb5ba44; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4570,6 +4658,8 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240924153311'),
+('20240924153030'),
 ('20240920135234'),
 ('20240919035839'),
 ('20240918105348'),

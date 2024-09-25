@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Sequence < ApplicationRecord
+  include EmailRegexp
+
   acts_as_tenant(:tenant)
 
   has_many :events, as: :eventable, dependent: :destroy
@@ -29,6 +31,6 @@ class Sequence < ApplicationRecord
   end
 
   def to_must_be_a_valid_email
-    errors.add(:to, "is invalid email.") unless to.match?(CandidateEmailAddress::EMAIL_REGEXP)
+    errors.add(:to, "is invalid email.") unless to.match?(EMAIL_REGEXP)
   end
 end
