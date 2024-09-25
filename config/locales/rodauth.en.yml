@@ -14,10 +14,10 @@ en:
     change_login_needs_verification_notice_flash: An email has been sent to you with a link to verify your login change
     change_login_notice_flash: Your login has been changed
     change_login_page_title: Change Login
-    change_password_button: Change Password
+    change_password_button: Change password
     change_password_error_flash: There was an error changing your password
-    change_password_notice_flash: Your password has been changed
-    change_password_page_title: Change Password
+    change_password_notice_flash: Your password has been changed successfully.
+    change_password_page_title: Change password
     close_account_button: Close Account
     close_account_error_flash: There was an error closing your account
     close_account_notice_flash: Your account has been closed
@@ -75,7 +75,8 @@ en:
     login_page_text_before_create_account_link: Don't have an account?
     multi_phase_login_page_title: Sign in
     need_password_notice_flash: Login recognized, please enter your password
-    new_password_label: New Password
+    new_password_label: New password
+    new_password_confirm_label: Confirm new password
     no_current_sms_code_error_flash: No current SMS code for this account
     no_matching_email_auth_key_error_flash: "There was an error logging you in: invalid email authentication key"
     no_matching_login_message: no matching login
@@ -139,20 +140,25 @@ en:
     remember_page_title: Change Remember Setting
     remember_remember_label: Remember Me
     require_login_error_flash: Please sign in to continue
-    resend_verify_account_page_title: Resend Verification Email
-    reset_password_button: Reset Password
+    resend_verify_account_page_title: Resend verification email
+    reset_password_button: Save
     reset_password_email_recently_sent_error_flash: An email has recently been sent to you with a link to reset your password
     reset_password_email_sent_notice_flash: An email has been sent to you with a link to reset the password for your account
-    reset_password_email_subject: Reset Password
+    reset_password_email_subject: Reset your password
+    reset_password_email_content: >-
+      Someone has requested to change your password.
+      You can do this by clicking the button below.
+      If you didn't request this, please ignore this email.
+    reset_password_email_button: Reset password
     reset_password_error_flash: There was an error resetting your password
     reset_password_explanatory_text: "<p>If you have forgotten your password, you can request a password reset:</p>"
-    reset_password_notice_flash: Your password has been reset
+    reset_password_notice_flash: Your password has been changed successfully.
     reset_password_notify_email_subject: Password Reset Completed
-    reset_password_page_title: Reset Password
-    reset_password_request_button: Request Password Reset
+    reset_password_page_title: Set new password
+    reset_password_request_button: Send reset link
     reset_password_request_error_flash: There was an error requesting a password reset
-    reset_password_request_link_text: Forgot Password?
-    reset_password_request_page_title: Request Password Reset
+    reset_password_request_link_text: Forgot password?
+    reset_password_request_page_title: Forgot password
     same_as_current_login_message: same as current login
     same_as_existing_password_message: invalid password, same as current password
     session_expiration_error_flash: This session has expired, please login again
@@ -251,3 +257,5 @@ en:
     webauthn_setup_link_text: Setup WebAuthn Authentication
     webauthn_setup_notice_flash: WebAuthn authentication is now setup
     webauthn_setup_page_title: Setup WebAuthn Authentication
+    back_button: Back
+    required_field_error: can't be blank

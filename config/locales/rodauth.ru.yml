@@ -76,6 +76,7 @@ ru:
     multi_phase_login_page_title: Вход в систему
     need_password_notice_flash: Логин распознан, пожалуйста, введите ваш пароль
     new_password_label: Новый пароль
+    new_password_confirm_label: Подтвердите новый пароль
     no_current_sms_code_error_flash: Для этой учетной записи нет текущего SMS-кода
     no_matching_email_auth_key_error_flash: "Произошла ошибка при входе в систему: неверный ключ аутентификации по электронной почте"
     no_matching_login_message: нет совпадающего логина
@@ -144,6 +145,11 @@ ru:
     reset_password_email_recently_sent_error_flash: Недавно вам было отправлено электронное письмо со ссылкой для сброса вашего пароля
     reset_password_email_sent_notice_flash: Вам было отправлено электронное письмо со ссылкой для сброса пароля для вашей учетной записи
     reset_password_email_subject: Сброс пароля
+    reset_password_email_content: >-
+      Пришёл запрос на смену пароля.
+      Вы можете сделать это нажав на кнопку ниже.
+      Если вы не отправляли запрос, проигнорируйте это сообщение.
+    reset_password_email_button: Сброс пароля
     reset_password_error_flash: Произошла ошибка при сбросе вашего пароля
     reset_password_explanatory_text: "<p>Если вы забыли свой пароль, вы можете запросить сброс пароля:</p>"
     reset_password_notice_flash: Ваш пароль был сброшен
@@ -251,3 +257,5 @@ ru:
     webauthn_setup_link_text: Настройка аутентификации WebAuthn
     webauthn_setup_notice_flash: проверка подлинности WebAuthn теперь настроена
     webauthn_setup_page_title: Настройка проверки подлинности WebAuthn
+    back_button: Назад
+    required_field_error: не может быть пустым

@@ -6,14 +6,15 @@
       = render TextInputComponent.new("email", type: :email, required: true,
                                       placeholder: t("rodauth.email_input_placeholder"),
                                       aria: { label: t("rodauth.email_label") })
-
-      = render TextInputComponent.new("password", type: :password, required: true,
-                                      autocomplete: "current-password",
-                                      placeholder: t("rodauth.password_input_placeholder"),
-                                      aria: { label: t("rodauth.password_label") })
-      = render ButtonComponent.new(class: "mt-2")
-        = rodauth.login_button
-    .mt-2
-      => t("rodauth.login_page_text_before_create_account_link")
-      a href=rodauth.create_account_path
-        = t("rodauth.create_account_page_title")
+      .vstack.gap-2
+        = render TextInputComponent.new("password", type: :password, required: true, size: :small,
+                                        autocomplete: "current-password",
+                                        placeholder: t("rodauth.password_input_placeholder"),
+                                        aria: { label: t("rodauth.password_label") })
+        = link_to t("rodauth.reset_password_request_link_text"), rodauth.reset_password_request_path
+      .vstack.gap-2
+        = render ButtonComponent.new
+          = rodauth.login_button
+        span
+          => t("rodauth.login_page_text_before_create_account_link")
+          = link_to t("rodauth.login_label"), rodauth.login_path

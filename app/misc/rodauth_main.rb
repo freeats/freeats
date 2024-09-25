@@ -51,7 +51,10 @@ module LoginLogout
       require_login_redirect { login_path }
 
       # Redirect to the app from login and registration pages if already logged in.
-      already_logged_in { redirect "/" }
+      already_logged_in do
+        # Allow to send reset password email for logged in users.
+        redirect "/" unless scope.request.path.in?(%w[/password_recovery /password_new])
+      end
     end
   end
 end
@@ -94,6 +97,30 @@ module VerifyAccount
   end
 end
 
+# https://rodauth.jeremyevans.net/rdoc/files/doc/reset_password_rdoc.html
+# https://rodauth.jeremyevans.net/rdoc/files/doc/change_password_rdoc.html
+module ManagePassword
+  extend ActiveSupport::Concern
+
+  included do
+    configure do
+      enable :reset_password, :change_password
+      change_password_route :change_password
+      reset_password_request_route :password_recovery
+      reset_password_route :password_new
+
+      reset_password_autologin? true
+      reset_password_email_sent_redirect do
+        if logged_in?
+          "/"
+        else
+          login_path
+        end
+      end
+    end
+  end
+end
+
 # https://github.com/janko/rodauth-omniauth
 module Omniauth
   extend ActiveSupport::Concern
@@ -117,6 +144,7 @@ class RodauthMain < Rodauth::Rails::Auth
   include Omniauth
   include Remember
   include VerifyAccount
+  include ManagePassword
 
   # rubocop:disable Layout/LineLength
   configure do
@@ -126,6 +154,8 @@ class RodauthMain < Rodauth::Rails::Auth
     translate do |key, default|
       I18n.t("rodauth.#{key}") || default
     end
+
+    require_password_confirmation? true
 
     # See the Rodauth documentation for the list of available config options:
     # http://rodauth.jeremyevans.net/documentation.html
@@ -185,9 +215,9 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # ==> Emails
     # Use a custom mailer for delivering authentication emails.
-    # create_reset_password_email do
-    #   RodauthMailer.reset_password(self.class.configuration_name, account_id, reset_password_key_value)
-    # end
+    create_reset_password_email do
+      RodauthMailer.reset_password(self.class.configuration_name, account_id, reset_password_key_value)
+    end
     # create_verify_account_email do
     #   RodauthMailer.verify_account(self.class.configuration_name, account_id, verify_account_key_value)
     # end
@@ -206,10 +236,10 @@ class RodauthMain < Rodauth::Rails::Auth
     # create_unlock_account_email do
     #   RodauthMailer.unlock_account(self.class.configuration_name, account_id, unlock_account_key_value)
     # end
-    send_email do |email|
-      # queue email delivery on the mailer after the transaction commits
-      db.after_commit { email.deliver_later }
-    end
+    # send_email do |email|
+    #   # queue email delivery on the mailer after the transaction commits
+    #   db.after_commit { email.deliver_later }
+    # end
 
     # ==> Flash
     # Match flash keys with ones already used in the Rails app.
