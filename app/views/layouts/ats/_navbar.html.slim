@@ -2,7 +2,7 @@ ruby:
   is_ats_profile = request.fullpath.eql?("/ats/profile")
 
 nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
-  - if current_account.present? && current_account.member?
+  - if rodauth.logged_in? && current_account.member?
     / Mobile burger menu button
     button.navbar-toggler.px-1.order-2 [aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
                                         data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button"]
