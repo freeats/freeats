@@ -1634,7 +1634,8 @@ CREATE TABLE public.position_stages (
     greenhouse_id integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint,
+    deleted boolean DEFAULT false NOT NULL
 );
 
 
@@ -3822,14 +3823,14 @@ CREATE INDEX index_position_stages_on_greenhouse_id ON public.position_stages US
 -- Name: index_position_stages_on_position_id_and_list_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_position_stages_on_position_id_and_list_index ON public.position_stages USING btree (position_id, list_index);
+CREATE UNIQUE INDEX index_position_stages_on_position_id_and_list_index ON public.position_stages USING btree (position_id, list_index) WHERE (deleted = false);
 
 
 --
 -- Name: index_position_stages_on_position_id_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_position_stages_on_position_id_and_name ON public.position_stages USING btree (position_id, name);
+CREATE UNIQUE INDEX index_position_stages_on_position_id_and_name ON public.position_stages USING btree (position_id, name) WHERE (deleted = false);
 
 
 --
@@ -4660,6 +4661,7 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20240924153311'),
 ('20240924153030'),
+('20240923151001'),
 ('20240920135234'),
 ('20240919035839'),
 ('20240918105348'),

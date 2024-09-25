@@ -55,6 +55,11 @@ class Position < ApplicationRecord
                           join_table: :positions_interviewers
 
   has_many :stages,
+           -> { not_deleted.order(:list_index) },
+           inverse_of: false,
+           class_name: "PositionStage",
+           dependent: nil
+  has_many :stages_including_deleted,
            -> { order(:list_index) },
            inverse_of: :position,
            class_name: "PositionStage",

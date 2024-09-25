@@ -24,6 +24,8 @@ class PositionStage < ApplicationRecord
 
   validates :name, uniqueness: { scope: :position_id }
 
+  scope :not_deleted, -> { where(deleted: false) }
+
   private
 
   def update_list_index_for_hired_stage

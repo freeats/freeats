@@ -109,7 +109,7 @@ class ATS::CandidatesController < ApplicationController
             @candidate
             .placements
             .preload(
-              position: { stages: :scorecard_template },
+              position: { stages_including_deleted: :scorecard_template },
               scorecards: [:added_event, { interviewer: :account }]
             )
             .where(<<~SQL)

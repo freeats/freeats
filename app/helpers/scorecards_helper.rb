@@ -51,9 +51,9 @@ module ScorecardsHelper
   end
 
   def visible_stages(placement)
-    placement.position.stages.filter do |stage|
+    placement.position.stages_including_deleted.filter do |stage|
       stage.scorecard_template.present? &&
-        (stage.list_index <= placement.position_stage.list_index ||
+        (stage.list_index <= placement.position_stage.list_index && !stage.deleted ||
           placement.scorecards.any? { _1.position_stage_id == stage.id })
     end
   end

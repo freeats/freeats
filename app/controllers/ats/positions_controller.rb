@@ -415,7 +415,7 @@ class ATS::PositionsController < ApplicationController
         placements.where(status: :qualified)
       end
 
-    @stages = @position.stages.order(:list_index).pluck(:name)
+    @stages = @position.stages.pluck(:name)
     @grouped_placements = {}
     @stages.each { |stage| @grouped_placements[stage] = { count: 0, placements: [] } }
     placements
