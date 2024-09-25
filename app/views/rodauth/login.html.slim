@@ -3,15 +3,15 @@
     h1.mb-4
       = rodauth.login_label
     = form_with url: rodauth.login_path, method: :post, class: "vstack gap-3"
-      = render TextInputComponent.new("email", type: :email, required: true,
+      = render TextInputComponent.new("email", type: :email, required: true, size: :small,
                                       placeholder: t("rodauth.email_input_placeholder"),
                                       aria: { label: t("rodauth.email_label") })
 
-      = render TextInputComponent.new("password", type: :password, required: true,
+      = render TextInputComponent.new("password", type: :password, required: true, size: :small,
                                       autocomplete: "current-password",
                                       placeholder: t("rodauth.password_input_placeholder"),
                                       aria: { label: t("rodauth.password_label") })
-      = render ButtonComponent.new(class: "mt-2")
+      = render ButtonComponent.new(class: "mt-2", size: :small)
         = rodauth.login_button
     .mt-2
       => t("rodauth.login_page_text_before_create_account_link")

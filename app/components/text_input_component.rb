@@ -20,8 +20,7 @@ class TextInputComponent < ApplicationComponent
   SIZE_CLASSES = {
     tiny: "text-input-component-tiny",
     small: "text-input-component-small",
-    medium: "text-input-component-medium",
-    large: "text-input-component-large"
+    medium: "text-input-component-medium"
   }.freeze
 
   param :form_or_name, Types::Instance(ActionView::Helpers::FormBuilder) |

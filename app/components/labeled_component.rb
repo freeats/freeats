@@ -6,8 +6,7 @@ class LabeledComponent < ApplicationComponent
   class LabelComponent < ApplicationComponent
     SIZE_CLASSES = {
       small: "label-component-small col-form-label-sm",
-      medium: "label-component-medium col-form-label",
-      large: "label-component-large col-form-label-lg"
+      medium: "label-component-medium col-form-label"
     }.freeze
 
     param :text, Types::Strict::String

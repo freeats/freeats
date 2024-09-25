@@ -2,7 +2,7 @@
 
 class ButtonLinkComponentPreview < ViewComponent::Preview
   # @param content text
-  # @param size select { choices: [tiny, small, medium, large] }
+  # @param size select { choices: [tiny, small, medium] }
   # @param disabled toggle
   # @param icon select { choices: ["off", left, right] }
   # @!group Variants

@@ -2,7 +2,7 @@
 
 class MultipleSelectComponentPreview < ViewComponent::Preview
   # @!group Variants
-  # @param size select { choices: [tiny, small, medium, large] }
+  # @param size select { choices: [tiny, small, medium] }
   # @param options text description "Use ', ' to separate options"
   # @param disabled_options text description "Use ', ' to separate options"
   # @param selected_options text description "Use ', ' to separate options"

@@ -2,9 +2,9 @@
 
 class LabeledComponentPreview < ViewComponent::Preview
   # @!group Variants
-  # @param size select { choices: [small, medium, large] }
+  # @param size select { choices: [small, medium] }
   def show_card_row(size: :medium)
-    view_content_size = { small: "-sm", medium: "", large: "-lg" }[size]
+    view_content_size = { small: "-sm", medium: "" }[size]
     render(LabeledComponent.new(right_class: "col-form-label#{view_content_size}")) do |c|
       c.with_label("Label", size:)
       "Value"

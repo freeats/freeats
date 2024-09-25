@@ -4,19 +4,19 @@
     --bs-btn-color: var(--bs-gray-900);
   }
 
-  &-small {
+  &-tiny {
     --bs-btn-font-size: 12px;
     --bs-btn-padding-x: 8px;
     --bs-btn-padding-y: 4px;
   }
 
-  &-medium {
+  &-small {
     --bs-btn-font-size: 14px;
     --bs-btn-padding-x: 9px;
     --bs-btn-padding-y: 4.5px;
   }
 
-  &-large {
+  &-medium {
     --bs-btn-font-size: 16px;
     --bs-btn-padding-x: 14px;
     --bs-btn-padding-y: 7px;
@@ -48,23 +48,21 @@
 
   &-subscript {
     color: $gray-600;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.5;
+  }
+
+  &-tiny {
+    padding: 4px 8px;
+    font-size: 12px;
   }
 
   &-small {
     padding: 4.5px 9px;
     font-size: 14px;
-    padding: 4px 8px;
-    font-size: 12px;
   }
 
   &-medium {
-    padding: 4.5px 9px;
-    font-size: 14px;
-  }
-
-  &-large {
     padding: 7px 14px;
     font-size: 16px;
   }
@@ -74,8 +72,7 @@
 .label-component {
   $sizes:
     small 14px,
-    medium 16px,
-    large 18px;
+    medium 16px;
 
   @each $name, $size in $sizes {
     &-#{$name} {
@@ -221,26 +218,6 @@
 
     &.with-chevron > :not(.loading) > .selectize-input {
       padding: 7px calc(14px + var(--space_for_chevron)) 7px 14px !important;
-    }
-  }
-
-  &.large {
-    --select_component_font_size: 18px;
-    --select_component_min_height: 48px;
-
-    .selectize-input {
-      min-height: var(--select_component_min_height) !important;
-      padding: 9.5px 19px !important;
-      font-size: var(--select_component_font_size);
-
-      &:before {
-        height: var(--select_component_font_size);
-        width: var(--select_component_font_size);
-      }
-    }
-
-    &.with-chevron > :not(.loading) > .selectize-input {
-      padding: 9.5px calc(19px + var(--space_for_chevron)) 9.5px 19px !important;
     }
   }
   // End of sizes.

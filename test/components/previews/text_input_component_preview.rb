@@ -2,7 +2,7 @@
 
 class TextInputComponentPreview < ViewComponent::Preview
   # @!group Variants
-  # @param size select { choices: [tiny, small, medium, large] }
+  # @param size select { choices: [tiny, small, medium] }
   # @param value text
   # @param placeholder text
   # @param subscript text

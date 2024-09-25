@@ -38,8 +38,7 @@ class ButtonComponent < ApplicationComponent
   SIZE_CLASSES = {
     tiny: "btn-tiny",
     small: "btn-small",
-    medium: "btn-medium",
-    large: "btn-large"
+    medium: "btn-medium"
   }.freeze
 
   DEFAULT_CLASSES = %w[

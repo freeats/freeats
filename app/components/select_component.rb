@@ -7,15 +7,13 @@ class SelectComponent < ApplicationComponent
   SIZE_CLASSES = {
     tiny: "tiny",
     small: "small",
-    medium: "medium",
-    large: "large"
+    medium: "medium"
   }.freeze
 
   BUTTON_GROUP_SIZE_CLASSES = {
     tiny: "btn-group-xs",
     small: "btn-group-sm",
-    medium: "btn-group-md",
-    large: "btn-group-md" # This is not a typo.
+    medium: "btn-group-md"
   }.freeze
 
   param :form_or_name, Types::Strict::String | Types::Instance(ActionView::Helpers::FormBuilder)

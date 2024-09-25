@@ -2,7 +2,7 @@
 
 class HtmlSelectComponentPreview < ViewComponent::Preview
   # @!group Variants
-  # @param size select { choices: [tiny, small, medium, large] }
+  # @param size select { choices: [tiny, small, medium] }
   # @param placeholder text
   def local(size: :medium, placeholder: local_placeholder)
     render(
