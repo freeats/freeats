@@ -14,7 +14,7 @@
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
-          = render TextInputComponent.new(address_form, method: :address, size: :small,
+          = render TextInputComponent.new(address_form, method: :address,
                                           placeholder: t("candidates.address"), pattern:,
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
           = address_form.hidden_field(:created_via)
@@ -36,7 +36,7 @@
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
-          = render TextInputComponent.new(address_form, method: :address, size: :small,
+          = render TextInputComponent.new(address_form, method: :address,
                                           pattern:, placeholder: t("candidates.address"),
                                           "data-update-requirement-attribute-for-select-field-target": "mainField")
           = address_form.hidden_field(:created_via)

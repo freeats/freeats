@@ -29,7 +29,7 @@ class TextInputComponent < ApplicationComponent
   option :value, Types::Coercible::String, optional: true
   option :size, Types::Symbol.enum(*SIZE_CLASSES.keys),
          optional: true,
-         default: -> { :medium }
+         default: -> { :small }
   option :disabled, Types::Strict::Bool, optional: true, default: -> { false }
   option :readonly, Types::Strict::Bool, optional: true, default: -> { false }
   option :placeholder, Types::Strict::String | Types::Strict::Bool, optional: true

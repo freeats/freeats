@@ -5,7 +5,7 @@
     .h1.mb-3 = @scorecard_template.title
     = render LabeledComponent.new(left_layout_class: "col-auto", right_layout_class: "col",
                                    right_class: "ps-0 col-form-label-sm") do |c|
-      - c.with_label("Position", size: :small, style: "min-width: 137px;")
+      - c.with_label("Position", style: "min-width: 137px;")
       - position = @scorecard_template.position_stage.position
       => link_to(position.name, ats_position_path(position))
 
@@ -24,12 +24,11 @@
               | No questions
     .hstack.flex-wrap.gap-2.mt-4.justify-content-between
       - if allowed_to?(:edit?)
-        = render ButtonLinkComponent.new(edit_ats_scorecard_template_path(@scorecard_template), size: :small)
+        = render ButtonLinkComponent.new(edit_ats_scorecard_template_path(@scorecard_template))
           | Edit
       - if allowed_to?(:destroy?)
         = form_with url: ats_scorecard_template_path(@scorecard_template), method: :delete
           = render ButtonComponent.new(variant: :danger,
-                                       size: :small,
                                        data: { toggle: "ats-confirmation",
                                                title: "Delete scorecard template?",
                                                btn_cancel_label: "Cancel",

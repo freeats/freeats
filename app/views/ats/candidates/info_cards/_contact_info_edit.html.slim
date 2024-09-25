@@ -10,7 +10,7 @@ ruby:
 = candidate_card_edit "contact_info", candidate, header: do |form|
   / Source
   = render LabeledComponent.new(class: "mb-2") do |c|
-    - c.with_label("Source", form:, for_field: :source, size: :small)
+    - c.with_label("Source", form:, for_field: :source)
     = render SingleSelectComponent.new( \
         form,
         method: :source,
@@ -22,27 +22,27 @@ ruby:
 
   / Emails
   = render LabeledComponent.new(class: "mb-2") do |c|
-    - c.with_label(t("candidates.emails"), size: :small, form:)
+    - c.with_label(t("candidates.emails"), form:)
     = render "ats/candidates/info_cards/candidate_email_addresses_edit",
              form:, candidate:
     /, pattern: regexp_to_pattern(Devise.email_regexp)
 
   / Phones
   = render LabeledComponent.new(class: "mb-2") do |c|
-    - c.with_label(t("candidates.phones"), size: :small, form:)
+    - c.with_label(t("candidates.phones"), form:)
     = render "ats/candidates/info_cards/candidate_phones_edit", form:, candidate:
 
   / Links
   = render(LabeledComponent.new(class: "mb-2")) do |c|
-    - c.with_label(t("candidates.links"), size: :small, form:)
+    - c.with_label(t("candidates.links"), form:)
     = render("ats/candidates/info_cards/candidate_links_edit", form:, candidate:)
 
   / Telegram
   = render LabeledComponent.new(class: "mb-2") do |c|
-    - c.with_label("Telegram", size: :small, form:, for_field: :telegram)
-    = render TextInputComponent.new(form, method: :telegram, size: :small)
+    - c.with_label("Telegram", form:, for_field: :telegram)
+    = render TextInputComponent.new(form, method: :telegram)
 
   / Skype
   = render LabeledComponent.new do |c|
-    - c.with_label("Skype", size: :small, form:, for_field: :skype)
-    = render TextInputComponent.new(form, method: :skype, size: :small)
+    - c.with_label("Skype", form:, for_field: :skype)
+    = render TextInputComponent.new(form, method: :skype)

@@ -15,19 +15,19 @@
         = card_row render("ats/candidates/avatar_image", candidate: @candidate, is_form: true),
                    capture(form, &avatar_edit_buttons), form: true
       = render LabeledComponent.new(class: "mb-2") do |c|
-        - c.with_label(t("candidates.full_name"), size: :small, form:, for_field: :full_name)
-        = render TextInputComponent.new(form, method: :full_name, size: :small, required: true)
+        - c.with_label(t("candidates.full_name"), form:, for_field: :full_name)
+        = render TextInputComponent.new(form, method: :full_name, required: true)
       = render LabeledComponent.new(class: "mb-2") do |c|
-        - c.with_label(t("candidates.alternative_name"), size: :small, form:)
+        - c.with_label(t("candidates.alternative_name"), form:)
         = render "ats/candidates/info_cards/candidate_alternative_names_edit", form:, candidate: @candidate
       = render LabeledComponent.new(class: "mb-2") do |c|
-        - c.with_label(t("candidates.headline"), size: :small, form:, for_field: :headline)
-        = render TextInputComponent.new(form, method: :headline, size: :small)
+        - c.with_label(t("candidates.headline"), form:, for_field: :headline)
+        = render TextInputComponent.new(form, method: :headline)
       = render LabeledComponent.new(class: "mb-2") do |c|
-        - c.with_label(t("core.company"), size: :small, form:, for_field: :company)
-        = render TextInputComponent.new(form, method: :company, size: :small)
+        - c.with_label(t("core.company"), form:, for_field: :company)
+        = render TextInputComponent.new(form, method: :company)
       = render LabeledComponent.new(class: "mb-2") do |c|
-        - c.with_label(t("core.location"), size: :small, form:, for_field: :location_id)
+        - c.with_label(t("core.location"), form:, for_field: :location_id)
         = render SingleSelectComponent.new( \
             form,
             method: :location_id,
@@ -37,7 +37,7 @@
             },
           )
       = render LabeledComponent.new do |c|
-        - c.with_label(t("candidates.blacklisted"), size: :small, form:, for_field: :blacklisted)
+        - c.with_label(t("candidates.blacklisted"), form:, for_field: :blacklisted)
         = form.check_box(:blacklisted, class: "form-control-sm")
 
       - if allowed_to?(:destroy?, @candidate, with: ATS::CandidatePolicy)

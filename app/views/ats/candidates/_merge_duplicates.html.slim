@@ -38,5 +38,5 @@
         => candidate_links_with_tooltips
         - if duplicates.size > 10
           | and #{duplicates.size - 10} more
-      = render ButtonLinkComponent.new(merge_duplicates_modal_ats_candidate_path(candidate),
-                                       size: :small).with_content(t("candidates.merge"))
+      = render ButtonLinkComponent.new(merge_duplicates_modal_ats_candidate_path(candidate)) \
+                                  .with_content(t("candidates.merge"))

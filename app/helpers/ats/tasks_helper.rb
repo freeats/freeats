@@ -28,7 +28,7 @@ module ATS::TasksHelper
       url: new_modal_ats_tasks_path(**url_opts),
       data: { action: "turbo:submit-end->tasks#changePath", turbo_frame: :turbo_modal_window }
     ) do
-      render ButtonComponent.new(size: :small).with_content(t("tasks.add_task_button"))
+      render ButtonComponent.new.with_content(t("tasks.add_task_button"))
     end
   end
 

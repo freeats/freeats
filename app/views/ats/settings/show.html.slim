@@ -13,16 +13,18 @@
 
         / Email input with a link button
         = render LabeledComponent.new(left_layout_class: "col-12", right_layout_class: "col-12") do |c|
-          - c.with_label t("user_accounts.settings.show.email_input_label"), for_field: :email
+          - c.with_label t("user_accounts.settings.show.email_input_label"), for_field: :email, size: :medium
           .hstack.gap-2
             = render TextInputComponent.new(:email,
                                             type: :email,
+                                            size: :medium,
                                             readonly: true,
                                             value: current_account.email,
                                             aria: { label: t("user_accounts.settings.show.email_input_label") })
 
             - if allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
               = render ButtonLinkComponent.new(@link_gmail_uri,
+                                               size: :medium,
                                                variant: :secondary,
                                                disabled: current_member.email_service_linked?)
                 - if current_member.email_service_linked?
@@ -33,9 +35,10 @@
         / Action buttons
         .vstack.gap-2
           .hstack.gap-2
-            = render ButtonComponent.new(class: "justify-content-center col", form: :settings_form)
+            = render ButtonComponent.new(size: :medium, class: "justify-content-center col", form: :settings_form)
               = t("core.save_button")
             = render ButtonLinkComponent.new(ats_settings_path,
+                                             size: :medium,
                                              class: "justify-content-center col",
                                              variant: :cancel)
               = t("core.cancel_button")

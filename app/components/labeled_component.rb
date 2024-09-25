@@ -12,7 +12,7 @@ class LabeledComponent < ApplicationComponent
     param :text, Types::Strict::String
     option :form, Types::Instance(ActionView::Helpers::FormBuilder), optional: true
     option :for_field, Types::Coercible::String, optional: true
-    option :size, Types::Symbol.enum(*SIZE_CLASSES.keys), optional: true, default: -> { :medium }
+    option :size, Types::Symbol.enum(*SIZE_CLASSES.keys), optional: true, default: -> { :small }
     option :color_class, Types::Strict::String,
            optional: true,
            default: -> { form || for_field ? "text-gray-900" : "text-gray-600" }

@@ -27,7 +27,7 @@
       .task-large-checkbox
         input.form-check-input.mt-0 type="checkbox" disabled=true
         label.form-check-label
-      = render TextInputComponent.new("task[name]", size: :small, class: "enter-turbo-submit",
+      = render TextInputComponent.new("task[name]", class: "enter-turbo-submit",
                                       placeholder: t("tasks.task_name"), required: true,
                                       data: { async_modals_target: "focusAfterShown" })
 
@@ -36,7 +36,7 @@
       / Assignee
       = render LabeledComponent.new(class: "flex-fill col-12 col-lg-6",
                                     left_layout_class: "col-lg-3", right_layout_class: "col-lg-9") do |c|
-        - c.with_label(t("core.assignee"), size: :small, for_field: "task[assignee_id]", color_class: "text-gray-600")
+        - c.with_label(t("core.assignee"), for_field: "task[assignee_id]", color_class: "text-gray-600")
         = select_tag "task[assignee_id]", options_for_select(assignee_options, default_assignee),
                       class: "form-control selectpicker flex-fill",
                       required: true,
@@ -45,7 +45,7 @@
       / Watchers
       = render LabeledComponent.new(class: "flex-fill col-12 col-lg-6",
                                     left_layout_class: "col-lg-3", right_layout_class: "col-lg-9") do |c|
-        - c.with_label(t("core.watchers"), size: :small, for_field: "task[watcher_ids]", color_class: "text-gray-600")
+        - c.with_label(t("core.watchers"), for_field: "task[watcher_ids]", color_class: "text-gray-600")
         = select_tag "task[watcher_ids]",
                       options_for_select(assignee_options,
                                         { selected: [*default_watchers, default_assignee, current_member.id],
@@ -59,23 +59,18 @@
       / Due date
       = render LabeledComponent.new(class: "flex-fill col-12 col-lg-6",
                                     left_layout_class: "col-lg-3", right_layout_class: "col-lg-9") do |c|
-        - c.with_label(t("core.due_date"), size: :small, for_field: "task[due_date_alt]", color_class: "text-gray-600")
+        - c.with_label(t("core.due_date"), for_field: "task[due_date_alt]", color_class: "text-gray-600")
         div data-controller="humanized-datepicker"
-          = render TextInputComponent.new("task[due_date]", size: :small, value: Time.zone.today.next_weekday,
+          = render TextInputComponent.new("task[due_date]", value: Time.zone.today.next_weekday,
                                           data: { humanized_datepicker_target: "datepicker" },
                                           class: "hidden", required: true)
-          = render TextInputComponent.new("task[due_date_alt]", size: :small, class: "bg-white", readonly: true,
+          = render TextInputComponent.new("task[due_date_alt]", class: "bg-white", readonly: true,
                                           data: { action: "click->humanized-datepicker#showDatepicker",
                                                   humanized_datepicker_target: "datepickerAlt" })
       / Repeat
       = render LabeledComponent.new(class: "flex-fill col-12 col-lg-6",
                                     left_layout_class: "col-lg-3", right_layout_class: "col-lg-9") do |c|
-        - c.with_label( \
-            t("tasks.repeat"),
-            size: :small,
-            for_field: "task[repeat_interval]",
-            color_class: "text-gray-600" \
-          )
+        - c.with_label(t("tasks.repeat"), for_field: "task[repeat_interval]", color_class: "text-gray-600")
         = select_tag "task[repeat_interval]",
                       options_for_select(Task.repeat_intervals.transform_keys(&:humanize),
                                         { selected: :never }),
@@ -84,7 +79,7 @@
     / Fourth row
     .d-flex.flex-wrap.mt-lg-3.column-gap-4
       = render LabeledComponent.new(class: "vstack gap-2") do |c|
-        - c.with_label(t("tasks.description"), size: :small, style: "height: 32px;",
+        - c.with_label(t("tasks.description"), style: "height: 32px;",
                        for_field: "task[description]", color_class: "text-gray-600")
         = text_area_tag "task[description]", "", rows: 4, class: "form-control overflow-auto enter-turbo-submit"
 
@@ -92,7 +87,7 @@
                        data: { "turbo-modal-tasks-target" => "defaultWatchers" }
 
 - content_for :footer
-  = render ButtonComponent.new(size: :small, variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
+  = render ButtonComponent.new(variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
     = t("core.cancel_button")
-  = render ButtonComponent.new(size: :small)
+  = render ButtonComponent.new
     = t("core.create_button")

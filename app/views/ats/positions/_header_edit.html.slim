@@ -3,10 +3,10 @@
     = card_edit(card_name: "header", target_model: @position,
                 target_url: update_header_ats_position_path(@position)) do |form|
       = render LabeledComponent.new(class: "mb-2") do |c|
-        - c.with_label("Name", size: :small, form:, for_field: :name)
-        = render TextInputComponent.new(form, method: :name, size: :small)
+        - c.with_label("Name", form:, for_field: :name)
+        = render TextInputComponent.new(form, method: :name)
       = render LabeledComponent.new(class: "mb-2") do |c|
-        - c.with_label(t("core.city"), size: :small, form:, for_field: :location_id)
+        - c.with_label(t("core.city"), form:, for_field: :location_id)
         = render SingleSelectComponent.new( \
             form,
             method: :location_id,

@@ -7,7 +7,7 @@ class TextInputComponentTest < ViewComponent::TestCase
     assert_equal(
       render_inline(TextInputComponent.new("name")).to_html,
       "<input type=\"text\" name=\"name\" id=\"name\" " \
-      "class=\"form-control text-input-component-default text-input-component-medium\">"
+      "class=\"form-control text-input-component-default text-input-component-small\">"
     )
   end
 
@@ -19,7 +19,7 @@ class TextInputComponentTest < ViewComponent::TestCase
       <<~HTML.squish.gsub("> <", "><")
         <div>
           <input type="text" name="name" id="name"
-                 class="form-control text-input-component-default text-input-component-medium"
+                 class="form-control text-input-component-default text-input-component-small"
                  aria-describedby="someid">
           <span id="someid" class="text-input-component-subscript">test</span>
         </div>
@@ -32,7 +32,7 @@ class TextInputComponentTest < ViewComponent::TestCase
 
     assert_equal(
       render_inline(TextInputComponent.new(form("candidate", candidate), method: :name)).to_html,
-      "<input class=\"form-control text-input-component-default text-input-component-medium\" " \
+      "<input class=\"form-control text-input-component-default text-input-component-small\" " \
       "type=\"text\" value=\"#{candidate.name}\" name=\"candidate[name]\" id=\"candidate_name\">"
     )
   end

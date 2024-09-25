@@ -7,7 +7,7 @@ class ButtonComponentTest < ViewComponent::TestCase
     assert_equal(
       render_inline(ButtonComponent.new.with_content("Button")).to_html,
       %(<button class="btn d-inline-flex gap-2 align-items-center justify-content-center
-        text-nowrap btn-primary btn-medium" type="submit">Button</button>).squish
+        text-nowrap btn-primary btn-small" type="submit">Button</button>).squish
     )
   end
 end

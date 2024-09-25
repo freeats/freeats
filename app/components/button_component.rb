@@ -51,7 +51,7 @@ class ButtonComponent < ApplicationComponent
   ].freeze
 
   option :variant, Types::Symbol.enum(*VARIANT_CLASSES.keys), default: -> { :primary }
-  option :size, Types::Symbol.enum(*SIZE_CLASSES.keys), default: -> { :medium }
+  option :size, Types::Symbol.enum(*SIZE_CLASSES.keys), default: -> { :small }
   option :disabled, Types::Strict::Bool, default: -> { false }
   option :hidden, Types::Strict::Bool, default: -> { false }
   option :type, Types::Symbol.enum(:button, :submit, :reset), default: -> { :submit }

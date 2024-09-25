@@ -11,10 +11,10 @@
         <% end -%>
       </div>
       <div class="datagrid-actions hstack gap-2">
-        <%= render ButtonComponent.new(size: :small) do %>
+        <%= render ButtonComponent.new do %>
           <% I18n.t('datagrid.form.search') %>
         <% end %>
-        <%= render ButtonLinkComponent.new(url_for(grid.to_param => {}), variant: :secondary, size: :small) do %>
+        <%= render ButtonLinkComponent.new(url_for(grid.to_param => {}), variant: :secondary) do %>
           <% I18n.t('datagrid.form.reset') %>
         <% end %>
       </div>

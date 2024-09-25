@@ -11,7 +11,7 @@
           visible_if_blank: true,
           right_class: "col-form-label-sm" \
         ) do |c|
-          - c.with_label(stage.name, size: :small)
+          - c.with_label(stage.name)
           - if (scorecard_template = stage.scorecard_template).present?
             = link_to scorecard_template.title, ats_scorecard_template_path(scorecard_template), data: { turbo: false }
           - elsif allowed_to?(:new?, with: ATS::ScorecardTemplatePolicy)

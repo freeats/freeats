@@ -19,7 +19,7 @@ ruby:
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
         .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
-          = render TextInputComponent.new(questions_form, method: :question, size: :small,
+          = render TextInputComponent.new(questions_form, method: :question,
                                           placeholder: "Enter question", type: :text,
                                           value: questions_form.object&.question)
           - if questions_form.object.id.present?
@@ -41,7 +41,7 @@ ruby:
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
         i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
         .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
-          = render TextInputComponent.new(questions_form, method: :question, size: :small,
+          = render TextInputComponent.new(questions_form, method: :question,
                                           placeholder: "Enter question", type: :text)
         button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
             type="button"

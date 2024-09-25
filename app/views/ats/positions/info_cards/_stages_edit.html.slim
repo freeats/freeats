@@ -17,7 +17,7 @@ ruby:
     .array-unit id="#{klass_name}_stages#{stage_form.options[:child_index]}"
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.mb-2
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
-          = render TextInputComponent.new(stage_form, method: :name, size: :small,
+          = render TextInputComponent.new(stage_form, method: :name,
                    placeholder: "Stage name",
                    disabled: stage_form.object.name.in?(Position::DEFAULT_STAGES),
                    "data-update-requirement-attribute-for-select-field-target": "mainField")
@@ -25,7 +25,7 @@ ruby:
     = form.fields_for(:stages, PositionStage.new, child_index: "id") do |stage_form|
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.mb-2
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
-          = render TextInputComponent.new(stage_form, method: :name, size: :small,
+          = render TextInputComponent.new(stage_form, method: :name,
                    placeholder: "Stage name",
                    "data-update-requirement-attribute-for-select-field-target": "mainField")
   = render ButtonComponent.new(variant: :cancel,
@@ -39,6 +39,6 @@ ruby:
     .array-unit id="#{klass_name}_stages#{stage_form.options[:child_index]}"
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.mt-2
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
-          = render TextInputComponent.new(stage_form, method: :name, size: :small,
+          = render TextInputComponent.new(stage_form, method: :name,
                   placeholder: "Stage name", disabled: true,
                   "data-update-requirement-attribute-for-select-field-target": "mainField")

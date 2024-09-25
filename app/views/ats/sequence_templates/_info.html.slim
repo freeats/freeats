@@ -12,11 +12,11 @@
   = render LabeledComponent.new(class: "mb-2",
                                 left_layout_class: "col-auto", right_layout_class: "col",
                                 right_class: "ps-0 col-form-label-sm") do |c|
-    - c.with_label("Subject", size: :small, style: "min-width: 77px;")
+    - c.with_label("Subject", style: "min-width: 77px;")
     = @sequence_template.subject
   = render LabeledComponent.new(left_layout_class: "col-auto", right_layout_class: "col",
                                 right_class: "ps-0 col-form-label-sm") do |c|
-    - c.with_label("Position", size: :small, style: "min-width: 77px;")
+    - c.with_label("Position", style: "min-width: 77px;")
     => link_to(@sequence_template.position.name,
                tab_ats_position_path(@sequence_template.position_id, :sequence_templates))
 
@@ -37,28 +37,26 @@
     - unless @sequence_template.archived?
       .hstack.flex-wrap.gap-2
         - if allowed_to?(:edit?)
-          = render ButtonLinkComponent.new(edit_ats_sequence_template_path(@sequence_template), size: :small)
+          = render ButtonLinkComponent.new(edit_ats_sequence_template_path(@sequence_template))
             | Edit
         - if allowed_to?(:test?)
           = form_with url: setup_test_ats_sequence_template_path(@sequence_template), method: :get, class: "d-inline",
               data: { turbo_frame: :turbo_modal_window }
             input type="hidden" name="status" value="test_sequence_template"
             = render ButtonComponent.new(variant: :secondary,
-                                         size: :small,
                                          disabled: @sequence_template.stages.empty?)
               | Test
     .hstack.flex-wrap.gap-2
       / TODO: uncomment after adding sequences
       / - if @sequence_template.sequences.where(status: :running).count.zero?
       /   .tooltip-wrapper data-bs-toggle="tooltip" title="There are no running sequences"
-      /     = render ButtonComponent.new(variant: :danger_secondary, size: :small, disabled: true)
+      /     = render ButtonComponent.new(variant: :danger_secondary, disabled: true)
       /       | Stop all sequences
       / - else
       /   = form_with url: stop_all_sequences_hub_sequence_template_path,
       /               method: :patch,
       /               data: { turbo_frame: :_self }
       /     = render ButtonComponent.new(variant: :danger_secondary,
-      /                                  size: :small,
       /                                  data: { toggle: "hub-confirmation",
       /                                          title: "Stop all sequences?",
       /                                          btn_cancel_label: "Cancel",
@@ -68,7 +66,6 @@
         .col-auto
           = form_with url: archive_ats_sequence_template_path, method: :patch, data: { turbo_frame: :_self }
             = render ButtonComponent.new(variant: :danger,
-                                         size: :small,
                                          data: { toggle: "ats-confirmation",
                                                  title: "Archive template?",
                                                  btn_cancel_label: "Cancel",

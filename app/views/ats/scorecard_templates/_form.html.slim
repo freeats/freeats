@@ -25,9 +25,8 @@ ruby:
   = render LabeledComponent.new(class: "mb-2",
                                 left_layout_class: "col-12 col-md-auto",
                                 right_layout_class: "col-12 col-md") do |c|
-    - c.with_label("Name", size: :small, style: "min-width: 137px;",
-                   form:, for_field: :title)
-    = render TextInputComponent.new(form, method: :title, size: :small, required: true)
+    - c.with_label("Name", style: "min-width: 137px;", form:, for_field: :title)
+    = render TextInputComponent.new(form, method: :title, required: true)
 
   .card
     .card-header
@@ -37,7 +36,7 @@ ruby:
       = render "questions_edit", questions: scorecard_template.scorecard_template_questions, form:
 
   .hstack.gap-2.mt-4
-    = render ButtonComponent.new(size: :small)
+    = render ButtonComponent.new
       | Save
-    = render ButtonLinkComponent.new(cancel_path, variant: :secondary, size: :small)
+    = render ButtonLinkComponent.new(cancel_path, variant: :secondary)
       | Cancel

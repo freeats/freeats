@@ -20,13 +20,13 @@
             = render LabeledComponent.new(class: "mb-3",
                                           left_layout_class: "col-12",
                                           right_layout_class: "col-12") do |c|
-              - c.with_label(t("core.recruiter"), size: :small, class: "form-label", for_field: :new_recruiter_id)
+              - c.with_label(t("core.recruiter"), class: "form-label", for_field: :new_recruiter_id)
               = ats_candidate_duplicates_merge_association_select(form, :new_recruiter_id, @duplicate_recruiters)
           - elsif @duplicate_recruiters.size == 1
             = form.hidden_field( \
               :new_recruiter_id, value: @duplicate_recruiters.first.last, id: "new_recruiter_id-hidden")
       .modal-footer
-        = render ButtonComponent.new(size: :small, variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
+        = render ButtonComponent.new(variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
           | Cancel
-        = render ButtonComponent.new(size: :small, form: "merge-form")
+        = render ButtonComponent.new(form: "merge-form")
           | Merge

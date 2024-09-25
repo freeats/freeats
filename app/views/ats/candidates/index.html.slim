@@ -14,9 +14,7 @@ ruby:
     = render PrettyNumberComponent.new(@candidates_count)
   .col-auto
     - if allowed_to?(:new?)
-      = render ButtonLinkComponent.new(new_ats_candidate_path,
-                                       size: :small,
-                                       data: { turbo_frame: :turbo_modal_window })
+      = render ButtonLinkComponent.new(new_ats_candidate_path, data: { turbo_frame: :turbo_modal_window })
         | Add candidate
 
 = datagrid_table(@candidates_grid, candidates)

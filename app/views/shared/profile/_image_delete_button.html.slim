@@ -2,13 +2,12 @@
 
 - if disabled
   span data-bs-toggle="tooltip" data-bs-title=(t("candidates.disabled_avatar_tooltip"))
-    = render ButtonComponent.new(variant: :danger_secondary, size: :small, disabled: true) do |c|
+    = render ButtonComponent.new(variant: :danger_secondary, disabled: true) do |c|
       - c.with_icon("fas fa-trash-alt", position: :right)
       = t("core.delete_button")
 - else
   = form_with url:, method: :delete, class: "d-inline", local: true
     = render ButtonComponent.new(variant: :danger_secondary,
-                                 size: :small,
                                  data: { toggle: "ats-confirmation",
                                          title: t("candidates.delete_avatar"),
                                          btn_cancel_label: t("core.cancel_button"),

@@ -10,7 +10,7 @@
           .datagrid-filter.filter.mb-3.col-xl-2.col-md-3.col-sm-4
             = grid_filter(form: f, grid:, filter:)
       .datagrid-actions.hstack.gap-2
-        = render ButtonComponent.new(size: :small)
+        = render ButtonComponent.new
           = t("datagrid.form.search")
-        = render ButtonLinkComponent.new(url_for(grid.to_param => {}), variant: :secondary, size: :small)
+        = render ButtonLinkComponent.new(url_for(grid.to_param => {}), variant: :secondary)
           = t("datagrid.form.reset")

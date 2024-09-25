@@ -1,8 +1,7 @@
 = render "ats/positions/profile"
   .col-12.col-md-8.mt-3
     - if allowed_to?(:new?, with: ATS::SequenceTemplatePolicy)
-      = render ButtonLinkComponent.new(new_ats_sequence_template_path(position_id: @position.id),
-                                       size: :small)
+      = render ButtonLinkComponent.new(new_ats_sequence_template_path(position_id: @position.id))
         | Add sequence template
     - if @position.sequence_templates.present?
       = datagrid_table(@sequence_templates_grid, html: { class: "datagrid profile_grid mt-3" })

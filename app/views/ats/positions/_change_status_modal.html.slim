@@ -6,11 +6,10 @@
   = render LabeledComponent.new(class: "mb-2",
                                 left_layout_class: "col-2",
                                 right_layout_class: "col-10") do |c|
-    - c.with_label("Reason", size: :small, for_field: :new_change_status_reason)
+    - c.with_label("Reason", for_field: :new_change_status_reason)
     #position-status-select
       = render SingleSelectComponent.new( \
           "new_change_status_reason",
-          size: :small,
           placeholder: "Select reason",
           required: true,
           local: { options: options_for_select } \
@@ -18,10 +17,10 @@
 
   = render LabeledComponent.new(left_layout_class: "col-2",
                                 right_layout_class: "col-10") do |c|
-    - c.with_label("Comment", size: :small, for_field: "position-status-comment")
+    - c.with_label("Comment", for_field: "position-status-comment")
     textarea.form-control#position-status-comment placeholder="Comment" rows="5" name="comment" required=true
 - content_for :footer
-  = render ButtonComponent.new(size: :small, variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
+  = render ButtonComponent.new(variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
     | Cancel
-  = render ButtonComponent.new(size: :small)
+  = render ButtonComponent.new
     | Change

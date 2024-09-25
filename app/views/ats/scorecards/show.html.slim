@@ -11,7 +11,7 @@
       right_layout_class: "col",
       right_class: "ps-0 col-form-label-sm" \
     ) do |c|
-      - c.with_label("Candidate", size: :small, style: "min-width: 100px;")
+      - c.with_label("Candidate", style: "min-width: 100px;")
       - candidate = @scorecard.placement.candidate
       = link_to(candidate.full_name, ats_candidate_path(candidate))
     = render LabeledComponent.new( \
@@ -20,7 +20,7 @@
       right_layout_class: "col",
       right_class: "ps-0 col-form-label-sm" \
     ) do |c|
-      - c.with_label("Position", size: :small, style: "min-width: 100px;")
+      - c.with_label("Position", style: "min-width: 100px;")
       - position = @scorecard.placement.position
       - if allowed_to?(:show?, position, with: ATS::PositionPolicy)
         = link_to(position.name, ats_position_path(position))
@@ -32,7 +32,7 @@
       right_layout_class: "col",
       right_class: "ps-0 col-form-label-sm" \
     ) do |c|
-      - c.with_label("Template", size: :small, style: "min-width: 100px;")
+      - c.with_label("Template", style: "min-width: 100px;")
       - scorecard_template = @scorecard.position_stage.scorecard_template
       - if allowed_to?(:show?, scorecard_template, with: ATS::ScorecardTemplatePolicy)
         = link_to(scorecard_template.title, ats_scorecard_template_path(scorecard_template))
@@ -44,7 +44,7 @@
       right_layout_class: "col",
       right_class: "ps-0 col-form-label-sm" \
     ) do |c|
-      - c.with_label("Interviewer", size: :small, style: "min-width: 100px;")
+      - c.with_label("Interviewer", style: "min-width: 100px;")
       = @scorecard.interviewer.name
 
     - @scorecard.scorecard_questions.each do |question|
@@ -70,5 +70,5 @@
           - if (summary = @scorecard.summary).present?
             = summary
   .card-submit.hstack.gap-2.mt-4
-    = render ButtonLinkComponent.new(edit_ats_scorecard_path, size: :small)
+    = render ButtonLinkComponent.new(edit_ats_scorecard_path)
       | Edit

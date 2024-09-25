@@ -19,6 +19,6 @@
           .accordion-body
             - visible_stages(placement).each do |stage|
                 = render LabeledComponent.new do |c|
-                  - c.with_label(stage.name, size: :small)
+                  - c.with_label(stage.name)
                   - visible_scorecards = placement.scorecards.filter { _1.position_stage_id == stage.id }
                   = render "stage_scorecards", stage:, scorecards: visible_scorecards, placement_id: placement.id

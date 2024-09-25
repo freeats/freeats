@@ -24,15 +24,13 @@ ruby:
       = render LabeledComponent.new(class: "mb-2",
                                     left_layout_class: "col-12 col-md-auto",
                                     right_layout_class: "col-12 col-md") do |c|
-        - c.with_label("Name", size: :small, style: "min-width: 72px;",
-                       form:, for_field: :name)
-        = render TextInputComponent.new(form, method: :name, size: :small, required: true)
+        - c.with_label("Name", style: "min-width: 72px;", form:, for_field: :name)
+        = render TextInputComponent.new(form, method: :name, required: true)
       = render LabeledComponent.new(class: "mb-2",
                                     left_layout_class: "col-12 col-md-auto",
                                     right_layout_class: "col-12 col-md") do |c|
-        - c.with_label("Subject", size: :small, style: "min-width: 72px;",
-                       form:, for_field: :subject)
-        = render TextInputComponent.new(form, method: :subject, size: :small, required: true)
+        - c.with_label("Subject", style: "min-width: 72px;", form:, for_field: :subject)
+        = render TextInputComponent.new(form, method: :subject, required: true)
       #stages data-sequence-templates-target="stagesList"
         = form.fields_for :stages do |stage|
           = render "stage_edit", f: stage
@@ -42,12 +40,9 @@ ruby:
             i.fas.fa-plus>
             | Add stage
         .hstack.gap-2.mt-4
-          = render ButtonComponent.new(size: :small)
+          = render ButtonComponent.new
             | Save
-          = render ButtonLinkComponent.new( \
-            cancel_path, \
-            variant: :secondary, size: :small \
-          )
+          = render ButtonLinkComponent.new(cancel_path, variant: :secondary)
             | Cancel
   #ats-email-templates-variables.col-12.col-lg
     = email_templates_variables_help_for("position_sequence_template")
