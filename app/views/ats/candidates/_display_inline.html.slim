@@ -10,5 +10,5 @@ div
         src="https://view.officeapps.live.com/op/embed.aspx?src=#{file.url}"]
     - else
       .border.p-4
-        = raw t('candidate.cv_file_extension_alert', extension: File.extname(file.url),
+        = raw t('candidates.cv_file_extension_alert', extension: File.extname(file.url),
                 download_link: link_to(t("candidates.download_file"), file.url, target: "_blank"))
