@@ -174,6 +174,12 @@ CREATE TYPE public.event_type AS ENUM (
     'placement_removed',
     'position_added',
     'position_changed',
+    'position_collaborator_assigned',
+    'position_collaborator_unassigned',
+    'position_hiring_manager_assigned',
+    'position_hiring_manager_unassigned',
+    'position_interviewer_assigned',
+    'position_interviewer_unassigned',
     'position_recruiter_assigned',
     'position_recruiter_unassigned',
     'position_stage_added',
@@ -4659,6 +4665,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240926040800'),
 ('20240924153311'),
 ('20240924153030'),
 ('20240923151001'),

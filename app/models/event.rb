@@ -57,6 +57,12 @@ class Event < ApplicationRecord
     placement_removed
     position_added
     position_changed
+    position_collaborator_assigned
+    position_collaborator_unassigned
+    position_hiring_manager_assigned
+    position_hiring_manager_unassigned
+    position_interviewer_assigned
+    position_interviewer_unassigned
     position_recruiter_assigned
     position_recruiter_unassigned
     position_stage_added

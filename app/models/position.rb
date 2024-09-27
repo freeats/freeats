@@ -39,6 +39,20 @@ class Position < ApplicationRecord
   HIRING_MANAGERS_ACCESS_LEVEL = %w[admin employee].freeze
   INTERVIEWERS_ACCESS_LEVEL = %w[admin employee].freeze
 
+  ASSIGNED_EVENTS = %w[
+    position_recruiter_assigned
+    position_collaborator_assigned
+    position_hiring_manager_assigned
+    position_interviewer_assigned
+  ].freeze
+
+  UNASSIGNED_EVENTS = %w[
+    position_recruiter_unassigned
+    position_collaborator_unassigned
+    position_hiring_manager_unassigned
+    position_interviewer_unassigned
+  ].freeze
+
   has_and_belongs_to_many :collaborators,
                           class_name: "Member",
                           association_foreign_key: :collaborator_id,

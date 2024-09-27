@@ -31,6 +31,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal position.recruiter_id, recruiter.id
     assert_equal event.type, "position_recruiter_assigned"
+    assert_equal event.changed_to, recruiter.id
   end
 
   test "should reassign recruiter" do
@@ -162,91 +163,68 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
   test "should update collaborators and create event" do
     position = positions(:ruby_position)
     params = {}
-    params[:collaborator_ids] =
-      Member
-      .where(access_level: Position::COLLABORATORS_ACCESS_LEVEL)
-      .where.not(id: position.recruiter_id)
-      .where(tenant: tenants(:toughbyte_tenant))
-      .order("random()")
-      .first(3)
-      .pluck(:id) -
-      [position.recruiter_id, params[:recruiter_id]]
+    params[:collaborator_ids] = [members(:employee_member).id, members(:admin_member).id]
 
     assert_empty position.collaborators
 
-    assert_difference "Event.count" do
+    assert_difference "Event.where(type: :position_collaborator_assigned).count" => params[:collaborator_ids].size do
       patch update_side_header_ats_position_path(position), params: { position: params }
     end
 
     assert_response :success
     position.reload
-    event = Event.last
+    events = Event.last(params[:collaborator_ids].size)
 
     assert_equal position.collaborator_ids.sort, params[:collaborator_ids].sort
-    assert_equal event.type, "position_changed"
-    assert_equal event.changed_field, "collaborators"
-    assert_equal event.changed_to.sort, params[:collaborator_ids].sort
-    assert_empty event.changed_from
+    assert_equal events.pluck(:type).uniq, ["position_collaborator_assigned"]
+    assert_equal events.pluck(:changed_to).sort, params[:collaborator_ids].sort
+    assert_empty events.pluck(:changed_from).compact
   end
 
   test "should update hiring managers and create event" do
     position = positions(:ruby_position)
     params = {}
-    params[:hiring_manager_ids] =
-      Member
-      .where(access_level: Position::HIRING_MANAGERS_ACCESS_LEVEL)
-      .where.not(id: position.recruiter_id)
-      .where(tenant: tenants(:toughbyte_tenant))
-      .order("random()")
-      .first(3)
-      .pluck(:id) -
-      [position.recruiter_id, params[:recruiter_id]]
+    params[:hiring_manager_ids] = [members(:employee_member).id, members(:admin_member).id]
 
     assert_empty position.hiring_managers
 
-    assert_difference "Event.count" do
+    assert_difference(
+      "Event.where(type: :position_hiring_manager_assigned).count" => params[:hiring_manager_ids].size
+    ) do
       patch update_side_header_ats_position_path(position), params: { position: params }
     end
 
     assert_response :success
     position.reload
-    event = Event.last
+    events = Event.last(params[:hiring_manager_ids].size)
 
     assert_equal position.hiring_manager_ids.sort, params[:hiring_manager_ids].sort
-    assert_equal event.type, "position_changed"
-    assert_equal event.changed_field, "hiring_managers"
-    assert_equal event.changed_to.sort, params[:hiring_manager_ids].sort
-    assert_empty event.changed_from
+    assert_equal events.pluck(:type).uniq, ["position_hiring_manager_assigned"]
+    assert_equal events.pluck(:changed_to).sort, params[:hiring_manager_ids].sort
+    assert_empty events.pluck(:changed_from).compact
   end
 
   test "should update interviewers and create event" do
     position = positions(:ruby_position)
     params = {}
-    params[:interviewer_ids] =
-      Member
-      .where(access_level: Position::INTERVIEWERS_ACCESS_LEVEL)
-      .where.not(id: position.recruiter_id)
-      .where(tenant: tenants(:toughbyte_tenant))
-      .order("random()")
-      .first(3)
-      .pluck(:id) -
-      [position.recruiter_id, params[:recruiter_id]]
+    params[:interviewer_ids] = [members(:employee_member).id, members(:admin_member).id]
 
-    assert_empty position.hiring_managers
+    assert_empty position.interviewers
 
-    assert_difference "Event.count" do
+    assert_difference(
+      "Event.where(type: :position_interviewer_assigned).count" => params[:interviewer_ids].size
+    ) do
       patch update_side_header_ats_position_path(position), params: { position: params }
     end
 
     assert_response :success
     position.reload
-    event = Event.last
+    events = Event.last(params[:interviewer_ids].size)
 
     assert_equal position.interviewer_ids.sort, params[:interviewer_ids].sort
-    assert_equal event.type, "position_changed"
-    assert_equal event.changed_field, "interviewers"
-    assert_equal event.changed_to.sort, params[:interviewer_ids].sort
-    assert_empty event.changed_from
+    assert_equal events.pluck(:type).uniq, ["position_interviewer_assigned"]
+    assert_equal events.pluck(:changed_to).sort, params[:interviewer_ids].sort
+    assert_empty events.pluck(:changed_from).compact
   end
 
   test "should add and then update position_stage with creating events" do
@@ -405,5 +383,111 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal event.changed_field, "location"
     assert_equal event.changed_to, new_location.short_name
     assert_equal event.changed_from, old_location.short_name
+  end
+
+  test "should display assigned and unassigned activities" do
+    # create recruiter assign and unassign events
+    assert_difference ["Position.count", "Event.where(type: :position_recruiter_assigned).count"] do
+      post ats_positions_path(position: { name: "New position" })
+    end
+
+    assert_response :redirect
+
+    position = Position.last
+
+    assert_difference(
+      "Event.where(type: %i[position_recruiter_assigned position_recruiter_unassigned]).count", 2
+    ) do
+      patch reassign_recruiter_ats_position_path(position),
+            params: { position: { recruiter_id: members(:admin_member).id } }
+    end
+
+    assign_members1 = [members(:employee_member).id, members(:admin_member).id]
+    assign_members2 = [members(:helen_member).id]
+
+    # create collaborator assign and unassign events
+    params = { collaborator_ids: assign_members1 }
+    assert_difference(
+      "Event.where(type: :position_collaborator_assigned).count" => params[:collaborator_ids].size
+    ) do
+      patch update_side_header_ats_position_path(position), params: { position: params }
+    end
+
+    removed_collaborators_size = params[:collaborator_ids].size
+    params = { collaborator_ids: assign_members2 }
+    assert_difference(
+      "Event.where(type: :position_collaborator_assigned).count" => params[:collaborator_ids].size,
+      "Event.where(type: :position_collaborator_unassigned).count" => removed_collaborators_size
+    ) do
+      patch update_side_header_ats_position_path(position), params: { position: params }
+    end
+
+    # create hiring manager assign and unassign events
+    params = { hiring_manager_ids: assign_members1 }
+    assert_difference(
+      "Event.where(type: :position_hiring_manager_assigned).count" => params[:hiring_manager_ids].size
+    ) do
+      patch update_side_header_ats_position_path(position), params: { position: params }
+    end
+
+    removed_hiring_managers_size = params[:hiring_manager_ids].size
+    params = { hiring_manager_ids: assign_members2 }
+    assert_difference(
+      "Event.where(type: :position_hiring_manager_assigned).count" => params[:hiring_manager_ids].size,
+      "Event.where(type: :position_hiring_manager_unassigned).count" => removed_hiring_managers_size
+    ) do
+      patch update_side_header_ats_position_path(position), params: { position: params }
+    end
+
+    # create interviewer assign and unassign events
+    params = { interviewer_ids: assign_members1 }
+    assert_difference(
+      "Event.where(type: :position_interviewer_assigned).count" => params[:interviewer_ids].size
+    ) do
+      patch update_side_header_ats_position_path(position), params: { position: params }
+    end
+
+    removed_interviewers_size = params[:interviewer_ids].size
+    params = { interviewer_ids: assign_members2 }
+    assert_difference(
+      "Event.where(type: :position_interviewer_assigned).count" => params[:interviewer_ids].size,
+      "Event.where(type: :position_interviewer_unassigned).count" => removed_interviewers_size
+    ) do
+      patch update_side_header_ats_position_path(position), params: { position: params }
+    end
+
+    get tab_ats_position_url(position, :activities)
+
+    activities =
+      Nokogiri::HTML(response.body)
+              .css("#ats-positions-show-activities li")
+              .map { _1.at_css(":nth-child(2)").text.strip }
+
+    reference_activities = [
+      # recruiter
+      "Adrian Barton assigned themselves as recruiter to the position",
+      "Adrian Barton unassigned themselves as recruiter from the position",
+      "Adrian Barton assigned Admin Admin as recruiter to the position",
+      # collaborator
+      "Adrian Barton assigned Admin Admin as collaborator to the position",
+      "Adrian Barton assigned themselves as collaborator to the position",
+      "Adrian Barton unassigned Admin Admin as collaborator from the position",
+      "Adrian Barton unassigned themselves as collaborator from the position",
+      "Adrian Barton assigned Helen Booker as collaborator to the position",
+      # hiring manager
+      "Adrian Barton assigned Admin Admin as hiring manager to the position",
+      "Adrian Barton assigned themselves as hiring manager to the position",
+      "Adrian Barton unassigned Admin Admin as hiring manager from the position",
+      "Adrian Barton unassigned themselves as hiring manager from the position",
+      "Adrian Barton assigned Helen Booker as hiring manager to the position",
+      # interviewer
+      "Adrian Barton assigned Admin Admin as interviewer to the position",
+      "Adrian Barton assigned themselves as interviewer to the position",
+      "Adrian Barton unassigned Admin Admin as interviewer from the position",
+      "Adrian Barton unassigned themselves as interviewer from the position",
+      "Adrian Barton assigned Helen Booker as interviewer to the position"
+    ]
+
+    assert_empty(reference_activities - activities)
   end
 end

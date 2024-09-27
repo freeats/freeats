@@ -53,14 +53,15 @@ module CandidatesHelper
         end
       when "candidate_recruiter_assigned"
         <<~TEXT
-          assigned the candidate to
-          #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)}
+          assigned \
+          #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)} \
+          as recruiter to the candidate
         TEXT
       when "candidate_recruiter_unassigned"
         <<~TEXT
-          unassigned
-          #{event_actor_account_name_for_assignment(event:, member: event.unassigned_member)}
-          from the candidate
+          unassigned \
+          #{event_actor_account_name_for_assignment(event:, member: event.unassigned_member)} \
+          as recruiter from the candidate
         TEXT
       when "active_storage_attachment_added"
         "added file <b>#{event.properties['name']}</b>"

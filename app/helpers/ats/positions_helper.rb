@@ -13,21 +13,32 @@ module ATS::PositionsHelper
       when "position_added"
         "added the position"
       when "position_changed"
-        if field.in?(["collaborators", "hiring managers", "interviewers"])
-          assigned_and_unassigned_message(field, from, to)
-        else
-          from_and_to_message(field, from, to)
+        if field == "status"
+          from = from.humanize
+          to = to.humanize
         end
-      when "position_recruiter_assigned"
+
+        if to.present? && from.present?
+          "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
+        elsif to.present?
+          "added #{field} <b>#{to}</b>"
+        elsif from.present?
+          "removed #{field} <b>#{from}</b>"
+        end
+
+      when *Position::ASSIGNED_EVENTS
+        member = Member.includes(:account).find(to)
+
         <<~TEXT
-          assigned the position \
-          to #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)}
+          assigned #{event_actor_account_name_for_assignment(event:, member:)} \
+          as #{detect_field_by_event_type(event.type)} to the position
         TEXT
-      when "position_recruiter_unassigned"
+      when *Position::UNASSIGNED_EVENTS
+        member = Member.includes(:account).find(from)
+
         <<~TEXT
-          unassigned \
-          #{event_actor_account_name_for_assignment(event:, member: event.unassigned_member)} \
-          from the position
+          unassigned #{event_actor_account_name_for_assignment(event:, member:)} \
+          as #{detect_field_by_event_type(event.type)} from the position
         TEXT
       when "position_stage_added"
         "added stage <b>#{event.properties['name']}</b>"
@@ -139,33 +150,16 @@ module ATS::PositionsHelper
     Position::CHANGE_STATUS_REASON_LABELS[position.change_status_reason&.to_sym]&.downcase
   end
 
-  def assigned_and_unassigned_message(field, from, to)
-    to = Member.joins(:account).where(id: to).pluck("accounts.name")
-    from = Member.joins(:account).where(id: from).pluck("accounts.name")
-    assigned = (to - from).join(", ")
-    unassigned = (from - to).join(", ")
-
-    if assigned.present? && unassigned.present?
-      "assigned <b>#{assigned}</b> and unassigned <b>#{unassigned}</b> as #{field}"
-    elsif assigned.present?
-      "assigned <b>#{assigned}</b> as #{field}"
-    elsif unassigned.present?
-      "unassigned <b>#{unassigned}</b> as #{field}"
-    end
-  end
-
-  def from_and_to_message(field, from, to)
-    if field == "status"
-      from = from.humanize
-      to = to.humanize
-    end
-
-    if to.present? && from.present?
-      "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
-    elsif to.present?
-      "added #{field} <b>#{to}</b>"
-    elsif from.present?
-      "removed #{field} <b>#{from}</b>"
+  def detect_field_by_event_type(type)
+    case type
+    when "position_collaborator_assigned", "position_collaborator_unassigned"
+      "collaborator"
+    when "position_hiring_manager_assigned", "position_hiring_manager_unassigned"
+      "hiring manager"
+    when "position_interviewer_assigned", "position_interviewer_unassigned"
+      "interviewer"
+    when "position_recruiter_assigned", "position_recruiter_unassigned"
+      "recruiter"
     end
   end
 end

@@ -814,4 +814,42 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to ats_candidates_path
     assert_equal flash[:notice], I18n.t("candidates.candidate_deleted")
   end
+
+  test "should display assigned and unassigned activities" do
+    # for some reason signed in account is not the same as the current account when we run all tests.
+    sign_out
+    sign_in @current_account
+
+    candidate = candidates(:jane)
+
+    assert_nil candidate.recruiter_id
+    assert_equal @current_account.name, "Adrian Barton"
+
+    assert_difference "Event.where(type: :candidate_recruiter_assigned).count" do
+      patch assign_recruiter_ats_candidate_path(candidate),
+            params: { candidate: { recruiter_id: @current_account.member.id } }
+    end
+
+    assert_difference(
+      "Event.where(type: %i[candidate_recruiter_assigned candidate_recruiter_unassigned]).count", 2
+    ) do
+      patch assign_recruiter_ats_candidate_path(candidate),
+            params: { candidate: { recruiter_id: members(:admin_member).id } }
+    end
+
+    get tab_ats_candidate_url(candidate, :activities)
+
+    activities =
+      Nokogiri::HTML(response.body)
+              .css("#ats-candidates-show-activities li")
+              .map { _1.at_css(":nth-child(2)").text.strip }
+
+    reference_activities = [
+      "Adrian Barton assigned themselves as recruiter to the candidate",
+      "Adrian Barton unassigned themselves as recruiter from the candidate",
+      "Adrian Barton assigned Admin Admin as recruiter to the candidate"
+    ]
+
+    assert_empty(reference_activities - activities)
+  end
 end

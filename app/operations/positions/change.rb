@@ -23,9 +23,9 @@ class Positions::Change
       recruiter_id: position.recruiter_id,
       location: position.location,
       description: position.description.to_s,
-      collaborator_ids: position.collaborators.pluck(:collaborator_id),
-      hiring_manager_ids: position.hiring_managers.pluck(:hiring_manager_id),
-      interviewer_ids: position.interviewers.pluck(:interviewer_id)
+      collaborator_ids: position.collaborator_ids,
+      hiring_manager_ids: position.hiring_manager_ids,
+      interviewer_ids: position.interviewer_ids
     }
 
     position.assign_attributes(params)
@@ -54,36 +54,119 @@ class Positions::Change
   end
 
   def add_events(old_values:, position:, actor_account:)
-    yield add_changed_recruiter_events(old_values:, position:, actor_account:)
+    common_event_params = { actor_account:, eventable: position }
+
+    yield add_changed_recruiter_events(old_values:, position:, common_event_params:)
+    yield add_changed_collaborators_events(old_values:, position:, common_event_params:)
+    yield add_changed_hiring_managers_events(old_values:, position:, common_event_params:)
+    yield add_changed_interviewers_events(old_values:, position:, common_event_params:)
     yield add_position_changed_events(old_values:, position:, actor_account:)
 
     Success()
   end
 
-  def add_changed_recruiter_events(old_values:, position:, actor_account:)
+  def add_changed_recruiter_events(old_values:, position:, common_event_params:)
     return Success() if old_values[:recruiter_id] == position.recruiter_id
 
     if old_values[:recruiter_id].present?
-      position_recruiter_unassigned_params = {
-        actor_account:,
-        type: :position_recruiter_unassigned,
-        eventable: position,
-        changed_from: old_values[:recruiter_id]
-      }
-
-      yield Events::Add.new(params: position_recruiter_unassigned_params).call
+      yield Events::Add.new(
+        params: { **common_event_params,
+          type: :position_recruiter_unassigned,
+          changed_from: old_values[:recruiter_id] }
+      ).call
     end
 
     return Success() if position.recruiter_id.blank?
 
-    position_recruiter_assigned_params = {
-      actor_account:,
-      type: :position_recruiter_assigned,
-      eventable: position,
-      changed_to: position.recruiter_id
-    }
+    yield Events::Add.new(
+      params: { **common_event_params,
+        type: :position_recruiter_assigned,
+        changed_to: position.recruiter_id }
+    ).call
 
-    yield Events::Add.new(params: position_recruiter_assigned_params).call
+    Success()
+  end
+
+  def add_changed_collaborators_events(old_values:, position:, common_event_params:)
+    position_collaborator_ids = position.collaborator_ids
+
+    return Success() if old_values[:collaborator_ids] == position_collaborator_ids
+
+    removed_collaborator_ids = old_values[:collaborator_ids] - position_collaborator_ids
+    removed_collaborator_ids.each do |removed_collaborator_id|
+      yield Events::Add.new(
+        params: { **common_event_params,
+          type: :position_collaborator_unassigned,
+          changed_from: removed_collaborator_id }
+      ).call
+    end
+
+    return Success() if position_collaborator_ids.blank?
+
+    added_collaborator_ids = position_collaborator_ids - old_values[:collaborator_ids]
+    added_collaborator_ids.each do |added_collaborator_id|
+      yield Events::Add.new(
+        params: { **common_event_params,
+          type: :position_collaborator_assigned,
+          changed_to: added_collaborator_id }
+      ).call
+    end
+
+    Success()
+  end
+
+  def add_changed_hiring_managers_events(old_values:, position:, common_event_params:)
+    position_hiring_manager_ids = position.hiring_manager_ids
+
+    return Success() if old_values[:hiring_manager_ids] == position_hiring_manager_ids
+
+    removed_hiring_manager_ids = old_values[:hiring_manager_ids] - position_hiring_manager_ids
+    removed_hiring_manager_ids.each do |removed_hiring_manager_id|
+      yield Events::Add.new(
+        params: { **common_event_params,
+          type: :position_hiring_manager_unassigned,
+          changed_from: removed_hiring_manager_id }
+      ).call
+    end
+
+    return Success() if position_hiring_manager_ids.blank?
+
+    added_hiring_manager_ids = position_hiring_manager_ids - old_values[:hiring_manager_ids]
+    added_hiring_manager_ids.each do |added_hiring_manager_id|
+      yield Events::Add.new(
+        params: { **common_event_params,
+          type: :position_hiring_manager_assigned,
+          changed_to: added_hiring_manager_id }
+      ).call
+    end
+
+    Success()
+  end
+
+  def add_changed_interviewers_events(old_values:, position:, common_event_params:)
+    position_interviewer_ids = position.interviewer_ids
+
+    return Success() if old_values[:interviewer_ids] == position_interviewer_ids
+
+    removed_interviewer_ids = old_values[:interviewer_ids] - position_interviewer_ids
+    removed_interviewer_ids.each do |removed_interviewer_id|
+      yield Events::Add.new(
+        params: { **common_event_params,
+          type: :position_interviewer_unassigned,
+          changed_from: removed_interviewer_id }
+      ).call
+    end
+
+    return Success() if position_interviewer_ids.blank?
+
+    added_interviewer_ids = position_interviewer_ids - old_values[:interviewer_ids]
+    added_interviewer_ids.each do |added_interviewer_id|
+      yield Events::Add.new(
+        params: { **common_event_params,
+          type: :position_interviewer_assigned,
+          changed_to: added_interviewer_id }
+      ).call
+    end
 
     Success()
   end
@@ -113,48 +196,6 @@ class Positions::Change
         changed_field: :description,
         changed_from: old_values[:description].to_s,
         changed_to: position.description.to_s
-      }
-
-      yield Events::Add.new(params: position_changed_params).call
-    end
-
-    position_collaborator_ids = position.collaborators.pluck(:collaborator_id)
-    if old_values[:collaborator_ids].sort != position_collaborator_ids.sort
-      position_changed_params = {
-        actor_account:,
-        type:,
-        eventable:,
-        changed_field: :collaborators,
-        changed_from: old_values[:collaborator_ids],
-        changed_to: position_collaborator_ids
-      }
-
-      yield Events::Add.new(params: position_changed_params).call
-    end
-
-    position_hiring_manager_ids = position.hiring_managers.pluck(:hiring_manager_id)
-    if old_values[:hiring_manager_ids].sort != position_hiring_manager_ids.sort
-      position_changed_params = {
-        actor_account:,
-        type:,
-        eventable:,
-        changed_field: :hiring_managers,
-        changed_from: old_values[:hiring_manager_ids],
-        changed_to: position_hiring_manager_ids
-      }
-
-      yield Events::Add.new(params: position_changed_params).call
-    end
-
-    position_interviewer_ids = position.interviewers.pluck(:interviewer_id)
-    if old_values[:interviewer_ids].sort != position_interviewer_ids.sort
-      position_changed_params = {
-        actor_account:,
-        type:,
-        eventable:,
-        changed_field: :interviewers,
-        changed_from: old_values[:interviewer_ids],
-        changed_to: position_interviewer_ids
       }
 
       yield Events::Add.new(params: position_changed_params).call
