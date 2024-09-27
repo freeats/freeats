@@ -37,7 +37,7 @@ class RodauthTest < ActionDispatch::IntegrationTest
       post "/register", params:
     end
 
-    assert_redirected_to "/verify_email_resend"
+    assert_redirected_to "/verify_email_resend?email=#{CGI.escape(params[:email])}"
 
     tenant = Tenant.last
     account = Account.last

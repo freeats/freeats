@@ -11,7 +11,9 @@ module CreateAccount
     configure do
       enable :create_account
       create_account_route :register
-      create_account_redirect { verify_account_resend_path }
+      create_account_redirect do
+        verify_account_resend_path(login_param => param(login_param))
+      end
 
       before_create_account do
         unless (name = param_or_nil("full_name"))
@@ -45,7 +47,7 @@ module LoginLogout
       login_return_to_requested_location? true
 
       # Redirect to home page after logout.
-      logout_redirect "/"
+      logout_redirect { login_path }
 
       # Ensure requiring login follows login route changes.
       require_login_redirect { login_path }
@@ -93,6 +95,20 @@ module VerifyAccount
       verify_account_resend_route :verify_email_resend
       # Allow to set password for unverified account.
       verify_account_set_password? false
+      verify_account_email_sent_redirect do
+        verify_account_resend_path(login_param => param(login_param))
+      end
+      verify_account_email_recently_sent_redirect do
+        verify_account_resend_path(login_param => param(login_param))
+      end
+      # The number of seconds before sending another verify account email
+      verify_account_skip_resend_email_within 60
+
+      create_verify_account_email do
+        RodauthMailer.verify_account(
+          self.class.configuration_name, account_id, verify_account_key_value
+        )
+      end
     end
   end
 end
@@ -218,9 +234,6 @@ class RodauthMain < Rodauth::Rails::Auth
     create_reset_password_email do
       RodauthMailer.reset_password(self.class.configuration_name, account_id, reset_password_key_value)
     end
-    # create_verify_account_email do
-    #   RodauthMailer.verify_account(self.class.configuration_name, account_id, verify_account_key_value)
-    # end
     # create_verify_login_change_email do |_login|
     #   RodauthMailer.verify_login_change(self.class.configuration_name, account_id, verify_login_change_key_value)
     # end

@@ -217,12 +217,16 @@ en:
     unlock_account_request_page_title: Request Account Unlock
     unverified_account_message: unverified account, please verify account before logging in
     unverified_change_login_error_flash: Please verify this account before changing the login
-    verify_account_button: Verify Account
+    verify_account_button: Verify email
     verify_account_email_recently_sent_error_flash: An email has recently been sent to you with a link to verify your account
     verify_account_email_sent_notice_flash: An email has been sent to you with a link to verify your account
-    verify_account_email_subject: Verify Account
+    verify_account_email_subject: Verify your email address
+    verify_account_email_content: >-
+      Thank you for registering.
+      To activate your account, please verify your email address by clicking the button below.
+    verify_account_email_button: Verify email
     verify_account_error_flash: Unable to verify account
-    verify_account_notice_flash: Your account has been verified
+    verify_account_notice_flash: Your email has been verified
     verify_account_page_title: Verify your email
     verify_account_resend_button: Resend verification email
     verify_account_resend_error_flash: Unable to resend verify account email

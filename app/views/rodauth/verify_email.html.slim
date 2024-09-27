@@ -1,7 +1,0 @@
-.authentication-container.mx-auto.card
-  .card-body.p-4
-    h1.mb-3 = t("rodauth.verify_account_page_title")
-    = t("rodauth.verify_account_resend_explanatory_text")
-    = form_with url: "#", class: "mt-4 vstack"
-      = render(ButtonComponent.new(variant: :secondary))
-        = t("rodauth.verify_account_resend_button")

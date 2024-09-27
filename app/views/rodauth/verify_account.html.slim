@@ -1,0 +1,6 @@
+.authentication-container.mx-auto.card
+  .card-body.p-4
+    h1.mb-3 = t("rodauth.verify_account_page_title")
+    = form_with url: rodauth.verify_account_path, class: "mt-4 vstack"
+      = render ButtonComponent.new
+        = t("rodauth.verify_account_button")

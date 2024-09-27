@@ -221,6 +221,10 @@ ru:
     verify_account_email_recently_sent_error_flash: Недавно вам было отправлено электронное письмо со ссылкой для подтверждения вашей учетной записи
     verify_account_email_sent_notice_flash: Вам отправлено электронное письмо со ссылкой для подтверждения вашей учетной записи
     verify_account_email_subject: Подтверждение учетной записи
+    verify_account_email_content: >-
+      Спасибо за регистрацию
+      Чтобы активировать ваш аккаунт, пожалуйста подтвердите ваш адрес электронной почты.
+    verify_account_email_button: Подтвердить адрес
     verify_account_error_flash: Не удалось подтвердить учетную запись
     verify_account_notice_flash: Ваша учетная запись подтверждена
     verify_account_page_title: Подтвердите учетную запись
