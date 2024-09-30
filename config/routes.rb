@@ -162,7 +162,7 @@ Rails.application.routes.draw do
     mount MissionControl::Jobs::Engine, at: "jobs"
   end
 
-  constraints(Rodauth::Rails.authenticate { |rodauth| rodauth.admin? || rodauth.employee? }) do
+  constraints(Rodauth::Rails.authenticate { |rodauth| rodauth.admin? || rodauth.member? }) do
     mount Blazer::Engine, at: "stats"
   end
   # rubocop:enable Style/SymbolProc

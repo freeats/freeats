@@ -105,7 +105,7 @@ class ATS::MembersController < ApplicationController
 
     new_access_level = params[:access_level]
 
-    unless new_access_level.in?(%w[admin employee])
+    unless new_access_level.in?(%w[admin member])
       render_error I18n.t("user_accounts.invalid_access_level", new_access_level:),
                    status: :unprocessable_entity
       return

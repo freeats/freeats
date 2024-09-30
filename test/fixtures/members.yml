@@ -8,17 +8,17 @@ admin_member:
 
 hiring_manager_member:
   account: hiring_manager_account
-  access_level: employee
+  access_level: member
   tenant: toughbyte_tenant
 
 employee_member:
   account: employee_account
-  access_level: employee
+  access_level: member
   tenant: toughbyte_tenant
 
 interviewer_member:
   account: interviewer_account
-  access_level: employee
+  access_level: member
   tenant: toughbyte_tenant
 
 inactive_member:
@@ -28,20 +28,20 @@ inactive_member:
 
 helen_member:
   account: helen_account
-  access_level: employee
+  access_level: member
   tenant: toughbyte_tenant
 
 george_member:
   account: george_account
-  access_level: employee
+  access_level: member
   tenant: toughbyte_tenant
 
 suroviy_grigoriy_member:
   account: suroviy_grigoriy_account
-  access_level: employee
+  access_level: member
   tenant: suroviy_byte_tenant
 
 suroviy_alex_member:
   account: suroviy_alex_account
-  access_level: employee
+  access_level: member
   tenant: suroviy_byte_tenant

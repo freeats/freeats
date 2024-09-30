@@ -97,7 +97,7 @@ class ATS::MembersControllerTest < ActionDispatch::IntegrationTest
   test "should update member access level" do
     member = members(:hiring_manager_member)
 
-    assert_equal member.access_level, "employee"
+    assert_equal member.access_level, "member"
 
     patch update_level_access_ats_member_path(id: member.account.id, access_level: "admin")
 
@@ -108,7 +108,7 @@ class ATS::MembersControllerTest < ActionDispatch::IntegrationTest
   test "should not update member access level if access level is invalid" do
     member = members(:hiring_manager_member)
 
-    assert_equal member.access_level, "employee"
+    assert_equal member.access_level, "member"
     err = assert_raises(RenderErrorExceptionForTests) do
       patch(update_level_access_ats_member_path(id: member.account.id, access_level: "Abracadabra"))
     end
@@ -118,16 +118,16 @@ class ATS::MembersControllerTest < ActionDispatch::IntegrationTest
     assert_equal err_info["message"],
                  I18n.t("user_accounts.invalid_access_level", new_access_level: "Abracadabra")
     assert_equal err_info["status"], "unprocessable_entity"
-    assert_equal member.reload.access_level, "employee"
+    assert_equal member.reload.access_level, "member"
   end
 
   test "should not update member access level if access level is not changed" do
     member = members(:hiring_manager_member)
 
-    assert_equal member.access_level, "employee"
+    assert_equal member.access_level, "member"
 
     err = assert_raises(RenderErrorExceptionForTests) do
-      patch(update_level_access_ats_member_path(id: member.account.id, access_level: "employee"))
+      patch(update_level_access_ats_member_path(id: member.account.id, access_level: "member"))
     end
 
     err_info = JSON.parse(err.message)
@@ -135,9 +135,9 @@ class ATS::MembersControllerTest < ActionDispatch::IntegrationTest
     assert_equal err_info["message"],
                  I18n.t("user_accounts.already_has_access_level",
                         name: member.name,
-                        access_level: "employee")
+                        access_level: "member")
     assert_equal err_info["status"], "unprocessable_entity"
-    assert_equal member.reload.access_level, "employee"
+    assert_equal member.reload.access_level, "member"
   end
 
   test "should send invitation and create access token" do

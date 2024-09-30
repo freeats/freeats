@@ -34,10 +34,10 @@ class Position < ApplicationRecord
     other
   ].freeze
 
-  RECRUITER_ACCESS_LEVEL = %w[admin employee].freeze
-  COLLABORATORS_ACCESS_LEVEL = %w[admin employee].freeze
-  HIRING_MANAGERS_ACCESS_LEVEL = %w[admin employee].freeze
-  INTERVIEWERS_ACCESS_LEVEL = %w[admin employee].freeze
+  RECRUITER_ACCESS_LEVEL = %w[admin member].freeze
+  COLLABORATORS_ACCESS_LEVEL = %w[admin member].freeze
+  HIRING_MANAGERS_ACCESS_LEVEL = %w[admin member].freeze
+  INTERVIEWERS_ACCESS_LEVEL = %w[admin member].freeze
 
   ASSIGNED_EVENTS = %w[
     position_recruiter_assigned

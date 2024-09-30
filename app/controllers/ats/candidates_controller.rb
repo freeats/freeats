@@ -621,7 +621,7 @@ class ATS::CandidatesController < ApplicationController
     @created_at = @candidate.created_at
     # @created_at = @candidate.events.find_by(type: :candidate_added)&.performed_at ||
     #               @candidate.created_at
-    # @all_internal_recruiter_names = Member.employee.order("users.name").pluck("users.name")
+    # @all_internal_recruiter_names = Member.member.order("users.name").pluck("users.name")
   end
 
   def set_candidate

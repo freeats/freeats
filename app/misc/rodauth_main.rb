@@ -306,8 +306,8 @@ class RodauthMain < Rodauth::Rails::Auth
     member && member.admin? # rubocop:disable Style/SafeNavigation
   end
 
-  def employee?
-    member && member.employee? # rubocop:disable Style/SafeNavigation
+  def member?
+    member && member.member? # rubocop:disable Style/SafeNavigation
   end
 
   def active?

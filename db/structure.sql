@@ -222,7 +222,7 @@ CREATE TYPE public.location_type AS ENUM (
 
 CREATE TYPE public.member_access_level AS ENUM (
     'inactive',
-    'employee',
+    'member',
     'admin'
 );
 
@@ -1475,13 +1475,13 @@ ALTER SEQUENCE public.locations_id_seq OWNED BY public.locations.id;
 CREATE TABLE public.members (
     id bigint NOT NULL,
     account_id bigint NOT NULL,
-    access_level public.member_access_level NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     tenant_id bigint,
     refresh_token character varying DEFAULT ''::character varying NOT NULL,
     token character varying DEFAULT ''::character varying NOT NULL,
-    last_email_synchronization_uid integer
+    last_email_synchronization_uid integer,
+    access_level public.member_access_level
 );
 
 
@@ -4665,6 +4665,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240930100900'),
 ('20240926040800'),
 ('20240924153311'),
 ('20240924153030'),

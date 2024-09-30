@@ -13,16 +13,16 @@ class ApplicationPolicy < ActionPolicy::Base
 
   authorize :member, allow_nil: true
 
-  # Default_rule makes :available_for_employee? match anything that is
+  # Default_rule makes :available_for_member? match anything that is
   # not :index?, :create? or :new?
-  default_rule :available_for_employee?
+  default_rule :available_for_member?
 
-  # Alias_rule added to makes :available_for_employee? match anything.
+  # Alias_rule added to makes :available_for_member? match anything.
   # More info in https://actionpolicy.evilmartians.io/#/aliases
-  alias_rule :index?, :create?, :new?, to: :available_for_employee?
+  alias_rule :index?, :create?, :new?, to: :available_for_member?
 
-  def available_for_employee?
-    member.employee? || member.admin?
+  def available_for_member?
+    member.member? || member.admin?
   end
 
   def available_for_admin?

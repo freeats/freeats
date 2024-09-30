@@ -84,7 +84,7 @@ RailsAdmin.config do |config|
 
       configure :access_level do
         enum do
-          %i[interviewer hiring_manager employee admin].index_with(&:to_s)
+          %i[interviewer hiring_manager member admin].index_with(&:to_s)
         end
       end
 

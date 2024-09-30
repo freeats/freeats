@@ -27,7 +27,7 @@ class PrettyNumberComponentPreview < ViewComponent::Preview
   end
 
   # @param object
-  def html_single_object(object: "employee")
+  def html_single_object(object: "member")
     render PrettyNumberComponent.new("1", object:)
   end
 

@@ -90,7 +90,7 @@ module ATS::MembersHelper
     return account.access_level if account.access_level == "inactive"
 
     access_levels_options =
-      %w[admin employee]
+      %w[admin member]
       .map do |access_level|
         { text: access_level.humanize, value: access_level,
           selected: access_level == account.access_level }
