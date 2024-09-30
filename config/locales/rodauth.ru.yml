@@ -27,6 +27,7 @@ ru:
     confirm_password_link_text: Введите пароль
     confirm_password_notice_flash: Ваш пароль подтвержден
     confirm_password_page_title: Подтвердите пароль
+    confirm_password_input_placeholder: Confirm password
     contains_null_byte_message: содержит нулевой байт
     create_account_button: Создайте учетную запись
     create_account_error_flash: Произошла ошибка при создании вашей учетной записи
@@ -65,6 +66,7 @@ ru:
     login_not_valid_email_message: неверный адрес электронной почты
     login_notice_flash: Авторизовался успешно, приятного просмотра!
     login_page_title: Войдите в систему
+    login_input_placeholder: Work email
     login_page_text_before_create_account_link: Нет аккаунта?
     login_too_long_message: не более %{максимальная длина логина} символов
     login_too_many_bytes_message: максимальное количество символов в %{login_maximum_bytes} байтах

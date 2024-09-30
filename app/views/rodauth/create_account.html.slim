@@ -19,23 +19,25 @@ ruby:
       span.invalid-feedback
         = rodauth.field_error("company_name") || t("rodauth.required_field_error")
 
-      = render(TextInputComponent.new(rodauth.login_param, placeholder: "Work email", type: :email,
-          autocomplete: "email", required: true, value: params[rodauth.login_param], class: "mt-3"))
+      = render(TextInputComponent.new(rodauth.login_param, placeholder: t("rodauth.login_input_placeholder"),
+          type: :email, autocomplete: "email", required: true, value: params[rodauth.login_param], class: "mt-3"))
       span.invalid-feedback
         = rodauth.field_error(rodauth.login_param) || t("rodauth.required_field_error")
 
-      = render(TextInputComponent.new(rodauth.password_param, placeholder: "Password", type: :password,
-          autocomplete: rodauth.password_field_autocomplete_value, required: true, class: "mt-3"))
+      = render(TextInputComponent.new(rodauth.password_param, placeholder: t("rodauth.password_input_placeholder"),
+          type: :password, autocomplete: rodauth.password_field_autocomplete_value, required: true, class: "mt-3"))
       span.invalid-feedback
         = rodauth.field_error(rodauth.password_param) || t("rodauth.required_field_error")
 
-      = render(TextInputComponent.new(rodauth.password_confirm_param, placeholder: "Confirm password",
+      = render(TextInputComponent.new(rodauth.password_confirm_param,
+          placeholder: t("rodauth.confirm_password_input_placeholder"),
           type: :password, required: true, class: "mt-3"))
       span.invalid-feedback
         = rodauth.field_error(rodauth.password_confirm_param) || t("rodauth.required_field_error")
 
-      = render(ButtonComponent.new(class: "mt-2"))
-        = t("rodauth.create_account_button")
+      .d-flex.mt-4
+        = render(ButtonComponent.new(class: "col"))
+          = t("rodauth.create_account_button")
     .mt-2
       => t("rodauth.create_account_page_text_before_sign_in_link")
       a href=rodauth.login_path
