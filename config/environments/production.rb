@@ -91,6 +91,9 @@ Rails.application.configure do
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
 
+  # Render errors via controller
+  config.exceptions_app = routes
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.default_url_options = { host: "ats.toughbyte.com" }
