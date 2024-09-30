@@ -1,0 +1,15 @@
+- content_for :title
+  | Send invite
+
+- content_for :body
+  = render LabeledComponent.new(class: "mb-2",
+                                left_layout_class: "col-12 col-md-3",
+                                right_layout_class: "col") do |c|
+    - c.with_label("Email", for_field: "email")
+    = render TextInputComponent.new("email", required: true)
+
+- content_for :footer
+  = render ButtonComponent.new(variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
+    | Cancel
+  = render ButtonComponent.new
+    | Send

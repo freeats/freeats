@@ -25,6 +25,7 @@ en:
     due_date: Due date
     edit_button: Edit
     edited_time: Edited %{time} ago
+    email: Email
     hidden_save: Hidden save
     hiring_manager: Hiring manager
     last_activity: "%{time} ago"
@@ -224,18 +225,30 @@ en:
     task_name: Task name
 
   user_accounts:
+    already_exists: Account with email %{email} already exists
+    already_has_access_level: "%{name} already has %{access_level} access level"
+    already_has_inactive_level: "%{name} has already inactive access level"
+    deactivate: Deactivate
+    deactivate_self_error: You can't deactivate yourself
+    deactivate_title: Deactivate %{name}?
     email_not_linked: Email is not linked in Profile
     gmail_linked: Gmail successfully linked.
     gmail_unlinked: The linked email %{linked_email} does not match the current email.
-    your_photo: Your photo
+    invalid_access_level: Invalid access level %{new_access_level}
+    invalid_email: Invalid email %{email}
+    invite: Invite member
+    joined_on: Joined on
+    not_found: Account not found
+    reinvite: Reinvite
+    reactivate: Reactivate
     settings:
       show:
-        title: Settings
+        change_password_link_text: Change password
         email_input_label: Email
         email_linked: Linked
         email_not_linked: Link email
         save_form_button: Save
-        change_password_link_text: Change password
+        title: Settings
       full_name_input_label: Full name
       update_account:
         successfully_updated: Account successfully updated.
@@ -243,3 +256,8 @@ en:
         successfully_updated: Account avatar successfully updated.
       remove_avatar:
         successfully_removed: Account avatar successfully removed.
+    status: Account status
+    successfully_deactivated: "%{name} status was successfully changed to inactive"
+    successfully_reactivated: "%{name} status was successfully changed to member."
+    sussessfully_sent_invitation: Invitation was successfully sent to %{email}
+    your_photo: Your photo

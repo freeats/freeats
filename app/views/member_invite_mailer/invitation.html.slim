@@ -1,0 +1,6 @@
+p
+  | You've been invited to join #{@company_name} on #{@platform_name}.
+p
+  | Accept invitation by clicking the button below.
+
+= mailer_button_link_to "Accept invitation", invitation_url(token: @invite_token)

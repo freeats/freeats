@@ -119,6 +119,10 @@ module ApplicationHelper
     html.gsub(/(<a(?:(?!<a|>)[\s\S])*>)/) { CGI.unescape(Regexp.last_match(1)) }
   end
 
+  def render_deactivate_partial(model)
+    render partial: "ats/teams/deactivate", locals: { account: model }
+  end
+
   private
 
   def compose_select_component(grid:, filter:)

@@ -27,6 +27,10 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
           li.nav-item
             = link_to t("core.position"), ats_positions_path,
                       class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
+        - if allowed_to?(:index?, with: ATS::PositionPolicy)
+          li.nav-item
+            = link_to "Team", ats_team_path,
+                      class: "nav-link#{' nav-link-selected' if @nav_item == :team}"
         / li.nav-item
           = link_to "Sequences", "/", # TODO: Replace with the correct path \
             class: "nav-link#{' nav-link-selected' if @nav_item == :sequences}"

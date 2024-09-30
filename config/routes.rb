@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   get "register-mockup" => "rodauth#register"
   get "verify-email-mockup" => "rodauth#verify_email"
+  get "invitation" => "rodauth#invite"
 
   namespace :ats do
     resources :candidates, except: %i[show edit] do
@@ -68,6 +69,20 @@ Rails.application.routes.draw do
 
     resources :scorecard_templates, only: %i[new create show edit update destroy]
     resources :scorecards, only: %i[new create show edit update]
+
+    get "team", to: "members#index"
+
+    resources :members, only: [] do
+      member do
+        patch :deactivate
+        patch :reactivate
+        patch :update_level_access
+      end
+      collection do
+        post :invite
+        get :invite_modal
+      end
+    end
 
     resource :settings, only: %i[show] do
       get :link_gmail, path: "link-gmail"

@@ -68,6 +68,7 @@ group :staging, :development do
 end
 
 group :development, :test do
+  gem "faker"
   gem "pry-byebug"
   gem "pry-inline"
   gem "pry-rails"
@@ -89,7 +90,6 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "factory_bot_rails"
-  gem "faker"
   gem "minitest-stub-const"
   gem "selenium-webdriver"
   gem "webmock"

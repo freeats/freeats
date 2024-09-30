@@ -132,6 +132,10 @@ class Member < ApplicationRecord
     end
   end
 
+  def reactivate
+    update!(access_level: :employee)
+  end
+
   def rails_admin_name
     "#{account&.email}|#{access_level}"
   end

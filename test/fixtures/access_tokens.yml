@@ -1,0 +1,20 @@
+fresh_member_invitation:
+  sent_to: "tennant@yahoo.com"
+  hashed_token: <%= Base64.encode64(Digest::SHA256.digest("test1")) %>
+  context: "member_invitation"
+  tenant: toughbyte_tenant
+  sent_at: <%= Time.zone.yesterday %>
+
+expired_member_invitation:
+  sent_to: "priest@mail.ru"
+  hashed_token: <%= Base64.encode64(Digest::SHA256.digest("test2")) %>
+  context: "member_invitation"
+  tenant: toughbyte_tenant
+  sent_at: <%= AccessToken::MEMBER_INVITATION_TTL.ago.yesterday %>
+
+other_company_member_invitation:
+  sent_to: "heidegger@gmail.com"
+  hashed_token: <%= Base64.encode64(Digest::SHA256.digest("test3")) %>
+  context: "member_invitation"
+  tenant: suroviy_byte_tenant
+  sent_at: <%= Time.zone.yesterday %>
