@@ -5,7 +5,8 @@ class Positions::Add
 
   include Dry::Initializer.define -> do
     option :params, Types::Strict::Hash.schema(
-      name: Types::Strict::String
+      name: Types::Strict::String,
+      location_id: Types::Coercible::Integer
     )
     option :actor_account, Types::Instance(Account)
   end
@@ -76,6 +77,14 @@ class Positions::Add
     }
 
     yield Events::Add.new(params: position_recruiter_assigned_params).call
+
+    yield Events::AddChangedEvent.new(
+      eventable: position,
+      changed_field: "location",
+      old_value: nil,
+      new_value: position.location&.short_name,
+      actor_account:
+    ).call
 
     Success()
   end

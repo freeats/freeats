@@ -10,6 +10,7 @@
         = render SingleSelectComponent.new( \
             form,
             method: :location_id,
+            required: true,
             remote: { \
               search_url: fetch_locations_api_v1_locations_path(types: "city", q: "QUERY"),
               options: compose_location_option_for_select(@position.location),

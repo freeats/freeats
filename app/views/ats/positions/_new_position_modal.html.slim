@@ -7,6 +7,15 @@
                                 right_layout_class: "col") do |c|
     - c.with_label("Name", for_field: "position_name")
     = render TextInputComponent.new("position[name]", required: true)
+  = render LabeledComponent.new(class: "mb-2",
+                                left_layout_class: "col-12 col-md-3",
+                                right_layout_class: "col") do |c|
+    - c.with_label(t("core.city"), for_field: "position_location_id")
+    = render SingleSelectComponent.new( \
+        "position[location_id]",
+        required: true,
+        remote: { search_url: fetch_locations_api_v1_locations_path(types: "city", q: "QUERY") } \
+      )
 
 - content_for :footer
   = render ButtonComponent.new(variant: :cancel, type: :button, data: { bs_dismiss: "modal" })

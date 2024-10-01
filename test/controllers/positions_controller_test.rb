@@ -400,14 +400,19 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should display assigned and unassigned activities" do
+    location = locations(:helsinki_city)
+    position_name = "New position"
     # create recruiter assign and unassign events
     assert_difference ["Position.count", "Event.where(type: :position_recruiter_assigned).count"] do
-      post ats_positions_path(position: { name: "New position" })
+      post ats_positions_path(position: { name: position_name, location_id: locations(:helsinki_city).id })
     end
 
     assert_response :redirect
 
     position = Position.last
+
+    assert_equal position.location_id, location.id
+    assert_equal position.name, position_name
 
     assert_difference(
       "Event.where(type: %i[position_recruiter_assigned position_recruiter_unassigned]).count", 2
@@ -499,7 +504,11 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
       "Adrian Barton assigned themselves as interviewer to the position",
       "Adrian Barton unassigned Admin Admin as interviewer from the position",
       "Adrian Barton unassigned themselves as interviewer from the position",
-      "Adrian Barton assigned Helen Booker as interviewer to the position"
+      "Adrian Barton assigned Helen Booker as interviewer to the position",
+      # position location
+      "Adrian Barton added location Helsinki, Finland",
+      # position name
+      "Adrian Barton added name New position"
     ]
 
     assert_empty(reference_activities - activities)

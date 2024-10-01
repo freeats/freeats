@@ -8,26 +8,33 @@ class PositionTest < ActiveSupport::TestCase
   end
 
   test "should create position with events and default position_stages" do
+    location = locations(:ta_xbiex_city)
     actor_account = accounts(:admin_account)
     params = {
       name: "Ruby    developer    ",
       status: :active,
-      change_status_reason: :other
+      change_status_reason: :other,
+      location_id: location.id
     }
 
-    assert_difference "Position.count" => 1, "Event.count" => 7, "PositionStage.count" => 4 do
+    assert_difference "Position.count" => 1, "Event.count" => 8, "PositionStage.count" => 4 do
       position = Positions::Add.new(params:, actor_account:).call.value!
 
       assert_equal position.name, "Ruby developer"
+      assert_equal position.location, location
       assert_equal position.stages.pluck(:name).sort, Position::DEFAULT_STAGES.sort
       assert_equal position.recruiter, actor_account.member
 
       position_added_event = Event.find_by(type: :position_added, eventable: position)
       position_recruiter_assigned_event = Event.find_by(type: :position_recruiter_assigned, eventable: position)
-      position_changed_event = Event.find_by(type: :position_changed, eventable: position)
+      name_position_changed_event = Event.find_by(type: :position_changed, changed_field: "name", eventable: position)
+      location_position_changed_event = Event.find_by(type: :position_changed, changed_field: "location",
+                                                      eventable: position)
 
       new_position_stages = PositionStage.where(position:)
-      position_stage_added_events = Event.where(type: :position_stage_added, eventable: new_position_stages.ids).to_a
+      position_stage_added_events = Event.where(
+        type: :position_stage_added, eventable: new_position_stages.ids
+      ).to_a
 
       assert_equal position_added_event.actor_account_id, actor_account.id
       assert_equal position_added_event.type, "position_added"
@@ -38,11 +45,15 @@ class PositionTest < ActiveSupport::TestCase
       assert_equal position_recruiter_assigned_event.changed_to, actor_account.member.id
       assert_equal position_recruiter_assigned_event.eventable_id, position.id
 
-      assert_equal position_changed_event.actor_account_id, actor_account.id
-      assert_equal position_changed_event.type, "position_changed"
-      assert_equal position_changed_event.changed_field, "name"
-      assert_equal position_changed_event.changed_to, "Ruby developer"
-      assert_equal position_changed_event.eventable_id, position.id
+      assert_equal name_position_changed_event.actor_account_id, actor_account.id
+      assert_equal name_position_changed_event.type, "position_changed"
+      assert_equal name_position_changed_event.changed_to, "Ruby developer"
+      assert_equal name_position_changed_event.eventable_id, position.id
+
+      assert_equal location_position_changed_event.actor_account_id, actor_account.id
+      assert_equal location_position_changed_event.type, "position_changed"
+      assert_equal location_position_changed_event.changed_to, location.short_name
+      assert_equal location_position_changed_event.eventable_id, position.id
 
       assert_equal position_stage_added_events.count, 4
       assert_equal position_stage_added_events.map(&:actor_account_id).uniq, [actor_account.id]
