@@ -56,6 +56,7 @@ en:
     unassign_recruiter: Unassign recruiter
     updated_time: "%{time} ago"
     upload_button: Upload
+    uploaded_on: Uploaded %{time} ago
     watched: Watched
     watchers: Watchers
     when: When

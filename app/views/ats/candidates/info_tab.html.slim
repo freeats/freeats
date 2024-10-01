@@ -26,12 +26,8 @@
           / On mobile devices this text is located at the top of the buttons.
           .d-md-none.mt-2
             = link_to @candidate.cv.blob.filename, @candidate.cv.url.to_s, target: "_blank"
-            .mt-2 data-bs-toggle="tooltip" title=@candidate.cv.created_at.to_fs(:datetime_full)
-              | Uploaded #{short_time_ago_in_words(@candidate.cv.created_at)} ago
-            / https://github.com/toughbyte/ats/issues/474
-            / TODO: Adapt after adding added_event.
-            / .mt-2 data-bs-toggle="tooltip" title=@candidate.cv.added_event.performed_at.to_fs(:datetime_full)
-            /   | Uploaded #{short_time_ago_in_words(@candidate.cv.added_event.performed_at)} ago
+            .mt-2 data-bs-toggle="tooltip" title=@candidate.cv.added_event.performed_at.to_fs(:datetime_full)
+              = t("core.uploaded_on", time: short_time_ago_in_words(@candidate.cv.added_event.performed_at))
         .d-flex.justify-content-between
           .hstack.gap-2.mt-4
             - if @candidate.cv.present?
@@ -80,13 +76,9 @@
                                    data: delete_modal_data
             - if @candidate.cv.present? && allowed_to?(:delete_cv_file?)
               / On PC this text is located to the right of buttons.
-              .d-none.d-md-block data-bs-toggle="tooltip" title=@candidate.cv.created_at.to_fs(:datetime_full)
-                | Uploaded #{short_time_ago_in_words(@candidate.cv.created_at)} ago
-              / https://github.com/toughbyte/ats/issues/474
-              / TODO: adapt after adding added_event.
-              / .d-none.d-md-block [data-bs-toggle="tooltip"
-              /     title=@candidate.cv.added_event.performed_at.to_fs(:datetime_full)]
-              /   | Uploaded #{short_time_ago_in_words(@candidate.cv.added_event.performed_at)} ago
+              .d-none.d-md-block [data-bs-toggle="tooltip"
+                  title=@candidate.cv.added_event.performed_at.to_fs(:datetime_full)]
+                = t("core.uploaded_on", time: short_time_ago_in_words(@candidate.cv.added_event.performed_at))
           .d-none.d-md-flex.flex-row.align-items-center.mt-4
             - if @candidate.cv.present? && allowed_to?(:delete_cv_file?)
               = button_to "Remove CV",
