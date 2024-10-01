@@ -17,7 +17,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
                       class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
         - if allowed_to?(:index?, with: ATS::TaskPolicy)
           li.nav-item
-            = link_to t("core.task"), ats_tasks_path,
+            = link_to t("core.tasks"), ats_tasks_path,
                       class: "nav-link#{' nav-link-selected' if @nav_item == :tasks}"
         - if allowed_to?(:index?, with: ATS::CandidatePolicy)
           li.nav-item
@@ -25,11 +25,11 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
                       class: "nav-link#{' nav-link-selected' if @nav_item == :candidates}"
         - if allowed_to?(:index?, with: ATS::PositionPolicy)
           li.nav-item
-            = link_to t("core.position"), ats_positions_path,
+            = link_to t("core.positions"), ats_positions_path,
                       class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
         - if allowed_to?(:index?, with: ATS::PositionPolicy)
           li.nav-item
-            = link_to "Team", ats_team_path,
+            = link_to t("core.team"), ats_team_path,
                       class: "nav-link#{' nav-link-selected' if @nav_item == :team}"
         / li.nav-item
           = link_to "Sequences", "/", # TODO: Replace with the correct path \

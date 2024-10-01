@@ -37,6 +37,7 @@ en:
     notes: Notes
     outdated: Outdated
     position: Position
+    positions: Positions
     profile: Profile
     recruiter: Recruiter
     remove_button: Remove
@@ -49,6 +50,7 @@ en:
     status: Status
     task: Task
     tasks: Tasks
+    team: Team
     today: Today
     tomorrow: Tomorrow
     unassign_recruiter: Unassign recruiter

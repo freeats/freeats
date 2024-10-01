@@ -1,8 +1,8 @@
-- ats_title("Team")
+- ats_title(t("core.team"))
 
 .row.align-items-center.mb-3.row-gap-2
   h1.col-12.col-lg
-    | Team
+    = t("core.team")
   - if allowed_to?(:invite?, with: ATS::MemberPolicy)
     .col-auto
         = invate_member_button
