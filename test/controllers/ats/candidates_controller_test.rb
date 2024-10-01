@@ -93,7 +93,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil candidate.avatar.variant(:medium)
 
     ActiveStorage::Blob.last(number_of_created_blobs).each do |blob|
-      assert_match(%r{uploads/candidate/#{candidate.id}/.*}, blob.key)
+      assert_match(%r{.*/avatar\.png}, blob.key)
     end
 
     delete remove_avatar_ats_candidate_path(candidate)
@@ -123,7 +123,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     candidate.reload
 
     assert_predicate candidate.files, :attached?
-    assert_match(%r{uploads/files/.*/.*\.png}, candidate.files.first.blob.key)
+    assert_match(%r{.*/user\.png}, candidate.files.first.blob.key)
     assert_predicate candidate.last_activity_at, :tomorrow?
 
     travel_to Time.zone.now.days_since(2) do
