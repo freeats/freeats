@@ -1,6 +1,5 @@
 @import "bootstrap/scss/functions";
 
-$navbar-bg: #041727;
 $navbar-text: #e8e8e8;
 
 $toughbyte-black: #000000;
@@ -34,6 +33,7 @@ $card-border-color: $gray-500;
 $dropdown-border-color: $gray-500;
 $list-group-border-color: $gray-500;
 $modal-content-border-color: $gray-500;
+$navbar-bg: $gray-900;
 $nav-tabs-border-color: $gray-500;
 $pagination-border-color: $gray-500;
 $popover-border-color: $gray-500;
