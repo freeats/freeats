@@ -117,11 +117,13 @@ class ATS::PlacementsController < ApplicationController
       else
         placements.where(status: :qualified)
       end
-    fetched_placements = placements.where(stage: params[:stage])
-                                   .join_last_placement_added_or_changed_event
-                                   .order("events.performed_at DESC")
-                                   .offset(params[:offset])
-                                   .limit(params[:limit])
+    fetched_placements =
+      placements
+      .where(position_stage_id: params[:position_stage_id])
+      .join_last_placement_added_or_changed_event
+      .order("events.performed_at DESC")
+      .offset(params[:offset])
+      .limit(params[:limit])
 
     render partial: "ats/placements/placement_pipeline_card", collection: fetched_placements
   end
@@ -265,8 +267,8 @@ class ATS::PlacementsController < ApplicationController
 
     count =
       query
-      # .join_last_placement_added_or_changed_event
-      # .order("events.performed_at DESC")
+      .join_last_placement_added_or_changed_event
+      .order("events.performed_at DESC")
       .group_by(&:stage)[placement_stage]&.size
 
     count ||= 0

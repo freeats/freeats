@@ -117,22 +117,6 @@ class Position < ApplicationRecord
 
   validate :location_must_be_city, if: :location_id_changed?
 
-  scope :join_last_placement_added_or_changed_event, lambda {
-    joins(
-      <<~SQL
-        LEFT JOIN events ON events.id = (
-          SELECT id
-          FROM events
-          WHERE events.placement_id = placements.id AND
-                (events.type = 'placement_stage_changed' OR
-                 events.type = 'placement_added')
-          ORDER BY events.performed_at DESC
-          LIMIT 1
-        )
-      SQL
-    )
-  }
-
   def self.color_codes_table
     positions = Position.arel_table
 

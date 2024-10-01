@@ -7,8 +7,22 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     sign_in accounts(:employee_account)
   end
 
-  test "should show position info" do
-    get tab_ats_position_url(positions(:ruby_position), :info)
+  test "should show position tabs" do
+    position = positions(:ruby_position)
+
+    get tab_ats_position_path(position, :info)
+
+    assert_response :success
+
+    get tab_ats_position_path(position, :pipeline)
+
+    assert_response :success
+
+    get tab_ats_position_path(position, :tasks)
+
+    assert_response :success
+
+    get tab_ats_position_path(position, :activities)
 
     assert_response :success
   end
@@ -287,7 +301,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
 
   test "should show position activities" do
     sign_in accounts(:admin_account)
-    get tab_ats_position_url(positions(:ruby_position), :activities)
+    get tab_ats_position_path(positions(:ruby_position), :activities)
 
     assert_response :success
   end
@@ -456,7 +470,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
       patch update_side_header_ats_position_path(position), params: { position: params }
     end
 
-    get tab_ats_position_url(position, :activities)
+    get tab_ats_position_path(position, :activities)
 
     activities =
       Nokogiri::HTML(response.body)

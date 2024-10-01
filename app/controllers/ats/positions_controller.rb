@@ -419,10 +419,8 @@ class ATS::PositionsController < ApplicationController
     @grouped_placements = {}
     @stages.each { |stage| @grouped_placements[stage] = { count: 0, placements: [] } }
     placements
-      # https://github.com/toughbyte/ats/issues/472
-      # TODO: uncomment if events have been added.
-      # .join_last_placement_added_or_changed_event
-      # .order("events.performed_at DESC")
+      .join_last_placement_added_or_changed_event
+      .order("events.performed_at DESC")
       .group_by(&:stage).each do |stage, stage_placements|
       @grouped_placements[stage][:count] = stage_placements.size
       @grouped_placements[stage][:placements] = stage_placements.first(@placement_limit)

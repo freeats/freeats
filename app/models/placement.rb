@@ -41,6 +41,23 @@ class Placement < ApplicationRecord
 
   validate :position_stage_must_be_present_in_position
 
+  scope :join_last_placement_added_or_changed_event, lambda {
+    joins(
+      <<~SQL
+        LEFT JOIN events ON events.id = (
+          SELECT id
+          FROM events
+          WHERE events.eventable_id = placements.id AND
+                events.eventable_type = 'Placement' AND
+                (events.type = 'placement_changed' OR
+                 events.type = 'placement_added')
+          ORDER BY events.performed_at DESC
+          LIMIT 1
+        )
+      SQL
+    )
+  }
+
   def disqualified?
     %w[qualified reserved].exclude?(status)
   end
