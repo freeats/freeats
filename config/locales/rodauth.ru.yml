@@ -50,6 +50,7 @@ ru:
     input_field_label_suffix: ""
     invalid_jwt_format_error_message: недопустимый формат JWT или утверждение в заголовке авторизации
     invalid_password_message: неверный пароль
+    invalid_login_message: неверный email.
     invalid_recovery_code_error_flash: Ошибка при аутентификации с помощью кода восстановления
     invalid_recovery_code_message: Неверный код восстановления
     json_non_post_error_message: метод, не использующий POST, используемый в JSON API
