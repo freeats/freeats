@@ -1,5 +1,7 @@
 en:
   rodauth:
+    accept_invitation_page_title: Accept invitation to join %{company_name}
+    accept_invitation_button: Accept invitation
     account_expiration_error_flash: You cannot log into this account as it has expired.
     active_sessions_error_flash: This session has been signed out.
     add_recovery_codes_button: Add Authentication Recovery Codes
@@ -46,7 +48,9 @@ en:
     email_label: Email
     email_subject_prefix: ""
     expired_jwt_access_token_message: expired JWT access token
+    expired_invitation_error_flash: Your invitation has expired, please ask to re-send the invitation.
     global_logout_label: Sign out all Signed in Sessions?
+    invitation_already_have_account_error_flash: You already have an account.
     input_field_label_suffix: ""
     invalid_jwt_format_error_message: invalid JWT format or claim in Authorization header
     invalid_password_message: Invalid password.
@@ -81,6 +85,7 @@ en:
     new_password_label: New password
     new_password_confirm_label: Confirm new password
     no_current_sms_code_error_flash: No current SMS code for this account.
+    no_invitation_error_flash: There's no pending invitation, please ask to re-send the invitation.
     no_matching_email_auth_key_error_flash: "There was an error logging you in: invalid email authentication key."
     no_matching_login_message: No matching login.
     no_matching_reset_password_key_error_flash: "There was an error resetting your password: invalid or expired password reset key."
@@ -135,6 +140,7 @@ en:
     recovery_codes_label: Recovery Code
     recovery_codes_link_text: View Authentication Recovery Codes
     recovery_codes_page_title: View Authentication Recovery Codes
+    invitation_already_registered_error_flash: You have already registered, please sign in.
     remember_button: Change Remember Setting
     remember_disable_label: Disable Remember Me
     remember_error_flash: There was an error updating your remember setting.
@@ -194,6 +200,7 @@ en:
     sms_setup_error_flash: Error setting up SMS authentication.
     sms_setup_link_text: Setup Backup SMS Authentication
     sms_setup_page_title: Setup SMS Backup Number
+    success_invitation_notice_flash: Welcome! You have signed up successfully.
     two_factor_already_authenticated_error_flash: You have already been multifactor authenticated.
     two_factor_auth_notice_flash: You have been multifactor authenticated
     two_factor_auth_page_title: Authenticate Using Additional Factor

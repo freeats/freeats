@@ -15,19 +15,34 @@ module CreateAccount
         verify_account_resend_path(login_param => param(login_param))
       end
 
+      # Validate the presence of custom fields which are required
+      # to create a tenant, member and account.
       before_create_account do
         unless (name = param_or_nil("full_name"))
-          throw_error_status(422, "full_name", "must be present")
+          throw_error_status(422, "full_name", I18n.t("rodauth.required_field_error"))
         end
-        throw_error_status(422, "company_name", "must be present") if param("company_name").empty?
+        if param("company_name").empty? && !internal_request?
+          throw_error_status(422, "company_name", I18n.t("rodauth.required_field_error"))
+        end
 
         account[:name] = name
       end
 
+      # The `internal_request` is used for creating a member for the existing tenant
+      # when we invite a new member.
+      # Otherwise we register a new tenant and a new member.
       after_create_account do
-        tenant = Tenant.create!(name: param("company_name"), locale: I18n.locale)
-        Account.find(account_id).update!(tenant_id: tenant.id)
-        Member.create!(account_id:, tenant:, access_level: :admin)
+        if internal_request?
+          tenant_id = param("tenant_id")
+          account = Account.find(account_id)
+          account.update!(tenant_id:)
+          account.verified!
+          Member.create!(account_id:, tenant_id:, access_level: :member)
+        else
+          tenant = Tenant.create!(name: param("company_name"), locale: I18n.locale)
+          Account.find(account_id).update!(tenant_id: tenant.id)
+          Member.create!(account_id:, tenant:, access_level: :admin)
+        end
       end
     end
   end
@@ -109,6 +124,14 @@ module VerifyAccount
           self.class.configuration_name, account_id, verify_account_key_value
         )
       end
+
+      send_verify_account_email do
+        # Skip verification email on accepting invitation,
+        # since the account is verified in the after_create_account hook.
+        return if internal_request?
+
+        create_verify_account_email.deliver!
+      end
     end
   end
 end
@@ -165,7 +188,7 @@ class RodauthMain < Rodauth::Rails::Auth
   # rubocop:disable Layout/LineLength
   configure do
     # List of authentication features that are loaded.
-    enable :reset_password, :change_password
+    enable :reset_password, :change_password, :internal_request
 
     translate do |key, default|
       I18n.t("rodauth.#{key}") || default

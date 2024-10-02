@@ -1,5 +1,7 @@
 ru:
   rodauth:
+    accept_invitation_page_title: Принять приглашение присоединиться к %{company_name}
+    accept_invitation_button: Принять приглашение
     account_expiration_error_flash: Вы не можете войти в эту учетную запись, так как срок ее действия истек
     active_sessions_error_flash: Этот сеанс был завершен
     add_recovery_codes_button: Добавить коды восстановления аутентификации
@@ -46,7 +48,9 @@ ru:
     email_label: Email
     email_subject_prefix: ""
     expired_jwt_access_token_message: токен доступа JWT с истекшим сроком действия
+    expired_invitation_error_flash: Срок действия вашего приглашения истек, пожалуйста, попросите отправить приглашение повторно.
     global_logout_label: Выйдите из всех зарегистрированных сеансов?
+    invitation_already_have_account_error_flash: У вас уже есть аккаунт.
     input_field_label_suffix: ""
     invalid_jwt_format_error_message: недопустимый формат JWT или утверждение в заголовке авторизации
     invalid_password_message: неверный пароль
@@ -69,7 +73,7 @@ ru:
     login_page_title: Войдите в систему
     login_input_placeholder: Work email
     login_page_text_before_create_account_link: Нет аккаунта?
-    login_too_long_message: не более %{максимальная длина логина} символов
+    login_too_long_message: не более %{login_maximum_length} символов
     login_too_many_bytes_message: максимальное количество символов в %{login_maximum_bytes} байтах
     login_too_short_message: минимальное количество символов в %{login_minimum_length} символов
     logins_do_not_match_message: имена для входа в систему не совпадают
@@ -81,6 +85,7 @@ ru:
     new_password_label: Новый пароль
     new_password_confirm_label: Подтвердите новый пароль
     no_current_sms_code_error_flash: Для этой учетной записи нет текущего SMS-кода
+    no_invitation_error_flash: Ожидающих приглашений нет, пожалуйста, попросите повторно отправить приглашение.
     no_matching_email_auth_key_error_flash: "Произошла ошибка при входе в систему: неверный ключ аутентификации по электронной почте"
     no_matching_login_message: нет совпадающего логина
     no_matching_reset_password_key_error_flash: "Произошла ошибка при сбросе вашего пароля: неверный ключ для сброса пароля или срок его действия истек"
@@ -126,7 +131,7 @@ ru:
     password_too_many_repeating_characters_message: содержит слишком много одинаковых символов подряд.
     password_too_long_message: максимальное количество символов в %{password_maximum_length}
     password_too_many_bytes_message: максимальное количество байт в %{password_maximum_bytes}
-    password_too_short_message: минимальное количество символов в %{пароль_минимальной_ длины}
+    password_too_short_message: минимальное количество символов в %{password_minimum_length}
     passwords_do_not_match_message: пароли не совпадают
     recovery_auth_button: Аутентификация с помощью кода восстановления
     recovery_auth_link_text: Аутентификация с использованием кода восстановления
@@ -135,6 +140,7 @@ ru:
     recovery_codes_label: Код восстановления
     recovery_codes_link_text: Просмотр кодов восстановления аутентификации
     recovery_codes_page_title: Просмотр кодов восстановления аутентификации
+    invitation_already_registered_error_flash: Вы уже зарегистрированы, пожалуйста, войдите в систему.
     remember_button: Измените настройки запоминания
     remember_disable_label: Отключите функцию запоминания меня
     remember_error_flash: Произошла ошибка при обновлении настроек запоминания
@@ -194,6 +200,7 @@ ru:
     sms_setup_error_flash: Ошибка при настройке SMS-аутентификации
     sms_setup_link_text: Настройка резервной SMS-аутентификации
     sms_setup_page_title: Настройка номера резервной SMS-аутентификации
+    success_invitation_notice_flash: Добро пожаловать! Вы успешно зарегистрировались.
     two_factor_already_authenticated_error_flash: Вы уже прошли многофакторную аутентификацию
     two_factor_auth_notice_flash: Вы прошли многофакторную аутентификацию
     two_factor_auth_page_title: Аутентификация с использованием дополнительного фактора

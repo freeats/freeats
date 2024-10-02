@@ -5,6 +5,9 @@ class RodauthApp < Rodauth::Rails::App
   configure RodauthMain
 
   route do |r|
+    # Ignore configuration for custom actions.
+    return if r.path.in?(["/invitation", "/accept_invite"])
+
     rodauth.load_memory # autologin remembered users
 
     # Authentication in testing.

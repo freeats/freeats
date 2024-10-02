@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "register-mockup" => "rodauth#register"
   get "verify-email-mockup" => "rodauth#verify_email"
   get "invitation" => "rodauth#invite"
+  post "accept_invite" => "rodauth#accept_invite"
 
   namespace :ats do
     resources :candidates, except: %i[show edit] do
