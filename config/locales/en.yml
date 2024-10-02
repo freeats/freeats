@@ -124,7 +124,9 @@ en:
     cv_file_extension_alert: CV has <b>%{extension}</b> extension and cannot be displayed.
       Please %{download_link} to view its content.
     delete_avatar: Delete avatar?
+    delete_button: Delete candidate
     delete_file: Delete file?
+    delete_title: Delete candidate?
     disabled_avatar_tooltip: You can't delete the avatar right now. It’s being processed.
     disqualification:
       disqualify_statuses:
@@ -216,9 +218,11 @@ en:
     visible_to_all_members: Visible to all members
 
   positions:
+    delete_button: Delete position
+    delete_title: Delete position?
+    sequence_templates_archived: "%{name} has been successfully archived."
     succesfully_deleted: The position was successfully deleted.
     successfully_created: Position draft was successfully created.
-    sequence_templates_archived: "%{name} has been successfully archived."
 
   tasks:
     add_task_button: Add task
