@@ -30,6 +30,7 @@ en:
     hiring_manager: Hiring manager
     last_activity: "%{time} ago"
     last_activity_on: Last activity on %{time}
+    last_activity_time: "Last activity: %{time} ago"
     last_word_connector: " and "
     location: Location
     more_button: More

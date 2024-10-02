@@ -2,9 +2,8 @@ ruby:
   tooltip_text =
     StringIO.open do |s|
       s << "Disqualify reason: #{placement.status.humanize} <br>" if placement.disqualified?
-      # TODO: use events for last activity
-      # https://github.com/toughbyte/ats/issues/479
-      s << "Last activity: #{short_time_ago_in_words(placement.updated_at)} ago"
+      s << t("core.last_activity_time",
+             time: short_time_ago_in_words(placement.last_modification_event.performed_at))
       sanitize(s.string)
     end
 

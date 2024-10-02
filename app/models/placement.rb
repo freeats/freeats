@@ -15,7 +15,16 @@ class Placement < ApplicationRecord
           class_name: "Event",
           foreign_key: :eventable_id,
           inverse_of: false,
-          dependent: :destroy
+          dependent: nil
+  has_one :last_modification_event,
+          -> {
+            where(type: %w[placement_changed placement_added])
+              .order(performed_at: :desc)
+          },
+          class_name: "Event",
+          foreign_key: :eventable_id,
+          inverse_of: false,
+          dependent: nil
 
   belongs_to :position
   belongs_to :position_stage
