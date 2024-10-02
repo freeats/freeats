@@ -15,12 +15,11 @@ class MemberInviteMailerTest < ActionMailer::TestCase
       invite_token:,
       to:,
       reply_to: actor_account.email,
-      company_name: actor_account.tenant.name,
-      platform_name: "PLATFORM NAME" # TODO: Add platform name
+      company_name: actor_account.tenant.name
     ).invitation
 
     assert_equal mail.reply_to, [actor_account.email]
     assert_equal mail.to, [to]
-    assert_equal mail.subject, "Invitation to join #{actor_account.tenant.name} on PLATFORM NAME"
+    assert_equal mail.subject, "Invitation to join #{actor_account.tenant.name} on FreeATS"
   end
 end

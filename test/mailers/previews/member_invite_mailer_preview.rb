@@ -17,8 +17,7 @@ class MemberInviteMailerPreview < ActionMailer::Preview
       invite_token:,
       to:,
       reply_to: actor_account.email,
-      company_name: actor_account.tenant.name,
-      platform_name: "PLATFORM NAME" # TODO: Add platform name
+      company_name: actor_account.tenant.name
     ).invitation
   end
 end

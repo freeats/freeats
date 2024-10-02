@@ -40,8 +40,7 @@ class Members::Invite
       invite_token:,
       to: cleaned_email,
       reply_to: actor_account.email,
-      company_name: actor_account.tenant.name,
-      platform_name: "ATS" # TODO: Add platform name
+      company_name: actor_account.tenant.name
     ).invitation.deliver_later
 
     Success(access_token)
