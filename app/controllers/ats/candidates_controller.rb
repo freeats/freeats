@@ -238,6 +238,7 @@ class ATS::CandidatesController < ApplicationController
       params: candidate_params.to_h.deep_symbolize_keys
     ).call
     in Success(_)
+      @candidate.reload
       render_turbo_stream(
         [
           turbo_stream.replace(
@@ -347,6 +348,7 @@ class ATS::CandidatesController < ApplicationController
       params: candidate_params.to_h.deep_symbolize_keys
     ).call
     in Success(_)
+      @candidate.reload
       turbo_dialogs = []
       turbo_dialogs << turbo_merge_dialog if emails_changed || links_changed || phones_changed
 
@@ -370,6 +372,7 @@ class ATS::CandidatesController < ApplicationController
       params: { recruiter_id: params[:candidate][:recruiter_id] }
     ).call
     in Success(_)
+      @candidate.reload
       locals = {
         currently_assigned_account: @candidate.recruiter&.account,
         tooltip_title: t("core.recruiter"),

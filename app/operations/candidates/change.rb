@@ -82,7 +82,9 @@ class Candidates::Change
       add_changed_events(candidate:, actor_account:, old_values:)
     end
 
-    Success(candidate.reload)
+    # Do not call `reload` on the candidate because it breaks
+    # the uploaded avatar from our browser extension.
+    Success(candidate)
   rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
     Failure[:candidate_invalid, candidate.errors.full_messages.presence || e.to_s]
   end
