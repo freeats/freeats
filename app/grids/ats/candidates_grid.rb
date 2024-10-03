@@ -96,7 +96,7 @@ class ATS::CandidatesGrid
   ) do |status|
     query =
       if status == "disqualified"
-        where.not(placements: { status: "qualified" })
+        where.not(placements: { status: %w[reserved qualified] })
       else
         where(placements: { status: })
       end

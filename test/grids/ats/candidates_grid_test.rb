@@ -186,4 +186,26 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
     assert_includes grid_assets, candidate_with_goland_placement
     assert_includes grid_assets, candidate_with_both_placements
   end
+
+  test "status filter should return only disqualified candidates for disqualified " \
+       "option and only reserved candidates for reserved option" do
+    disqualified_placement = placements(:jake_golang_sourced)
+    disqualified_placement.update!(status: :availability)
+    reserved_placement = placements(:john_ruby_replied)
+    reserved_placement.update!(status: :reserved)
+
+    grid_assets = ATS::CandidatesGrid.new(
+      status: "disqualified"
+    ).assets.to_a
+
+    assert_includes grid_assets, disqualified_placement.candidate
+    assert_not_includes grid_assets, reserved_placement.candidate
+
+    grid_assets = ATS::CandidatesGrid.new(
+      status: "reserved"
+    ).assets.to_a
+
+    assert_includes grid_assets, reserved_placement.candidate
+    assert_not_includes grid_assets, disqualified_placement.candidate
+  end
 end
