@@ -393,6 +393,12 @@ ul.dropdown-menu {
   --bs-dropdown-min-width: 100%;
 }
 
+.note-show {
+  ul.dropdown-menu {
+    --bs-dropdown-min-width: 10rem;
+  }
+}
+
 .error-pages {
   h1 {
     line-height: 3rem;

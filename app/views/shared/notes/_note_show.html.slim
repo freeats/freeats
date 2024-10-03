@@ -61,7 +61,7 @@ ruby:
                            class: "btn btn-sm dropdown-item",
                            data: { turbo_frame: dom_id(note, "turbo") }
                 i.fal.fa-pencil-alt.fa-fw
-                span.ms-2 t("core.edit_button")
+                span.ms-2 = t("core.edit_button")
             - if allowed_to?(:destroy?, note)
               li = form_with url: note_path(note), method: :delete,
                              data: { action: "submit->candidate-notes#removeNoteCallback" } do |form|
