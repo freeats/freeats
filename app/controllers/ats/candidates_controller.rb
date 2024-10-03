@@ -175,7 +175,8 @@ class ATS::CandidatesController < ApplicationController
           @all_activities =
             @all_activities
             .includes(
-              :eventable, :stage_to,
+              :stage_to,
+              eventable: [:position, { placement: :position }],
               actor_account: :member,
               assigned_member: :account,
               unassigned_member: :account

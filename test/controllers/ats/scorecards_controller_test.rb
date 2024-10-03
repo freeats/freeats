@@ -158,4 +158,76 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
     assert_equal scorecard.score, params[:score]
     assert_empty scorecard.scorecard_questions
   end
+
+  test "should allow to destroy scorecard to its author, that has no admin access level" do
+    scorecard = scorecards(:ruby_position_contacted_scorecard)
+    added_event = events(:ruby_position_contacted_scorecard_added)
+    author_account = accounts(:hiring_manager_account)
+    added_event.update!(actor_account: author_account)
+    candidate = scorecard.placement.candidate
+
+    sign_out
+    sign_in author_account
+
+    assert_not_equal author_account.member.access_level, "admin"
+    assert_difference "Scorecard.count", -1 do
+      delete ats_scorecard_path(scorecard)
+    end
+    assert_response :redirect
+    assert_redirected_to tab_ats_candidate_path(candidate, :scorecards)
+    assert_nil Scorecard.find_by(id: scorecard.id)
+  end
+
+  test "should allow to destroy scorecard to admin" do
+    scorecard = scorecards(:ruby_position_contacted_scorecard)
+    added_event = events(:ruby_position_contacted_scorecard_added)
+    author_account = accounts(:hiring_manager_account)
+    added_event.update!(actor_account: author_account)
+    candidate = scorecard.placement.candidate
+
+    sign_out
+    sign_in accounts(:admin_account)
+
+    assert_difference "Scorecard.count", -1 do
+      delete ats_scorecard_path(scorecard)
+    end
+    assert_response :redirect
+    assert_redirected_to tab_ats_candidate_path(candidate, :scorecards)
+    assert_nil Scorecard.find_by(id: scorecard.id)
+  end
+
+  test "should not allow to destroy scorecard to member that is neither a scorecard's author nor an admin" do
+    scorecard = scorecards(:ruby_position_contacted_scorecard)
+    signed_in_account = accounts(:employee_account)
+
+    assert_not_equal signed_in_account.member.access_level, "admin"
+    assert_not_equal scorecard.author.account, signed_in_account
+    assert_no_difference "Scorecard.count" do
+      delete ats_scorecard_path(scorecard)
+    end
+
+    assert_response :redirect
+    assert_redirected_to "/"
+    assert scorecard.reload
+  end
+
+  test "should render error if scorecard template was not destroyed" do
+    sign_out
+    sign_in accounts(:admin_account)
+    scorecard = scorecards(:ruby_position_contacted_scorecard)
+
+    scorecard_destroy_mock = Minitest::Mock.new
+    scorecard_destroy_mock.expect(:call, Failure[:scorecard_not_destroyed, "error message"])
+
+    Scorecards::Destroy.stub(:new, ->(_params) { scorecard_destroy_mock }) do
+      err = assert_raises(RenderErrorExceptionForTests) do
+        delete(ats_scorecard_path(scorecard))
+      end
+
+      err_info = JSON.parse(err.message)
+
+      assert_equal err_info["message"], "error message"
+      assert_equal err_info["status"], "unprocessable_entity"
+    end
+  end
 end

@@ -74,16 +74,26 @@ module CandidatesHelper
         "removed a note"
       when "placement_added"
         position = event.eventable.position
-        "assigned the candidate to #{link_to(position.name, tab_ats_position_url(position))}"
+        "assigned the candidate to #{link_to(position.name, ats_position_path(position))}"
       when "placement_changed"
         placement_changed_text(event)
       when "placement_removed"
         position = Position.find(event.properties["position_id"])
-        "unassigned the candidate from #{link_to(position.name, tab_ats_position_url(position))}"
+        "unassigned the candidate from #{link_to(position.name, ats_position_path(position))}"
       when "scorecard_added"
-        "added scorecard <b>#{event.eventable.title}</b>"
+        scorecard = event.eventable
+        position = scorecard.placement.position
+        "added scorecard #{link_to(scorecard.title, ats_scorecard_path(scorecard))} " \
+          "for #{link_to(position.name, ats_position_path(position))}"
+      when "scorecard_removed"
+        position = event.eventable.position
+        "removed scorecard <b>#{event.changed_from}</b> " \
+          "for #{link_to(position.name, ats_position_path(position))}"
       when "scorecard_updated"
-        "updated scorecard <b>#{event.eventable.title}</b>"
+        scorecard = event.eventable
+        position = scorecard.placement.position
+        "updated scorecard #{link_to(scorecard.title, ats_scorecard_path(scorecard))} " \
+          "for #{link_to(position.name, ats_position_path(position))}"
       when "task_added"
         "created <b>#{event.eventable.name}</b> task"
       when "task_status_changed"
@@ -137,7 +147,7 @@ module CandidatesHelper
 
   def placement_changed_text(event)
     position = event.eventable.position
-    position_link = link_to(position.name, tab_ats_position_url(position))
+    position_link = link_to(position.name, ats_position_path(position))
 
     case event.changed_field
     when "status"

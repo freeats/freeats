@@ -5,9 +5,9 @@ class ATS::ScorecardsController < ApplicationController
 
   layout "ats/application"
 
-  before_action :set_scorecard, only: %i[show edit update]
+  before_action :set_scorecard, only: %i[show edit update destroy]
   before_action -> { authorize!(@scorecard) },
-                only: %i[show edit update]
+                only: %i[show edit update destroy]
   before_action :compose_interviewers, only: %i[new edit]
 
   def show; end
@@ -62,6 +62,18 @@ class ATS::ScorecardsController < ApplicationController
        Failure[:scorecard_not_unique, _error] |
        Failure[:scorecard_question_invalid, _error] |
        Failure[:scorecard_question_not_unique, _error]
+      render_error _error, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    case Scorecards::Destroy.new(
+      scorecard: @scorecard,
+      actor_account: current_account
+    ).call
+    in Success(candidate_id)
+      redirect_to tab_ats_candidate_path(candidate_id, :scorecards)
+    in Failure[:scorecard_not_destroyed, _error] | Failure[:event_invalid, _error]
       render_error _error, status: :unprocessable_entity
     end
   end

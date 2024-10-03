@@ -69,6 +69,15 @@
               = score_icon(@scorecard.score, with_text: true)
           - if (summary = @scorecard.summary).present?
             = summary
-  .card-submit.hstack.gap-2.mt-4
-    = render ButtonLinkComponent.new(edit_ats_scorecard_path)
-      | Edit
+    .card-submit.hstack.gap-2.mt-4.justify-content-between
+      = render ButtonLinkComponent.new(edit_ats_scorecard_path)
+        | Edit
+      - if allowed_to?(:destroy?, @scorecard)
+          = form_with url: ats_scorecard_path(@scorecard), method: :delete
+            = render ButtonComponent.new(variant: :danger,
+                                        data: { toggle: "ats-confirmation",
+                                                title: "Delete scorecard?",
+                                                btn_cancel_label: "Cancel",
+                                                btn_ok_label: "Delete",
+                                                btn_ok_class: "btn btn-danger btn-small" })
+              | Delete

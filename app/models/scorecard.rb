@@ -31,4 +31,17 @@ class Scorecard < ApplicationRecord
 
   validates :title, presence: true
   validates :score, presence: true
+
+  def author
+    Member
+      .joins(
+        <<~SQL
+          JOIN events ON events.actor_account_id = members.account_id
+            AND events.type = 'scorecard_added'
+            AND events.eventable_id = #{id}
+            AND events.eventable_type = 'Scorecard'
+        SQL
+      )
+      .first
+  end
 end

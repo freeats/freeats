@@ -69,7 +69,7 @@ Rails.application.routes.draw do
     end
 
     resources :scorecard_templates, only: %i[new create show edit update destroy]
-    resources :scorecards, only: %i[new create show edit update]
+    resources :scorecards, only: %i[new create show edit update destroy]
 
     get "team", to: "members#index"
 
