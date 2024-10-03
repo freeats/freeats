@@ -24,13 +24,9 @@
               - else
                 = t("user_accounts.settings.show.email_not_linked")
       / Action buttons
-      .vstack.gap-2
+      .vstack.gap-2.mt-2
         .hstack.gap-2
           = render ButtonComponent.new(class: "justify-content-center col", form: :settings_form)
             = t("core.save_button")
-          = render ButtonLinkComponent.new(ats_settings_path,
-                                           class: "justify-content-center col",
-                                           variant: :cancel)
-            = t("core.cancel_button")
         span
           = link_to t("user_accounts.settings.show.change_password_link_text"), rodauth.change_password_path
