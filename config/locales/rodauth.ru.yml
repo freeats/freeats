@@ -66,12 +66,14 @@ ru:
     login_does_not_meet_requirements_message: неверный логин, не соответствует требованиям
     login_error_flash: Произошла ошибка при регистрации в
     login_form_footer_links_heading: <h2 class="rodauth-login-form-footer-links-heading">Другие параметры</h2>
+    login_input_placeholder: Work email
+    login_invalid_email_or_password: Неправильный Email или password. Если вы забыли password, вы можете сбросить его %{href}.
+    login_invalid_email_or_password_link_text: здесь
     login_label: Войдите в систему
     login_lockout_error_flash: Эта учетная запись в настоящее время заблокирована и не может быть подключена к
     login_not_valid_email_message: неверный адрес электронной почты
     login_notice_flash: Авторизовался успешно, приятного просмотра!
     login_page_title: Войдите в систему
-    login_input_placeholder: Work email
     login_page_text_before_create_account_link: Нет аккаунта?
     login_too_long_message: не более %{login_maximum_length} символов
     login_too_many_bytes_message: максимальное количество символов в %{login_maximum_bytes} байтах

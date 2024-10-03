@@ -72,6 +72,17 @@ module LoginLogout
         # Allow to send reset password email for logged in users.
         redirect "/" unless scope.request.path.in?(%w[/password_recovery /password_new])
       end
+
+      # Replace the error alert if the email or password is invalid.
+      login_view do
+        if field_error(login_param) || field_error(password_param)
+          href = ApplicationController.helpers.link_to(
+            I18n.t("rodauth.login_invalid_email_or_password_link_text"), reset_password_request_path
+          )
+          set_error_flash I18n.t("rodauth.login_invalid_email_or_password", href:)
+        end
+        super()
+      end
     end
   end
 end
@@ -149,11 +160,22 @@ module ManagePassword
       reset_password_route :password_new
 
       reset_password_autologin? true
+
+      # Stay on the same page after requesting a password reset.
       reset_password_email_sent_redirect do
-        if logged_in?
-          "/"
+        reset_password_request_route
+      end
+      reset_password_email_recently_sent_redirect do
+        reset_password_request_route
+      end
+
+      # Replace the error alert that the email was not found.
+      reset_password_request_error_flash do
+        if field_error(login_param)
+          set_notice_flash reset_password_email_sent_notice_flash
+          set_error_flash ""
         else
-          login_path
+          super()
         end
       end
     end
@@ -293,13 +315,13 @@ class RodauthMain < Rodauth::Rails::Auth
     # already_an_account_with_this_login_message "user with this email address already exists"
     # password_too_short_message { "needs to have at least #{password_minimum_length} characters" }
     login_does_not_meet_requirements_message do
-      login_requirement_message || t(".invalid_login_message")
+      login_requirement_message || t("rodauth.invalid_login_message")
     end
 
     password_does_not_meet_requirements_message do
       # FIXME: for unknown reason the error message for short password doesn't use text from rodauth.en.
       # Need to find reason and remove this hack.
-      message = password_requirement_message || t(".invalid_password_message")
+      message = password_requirement_message || t("rodauth.invalid_password_message")
       "#{message.capitalize.chomp('.')}."
     end
 

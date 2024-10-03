@@ -66,12 +66,14 @@ en:
     login_does_not_meet_requirements_message: Invalid login, does not meet requirements.
     login_error_flash: There was an error logging in.
     login_form_footer_links_heading: <h2 class="rodauth-login-form-footer-links-heading">Other Options</h2>
+    login_input_placeholder: Work email
+    login_invalid_email_or_password: Wrong Email or password. If you forgot your password, you can reset it %{href}.
+    login_invalid_email_or_password_link_text: here
     login_label: Sign in
     login_lockout_error_flash: This account is currently locked out and cannot be logged in to.
     login_not_valid_email_message: Not a valid email address.
     login_notice_flash: Signed in successfully, enjoy your session!
     login_page_title: Sign in
-    login_input_placeholder: Work email
     login_too_long_message: Maximum %{login_maximum_length} characters.
     login_too_many_bytes_message: Maximum %{login_maximum_bytes} bytes.
     login_too_short_message: Minimum %{login_minimum_length} characters.
