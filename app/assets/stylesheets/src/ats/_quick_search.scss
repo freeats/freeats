@@ -1,4 +1,9 @@
 .quick-search {
+  @media (min-width: 992px) {
+    width: 100%;
+    max-width: 327px;
+  }
+
   a {
     color: unset;
     text-decoration: none;
