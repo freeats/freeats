@@ -58,7 +58,7 @@ ruby:
       / ACTIVITY
       .row.font-small.text-secondary.mt-3.gx-2
         .col-auto.text-nowrap.mb-2 [data-bs-toggle="tooltip"
-            title=t("core.added_on", time: @candidate.created_at.to_fs(:datetime_full))]
+            title=t("core.added_on_time", time: @candidate.created_at.to_fs(:datetime_full))]
           i.fas.fa-plus-square
           | &nbsp;
           = t("core.created_time", time: short_time_ago_in_words(@candidate.created_at))

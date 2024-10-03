@@ -4,7 +4,8 @@ en:
     activities: Activities
     add_button: Add
     added_by: Added by
-    added_on: Added on %{time}
+    added_on: Added on
+    added_on_time: Added on %{time}
     assign_button: Assign
     assignee: Assignee
     cancel_button: Cancel
