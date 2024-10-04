@@ -5,7 +5,7 @@ default: &default
       concurrency_maintenance_interval: 300
   workers:
     - queues: "*"
-      threads: 1
+      threads: 5
       polling_interval: 2
 
 production:

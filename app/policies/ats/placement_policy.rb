@@ -11,6 +11,8 @@ class ATS::PlacementPolicy < ApplicationPolicy
   private
 
   def placement_creator?
+    return false unless record.added_event.actor_account
+
     record.added_event.actor_account.member.id == member.id
   end
 end

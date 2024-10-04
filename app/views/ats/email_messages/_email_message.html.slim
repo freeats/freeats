@@ -4,7 +4,7 @@ ruby:
   message = email_message
   tooltip_text =
     unless current_member.email_service_linked?
-      t("ats.profiles.emails_tab.compose_button_disabled_tooltip.email_not_linked")
+      t("user_accounts.email_not_linked")
     end
 
 - if (sanitized_message_body = message.sanitized_body)

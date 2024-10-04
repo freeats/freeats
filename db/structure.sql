@@ -608,6 +608,7 @@ CREATE TABLE public.accounts (
     calendar_url character varying DEFAULT ''::character varying NOT NULL,
     female boolean DEFAULT false NOT NULL,
     tenant_id bigint,
+    external_source_id bigint,
     password_hash character varying,
     status integer DEFAULT 1 NOT NULL
 );
@@ -1184,7 +1185,8 @@ CREATE TABLE public.candidates (
     telegram character varying DEFAULT ''::character varying NOT NULL,
     skype character varying DEFAULT ''::character varying NOT NULL,
     candidate_source_id bigint,
-    tenant_id bigint
+    tenant_id bigint,
+    external_source_id bigint
 );
 
 
@@ -1293,7 +1295,8 @@ CREATE TABLE public.email_threads (
     id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint,
+    external_source_id bigint
 );
 
 
@@ -1606,7 +1609,8 @@ CREATE TABLE public.placements (
     greenhouse_id integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint,
+    external_source_id bigint
 );
 
 
@@ -1642,6 +1646,7 @@ CREATE TABLE public.position_stages (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     tenant_id bigint,
+    external_source_id bigint,
     deleted boolean DEFAULT false NOT NULL
 );
 
@@ -1678,6 +1683,7 @@ CREATE TABLE public.positions (
     updated_at timestamp(6) without time zone NOT NULL,
     recruiter_id bigint,
     tenant_id bigint,
+    external_source_id bigint,
     location_id bigint
 );
 
@@ -3246,6 +3252,13 @@ CREATE UNIQUE INDEX index_accounts_on_email ON public.accounts USING btree (emai
 
 
 --
+-- Name: index_accounts_on_external_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_accounts_on_external_source_id ON public.accounts USING btree (external_source_id);
+
+
+--
 -- Name: index_accounts_on_tenant_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3449,6 +3462,13 @@ CREATE INDEX index_candidates_on_candidate_source_id ON public.candidates USING 
 
 
 --
+-- Name: index_candidates_on_external_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_candidates_on_external_source_id ON public.candidates USING btree (external_source_id);
+
+
+--
 -- Name: index_candidates_on_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3516,6 +3536,13 @@ CREATE INDEX index_email_messages_on_message_id ON public.email_messages USING b
 --
 
 CREATE INDEX index_email_messages_on_tenant_id ON public.email_messages USING btree (tenant_id);
+
+
+--
+-- Name: index_email_threads_on_external_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_email_threads_on_external_source_id ON public.email_threads USING btree (external_source_id);
 
 
 --
@@ -3792,6 +3819,13 @@ CREATE INDEX index_placements_on_candidate_id ON public.placements USING btree (
 
 
 --
+-- Name: index_placements_on_external_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_placements_on_external_source_id ON public.placements USING btree (external_source_id);
+
+
+--
 -- Name: index_placements_on_greenhouse_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3817,6 +3851,13 @@ CREATE INDEX index_placements_on_position_stage_id ON public.placements USING bt
 --
 
 CREATE INDEX index_placements_on_tenant_id ON public.placements USING btree (tenant_id);
+
+
+--
+-- Name: index_position_stages_on_external_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_position_stages_on_external_source_id ON public.position_stages USING btree (external_source_id);
 
 
 --
@@ -3852,6 +3893,13 @@ CREATE INDEX index_position_stages_on_tenant_id ON public.position_stages USING 
 --
 
 CREATE UNIQUE INDEX index_positions_interviewers_on_position_id_and_interviewer_id ON public.positions_interviewers USING btree (position_id, interviewer_id);
+
+
+--
+-- Name: index_positions_on_external_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_positions_on_external_source_id ON public.positions USING btree (external_source_id);
 
 
 --
@@ -4679,6 +4727,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240916132738'),
 ('20240913152510'),
 ('20240912084504'),
+('20240911061747'),
 ('20240911051822'),
 ('20240909141257'),
 ('20240909131121'),

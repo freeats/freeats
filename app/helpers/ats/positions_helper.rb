@@ -14,18 +14,25 @@ module ATS::PositionsHelper
         "added the position"
       when "position_changed"
         if field == "status"
-          from = from.humanize
-          to = to.humanize
-        end
+          reason =
+            if event.properties["change_status_reason"].present? &&
+               event.properties["change_status_reason"] != "other"
+              Position::CHANGE_STATUS_REASON_LABELS[event.properties["change_status_reason"].to_sym]
+            else
+              event.properties["comment"]
+            end
 
-        if to.present? && from.present?
+          <<~TEXT
+            changed position status from <b>#{from.humanize}</b> to
+            <b>#{to.humanize}</b>#{" with reason: #{reason}" if reason.present?}
+          TEXT
+        elsif to.present? && from.present?
           "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
         elsif to.present?
           "added #{field} <b>#{to}</b>"
         elsif from.present?
           "removed #{field} <b>#{from}</b>"
         end
-
       when *Position::ASSIGNED_EVENTS
         member = Member.includes(:account).find(to)
 
