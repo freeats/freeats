@@ -24,12 +24,13 @@ ru:
     close_account_error_flash: Произошла ошибка при закрытии вашей учетной записи
     close_account_notice_flash: Ваша учетная запись закрыта
     close_account_page_title: Закрыть учетную запись
+    confirm_new_password_input_placeholder: Подтвердите новый пароль
     confirm_password_button: Подтвердите пароль
     confirm_password_error_flash: Произошла ошибка при подтверждении вашего пароля
     confirm_password_link_text: Введите пароль
     confirm_password_notice_flash: Ваш пароль подтвержден
     confirm_password_page_title: Подтвердите пароль
-    confirm_password_input_placeholder: Confirm password
+    confirm_password_input_placeholder: Подтвердите пароль
     contains_null_byte_message: содержит нулевой байт
     create_account_button: Создайте учетную запись
     create_account_error_flash: Произошла ошибка при создании вашей учетной записи
@@ -37,6 +38,8 @@ ru:
     create_account_notice_flash: Ваша учетная запись создана
     create_account_page_title: Создать учетную запись
     create_account_page_text_before_sign_in_link: Уже есть аккаунт?
+    current_password_placeholder: Текущий пароль
+    back_button: Назад
     email_auth_email_recently_sent_error_flash: Недавно вам было отправлено электронное письмо со ссылкой для входа в систему
     email_auth_email_sent_notice_flash: Вам отправлено электронное письмо со ссылкой для входа в вашу учетную запись
     email_auth_email_subject: Ссылка для входа
@@ -47,16 +50,16 @@ ru:
     email_input_placeholder: Email
     email_label: Email
     email_subject_prefix: ""
-    expired_jwt_access_token_message: токен доступа JWT с истекшим сроком действия
     expired_invitation_error_flash: Срок действия вашего приглашения истек, пожалуйста, попросите отправить приглашение повторно.
+    expired_jwt_access_token_message: токен доступа JWT с истекшим сроком действия
     global_logout_label: Выйдите из всех зарегистрированных сеансов?
-    invitation_already_have_account_error_flash: У вас уже есть аккаунт.
     input_field_label_suffix: ""
     invalid_jwt_format_error_message: недопустимый формат JWT или утверждение в заголовке авторизации
-    invalid_password_message: неверный пароль
     invalid_login_message: неверный email.
+    invalid_password_message: неверный пароль
     invalid_recovery_code_error_flash: Ошибка при аутентификации с помощью кода восстановления
     invalid_recovery_code_message: Неверный код восстановления
+    invitation_already_have_account_error_flash: У вас уже есть аккаунт.
     json_non_post_error_message: метод, не использующий POST, используемый в JSON API
     json_not_accepted_error_message: Неподдерживаемый заголовок Accept. Должен принимать "application/json" или совместимый тип содержимого.
     jwt_refresh_invalid_token_message: недопустимый токен обновления JWT
@@ -151,6 +154,7 @@ ru:
     remember_page_title: Измените настройки запоминания
     remember_remember_label: Запомните меня
     require_login_error_flash: Пожалуйста, войдите в систему, чтобы продолжить
+    required_field_error: не может быть пустым
     resend_verify_account_page_title: Повторно отправьте электронное письмо для подтверждения
     reset_password_button: Сбросить пароль
     reset_password_email_recently_sent_error_flash: Недавно вам было отправлено электронное письмо со ссылкой для сброса вашего пароля
@@ -273,5 +277,3 @@ ru:
     webauthn_setup_link_text: Настройка аутентификации WebAuthn
     webauthn_setup_notice_flash: проверка подлинности WebAuthn теперь настроена
     webauthn_setup_page_title: Настройка проверки подлинности WebAuthn
-    back_button: Назад
-    required_field_error: не может быть пустым

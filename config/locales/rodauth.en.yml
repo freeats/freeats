@@ -24,6 +24,7 @@ en:
     close_account_error_flash: There was an error closing your account.
     close_account_notice_flash: Your account has been closed
     close_account_page_title: Close Account
+    confirm_new_password_input_placeholder: Confirm new password
     confirm_password_button: Confirm Password
     confirm_password_error_flash: There was an error confirming your password.
     confirm_password_link_text: Enter Password
@@ -37,6 +38,8 @@ en:
     create_account_notice_flash: Your account has been created
     create_account_page_title: Register
     create_account_page_text_before_sign_in_link: Already have an account?
+    current_password_placeholder: Current password
+    back_button: Back
     email_auth_email_recently_sent_error_flash: An email has recently been sent to you with a link to login.
     email_auth_email_sent_notice_flash: An email has been sent to you with a link to login to your account.
     email_auth_email_subject: Sign in Link
@@ -47,16 +50,16 @@ en:
     email_input_placeholder: Email
     email_label: Email
     email_subject_prefix: ""
-    expired_jwt_access_token_message: expired JWT access token
     expired_invitation_error_flash: Your invitation has expired, please ask to re-send the invitation.
+    expired_jwt_access_token_message: expired JWT access token
     global_logout_label: Sign out all Signed in Sessions?
-    invitation_already_have_account_error_flash: You already have an account.
     input_field_label_suffix: ""
     invalid_jwt_format_error_message: invalid JWT format or claim in Authorization header
-    invalid_password_message: Invalid password.
     invalid_login_message: Invalid email.
+    invalid_password_message: Invalid password.
     invalid_recovery_code_error_flash: Error authenticating via recovery code.
     invalid_recovery_code_message: Invalid recovery code
+    invitation_already_have_account_error_flash: You already have an account.
     json_non_post_error_message: non-POST method used in JSON API
     json_not_accepted_error_message: Unsupported Accept header. Must accept "application/json" or compatible content type
     jwt_refresh_invalid_token_message: invalid JWT refresh token
@@ -151,6 +154,7 @@ en:
     remember_page_title: Change Remember Setting
     remember_remember_label: Remember Me
     require_login_error_flash: You need to sign in or register before continuing.
+    required_field_error: can't be blank
     resend_verify_account_page_title: Resend verification email
     reset_password_button: Save
     reset_password_email_recently_sent_error_flash: An email has recently been sent to you with a link to reset your password.
@@ -273,5 +277,3 @@ en:
     webauthn_setup_link_text: Setup WebAuthn Authentication
     webauthn_setup_notice_flash: WebAuthn authentication is now setup
     webauthn_setup_page_title: Setup WebAuthn Authentication
-    back_button: Back
-    required_field_error: can't be blank
