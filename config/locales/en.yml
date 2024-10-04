@@ -189,7 +189,7 @@ en:
   errors:
     forbidden_action: You are not allowed to perform this action.
     general_error: |-
-      ATS Error
+      FreeATS Error
       %{error}
       Please contact support.
     something_went_wrong: Something went wrong, please contact support.

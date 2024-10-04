@@ -15,6 +15,7 @@
 # These inflection rules are supported but not enabled by default:
 ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym("ATS")
+  inflect.acronym("FreeATS")
   inflect.acronym("API")
   inflect.acronym("CV")
   inflect.plural("is", "are")

@@ -32,7 +32,7 @@ module ApplicationHelper
   end
 
   def ats_title(page_title)
-    content_for(:title) { "#{page_title} | ATS" }
+    content_for(:title) { "#{page_title} | FreeATS" }
   end
 
   def grid_filter(form:, grid:, filter:)
@@ -108,7 +108,7 @@ module ApplicationHelper
 
   def compose_actor_account_name(event)
     if event.actor_account_id.blank?
-      "ATS"
+      "FreeATS"
     else
       tag.b(event.actor_account.name)
     end
