@@ -48,7 +48,7 @@ module ATS
           def credentials = RecursiveDummy.new
         end
 
-        class RecursiveDummy
+        class RecursiveDummy < String
           def method_missing(*) = self
           def respond_to_missing?(*) = true
           def to_ary = ["dummy"]
@@ -60,6 +60,8 @@ module ATS
         Rails.application.singleton_class.prepend(DummyCredentials)
       end
     end
+
+    MissionControl::Jobs.base_controller_class = "DevopsAuthenticationController"
   end
 end
 # rubocop:enable Style/ClassAndModuleChildren

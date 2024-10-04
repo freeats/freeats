@@ -7,7 +7,7 @@ RailsAdmin::Config::Actions.register(RailsAdmin::Config::Actions::DeactivateMemb
 RailsAdmin.config do |config|
   config.asset_source = :sprockets
 
-  config.parent_controller = "::AdminAuthenticationController"
+  config.parent_controller = "DevopsAuthenticationController"
 
   ### Popular gems integration
 

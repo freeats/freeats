@@ -8,6 +8,16 @@ class RodauthApp < Rodauth::Rails::App
     # Ignore configuration for custom actions.
     return if r.path.in?(["/invitation", "/accept_invite"])
 
+    # Ignore configuration for custom actions which used basic authentication.
+    routes = Rails.application.routes.url_helpers
+    basic_auth_routes = [
+      routes.rails_admin_path,
+      routes.pg_hero_path,
+      routes.mission_control_jobs_path
+    ]
+
+    return if basic_auth_routes.any? { r.path.start_with?(_1) }
+
     rodauth.load_memory # autologin remembered users
 
     # Authentication in testing.

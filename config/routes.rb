@@ -152,19 +152,14 @@ Rails.application.routes.draw do
     get :change_visibility_modal, on: :member
   end
 
+  # The below routes are using the basic authuentication.
   mount RailsAdmin::Engine => "admin", as: "rails_admin"
+  mount PgHero::Engine, at: "pghero"
+  mount MissionControl::Jobs::Engine, at: "jobs"
 
-  # rubocop:disable Style/SymbolProc
-  constraints(Rodauth::Rails.authenticate { |rodauth| rodauth.admin? }) do
-    mount Lookbook::Engine, at: "lookbook" unless Rails.env.test?
-
-    mount PgHero::Engine, at: "pghero"
-
-    mount MissionControl::Jobs::Engine, at: "jobs"
-  end
+  mount Lookbook::Engine, at: "lookbook" if Rails.env.development?
 
   constraints(Rodauth::Rails.authenticate { |rodauth| rodauth.admin? || rodauth.member? }) do
     mount Blazer::Engine, at: "stats"
   end
-  # rubocop:enable Style/SymbolProc
 end
