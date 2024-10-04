@@ -105,6 +105,7 @@ module ATS::MembersHelper
         form,
         method: :access_level,
         required: true,
+        anchor_dropdown_to_body: true,
         local: { options: access_levels_options }
       )
     end
