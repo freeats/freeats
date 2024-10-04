@@ -136,12 +136,17 @@ class ATS::PlacementsController < ApplicationController
 
   # rubocop:disable Naming/AccessorMethodName
   def set_placements_variables(placement)
-    # TODO: order by placement changed events
-    # https://github.com/toughbyte/ats/issues/471
-    all_placements = placement.candidate.placements.includes(:position_stage, :position)
+    all_placements =
+      placement
+      .candidate
+      .placements
+      .select("placements.*, events.performed_at AS added_at")
+      .joins(:added_event)
+      .includes(:position_stage, :position)
 
-    @irrelevant_placements = all_placements.filter(&:disqualified?)
-    @relevant_placements = all_placements - @irrelevant_placements
+    # Sort by created_at is intentional.
+    @irrelevant_placements = all_placements.filter(&:disqualified?).sort_by(&:added_at).reverse
+    @relevant_placements = (all_placements - @irrelevant_placements).sort_by(&:added_at).reverse
   end
   # rubocop:enable Naming/AccessorMethodName
 

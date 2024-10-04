@@ -703,12 +703,16 @@ class ATS::CandidatesController < ApplicationController
   end
 
   def set_placements_variables
-    # TODO: order by placement changed events
-    # https://github.com/toughbyte/ats/issues/471
-    all_placements = @candidate.placements.includes(:position_stage, :position)
+    all_placements =
+      @candidate
+      .placements
+      .select("placements.*, events.performed_at AS added_at")
+      .joins(:added_event)
+      .includes(:position_stage, :position)
 
-    @irrelevant_placements = all_placements.filter(&:disqualified?)
-    @relevant_placements = all_placements - @irrelevant_placements
+    # Sort by created_at is intentional.
+    @irrelevant_placements = all_placements.filter(&:disqualified?).sort_by(&:added_at).reverse
+    @relevant_placements = (all_placements - @irrelevant_placements).sort_by(&:added_at).reverse
 
     @all_active_members = Member.active.to_a
     @suggested_names = suggested_members_names_for(@all_active_members)
