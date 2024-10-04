@@ -46,10 +46,7 @@ ruby:
           company = @candidate.company
           # That regexp is for fixing a long solid headline.
           text_to_clamp = candidate_turn_array_to_string_with_line_breakers([candidate_headline, company])
-        .mt-2 = text_to_clamp
-        / = clamp_text text_to_clamp, { inline_expand_button: true },
-                     html_options: { class: "mt-2 font-body overflow-hidden" },
-                     button_html_options: { class: "font-body" }
+        .mt-2.font-body = text_to_clamp
 
       - if @candidate.location_id?
         .mt-2.font-body

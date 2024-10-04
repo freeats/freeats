@@ -185,6 +185,7 @@ en:
         stage."
       reserved_placement_exist: "<b>%{candidate_name}</b> was last assigned on the
         <b>%{position_name}</b> on <b>%{date}</b> and is reserved."
+    upload_file_button: Upload file
 
   errors:
     forbidden_action: You are not allowed to perform this action.

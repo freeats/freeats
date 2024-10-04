@@ -29,6 +29,12 @@ table.datagrid {
   }
 }
 
+.datagrid-filter {
+  .grid-checkbox {
+    min-height: 32px;
+  }
+}
+
 // Pagination
 .page-paginator {
   display: inline-block;

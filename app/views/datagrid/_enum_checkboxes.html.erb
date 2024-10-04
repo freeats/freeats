@@ -4,7 +4,7 @@
 Indent in this file may cause extra space to appear.
 You can add indent if whitespace doesn't matter for you
 %>
-<div class="d-flex align-items-center h-100">
+<div class="d-flex align-items-center h-100 grid-checkbox">
   <%- elements.each do |value, text, checked| -%>
     <%- id = [form.object_name, filter.name, value].join('_').underscore -%>
       <div class="form-check form-check-inline">
