@@ -43,6 +43,7 @@ class Task < ApplicationRecord
         tasks.assignee_id,
         tasks.due_date,
         tasks.id,
+        tasks.repeat_interval,
         COUNT (notes.id) AS notes_count"
       ).group("tasks.id")
   end

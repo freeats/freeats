@@ -42,10 +42,7 @@ class ATS::ProfileTasksGrid
     order: "due_date, name",
     order_desc: "due_date DESC, name"
   ) do |model|
-    overdue_class = model.overdue? ? "text-danger" : ""
-    tag.span(class: overdue_class) do
-      ats_task_due_date(model)
-    end
+    ats_task_due_date(model)
   end
 
   column(

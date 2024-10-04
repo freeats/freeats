@@ -229,6 +229,12 @@ en:
     add_task_button: Add task
     description: Description
     repeat: Repeat
+    repeat_interval:
+      daily: Daily
+      monthly: Monthly
+      never: Never
+      weekly: Weekly
+      yearly: Yearly
     successfully_created: Task was successfully created.
     task_for: Task for %{name}
     task_name: Task name

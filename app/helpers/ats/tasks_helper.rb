@@ -2,18 +2,36 @@
 
 module ATS::TasksHelper
   def ats_task_due_date(task)
-    case task.due_date
-    when Time.zone.yesterday then t("core.yesterday")
-    when Time.zone.today then t("core.today")
-    when Time.zone.tomorrow then t("core.tomorrow")
-    else
-      if task.due_date.before?(6.days.after) && task.due_date.future?
-        task.due_date.strftime("%A")
-      elsif task.due_date.year == Time.zone.now.year
-        task.due_date.strftime("%b %d")
+    due_date =
+      case task.due_date
+      when Time.zone.yesterday then t("core.yesterday")
+      when Time.zone.today then t("core.today")
+      when Time.zone.tomorrow then t("core.tomorrow")
       else
-        task.due_date.strftime("%b %d %Y")
+        if task.due_date.before?(6.days.after) && task.due_date.future?
+          task.due_date.strftime("%A")
+        elsif task.due_date.year == Time.zone.now.year
+          task.due_date.strftime("%b %d")
+        else
+          task.due_date.strftime("%b %d %Y")
+        end
       end
+
+    repeat_icon =
+      if task.repeating?
+        tag.i(
+          class: "fal fa-fw fa-arrows-repeat",
+          data: { bs_toggle: :tooltip,
+                  bs_title: I18n.t("tasks.repeat_interval.#{task.repeat_interval}") }
+        )
+      end
+
+    due_date_slot = tag.span(class: ("text-danger" if task.overdue?)) do
+      due_date
+    end
+
+    tag.div(class: "hstack gap-2") do
+      safe_join [repeat_icon, due_date_slot]
     end
   end
 
