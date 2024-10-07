@@ -10,7 +10,8 @@ class Notes::Destroy
 
   def call
     note = Note.find(id)
-    notable = note.note_thread.notable
+    note_thread = note.note_thread
+    notable = note_thread.notable
 
     result = Try[ActiveRecord::RecordInvalid] do
       ActiveRecord::Base.transaction do
@@ -33,14 +34,14 @@ class Notes::Destroy
         note.destroy!
 
         yield NoteThreads::Destroy.new(
-          note_thread: note.note_thread
+          note_thread:
         ).call
       end
     end.to_result
 
     case result
     in Success(_)
-      Success(note)
+      Success(note_thread)
     in Failure[ActiveRecord::RecordInvalid => e]
       Failure[:note_invalid, note.errors.full_messages.presence || e.to_s]
     end

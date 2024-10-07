@@ -103,11 +103,13 @@ class NotesController < ApplicationController
       id: params[:id],
       actor_account: current_account
     ).call
-    in Success(note)
-      note_thread =
-        NoteThread
-        .includes(:members, notes: %i[member reacted_members])
-        .find(note.note_thread_id)
+    in Success(note_thread)
+      # Here note_thread instance is passed, but the record in the database may
+      # be missing if the deleted note was the only one in note_thread.
+      ActiveRecord::Associations::Preloader.new(
+        records: [note_thread],
+        associations: [:members, { notes: %i[member reacted_members] }]
+      ).call
 
       notes_stream = build_turbo_stream_notes(note_thread:, action: :destroy)
       if note_thread.notable_type == "Task"
