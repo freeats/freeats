@@ -11,6 +11,6 @@ class NoteThreadTest < ActiveSupport::TestCase
         tenant: tenants(:toughbyte_tenant)
       )
 
-    assert_equal note_thread.candidate, candidate
+    assert_equal note_thread.notable, candidate
   end
 end
