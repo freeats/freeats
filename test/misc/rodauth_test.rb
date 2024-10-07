@@ -42,6 +42,7 @@ class RodauthTest < ActionDispatch::IntegrationTest
     tenant = Tenant.last
     account = Account.last
     member = Member.last
+    candidate_source = CandidateSource.last
 
     assert_equal tenant.name, params[:company_name]
     assert_equal member.access_level, "admin"
@@ -50,6 +51,8 @@ class RodauthTest < ActionDispatch::IntegrationTest
     assert_equal account.tenant, tenant
     assert_equal account.email, params[:email]
     assert_equal account.name, params[:full_name]
+    assert_equal candidate_source.tenant, tenant
+    assert_equal candidate_source.name, "LinkedIn"
     assert_predicate account.password_hash, :present?
   end
 

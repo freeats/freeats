@@ -42,6 +42,7 @@ module CreateAccount
           tenant = Tenant.create!(name: param("company_name"), locale: I18n.locale)
           Account.find(account_id).update!(tenant_id: tenant.id)
           Member.create!(account_id:, tenant:, access_level: :admin)
+          CandidateSource.create!(tenant:, name: "LinkedIn")
         end
       end
     end
