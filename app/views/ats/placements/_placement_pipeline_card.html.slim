@@ -35,6 +35,7 @@
                 = render "ats/placements/disrequalify_buttons",
                          placement:,
                          data_display_static: true,
+                         tooltip: true
                          position_pipeline_card: true
               - if placement.qualified? && placement.next_stage.present?
                 .card-hidden-container
