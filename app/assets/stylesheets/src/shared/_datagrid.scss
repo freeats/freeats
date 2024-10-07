@@ -1,4 +1,6 @@
 table.datagrid {
+  margin-bottom: 0rem;
+
   th,
   td {
     max-width: 320px;
@@ -26,6 +28,11 @@ table.datagrid {
     a ~ a {
       @extend .ms-2;
     }
+  }
+
+  .grid-column-35 {
+    min-width: 140px;
+    width: 140px;
   }
 }
 

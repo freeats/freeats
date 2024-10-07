@@ -179,7 +179,7 @@ en:
       add_position: Add position?
       disqualified_placement_exist: "<b>%{candidate_name}</b> was last assigned on
         the <b>%{position_name}</b> on <b>%{date}</b> and is disqualified with reason
-        <b>%{reason}</b>"
+        <b>%{reason}</b>."
       qualified_placement_exist: "<b>%{candidate_name}</b> was last assigned on the
         <b>%{position_name}</b> on <b>%{date}</b> and is still qualified on <b>%{stage}</b>
         stage."
@@ -242,8 +242,8 @@ en:
 
   user_accounts:
     already_exists: Account with email %{email} already exists
-    already_has_access_level: "%{name} already has %{access_level} access level"
-    already_has_inactive_level: "%{name} has already inactive access level"
+    already_has_access_level: "%{name} already has %{access_level} access level."
+    already_has_inactive_level: "%{name} has already inactive access level."
     deactivate: Deactivate
     deactivate_self_error: You can't deactivate yourself
     deactivate_title: Deactivate %{name}?
@@ -273,7 +273,8 @@ en:
       remove_avatar:
         successfully_removed: Account avatar successfully removed.
     status: Account status
-    successfully_deactivated: "%{name} status was successfully changed to inactive"
+    successfully_updated: "%{name} status was successfully changed to %{new_access_level}."
+    successfully_deactivated: "%{name} status was successfully changed to inactive."
     successfully_reactivated: "%{name} status was successfully changed to member."
-    sussessfully_sent_invitation: Invitation was successfully sent to %{email}
+    sussessfully_sent_invitation: Invitation was successfully sent to %{email}.
     your_photo: Your photo

@@ -52,6 +52,7 @@ class ATS::TeamGrid
     header: "",
     order: false,
     html: true,
+    class: "grid-column-35",
     if: proc { |grid| grid.current_member.admin? }
   ) do |model|
     if model.access_level == "invited"

@@ -96,13 +96,16 @@ class ATS::MembersControllerTest < ActionDispatch::IntegrationTest
 
   test "should update member access level" do
     member = members(:hiring_manager_member)
+    new_access_level = "admin"
 
     assert_equal member.access_level, "member"
 
-    patch update_level_access_ats_member_path(id: member.account.id, access_level: "admin")
+    patch update_level_access_ats_member_path(id: member.account.id, access_level: new_access_level)
 
     assert_redirected_to ats_team_path
     assert_equal member.reload.access_level, "admin"
+    assert_equal flash[:notice],
+                 I18n.t("user_accounts.successfully_updated", name: member.account.name, new_access_level:)
   end
 
   test "should not update member access level if access level is invalid" do

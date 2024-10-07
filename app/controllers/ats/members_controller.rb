@@ -121,7 +121,12 @@ class ATS::MembersController < ApplicationController
     end
 
     if account.member.update(access_level: new_access_level)
-      redirect_to ats_team_path
+      redirect_to ats_team_path,
+                  notice: I18n.t(
+                    "user_accounts.successfully_updated",
+                    name: account.name,
+                    new_access_level:
+                  )
     else
       render_error account.member.errors.full_messages, status: :unprocessable_entity
     end

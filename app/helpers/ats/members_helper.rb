@@ -28,12 +28,12 @@ module ATS::MembersHelper
     end.join
   end
 
-  def invate_member_button
+  def invite_member_button
     render ButtonLinkComponent.new(
       invite_modal_ats_members_path,
-      size: :medium,
+      size: :small,
       data: { turbo_frame: :turbo_modal_window }
-    ).with_content(I18n.t("user_accounts.invite"))
+    ).with_content(t("user_accounts.invite"))
   end
 
   def deactivate_member_button(account)
@@ -46,12 +46,15 @@ module ATS::MembersHelper
 
     form_with(
       url: deactivate_ats_member_path(account.id),
-      method: :patch
+      method: :patch,
+      class: "vstack"
     ) do
       render ButtonComponent.new(
         variant: :danger_secondary,
         disabled: tooltip_text.present?,
+        size: :tiny,
         tooltip_title: tooltip_text,
+        class: "w-100",
         data: {
           toggle: "ats-confirmation",
           title: t("user_accounts.deactivate_title", name: account.name),
@@ -59,35 +62,38 @@ module ATS::MembersHelper
           btn_ok_label: t("user_accounts.deactivate"),
           btn_ok_class: "btn btn-danger btn-small"
         }
-      ).with_content(I18n.t("user_accounts.deactivate"))
+      ).with_content(t("user_accounts.deactivate"))
     end
   end
 
   def reinvite_member_button(model)
-    form_with(url: invite_ats_members_path(email: model.email)) do
+    form_with(url: invite_ats_members_path(email: model.email), class: "vstack") do
       render ButtonComponent.new(
-        variant: :secondary
-      ).with_content(I18n.t("user_accounts.reinvite"))
+        variant: :secondary,
+        size: :tiny
+      ).with_content(t("user_accounts.reinvite"))
     end
   end
 
   def reactive_button(account)
     form_with(
       url: reactivate_ats_member_path(account.id),
-      method: :patch
+      method: :patch,
+      class: "vstack"
     ) do
       render ButtonComponent.new(
-        variant: :secondary
-      ).with_content(I18n.t("user_accounts.reactivate"))
+        variant: :secondary,
+        size: :tiny
+      ).with_content(t("user_accounts.reactivate"))
     end
   end
 
   def change_access_level_button(account, current_member)
-    return account.access_level if account.access_level == "invited"
-    return account.access_level unless current_member.admin?
-    return account.access_level if account.id == current_member.account.id
+    return account.access_level.humanize if account.access_level == "invited"
+    return account.access_level.humanize unless current_member.admin?
+    return account.access_level.humanize if account.id == current_member.account.id
 
-    return account.access_level if account.access_level == "inactive"
+    return account.access_level.humanize if account.access_level == "inactive"
 
     access_levels_options =
       %w[admin member]
@@ -104,6 +110,7 @@ module ATS::MembersHelper
       render SingleSelectComponent.new(
         form,
         method: :access_level,
+        size: :tiny,
         required: true,
         anchor_dropdown_to_body: true,
         local: { options: access_levels_options }
