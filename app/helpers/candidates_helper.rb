@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
 module CandidatesHelper
-  def candidates_compose_source_option_for_select(candidate_source, selected: true)
-    {
-      text: candidate_source.name,
-      value: candidate_source.name,
-      selected:
-    }
-  end
-
   def ats_candidate_duplicates_merge_association_select(form, form_field_name, options_for_select)
     options = options_for_select.map do |text, value|
       { text:, value: }

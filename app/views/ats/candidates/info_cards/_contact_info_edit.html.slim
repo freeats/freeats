@@ -2,23 +2,21 @@
 
 ruby:
   header = card_header(title: "Contact info", icon_style: "fa-at")
-  source_options =
-    if candidate.candidate_source.present?
-      [candidates_compose_source_option_for_select(candidate.candidate_source)]
-    end
+  source_options = CandidateSource.pluck(:name).sort.map do |source|
+    { value: source, text: source, selected: source == candidate.source }
+  end
 
 = candidate_card_edit "contact_info", candidate, header: do |form|
   / Source
   = render LabeledComponent.new(class: "mb-2") do |c|
     - c.with_label("Source", form:, for_field: :source)
     = render SingleSelectComponent.new( \
-        form,
-        method: :source,
-        remote: { \
-          search_url: fetch_candidate_sources_api_v1_candidate_sources_path(q: "QUERY"),
-          options: source_options,
-        },
-      )
+      form,
+      method: :source,
+      placeholder: "Source",
+      include_blank: true,
+      local: { options: source_options } \
+    )
 
   / Emails
   = render LabeledComponent.new(class: "mb-2") do |c|

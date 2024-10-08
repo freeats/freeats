@@ -129,10 +129,6 @@ Rails.application.routes.draw do
         get :fetch_positions
       end
 
-      resource :candidate_sources, only: [] do
-        get :fetch_candidate_sources
-      end
-
       post "candidates", to: "documents#create"
     end
   end
