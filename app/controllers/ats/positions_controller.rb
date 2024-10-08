@@ -18,12 +18,12 @@ class ATS::PositionsController < ApplicationController
   before_action { @nav_item = :positions }
   before_action :set_position,
                 only: %i[show update_side_header show_header edit_header update_header
-                         reassign_recruiter show_card edit_card update_card change_status destroy]
+                         show_card edit_card update_card change_status destroy]
   before_action :set_tabs, only: :show
   helper_method :position_status_options
   before_action :authorize!, only: %i[create new index]
   before_action -> { authorize!(@position) },
-                only: %i[show destroy update_side_header reassign_recruiter show_card edit_card
+                only: %i[show destroy update_side_header show_card edit_card
                          update_card show_header edit_header update_header change_status]
   def index
     @positions_grid_params =
@@ -151,36 +151,6 @@ class ATS::PositionsController < ApplicationController
           locals: { changed_field: }
         )
       )
-    end
-  end
-
-  def reassign_recruiter
-    case Positions::Change.new(
-      position: @position,
-      params: position_params.to_h.deep_symbolize_keys,
-      actor_account: current_account
-    ).call
-    in Failure[:position_invalid, error]
-      render_error error, status: :unprocessable_entity
-    in Success[_]
-      locals = {
-        currently_assigned_account: @position.recruiter&.account,
-        tooltip_title: t("core.recruiter"),
-        target_model: @position,
-        target_url: reassign_recruiter_ats_position_path(@position),
-        input_button_name: "position[recruiter_id]",
-        unassignment_label: t("core.unassign_recruiter"),
-        mobile: params[:mobile]
-      }
-      # rubocop:disable Rails/SkipsModelValidations
-      render_turbo_stream(
-        turbo_stream.update_all(
-          ".turbo_position_reassign_recruiter_button",
-          partial: "shared/profile/reassign_button",
-          locals:
-        )
-      )
-      # rubocop:enable Rails/SkipsModelValidations
     end
   end
 
@@ -363,6 +333,7 @@ class ATS::PositionsController < ApplicationController
     @options_for_collaborators =
       Member
       .includes(:account)
+      .where.not(id: @position.recruiter_id)
       .where(access_level: Position::COLLABORATORS_ACCESS_LEVEL)
       .map do |member|
         {

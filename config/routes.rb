@@ -57,7 +57,6 @@ Rails.application.routes.draw do
           tab: /info|pipeline|tasks|sequence_templates||activities/,
           as: "tab"
       patch :change_status, on: :member
-      patch :reassign_recruiter, on: :member
       get :show_header, on: :member
       get :edit_header, on: :member
       patch :update_header, on: :member

@@ -1,12 +1,14 @@
-/ Partial variables:
-/ - target_model - model to be modified
-/ - target_url - url for the modification of the model, method is POST
-/ - input_button_name - name of the input for the model e.g. candidate[recruiter_id]
-/ - currently_assigned_account - Account model of currently assigned person if present
-/ - tooltip_title - tooltip on mouse hover
-/ - allowed_to_edit - authorization rule if the current_user can edit
-/ - include_unassignment - whether to include the option to unassign, defaults to false
-/ - mobile - whether to add mobile postfix to select id, used to prevent id duplication with selectize
+/# locals: (
+/ target_model:,
+/ target_url:,
+/ input_button_name:,
+/ currently_assigned_account:,
+/ tooltip_title:,
+/ allowed_to_edit:,
+/ include_unassignment: false,
+/ mobile:,
+/ excluded_member_ids:
+/)
 
 ruby:
   target_model ||= nil
@@ -17,6 +19,7 @@ ruby:
   input_button_name ||= nil
   unassignment_label ||= nil
   mobile ||= false
+  excluded_member_ids ||= []
 
 .reassignment-button data-controller=("reassignment-buttons select-field-instant-submit" if allowed_to_edit)
   - if allowed_to_edit
@@ -36,7 +39,7 @@ ruby:
                  id_suffix: mobile ? "-mobile" : "",
                  include_blank: unassignment_label.present?,
                  required: unassignment_label.blank?,
-                 local: { options: compose_member_options_for_select(unassignment_label:) },
+                 local: { options: compose_member_options_for_select(excluded_member_ids:, unassignment_label:) },
                  data: { deferred_selectize_reassignment_buttons_target: "select",
                          deferred_selectize_select_field_instant_submit_target: "selectField" },
                )

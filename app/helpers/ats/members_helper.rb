@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module ATS::MembersHelper
-  def compose_member_options_for_select(unassignment_label:)
-    dataset = Member.active.order("accounts.name")
+  def compose_member_options_for_select(excluded_member_ids:, unassignment_label:)
+    dataset = Member.active.where.not(id: excluded_member_ids).order("accounts.name").to_a
 
     if dataset.include?(current_member)
       dataset -= [current_member]

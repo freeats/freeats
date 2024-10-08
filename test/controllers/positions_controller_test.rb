@@ -34,7 +34,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_nil position.recruiter_id
 
     assert_difference "Event.count", 1 do
-      patch reassign_recruiter_ats_position_path(position),
+      patch update_side_header_ats_position_path(position),
             params: { position: { recruiter_id: recruiter.id } }
     end
 
@@ -56,7 +56,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_not_equal position.recruiter_id, recruiter.id
 
     assert_difference "Event.count", 2 do
-      patch reassign_recruiter_ats_position_path(position),
+      patch update_side_header_ats_position_path(position),
             params: { position: { recruiter_id: recruiter.id } }
     end
 
@@ -417,7 +417,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_difference(
       "Event.where(type: %i[position_recruiter_assigned position_recruiter_unassigned]).count", 2
     ) do
-      patch reassign_recruiter_ats_position_path(position),
+      patch update_side_header_ats_position_path(position),
             params: { position: { recruiter_id: members(:admin_member).id } }
     end
 

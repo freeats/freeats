@@ -18,12 +18,14 @@ ruby:
       - c.with_label("Recruiter")
       = render "shared/profile/reassign_button",
                currently_assigned_account: @position.recruiter&.account,
+               tooltip_title: "Recruiter",
                target_model: @position,
-               target_url: reassign_recruiter_ats_position_path(@position),
+               target_url: update_side_header_ats_position_path(@position),
                input_button_name: "position[recruiter_id]",
                unassignment_label: t("core.unassign_recruiter"),
                allowed_to_edit: allowed_to?(:reassign_recruiter?),
-               mobile: true
+               mobile: true,
+               excluded_member_ids: @position.collaborator_ids
 
   = render LabeledComponent.new(class: "mb-2",
                                 left_layout_class: "col-3", right_layout_class: "col-9",
