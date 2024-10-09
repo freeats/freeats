@@ -84,7 +84,16 @@ class Member < ApplicationRecord
   scope :rails_admin_search, ->(query) { joins(:account).where(accounts: { email: query.strip }) }
 
   scope :mentioned_in, lambda { |text|
-    joins(:account).where(accounts: { name: text.scan(/\B@(\p{L}+\s\p{L}+)/).flatten })
+    longest_mentions = text.scan(/\B@((?:\p{L}+\s?)+)/).flatten
+    names = []
+    longest_mentions.each do |mention|
+      mention_parts = mention.split
+      mention_parts.each_index do |index|
+        names << mention_parts[0..index].join(" ")
+      end
+    end
+
+    joins(:account).where(accounts: { name: names })
   }
   scope :with_email, lambda {
     active.includes(user: :identities).where(users: { identities: { provider: "toughbyte" } })

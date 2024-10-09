@@ -10,4 +10,17 @@ class MemberTest < ActiveSupport::TestCase
     assert_equal member.access_level, "inactive"
     assert_empty member.account.identities
   end
+
+  test "should return mentioned members in text" do
+    admin_account = accounts(:admin_account)
+    employee_account = accounts(:employee_account)
+    employee_account.update!(name: "Samuel")
+    helen_account = accounts(:helen_account)
+    helen_account.update!(name: "Helen The Greatest")
+
+    text = "@#{admin_account.name} @#{employee_account.name} @#{helen_account.name} @nonexistent"
+
+    assert_equal Member.mentioned_in(text).sort,
+                 [employee_account.member, admin_account.member, helen_account.member].sort
+  end
 end
