@@ -21,8 +21,12 @@ module CreateAccount
         unless (name = param_or_nil("full_name"))
           throw_error_status(422, "full_name", I18n.t("rodauth.required_field_error"))
         end
-        if param("company_name").empty? && !internal_request?
-          throw_error_status(422, "company_name", I18n.t("rodauth.required_field_error"))
+        unless internal_request?
+          if param("company_name").empty?
+            throw_error_status(422, "company_name", I18n.t("rodauth.required_field_error"))
+          end
+
+          verify_recaptcha
         end
 
         account[:name] = name
@@ -44,6 +48,13 @@ module CreateAccount
           Member.create!(account_id:, tenant:, access_level: :admin)
           CandidateSource.create!(tenant:, name: "LinkedIn")
         end
+      end
+
+      create_account_view do
+        if field_error("recaptcha")
+          set_error_flash I18n.t("rodauth.did_not_pass_recaptcha_flash_alert")
+        end
+        super()
       end
     end
   end
@@ -371,5 +382,28 @@ class RodauthMain < Rodauth::Rails::Auth
 
   def member
     @member ||= Member.find_by(account_id: rails_account[:id])
+  end
+
+  def verify_recaptcha
+    return unless Rails.env.production?
+
+    recaptcha_v3_score = param("recaptcha_v3_score").to_f
+    recaptcha_v2_response = param("g-recaptcha-response")
+    if recaptcha_v3_score < RecaptchaV3::MIN_SCORE && recaptcha_v2_response.blank?
+      return_response(
+        rails_render(
+          turbo_stream: turbo_stream.update(:turbo_recaptcha, partial: "public/recaptcha_modal")
+        )
+      )
+    elsif recaptcha_v2_response.present?
+      # Decided to call the internal method directly because the public method `verify_recaptcha`
+      # expects to be called on the controller level.
+      # https://github.com/ambethia/recaptcha/blob/master/lib/recaptcha.rb#L61
+      unless Recaptcha.verify_via_api_call(recaptcha_v2_response, {})
+        throw_error_status(422, "recaptcha", "")
+      end
+    else
+      throw_error_status(422, "recaptcha", "")
+    end
   end
 end

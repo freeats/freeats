@@ -1,0 +1,10 @@
+#recaptcha-modal.modal.fade [tabindex="-1" role="dialog" aria-hidden="true"
+                             data-bs-backdrop="static" data-controller="recaptcha-v2"]
+  .modal-dialog.modal-dialog-centered role="document"
+    .modal-content
+      .modal-header
+        .modal-title
+          | Confirm you are human
+      .modal-body
+        .mx-auto style="width: 304px;"
+          = recaptcha_tags(script_defer: false, callback: "recaptchaSubmit", noscript: false)

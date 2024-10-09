@@ -427,6 +427,7 @@ GEM
     rake (13.1.0)
     rdoc (6.6.2)
       psych (>= 4.0.0)
+    recaptcha (5.17.0)
     redcarpet (3.6.0)
     regexp_parser (2.9.0)
     reline (0.4.3)
@@ -634,6 +635,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (~> 7.1.0)
   rails_admin (~> 3.0)
+  recaptcha
   rinku
   rodauth-model
   rodauth-omniauth

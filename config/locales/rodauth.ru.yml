@@ -11,6 +11,7 @@ ru:
     already_an_account_with_this_login_message: уже есть учетная запись с этим логином
     attempt_to_create_unverified_account_error_flash: Учетная запись, которую вы пытались создать, в настоящее время ожидает подтверждения
     attempt_to_login_to_unverified_account_error_flash: Учетная запись, с помощью которой вы пытались войти в систему, в настоящее время ожидает подтверждения
+    back_button: Назад
     change_login_button: Изменить логин
     change_login_error_flash: Произошла ошибка при изменении вашего логина
     change_login_needs_verification_notice_flash: Вам было отправлено электронное письмо со ссылкой для подтверждения изменения вашего логина
@@ -39,7 +40,7 @@ ru:
     create_account_page_title: Создать учетную запись
     create_account_page_text_before_sign_in_link: Уже есть аккаунт?
     current_password_placeholder: Текущий пароль
-    back_button: Назад
+    did_not_pass_recaptcha_flash_alert: Верификация reCAPTCHA провалилась.
     email_auth_email_recently_sent_error_flash: Недавно вам было отправлено электронное письмо со ссылкой для входа в систему
     email_auth_email_sent_notice_flash: Вам отправлено электронное письмо со ссылкой для входа в вашу учетную запись
     email_auth_email_subject: Ссылка для входа

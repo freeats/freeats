@@ -6,7 +6,7 @@ class RodauthApp < Rodauth::Rails::App
 
   route do |r|
     # Ignore configuration for custom actions.
-    return if r.path.in?(["/invitation", "/accept_invite"])
+    return if r.path.in?(["/invitation", "/accept_invite", "/recaptcha/verify"])
 
     # Ignore configuration for custom actions which used basic authentication.
     routes = Rails.application.routes.url_helpers

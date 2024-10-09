@@ -132,6 +132,10 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :public, path: "/" do
+    post "recaptcha/verify", to: "recaptcha#verify", format: "json"
+  end
+
   resources :notes, only: %i[create update destroy] do
     # Will be called from email messages since POST is not allowed there.
     get :add_reaction, on: :member

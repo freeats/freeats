@@ -9,6 +9,7 @@ const result = await esbuild
       "entrypoints/lookbook.js",
       "entrypoints/fontawesome_all.js",
       "entrypoints/ats.js",
+      "entrypoints/recaptcha.js",
     ],
     bundle: true,
     sourcemap: true,

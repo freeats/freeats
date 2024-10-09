@@ -6,6 +6,7 @@ class RodauthController < ApplicationController
   # registered action callbacks and rescue_from handlers
 
   before_action :validate_and_set_tokens, only: %i[invite accept_invite]
+  before_action :set_gon_variables
 
   def register
     render

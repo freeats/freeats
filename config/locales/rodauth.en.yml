@@ -11,6 +11,7 @@ en:
     already_an_account_with_this_login_message: A user with this email already exists.
     attempt_to_create_unverified_account_error_flash: A user with this email already exists, but not verified.
     attempt_to_login_to_unverified_account_error_flash: You need to verify your email to login.
+    back_button: Back
     change_login_button: Change Login
     change_login_error_flash: There was an error changing your login.
     change_login_needs_verification_notice_flash: An email has been sent to you with a link to verify your login change
@@ -39,7 +40,7 @@ en:
     create_account_page_title: Register
     create_account_page_text_before_sign_in_link: Already have an account?
     current_password_placeholder: Current password
-    back_button: Back
+    did_not_pass_recaptcha_flash_alert: reCAPTCHA verification failed.
     email_auth_email_recently_sent_error_flash: An email has recently been sent to you with a link to login.
     email_auth_email_sent_notice_flash: An email has been sent to you with a link to login to your account.
     email_auth_email_subject: Sign in Link
