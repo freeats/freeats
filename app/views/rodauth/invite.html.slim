@@ -1,7 +1,8 @@
+- ats_title(t("rodauth.accept_invitation_page_title"))
 .authentication-container.mx-auto.card
   .card-body.p-4
     h1.mb-4
-      = t("rodauth.accept_invitation_page_title", company_name: @access_token.tenant.name)
+      = t("rodauth.accept_invitation_page_header", company_name: @access_token.tenant.name)
     = form_with url: accept_invite_path, method: :post, data: { turbo: false }
       = render TextInputComponent.new( \
                  "full_name",

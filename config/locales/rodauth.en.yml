@@ -1,6 +1,7 @@
 en:
   rodauth:
-    accept_invitation_page_title: Accept invitation to join %{company_name}
+    accept_invitation_page_title: Accept invitation
+    accept_invitation_page_header: Accept invitation to join %{company_name}
     accept_invitation_button: Accept invitation
     account_expiration_error_flash: You cannot log into this account as it has expired.
     active_sessions_error_flash: This session has been signed out.
@@ -174,7 +175,8 @@ en:
     reset_password_request_button: Send reset link
     reset_password_request_error_flash: There was an error requesting a password reset.
     reset_password_request_link_text: Forgot password?
-    reset_password_request_page_title: Forgot password
+    reset_password_request_page_header: Forgot password?
+    reset_password_request_page_title: Password recovery
     same_as_current_login_message: Same as current login.
     same_as_existing_password_message: Invalid password, same as current password.
     session_expiration_error_flash: This session has expired, please login again.

@@ -1,7 +1,8 @@
+- ats_title(t("rodauth.login_page_title"))
 .authentication-container.mx-auto.card
   .card-body.p-4
     h1.mb-4
-      = rodauth.login_label
+      = rodauth.login_page_title
     = form_with url: rodauth.login_path, method: :post
       = render TextInputComponent.new( \
           rodauth.login_param,
