@@ -47,6 +47,12 @@
     #tab-list {
       .nav-tabs {
         border-bottom: none;
+
+        .nav-link {
+          &.active {
+            color: $gray-900;
+          }
+        }
       }
     }
   }
