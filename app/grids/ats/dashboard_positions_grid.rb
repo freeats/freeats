@@ -18,7 +18,7 @@ class ATS::DashboardPositionsGrid
           ON placements.candidate_id = candidates.id AND candidates.merged_to IS NULL
         SQL
       )
-      .where(status: %i[draft active on_hold])
+      .where(status: %i[draft open on_hold])
   end
 
   #

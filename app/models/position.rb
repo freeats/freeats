@@ -103,7 +103,7 @@ class Position < ApplicationRecord
 
   accepts_nested_attributes_for :stages
 
-  enum status: %i[draft active on_hold closed].index_with(&:to_s)
+  enum status: %i[draft open on_hold closed].index_with(&:to_s)
   enum change_status_reason: %i[
     other
     new_position
@@ -127,7 +127,7 @@ class Position < ApplicationRecord
           .when("draft").then(-3)
           .when("on_hold").then(3)
           .when("closed").then(6)
-          .when("active").then(-1)
+          .when("open").then(-1)
           .as("code"),
         positions[:id].as("position_id")
       ).as("color_codes")

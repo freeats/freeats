@@ -1,10 +1,10 @@
 - ats_title(t("core.dashboard"))
 .hstack.mb-3.gap-3
-  h5.mb-0.fw-bold Your positions
+  h5.mb-0.fw-bold = t("positions.your_positions")
 - if @dashboard_positions_grid.rows.size.positive?
   = datagrid_table(@dashboard_positions_grid)
 - else
-  p No draft, active or on hold positions
+  p = t("positions.no_in_dashboard")
 .hstack.my-3.gap-3
   h5.mb-0.fw-bold Your candidates
 - if @dashboard_candidates_grid.rows.size.positive?

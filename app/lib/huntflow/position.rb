@@ -6,7 +6,7 @@ class Huntflow::Position
   STATUS_MATCHING =
     {
       "created" => :draft,
-      "open" => :active,
+      "open" => :open,
       "hold" => :on_hold,
       "closed" => :closed
     }.freeze

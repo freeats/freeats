@@ -271,7 +271,7 @@ CREATE TYPE public.position_change_status_reason AS ENUM (
 
 CREATE TYPE public.position_status AS ENUM (
     'draft',
-    'active',
+    'open',
     'on_hold',
     'closed'
 );
@@ -1676,7 +1676,6 @@ ALTER SEQUENCE public.position_stages_id_seq OWNED BY public.position_stages.id;
 
 CREATE TABLE public.positions (
     id bigint NOT NULL,
-    status public.position_status DEFAULT 'draft'::public.position_status NOT NULL,
     name character varying NOT NULL,
     change_status_reason public.position_change_status_reason DEFAULT 'new_position'::public.position_change_status_reason NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -1684,7 +1683,8 @@ CREATE TABLE public.positions (
     recruiter_id bigint,
     tenant_id bigint,
     external_source_id bigint,
-    location_id bigint
+    location_id bigint,
+    status public.position_status DEFAULT 'draft'::public.position_status NOT NULL
 );
 
 
@@ -4714,6 +4714,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241008103850'),
 ('20241001104238'),
 ('20240930100900'),
 ('20240926040800'),

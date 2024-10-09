@@ -40,7 +40,7 @@ class ATS::PositionsGrid
     select: -> { Position.statuses.transform_keys(&:humanize) },
     multiple: true,
     default: -> {
-      %i[draft active on_hold]
+      %i[draft open on_hold]
     },
     placeholder: I18n.t("core.status")
   ) do |statuses|

@@ -1,14 +1,14 @@
 ruby_position:
   recruiter: admin_member
   name: Ruby developer
-  status: active
+  status: open
   change_status_reason: filled
   tenant: toughbyte_tenant
   location: helsinki_city
 
 golang_position:
   name: Golang developer
-  status: active
+  status: open
   change_status_reason: filled
   hiring_managers: [hiring_manager_member]
   tenant: toughbyte_tenant
@@ -20,10 +20,10 @@ closed_position:
   change_status_reason: other
   tenant: toughbyte_tenant
 
-suroviy_active_position:
+suroviy_open_position:
   recruiter: suroviy_grigoriy_member
   name: OCaml developer
-  status: active
+  status: open
   change_status_reason: filled
   tenant: suroviy_byte_tenant
 

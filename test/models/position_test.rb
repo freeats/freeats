@@ -12,7 +12,7 @@ class PositionTest < ActiveSupport::TestCase
     actor_account = accounts(:admin_account)
     params = {
       name: "Ruby    developer    ",
-      status: :active,
+      status: :open,
       change_status_reason: :other,
       location_id: location.id
     }

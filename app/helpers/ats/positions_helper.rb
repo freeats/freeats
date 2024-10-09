@@ -71,7 +71,7 @@ module ATS::PositionsHelper
 
   def ats_position_color_class_for_status(status)
     colors = {
-      "active" => "code-green",
+      "open" => "code-green",
       "on_hold" => "code-blue",
       "closed" => "code-black"
     }
