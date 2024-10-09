@@ -17,7 +17,7 @@ class Position < ApplicationRecord
     cancelled: "We canceled hiring"
   }.freeze
 
-  ACTIVE_REASONS = %i[
+  OPEN_REASONS = %i[
     new_position
     other
   ].freeze
