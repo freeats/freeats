@@ -5,12 +5,12 @@
     div data-controller="notes"
       = form_with model: note, url: note_path(note), method: :patch, html: { class: "note-form" },
                   data: { action: "input->notes#storeNoteForm turbo:submit-end->notes#clearNoteForm",
-                          notes_target: "noteForm" } do |form|
+                          notes_target: "noteForm", controller: "enter-turbo-submit" } do |form|
         = hidden_field_tag "render_time", render_time
         .card-title.d-flex.align-items-center
           = picture_avatar_icon note.member.account.avatar, {}, class: "small-avatar-thumbnail"
           span.ms-2 = note.member.account.name
-        = form.text_area(:text, class: "form-control enter-turbo-submit note-textarea", rows: 4,
+        = form.text_area(:text, class: "form-control note-textarea", rows: 4,
                          placeholder: t("notes.edit_placeholder"), required: true, id: "textarea-edit-#{note.id}",
                          data: { notes_target: "noteTextArea" })
         .d-flex.justify-content-end.gap-2.mt-3
@@ -21,5 +21,9 @@
                                            data: { action: "click->notes#resetNoteForm",
                                                    turbo_frame: dom_id(note, "turbo") })
             = t("core.cancel_button")
-          = render ButtonComponent.new(size: :tiny)
+          = render ButtonComponent.new(size: :tiny,
+                              data: { bs_toggle: "tooltip",
+                                      bs_title: "Ctrl + Enter",
+                                      bs_placement: "top",
+                                      enter_turbo_submit_target: "shortcut" })
             = t("core.save_button")

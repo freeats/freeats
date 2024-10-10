@@ -27,7 +27,7 @@
       .task-large-checkbox
         input.form-check-input.mt-0 type="checkbox" disabled=true
         label.form-check-label
-      = render TextInputComponent.new("task[name]", class: "enter-turbo-submit",
+      = render TextInputComponent.new("task[name]",
                                       placeholder: t("tasks.task_name"), required: true,
                                       data: { async_modals_target: "focusAfterShown" })
 
@@ -81,7 +81,7 @@
       = render LabeledComponent.new(class: "vstack gap-2") do |c|
         - c.with_label(t("tasks.description"), style: "height: 32px;",
                        for_field: "task[description]", color_class: "text-gray-600")
-        = text_area_tag "task[description]", "", rows: 4, class: "form-control overflow-auto enter-turbo-submit"
+        = text_area_tag "task[description]", "", rows: 4, class: "form-control overflow-auto"
 
     = hidden_field_tag "task[default_watchers]", default_watchers,
                        data: { "turbo-modal-tasks-target" => "defaultWatchers" }

@@ -11,13 +11,14 @@ li.list-group-item.note id="note-#{note.id}" data-controller="note-reactions"
           id="note-thread-reply-#{thread.id}" data-note-thread-target="replyTab"]
         .mt-3 data-controller="notes"
           = form_with model: Note.new, url: reply_notes_path, html: { class: "note-form" },
-              data: { action: "input->notes#storeNoteForm " \
+              data: { controller: "enter-turbo-submit",
+                      action: "input->notes#storeNoteForm " \
                               "turbo:submit-end->notes#clearNoteForm",
                       notes_target: "noteForm" } do |form|
             .card-text
               = hidden_field_tag "note[note_thread][id]", thread.id, id: "thread-reply-hidden-#{thread.id}"
               = hidden_field_tag "render_time", Time.zone.now
-              = form.text_area(:text, class: "form-control enter-turbo-submit note-textarea", rows: 4,
+              = form.text_area(:text, class: "form-control note-textarea", rows: 4,
                                placeholder: t("notes.reply_placeholder"), required: true,
                                id: "textarea-thread-reply-#{note.id}",
                                data: { notes_target: "noteTextArea" })
@@ -32,5 +33,5 @@ li.list-group-item.note id="note-#{note.id}" data-controller="note-reactions"
                                              data: { bs_toggle: "tooltip",
                                                      bs_title: "Ctrl + Enter",
                                                      bs_placement: "top",
-                                                     notes_target: "shortcut" })
+                                                     enter_turbo_submit_target: "shortcut" })
                   = t("core.send_button")

@@ -28,7 +28,8 @@ ruby:
                 url:,
                 namespace:,
                 html: { class: "note-form" },
-                data: { action: "turbo:submit-end->candidate-notes#addNoteCallback " \
+                data: { controller: "enter-turbo-submit",
+                        action: "turbo:submit-end->candidate-notes#addNoteCallback " \
                                 "input->notes#storeNoteForm " \
                                 "turbo:submit-end->notes#clearNoteForm" } do |note_form|
       - if @task.present?
@@ -41,7 +42,7 @@ ruby:
         .card-text.p-0
           = additional_create_param_input
           div id="note-textarea-#{model_id}"
-            = note_form.text_area :text, class: "form-control enter-turbo-submit note-textarea new-note-area",
+            = note_form.text_area :text, class: "form-control note-textarea new-note-area",
               rows: 4, placeholder: t("notes.start_new_thread"), required: true,
               data: { notes_target: "noteTextArea", model_id: }
       .card-footer
@@ -49,7 +50,7 @@ ruby:
                                      data: { bs_toggle: "tooltip",
                                              bs_title: "Ctrl + Enter",
                                              bs_placement: "top",
-                                             notes_target: "shortcut" })
+                                             enter_turbo_submit_target: "shortcut" })
           | Send
   div id="note-threads-#{model_id}" data-notes-target="threads"
     - note_threads.each do |note_thread|

@@ -46,12 +46,6 @@ function activateKeybindShortcuts() {
 
     return true;
   });
-
-  $(document).on("keydown", ".enter-turbo-submit", function submitForm(event) {
-    if ((event.keyCode === 10 || event.keyCode === 13) && (event.ctrlKey || event.metaKey)) {
-      $(this.closest("form")).find("[type='submit']").click();
-    }
-  });
 }
 
 function arraysEqual(a, b) {

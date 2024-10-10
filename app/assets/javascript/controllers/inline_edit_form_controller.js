@@ -3,12 +3,9 @@ import $ from "jquery";
 import { removeTooltips } from "../src/shared/tooltips";
 
 export default class extends Controller {
-  static targets = ["showView", "editView", "focusInput", "shortcut"];
+  static targets = ["showView", "editView", "focusInput"];
 
   connect() {
-    if (this.hasShortcutTarget) {
-      this.editShortcutHint();
-    }
     removeTooltips();
   }
 
@@ -36,11 +33,5 @@ export default class extends Controller {
   hide() {
     $(this.showViewTarget).show();
     $(this.editViewTarget).hide();
-  }
-
-  editShortcutHint() {
-    if (navigator.appVersion.indexOf("Mac") !== -1) {
-      $(this.shortcutTarget).attr("data-bs-title", "⌘Cmd + Enter");
-    }
   }
 }

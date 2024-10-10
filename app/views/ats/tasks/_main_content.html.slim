@@ -28,14 +28,15 @@
           i.fas.fa-pencil-alt
       / Title edit
       .col.hidden data-inline-edit-form-target="editView"
-        = form_with model: task, url: ats_task_path(task, grid:) do |f|
+        = form_with model: task,
+                    url: ats_task_path(task, grid:),
+                    data: { controller: "enter-turbo-submit" } do |f|
           .hstack.gap-2
             = render TextInputComponent.new(f, method: :name, required: true,
-                                            class: "enter-turbo-submit",
                                             data: { inline_edit_form_target: "focusInput" })
             = render ButtonComponent.new(data: { bs_toggle: "tooltip",
                                                  bs_title: "Ctrl + Enter",
-                                                 inline_edit_form_target: "shortcut" })
+                                                 enter_turbo_submit_target: "shortcut" })
               = t("core.save_button")
             = render ButtonComponent.new(variant: :secondary,
                                          type: :button,
@@ -126,8 +127,8 @@
             i.fas.fa-pencil-alt
         .w-100 style="min-height: 2rem;"
           = preformatted_plain_format(task.description)
-    = form_with model: task, url: ats_task_path(task, grid:), class: "col-12 hidden enter-turbo-submit",
-                data: { inline_edit_form_target: "editView" } do |f|
+    = form_with model: task, url: ats_task_path(task, grid:), class: "col-12 hidden",
+                data: { inline_edit_form_target: "editView", controller: "enter-turbo-submit" } do |f|
       / Description edit
       .vstack.gap-2
         .hstack.gap-2
@@ -136,12 +137,12 @@
           = render ButtonComponent.new(data: { action: "inline-edit-form#hide",
                                                bs_toggle: "tooltip",
                                                bs_title: "Ctrl + Enter",
-                                               inline_edit_form_target: "shortcut" })
+                                               enter_turbo_submit_target: "shortcut" })
             = t("core.save_button")
           = render ButtonComponent.new(variant: :secondary,
                                        type: :button,
                                        data: { action: "inline-edit-form#hide" })
             = t("core.cancel_button")
         .w-100
-          = f.text_area :description, rows: 4, class: "form-control overflow-auto enter-turbo-submit",
+          = f.text_area :description, rows: 4, class: "form-control overflow-auto",
                         data: { inline_edit_form_target: "focusInput" }

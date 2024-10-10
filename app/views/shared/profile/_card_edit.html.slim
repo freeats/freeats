@@ -6,6 +6,10 @@
 
 ruby:
   classes = "#{card_name}-card-edit #{'my-3' unless card_name == 'header'}"
+  form_options =
+    Hash(form_options).deep_merge(data: { controller: "enter-turbo-submit" }) do |key, old, new|
+      "#{old} #{new}" if key.in?(%i[controller action])
+    end
 
   case controller
   when ATS::CandidatesController
@@ -24,7 +28,7 @@ ruby:
     end
 
 - content = capture
-  .card.card-edit class=classes data-controller="profile-cards"
+  .card.card-edit class=classes
     = form_with model: target_model, url: target_url, **form_options do |form|
       .d-flex.flex-row.card-header.align-items-center.gap-2
         .flex-fill.card-title.text-truncate = header
@@ -35,14 +39,14 @@ ruby:
                                          bs_title: "Ctrl + Enter",
                                          bs_placement: :top,
                                          turbo_frame: :turbo_modal_window,
-                                         profile_cards_activator_target: :shortcut \
+                                         enter_turbo_submit_target: :shortcut \
                                        })
             = t("core.save_button")
 
           = render ButtonLinkComponent.new(cancel_path, variant: :secondary, size: :tiny, type: :submit)
             = t("core.cancel_button")
 
-      .card-body.enter-turbo-submit
+      .card-body
         = yield form
 
 - if card_name != 'header'

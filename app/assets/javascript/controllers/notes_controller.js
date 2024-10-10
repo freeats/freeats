@@ -7,8 +7,6 @@ export default class extends Controller {
   static targets = [
     "threads",
     "noteTextArea",
-    "shortcut",
-    "visibilityModal",
     "noteForm",
   ];
 
@@ -20,10 +18,6 @@ export default class extends Controller {
       retrieveFormDraft(this);
     });
     this.handleLinkToNote();
-
-    if (this.hasShortcutTarget) {
-      this.editShortcutHint();
-    }
   }
 
   storeNoteForm(e) {
@@ -165,13 +159,6 @@ export default class extends Controller {
           100,
         );
       }
-    }
-  }
-
-  editShortcutHint() {
-    if (navigator.appVersion.indexOf("Mac") !== -1) {
-      $(this.shortcutTarget).attr("data-bs-title", "⌘Cmd + Enter");
-      $(this.shortcutTarget).attr("data-bs-placement", "left");
     }
   }
 }
