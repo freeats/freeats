@@ -389,7 +389,10 @@ class RodauthMain < Rodauth::Rails::Auth
 
     recaptcha_v3_score = param("recaptcha_v3_score").to_f
     recaptcha_v2_response = param("g-recaptcha-response")
-    if recaptcha_v3_score < RecaptchaV3::MIN_SCORE && recaptcha_v2_response.blank?
+
+    return if recaptcha_v3_score >= RecaptchaV3::MIN_SCORE
+
+    if recaptcha_v2_response.blank?
       return_response(
         rails_render(
           turbo_stream: turbo_stream.update(:turbo_recaptcha, partial: "public/recaptcha_modal")
