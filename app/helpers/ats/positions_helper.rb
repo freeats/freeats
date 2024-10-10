@@ -126,7 +126,7 @@ module ATS::PositionsHelper
     }
     tooltips = {
       -3 => "Draft",
-      -1 => "Active",
+      -1 => "Open",
       3 => "On hold#{tooltip_status_reason_text}",
       6 => "Closed#{tooltip_status_reason_text}"
     }
