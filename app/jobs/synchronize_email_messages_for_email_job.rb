@@ -11,7 +11,7 @@ class SynchronizeEmailMessagesForEmailJob < ApplicationJob
     member = Member.find(member_id)
     imap_account = member.imap_account
 
-    ActsAsTenant.tenant(member.tenant) do
+    ActsAsTenant.with_tenant(member.tenant) do
       unless CandidateEmailAddress
              .joins(:candidate)
              .exists?(candidates: { merged_to: nil }, address: addresses)
@@ -19,7 +19,7 @@ class SynchronizeEmailMessagesForEmailJob < ApplicationJob
       end
 
       EmailSynchronization::Synchronize.new(
-        imap_accounts: [imap_account],
+        imap_account:,
         only_for_email_addresses: addresses
       ).call
     end

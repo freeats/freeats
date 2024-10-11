@@ -9,8 +9,8 @@ class ReceiveEmailMessageUpdatesJob < ApplicationJob
 
   def perform(member_id)
     member = Member.find(member_id)
-    ActsAsTenant.tenant(member.tenant) do
-      EmailSynchronization::Synchronize.new(imap_accounts: [member.imap_account]).call
+    ActsAsTenant.with_tenant(member.tenant) do
+      EmailSynchronization::Synchronize.new(imap_account: member.imap_account).call
     end
   end
 end
