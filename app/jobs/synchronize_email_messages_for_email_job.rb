@@ -8,17 +8,20 @@ class SynchronizeEmailMessagesForEmailJob < ApplicationJob
   queue_as :sync_emails
 
   def perform(member_id, addresses)
-    unless CandidateEmailAddress
-           .joins(:candidate)
-           .exists?(candidates: { merged_to: nil }, address: addresses)
-      return
+    member = Member.find(member_id)
+    imap_account = member.imap_account
+
+    ActsAsTenant.tenant(member.tenant) do
+      unless CandidateEmailAddress
+             .joins(:candidate)
+             .exists?(candidates: { merged_to: nil }, address: addresses)
+        return
+      end
+
+      EmailSynchronization::Synchronize.new(
+        imap_accounts: [imap_account],
+        only_for_email_addresses: addresses
+      ).call
     end
-
-    imap_account = Member.find(member_id).imap_account
-
-    EmailSynchronization::Synchronize.new(
-      imap_accounts: [imap_account],
-      only_for_email_addresses: addresses
-    ).call
   end
 end

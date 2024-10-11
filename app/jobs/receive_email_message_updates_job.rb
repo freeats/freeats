@@ -8,8 +8,9 @@ class ReceiveEmailMessageUpdatesJob < ApplicationJob
   queue_as :high
 
   def perform(member_id)
-    Member.find(member_id).imap_account
-
-    EmailSynchronization::Synchronize.new(imap_accounts: [imap_account]).call
+    member = Member.find(member_id)
+    ActsAsTenant.tenant(member.tenant) do
+      EmailSynchronization::Synchronize.new(imap_accounts: [member.imap_account]).call
+    end
   end
 end
