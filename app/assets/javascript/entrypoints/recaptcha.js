@@ -20,6 +20,7 @@ const onGrecaptchaLoad = function grecaptchaLoad() {
           response.json().then((data) => {
             if (data.action === action) {
               window.atsVisitorScore = data.score;
+              // Works when we calculate recaptcha_v3_score on the register page.
               const scoreField = document.getElementById("recaptcha_v3_score");
               if (scoreField) scoreField.value = data.score;
             }

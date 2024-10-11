@@ -3,7 +3,10 @@
   .card-body.p-4
     h1.mb-4
       = t("rodauth.create_account_page_title")
-    = form_with url: rodauth.create_account_path, method: :post, id: "register-form"
+    = form_with url: rodauth.create_account_path,
+                method: :post,
+                id: "register-form",
+                data: { controller: "recaptcha-v3" }
       #turbo_recaptcha.position-absolute
       = render(TextInputComponent.new( \
           "full_name",
@@ -58,7 +61,7 @@
       span.invalid-feedback
         = rodauth.field_error(rodauth.password_confirm_param)
 
-      = hidden_field_tag :recaptcha_v3_score
+      = hidden_field_tag :recaptcha_v3_score, nil, data: { recaptcha_v3_target: "score" }
 
       .d-flex.mt-4
         = render(ButtonComponent.new(class: "col"))

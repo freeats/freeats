@@ -24,13 +24,14 @@ class RodauthTest < ActionDispatch::IntegrationTest
     assert_response :forbidden
   end
 
-  test "creates tenant owner with valid data" do
+  test "creates tenant owner with valid data and high recaptcha_v3_score" do
     params = {
       full_name: "My name",
       company_name: "My company",
       email: "myemail@mail.com",
       password: "password",
-      "password-confirm": "password"
+      "password-confirm": "password",
+      recaptcha_v3_score: 0.9
     }
 
     assert_difference ["Tenant.count", "Account.count", "Member.count"] do
@@ -56,6 +57,39 @@ class RodauthTest < ActionDispatch::IntegrationTest
     assert_predicate account.password_hash, :present?
   end
 
+  test "displays recaptcha_v2 modal when recaptcha_v3 score is low and creates an account " \
+       "after recaptcha_v2 validation" do
+    params = {
+      full_name: "My name",
+      company_name: "My company",
+      email: "myemail@mail.com",
+      password: "password",
+      "password-confirm": "password",
+      recaptcha_v3_score: 0.2
+    }
+
+    assert_no_difference ["Tenant.count", "Account.count", "Member.count"] do
+      post "/register", params:
+    end
+
+    assert_turbo_stream action: :update, target: "turbo_recaptcha"
+
+    params["g-recaptcha-response"] = "valid_recaptcha_v2_token"
+
+    recaptcha_v2_verify_mock = Minitest::Mock.new
+    recaptcha_v2_verify_mock.expect(:call, true, [params["g-recaptcha-response"], {}])
+
+    Recaptcha.stub(:verify_via_api_call, recaptcha_v2_verify_mock) do
+      assert_difference ["Tenant.count", "Account.count", "Member.count"] do
+        post "/register", params:
+      end
+    end
+
+    assert_redirected_to "/verify_email_resend?email=#{CGI.escape(params[:email])}"
+
+    recaptcha_v2_verify_mock.verify
+  end
+
   test "throws an error with invalid data" do
     params = { full_name: "" }
 
@@ -72,7 +106,8 @@ class RodauthTest < ActionDispatch::IntegrationTest
       company_name: "My company",
       email:,
       password: "password",
-      "password-confirm": "password"
+      "password-confirm": "password",
+      recaptcha_v3_score: 0.9
     }
     post("/register", params:)
   end
