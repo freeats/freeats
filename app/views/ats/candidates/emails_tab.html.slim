@@ -8,22 +8,19 @@ ruby:
 
   #email-threads
     / TOP BUTTONS
-    - unless @single_message
+    - if !@single_message && current_member.tenant.name == "Toughbyte" # TODO: revert
       .row.mt-2.g-2
-        / .col-6.col-sm
-        / .col-auto
-        /   = ats_profile_button_tooltip_wrapper(tooltip: synchronize_button_tooltip_text, data: { bs_trigger: "hover" })
-        /     = render ButtonLinkComponent.new(synchronize_email_messages_ats_candidate_path(@candidate.id),
-        /                                      data: { bs_toggle: "tooltip",
-        /                                              bs_placement: "top",
-        /                                              turbo_method: :post },
-        /                                      title: "Please make sure that all email addresses " \
-        /                                             "have been added to this profile before pressing the button",
-        /                                      disabled: synchronize_button_tooltip_text.present?)
-        /       | Synchronize
-        / .col-auto
-        /   = render partial: "ats/candidates/stop_sequence_button",
-        /            locals: { object: @candidate, running_sequences: @running_sequences }
+        .col-6.col-sm
+        .col-auto
+          = ats_profile_button_tooltip_wrapper(tooltip: synchronize_button_tooltip_text, data: { bs_trigger: "hover" })
+            = render ButtonLinkComponent.new(synchronize_email_messages_ats_candidate_path(@candidate.id),
+                                             data: { bs_toggle: "tooltip",
+                                                     bs_placement: "top",
+                                                     turbo_method: :post },
+                                             title: "Please make sure that all email addresses " \
+                                                    "have been added to this profile before pressing the button",
+                                             disabled: synchronize_button_tooltip_text.present?)
+              | Synchronize
     / EMAILS
     .row
       .col#turbo_thread_list

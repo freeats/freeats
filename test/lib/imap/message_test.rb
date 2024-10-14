@@ -249,7 +249,7 @@ class ImapMessageTest < ActiveSupport::TestCase
       imap_service_mock.expect(
         :fetch_messages_for_last,
         [ITH::SIMPLE_MESSAGE],
-        [3.days.ago],
+        [10.days.ago],
         batch_size: Imap::Account::DEFAULT_BATCH_SIZE
       )
 

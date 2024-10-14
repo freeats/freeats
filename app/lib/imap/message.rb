@@ -65,8 +65,7 @@ module Imap
             else
               lambda do |batch_size|
                 from_account.fetch_messages_for_last(
-                  # TODO: change to `10.days.ago` after first running.
-                  3.days.ago,
+                  10.days.ago,
                   batch_size:
                 )
               end
