@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ATS::QuickSearchController < ApplicationController
+class ATS::QuickSearchController < AuthorizedController
   COUNT_LIMIT = 100
 
   before_action { authorize! :quick_search }

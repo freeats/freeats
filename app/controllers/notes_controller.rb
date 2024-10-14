@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class NotesController < ApplicationController
+class NotesController < AuthorizedController
   include Dry::Monads[:result]
 
   before_action :set_note, only: %i[update destroy show_edit_view show_show_view

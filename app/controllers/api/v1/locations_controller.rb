@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Does not belong to a specific model, provides API for manipulating cities and countries
-class API::V1::LocationsController < ApplicationController
+class API::V1::LocationsController < AuthorizedController
   before_action :authorize!
   before_action :check_minimum_query_length
 

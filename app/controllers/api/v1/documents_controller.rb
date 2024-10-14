@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class API::V1::DocumentsController < ApplicationController
+class API::V1::DocumentsController < AuthorizedController
   include Dry::Monads[:result]
   skip_before_action :verify_authenticity_token
   before_action { authorize! :document }

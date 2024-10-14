@@ -3,61 +3,15 @@
 class ApplicationController < ActionController::Base
   include ErrorHandler
 
-  set_current_tenant_through_filter
-
   before_action :set_sentry_account_context
   before_action :set_sentry_context
   before_action :set_selector_id_for_page
-  before_action :set_tenant
-  rescue_from ActionPolicy::Unauthorized, with: :user_not_authorized
 
   add_flash_types :warning
 
   around_action :switch_locale
 
-  authorize :member, through: :current_member
-
   private
-
-  def render_turbo_stream(streams, notice: nil, warning: nil, error: nil, alerts: [], status: :ok)
-    stream_array = Array(streams).compact
-    alert =
-      if error.present? then { text: error, type: :error }
-      elsif warning.present? then { text: warning, type: :warning }
-      elsif notice.present? then { text: notice, type: :notice }
-      end
-    alerts << alert if alert
-    # If alerts have been passed, we render them,
-    # else an empty turbo stream that removes all alerts from the page.
-    stream_array.push(
-      if alerts.present?
-        turbo_stream.replace("alerts", partial: "layouts/ats/alert", locals: { alerts: })
-      else
-        turbo_stream.update("alerts", "")
-      end
-    )
-    render turbo_stream: stream_array, status:
-  end
-
-  def user_not_authorized
-    respond_to do |format|
-      format.html do
-        unless current_member&.active?
-          redirect_to login_url
-          return
-        end
-
-        redirect_back fallback_location: root_url,
-                      alert: t("errors.forbidden_action")
-      end
-      format.json do
-        render_error t("errors.forbidden_action"), status: :forbidden
-      end
-      format.turbo_stream do
-        render_error t("errors.forbidden_action"), status: :forbidden
-      end
-    end
-  end
 
   def current_account
     rodauth.rails_account
@@ -70,11 +24,6 @@ class ApplicationController < ActionController::Base
   # Dummy method for action_policy, shouldn't be used anywhere.
   def current_user
     current_account
-  end
-
-  def set_tenant
-    current_tenant = current_account&.tenant
-    set_current_tenant(current_tenant)
   end
 
   helper_method :current_account, :current_member, :current_user
@@ -101,6 +50,26 @@ class ApplicationController < ActionController::Base
     return {} if locale.blank?
 
     { locale: }
+  end
+
+  def render_turbo_stream(streams, notice: nil, warning: nil, error: nil, alerts: [], status: :ok)
+    stream_array = Array(streams).compact
+    alert =
+      if error.present? then { text: error, type: :error }
+      elsif warning.present? then { text: warning, type: :warning }
+      elsif notice.present? then { text: notice, type: :notice }
+      end
+    alerts << alert if alert
+    # If alerts have been passed, we render them,
+    # else an empty turbo stream that removes all alerts from the page.
+    stream_array.push(
+      if alerts.present?
+        turbo_stream.replace("alerts", partial: "layouts/ats/alert", locals: { alerts: })
+      else
+        turbo_stream.update("alerts", "")
+      end
+    )
+    render turbo_stream: stream_array, status:
   end
 
   def set_gon_variables

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ATS::EmailThreadsController < ApplicationController
+class ATS::EmailThreadsController < AuthorizedController
   include Dry::Monads[:result]
 
   before_action :authorize!

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ATS::PositionsController < ApplicationController
+class ATS::PositionsController < AuthorizedController
   include Dry::Monads[:result]
 
   layout "ats/application"

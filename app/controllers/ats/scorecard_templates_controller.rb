@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ATS::ScorecardTemplatesController < ApplicationController
+class ATS::ScorecardTemplatesController < AuthorizedController
   include Dry::Monads[:result]
 
   layout "ats/application"

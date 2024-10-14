@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ATS::LookbookController < ApplicationController
+class ATS::LookbookController < AuthorizedController
   before_action { authorize! :lookbook }
 
   def fetch_options_for_select_component_preview

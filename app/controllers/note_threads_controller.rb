@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class NoteThreadsController < ApplicationController
+class NoteThreadsController < AuthorizedController
   before_action :set_note_thread
   before_action :set_all_active_members, only: :update
   before_action -> { authorize!(@note_thread) }, only: %i[update]

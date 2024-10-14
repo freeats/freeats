@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ATS::DashboardController < ApplicationController
+class ATS::DashboardController < AuthorizedController
   layout "ats/application"
 
   before_action { @nav_item = :dashboard }
