@@ -5,7 +5,7 @@ class Candidates::UploadFile
 
   include Dry::Initializer.define -> do
     option :candidate, Types::Instance(Candidate)
-    option :actor_account, Types::Instance(Account)
+    option :actor_account, Types::Instance(Account).optional
     option :file, Types::Instance(ActionDispatch::Http::UploadedFile)
     option :cv, Types::Strict::Bool.optional, default: proc { false }
   end

@@ -220,6 +220,8 @@ class ATS::CandidatesController < ApplicationController
                   notice: t("candidates.candidate_created")
     in Failure[:candidate_invalid, candidate]
       redirect_to ats_candidates_path, alert: candidate.errors.full_messages
+    in Failure[:validation_failed, e]
+      redirect_to ats_candidates_path, alert: e
     end
   end
 

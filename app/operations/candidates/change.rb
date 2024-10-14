@@ -5,7 +5,7 @@ class Candidates::Change
 
   include Dry::Initializer.define -> do
     option :candidate, Types::Instance(Candidate)
-    option :actor_account, Types::Instance(Account)
+    option :actor_account, Types::Instance(Account).optional
     option :namespace, Types::Strict::Symbol, optional: true, default: -> { :ats }
     option :params, Types::Strict::Hash.schema(
       avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
@@ -14,7 +14,7 @@ class Candidates::Change
       cover_letter?: Types::Strict::String,
       file_id_to_remove?: Types::Strict::String,
       file_id_to_change_cv_status?: Types::Strict::String,
-      recruiter_id?: Types::Strict::String.optional,
+      recruiter_id?: Types::Strict::String.optional | Types::Strict::Integer.optional,
       location_id?: Types::Strict::String,
       full_name?: Types::Strict::String,
       company?: Types::Strict::String,

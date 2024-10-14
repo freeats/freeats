@@ -80,6 +80,7 @@ CREATE TYPE public.access_token_context AS ENUM (
 
 CREATE TYPE public.candidate_contact_created_via AS ENUM (
     'api',
+    'applied',
     'manual'
 );
 
@@ -4732,6 +4733,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241014103851'),
 ('20241011094049'),
 ('20241008103850'),
 ('20241001104238'),

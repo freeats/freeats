@@ -39,6 +39,7 @@ class CandidateEmailAddress < ApplicationRecord
 
   enum created_via: %i[
     api
+    applied
     manual
   ].index_with(&:to_s), _prefix: true
 

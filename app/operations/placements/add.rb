@@ -9,7 +9,7 @@ class Placements::Add
       position_id: Types::Coercible::Integer
     )
     option :create_duplicate_placement, Types::Strict::Bool, default: -> { false }
-    option :actor_account, Types::Instance(Account)
+    option :actor_account, Types::Instance(Account).optional
   end
 
   def call

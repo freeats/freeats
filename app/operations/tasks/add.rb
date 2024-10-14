@@ -9,12 +9,12 @@ class Tasks::Add
       due_date: Types::Strict::String | Types::Instance(Date),
       description?: Types::Strict::String,
       repeat_interval?: Types::String.enum(*Task.repeat_intervals.keys),
-      taskable_id?: Types::Strict::String.optional,
+      taskable_id?: Types::Strict::String.optional | Types::Strict::Integer.optional,
       taskable_type?: Types::Strict::String.optional,
-      assignee_id: Types::Strict::String.optional,
+      assignee_id: Types::Strict::String.optional | Types::Strict::Integer.optional,
       watcher_ids?: Types::Strict::Array.of(Types::Strict::String.optional)
     ).strict
-    option :actor_account, Types::Instance(Account)
+    option :actor_account, Types::Instance(Account).optional
   end
 
   def call

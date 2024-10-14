@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Candidates::Add
-  include Dry::Monads[:result, :try]
+  include Dry::Monads[:do, :result, :try]
 
   include Dry::Initializer.define -> do
     option :actor_account, Types::Instance(Account).optional
@@ -55,7 +55,8 @@ class Candidates::Add
     candidate = Candidate.new
     old_values = candidate.attributes.deep_symbolize_keys
 
-    prepared_params = prepare_params(params:, actor_account:)
+    file = params[:file]
+    prepared_params = prepare_params(params: params.except(:file), actor_account:)
     candidate.assign_attributes(prepared_params)
 
     candidate.recruiter_id ||= actor_account&.member&.id
@@ -84,6 +85,14 @@ class Candidates::Add
             }
         ).call
 
+        if file
+          yield Candidates::UploadFile.new(
+            candidate:,
+            actor_account:,
+            file:,
+            cv: true
+          ).call
+        end
         add_changed_events(candidate:, actor_account:, old_values:)
       end
     end.to_result

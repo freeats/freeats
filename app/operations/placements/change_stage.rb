@@ -6,7 +6,7 @@ class Placements::ChangeStage
   include Dry::Initializer.define -> do
     option :new_stage, Types::Strict::String
     option :placement, Types::Instance(Placement)
-    option :actor_account, Types::Instance(Account), optional: true
+    option :actor_account, Types::Instance(Account).optional, optional: true
   end
 
   def call
