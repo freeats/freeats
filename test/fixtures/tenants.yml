@@ -7,6 +7,8 @@
 toughbyte_tenant:
   name: Toughbyte
   locale: en
+  subdomain: careers
+  domain: toughbyte.com
 
 suroviy_byte_tenant:
   name: Суровый байт

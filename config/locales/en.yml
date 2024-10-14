@@ -220,9 +220,12 @@ en:
     visible_to_all_members: Visible to all members
 
   positions:
+    active_recruiter_must_be_assigned_error: "The assigned recruiter is inactive.
+      Please assign an active recruiter and try again."
     delete_button: Delete position
     delete_title: Delete position?
     no_in_dashboard: No draft, open or on hold positions
+    recruiter_must_be_assigned_error: A recruiter must be assigned to this position.
     sequence_templates_archived: "%{name} has been successfully archived."
     succesfully_deleted: The position was successfully deleted.
     successfully_created: Position draft was successfully created.
@@ -241,6 +244,11 @@ en:
     successfully_created: Task was successfully created.
     task_for: Task for %{name}
     task_name: Task name
+
+  tenants:
+    invalid_positions_error: "%{count} open positions do not have an assigned
+      recruiter or the recruiter is inactive. Please ensure all positions have
+      an active recruiter before enabling career site."
 
   user_accounts:
     already_exists: Account with email %{email} already exists

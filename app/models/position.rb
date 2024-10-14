@@ -115,6 +115,8 @@ class Position < ApplicationRecord
 
   strip_attributes collapse_spaces: true, allow_empty: true, only: :name
 
+  validate :active_recruiter_must_be_assigned_if_career_site_is_enabled,
+           if: :status_changed_to_open?
   validate :location_must_be_city, if: :location_id_changed?
 
   def self.color_codes_table
@@ -172,9 +174,25 @@ class Position < ApplicationRecord
 
   private
 
+  def active_recruiter_must_be_assigned_if_career_site_is_enabled
+    return unless tenant.career_site_enabled
+
+    return if recruiter&.active?
+
+    if recruiter.blank?
+      return errors.add(:base, I18n.t("positions.recruiter_must_be_assigned_error"))
+    end
+
+    errors.add(:base, I18n.t("positions.active_recruiter_must_be_assigned_error"))
+  end
+
   def location_must_be_city
     return if location&.type == "city" || location.blank?
 
     errors.add(:location, "must be city.")
+  end
+
+  def status_changed_to_open?
+    status_changed?(to: :open)
   end
 end

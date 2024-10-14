@@ -125,4 +125,29 @@ class PositionTest < ActiveSupport::TestCase
 
     assert_not position.valid?
   end
+
+  test "active_recruiter_must_be_assigned_if_career_site_is_enabled should work" do
+    position = positions(:closed_position)
+    active_recruiter = members(:employee_member)
+    inactive_recruiter = members(:inactive_member)
+
+    position.tenant.career_site_enabled = true
+    position.recruiter = nil
+
+    assert_predicate position, :valid?
+
+    position.status = "open"
+
+    assert_not position.valid?
+    assert_includes position.errors[:base], I18n.t("positions.recruiter_must_be_assigned_error")
+
+    position.recruiter = active_recruiter
+
+    assert_predicate position, :valid?
+
+    position.recruiter = inactive_recruiter
+
+    assert_not position.valid?
+    assert_includes position.errors[:base], I18n.t("positions.active_recruiter_must_be_assigned_error")
+  end
 end

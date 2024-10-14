@@ -2354,7 +2354,11 @@ CREATE TABLE public.tenants (
     name character varying NOT NULL,
     locale public.tenant_locale NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    career_site_enabled boolean DEFAULT false NOT NULL,
+    domain character varying DEFAULT ''::character varying NOT NULL,
+    subdomain character varying DEFAULT ''::character varying NOT NULL,
+    public_styles text DEFAULT ''::text NOT NULL
 );
 
 
@@ -4260,6 +4264,20 @@ CREATE UNIQUE INDEX index_tasks_watchers_on_task_id_and_watcher_id ON public.tas
 
 
 --
+-- Name: index_tenants_on_domain; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tenants_on_domain ON public.tenants USING btree (domain) WHERE ((domain)::text <> ''::text);
+
+
+--
+-- Name: index_tenants_on_subdomain; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tenants_on_subdomain ON public.tenants USING btree (subdomain) WHERE ((subdomain)::text <> ''::text);
+
+
+--
 -- Name: tasks fk_rails_0016c50613; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4714,6 +4732,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241011094049'),
 ('20241008103850'),
 ('20241001104238'),
 ('20240930100900'),
