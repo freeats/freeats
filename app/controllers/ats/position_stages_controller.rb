@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ATS::PositionStagesController < ApplicationController
+class ATS::PositionStagesController < AuthorizedController
   include Dry::Monads[:result]
 
   before_action :set_position_stage, only: :destroy
