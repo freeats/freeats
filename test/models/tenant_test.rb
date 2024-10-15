@@ -33,4 +33,29 @@ class TenantTest < ActiveSupport::TestCase
 
     assert_predicate tenant, :valid?
   end
+
+  test "should validate domain_or_subdomain_should_by_present when career_site_enabled" do
+    tenant = Tenant.new(name: "Example Co.")
+
+    assert_predicate tenant, :valid?
+
+    tenant.career_site_enabled = true
+
+    assert_not tenant.valid?
+    assert_equal tenant.errors[:base], [I18n.t("tenants.domain_or_subdomain_should_by_present_error")]
+
+    tenant.domain = "example.com"
+
+    assert_predicate tenant, :valid?
+
+    tenant.domain = nil
+    tenant.subdomain = "subdomain"
+
+    assert_predicate tenant, :valid?
+
+    tenant.domain = "example.com"
+    tenant.subdomain = "subdomain"
+
+    assert_predicate tenant, :valid?
+  end
 end
