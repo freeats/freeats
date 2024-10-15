@@ -1,3 +1,3 @@
 web: bin/rails server -p $PORT -e $RAILS_ENV
-worker: bin/bundle exec rake solid_queue:start
+worker: bin/jobs
 release: bin/rake db:migrate
