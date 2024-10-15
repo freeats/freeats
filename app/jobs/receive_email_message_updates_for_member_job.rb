@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ReceiveEmailMessageUpdatesJob < ApplicationJob
+class ReceiveEmailMessageUpdatesForMemberJob < ApplicationJob
   self.queue_adapter = :solid_queue
 
   limits_concurrency key: ->(member_id) { member_id }

@@ -1,0 +1,4 @@
+production:
+  receive_email_message_updates:
+    class: "Scheduler::ReceiveEmailMessageUpdatesJob"
+    schedule: "2,12,22,32,42,52 * * * *"
