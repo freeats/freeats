@@ -20,7 +20,7 @@ class PositionStageTest < ActiveSupport::TestCase
       params = { position:, name: sourced_position_stage.name, list_index: 5 }
       case PositionStages::Add.new(params:, actor_account:).call
       in Failure[:position_stage_invalid, _errors]
-        assert_equal _errors, ["Name has already been taken"]
+        assert_equal _errors, ["Stage name is not unique: Sourced"]
       end
     end
   end
@@ -81,5 +81,47 @@ class PositionStageTest < ActiveSupport::TestCase
     assert_equal new_event.type, "position_stage_changed"
     assert_equal new_event.changed_field, "name"
     assert_equal new_event.eventable_id, position_replied_stage.id
+  end
+
+  test "name should be unique across not deleted stages" do
+    interviewed_stage = position_stages(:golang_position_interviewed)
+    position = positions(:golang_position)
+    actor_account = accounts(:admin_account)
+
+    assert interviewed_stage.deleted
+
+    assert_difference "PositionStage.count" do
+      PositionStages::Add.new(
+        params: {
+          position:,
+          name: interviewed_stage.name,
+          list_index: position.stages.pluck(:list_index).max + 1
+        },
+        actor_account:
+      ).call.value!
+    end
+
+    new_interviewed_stage = PositionStage.find_by(name: interviewed_stage.name, deleted: false)
+
+    assert_predicate new_interviewed_stage, :valid?
+
+    assert_no_difference "PositionStage.count" do
+      result =
+        PositionStages::Add.new(
+          params: {
+            position:,
+            name: interviewed_stage.name,
+            list_index: position.stages.pluck(:list_index).max + 1
+          },
+          actor_account:
+        ).call
+
+      assert_equal result.failure.first, :position_stage_invalid
+      assert_equal result.failure.second, ["Stage name is not unique: #{interviewed_stage.name}"]
+    end
+
+    new_interviewed_stage.update!(deleted: true)
+
+    assert_predicate new_interviewed_stage, :valid?
   end
 end

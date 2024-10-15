@@ -104,6 +104,7 @@ class ATS::ScorecardsController < AuthorizedController
       Scorecard
       .includes(
         :scorecard_questions,
+        :position_stage,
         interviewer: :account,
         placement: { position: %i[collaborators hiring_managers interviewers] }
       )

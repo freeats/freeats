@@ -429,7 +429,8 @@ class ATS::PositionsController < AuthorizedController
         .where(type: Event::TASK_TYPES_FOR_PROFILE_ACTIVITY_TAB)
       )
       .includes(
-        :eventable,
+        :removed_stage,
+        eventable: :stages_including_deleted,
         actor_account: :member,
         assigned_member: :account,
         unassigned_member: :account

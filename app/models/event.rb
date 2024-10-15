@@ -37,6 +37,11 @@ class Event < ApplicationRecord
              optional: true,
              foreign_key: :changed_to,
              inverse_of: :moved_to_events
+  belongs_to :removed_stage,
+             class_name: "PositionStage",
+             optional: true,
+             foreign_key: :changed_from,
+             inverse_of: :removed_event
 
   enum type: %i[
     active_storage_attachment_added
@@ -67,6 +72,7 @@ class Event < ApplicationRecord
     position_recruiter_unassigned
     position_stage_added
     position_stage_changed
+    position_stage_removed
     scorecard_added
     scorecard_removed
     scorecard_template_added

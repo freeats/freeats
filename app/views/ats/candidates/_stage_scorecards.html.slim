@@ -10,7 +10,7 @@
           = scorecard.title
         = score_icon(scorecard.score)
         = "by #{scorecard.interviewer.name} on #{scorecard.added_event.performed_at.strftime('%d.%m.%Y')}"
-  - if allowed_to?(:new?, stage.scorecard_template, with: ATS::ScorecardPolicy)
+  - if allowed_to?(:new?, stage.scorecard_template, with: ATS::ScorecardPolicy) && !stage.deleted
     = render ButtonLinkComponent.new( \
       new_ats_scorecard_path(position_stage_id: stage.id, placement_id:),
       variant: :cancel, size: :tiny, type: :button \

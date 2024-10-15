@@ -1,5 +1,10 @@
 - ats_title(@scorecard.title)
 
+ruby:
+  position_stage = @scorecard.position_stage
+  position_stage_title = "#{position_stage.name} stage"
+  position_stage_title << " (deleted)" if position_stage.deleted
+
 #profile.row
   .col-12.col-lg-7.col-xl-8
 
@@ -32,12 +37,8 @@
       right_layout_class: "col",
       right_class: "ps-0 col-form-label-sm" \
     ) do |c|
-      - c.with_label("Template", style: "min-width: 100px;")
-      - scorecard_template = @scorecard.position_stage.scorecard_template
-      - if allowed_to?(:show?, scorecard_template, with: ATS::ScorecardTemplatePolicy)
-        = link_to(scorecard_template.title, ats_scorecard_template_path(scorecard_template))
-      - else
-        = scorecard_template.title
+      - c.with_label("Stage", style: "min-width: 100px;")
+      = position_stage_title
     = render LabeledComponent.new( \
       class: "mb-4",
       left_layout_class: "col-auto",

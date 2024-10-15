@@ -124,6 +124,14 @@ class ATS::CandidatesController < AuthorizedController
                 WHERE scorecard_template_stage.list_index <= placement_stage.list_index
                 AND scorecard_template_stage.position_id = placements.position_id
               )
+              OR EXISTS (
+                SELECT 1
+                FROM scorecards
+                JOIN position_stages
+                  ON position_stages.id = scorecards.position_stage_id
+                  AND position_stages.deleted = true
+                WHERE scorecards.placement_id = placements.id
+              )
             SQL
         when "files"
           @all_files = @candidate.all_files

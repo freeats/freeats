@@ -1,27 +1,22 @@
-/ Partial variables:
-/ - position
-/ - form
+/# locals: (position:, form:)
 
-ruby:
-  klass_name = position.class.name.downcase
-
-= tag.div id: "#{klass_name}-stages-name",
+= tag.div id: "position-stages",
         data: { controller: "array-fields",
-                array_fields_class_name_value: klass_name,
+                array_fields_class_name_value: "position",
                 array_fields_field_name_value: "stage",
                 array_fields_sortable_value: false }
   - field_collection = position.stages.to_a + [PositionStage.new]
   - hired_stage = field_collection.find { _1.name == Position::LATEST_STAGE_NAME }
 
   = form.fields_for(:stages, field_collection - [hired_stage]) do |stage_form|
-    .array-unit id="#{klass_name}_stages#{stage_form.options[:child_index]}"
+    .array-unit id="position_stages#{stage_form.options[:child_index]}"
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.mb-2
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
           = render TextInputComponent.new(stage_form, method: :name,
                    placeholder: "Stage name",
                    disabled: stage_form.object.name.in?(Position::DEFAULT_STAGES),
                    "data-update-requirement-attribute-for-select-field-target": "mainField")
-  .array-unit [id="#{klass_name}_stages_hidden" hidden="true"]
+  .array-unit [id="position_stages_hidden" hidden="true"]
     = form.fields_for(:stages, PositionStage.new, child_index: "id") do |stage_form|
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.mb-2
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
@@ -31,12 +26,12 @@ ruby:
   = render ButtonComponent.new(variant: :cancel,
           size: :tiny,
           type: :button,
-          id: "#{klass_name}_add_stage_button",
+          id: "position_add_stage_button",
           data: { action: "click->array-fields#addField" })
     | Add
 
   = form.fields_for(:stages, hired_stage) do |stage_form|
-    .array-unit id="#{klass_name}_stages#{stage_form.options[:child_index]}"
+    .array-unit id="position_stages#{stage_form.options[:child_index]}"
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.mt-2
         .d-grid.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
           = render TextInputComponent.new(stage_form, method: :name,

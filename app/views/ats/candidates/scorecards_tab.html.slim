@@ -18,7 +18,8 @@
           class=("show" if index.zero?)]
           .accordion-body
             - visible_stages(placement).each do |stage|
-                = render LabeledComponent.new do |c|
-                  - c.with_label(stage.name)
-                  - visible_scorecards = placement.scorecards.filter { _1.position_stage_id == stage.id }
-                  = render "stage_scorecards", stage:, scorecards: visible_scorecards, placement_id: placement.id
+              - stage_name_to_display = stage.deleted ? "#{stage.name}<br>(deleted)" : stage.name
+              = render LabeledComponent.new do |c|
+                - c.with_label(sanitize(stage_name_to_display))
+                - visible_scorecards = placement.scorecards.filter { _1.position_stage_id == stage.id }
+                = render "stage_scorecards", stage:, scorecards: visible_scorecards, placement_id: placement.id

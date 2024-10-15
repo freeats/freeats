@@ -8,6 +8,7 @@ golang_position_added:
   type: :position_added
   actor_account: admin_account
   eventable: golang_position (Position)
+  performed_at: <%= 3.hours.ago %>
   tenant: toughbyte_tenant
 
 closed_position_added:
@@ -84,6 +85,13 @@ jake_golang_sourced_placement_added:
   performed_at: <%= 1.week.ago %>
   tenant: toughbyte_tenant
 
+jake_golang_verified_placement_added:
+  type: :placement_added
+  actor_account: admin_account
+  eventable: jake_golang_verified (Placement)
+  performed_at: <%= 1.day.ago %>
+  tenant: toughbyte_tenant
+
 jane_empty_pdf_attachment_added:
   type: :active_storage_attachment_added
   actor_account: admin_account
@@ -112,6 +120,20 @@ ruby_position_contacted_scorecard_template_added:
   actor_account: admin_account
   eventable: ruby_position_contacted_scorecard_template (ScorecardTemplate)
   performed_at: <%= 1.week.ago %>
+  tenant: toughbyte_tenant
+
+golang_position_verified_scorecard_added:
+  type: :scorecard_added
+  actor_account: admin_account
+  eventable: golang_position_verified_scorecard (Scorecard)
+  performed_at: <%= 1.day.ago %>
+  tenant: toughbyte_tenant
+
+golang_position_interviewed_scorecard_added:
+  type: :scorecard_added
+  actor_account: admin_account
+  eventable: golang_position_interviewed_scorecard (Scorecard)
+  performed_at: <%= 1.day.ago %>
   tenant: toughbyte_tenant
 
 position_task_added:
@@ -221,4 +243,22 @@ john_candidate_interview_resolved:
   properties:
     status: "missed_by_candidate"
     pair_event_id: <%= ActiveRecord::FixtureSet.identify(:john_candidate_interview_scheduled) %>
+  tenant: toughbyte_tenant
+
+golang_interviewed_position_stage_added:
+  type: :position_stage_added
+  actor_account: admin_account
+  eventable: golang_position_interviewed (PositionStage)
+  properties:
+    name: "Interviewed"
+  performed_at: <%= 2.hours.ago %>
+  tenant: toughbyte_tenant
+
+golang_interviewed_position_stage_removed:
+  type: :position_stage_removed
+  actor_account: admin_account
+  eventable: golang_position (Position)
+  changed_field: :stage
+  changed_from: 240447283
+  performed_at: <%= 1.hour.ago %>
   tenant: toughbyte_tenant

@@ -1,0 +1,22 @@
+/# locals: (stage:, modal_id:, form_options:, hidden_fields:, options_for_select:)
+
+- content_for :title
+  = t("position_stages.delete_stage_title", name: stage.name.downcase)
+- content_for :body
+  - if options_for_select.present?
+    .mb-3 = t("position_stages.delete_stage_body")
+    = render LabeledComponent.new(class: "mb-2",
+                                  left_layout_class: "col-2",
+                                  right_layout_class: "col-10") do |c|
+      - c.with_label("Stage", for_field: :name)
+      = render SingleSelectComponent.new( \
+          "new_stage",
+          placeholder: "",
+          required: true,
+          local: { options: options_for_select } \
+        )
+- content_for :footer
+  = render ButtonComponent.new(variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
+    = t("core.cancel_button")
+  = render ButtonComponent.new(variant: :danger)
+    = t("core.delete_button")

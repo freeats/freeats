@@ -155,7 +155,9 @@ module CandidatesHelper
         TEXT
       end
     when "stage"
-      "moved the candidate to stage <b>#{event.stage_to.name}</b> on #{position_link}"
+      stage = event.stage_to
+      stage_name = stage.deleted ? "#{stage.name} (deleted)" : stage.name
+      "moved the candidate to stage <b>#{stage_name}</b> on #{position_link}"
     end
   end
 end

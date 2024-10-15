@@ -51,6 +51,8 @@ module ATS::PositionsHelper
         "added stage <b>#{event.properties['name']}</b>"
       when "position_stage_changed"
         "changed stage from <b>#{from}</b> to <b>#{to}</b>"
+      when "position_stage_removed"
+        "removed stage <b>#{event.removed_stage.name}</b>"
       when "scorecard_template_added"
         "added scorecard template <b>#{event.eventable.title}</b>"
       when "scorecard_template_removed"

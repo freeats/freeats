@@ -46,6 +46,13 @@ golang_position_verified:
   list_index: 4
   tenant: toughbyte_tenant
 
+golang_position_interviewed:
+  position: golang_position
+  name: Interviewed
+  list_index: 5
+  deleted: true
+  tenant: toughbyte_tenant
+
 golang_position_hired:
   position: golang_position
   name: Hired

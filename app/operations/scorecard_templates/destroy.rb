@@ -4,7 +4,7 @@ class ScorecardTemplates::Destroy < ApplicationOperation
   include Dry::Monads[:result, :do]
 
   option :scorecard_template, Types.Instance(ScorecardTemplate)
-  option :actor_account, Types.Instance(Account)
+  option :actor_account, Types::Instance(Account).optional, optional: true
 
   def call
     position_stage = scorecard_template.position_stage

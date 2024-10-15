@@ -15,6 +15,10 @@ ruby:
       ats_scorecard_path(scorecard)
     end
 
+  position_stage = @scorecard.position_stage
+  position_stage_title = "#{position_stage.name} stage"
+  position_stage_title << " (deleted)" if position_stage.deleted
+
 / TODO: implement storing not saved scorecard data in local storage
 / Hub has callbacks on `evaluation-form` class.
 / https://github.com/toughbyte/ats/issues/480
@@ -53,12 +57,8 @@ ruby:
     right_layout_class: "col",
     right_class: "ps-0 col-form-label-sm" \
   ) do |c|
-    - c.with_label("Template", style: "min-width: 100px;")
-    - scorecard_template = scorecard.position_stage.scorecard_template
-    - if allowed_to?(:show?, scorecard_template, with: ATS::ScorecardTemplatePolicy)
-      = link_to(scorecard_template.title, ats_scorecard_template_path(scorecard_template))
-    - else
-      = scorecard_template.title
+    - c.with_label("Stage", style: "min-width: 100px;")
+    = position_stage_title
   = render LabeledComponent.new( \
     class: "mb-4",
     left_layout_class: "col-12 col-md-auto",

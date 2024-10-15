@@ -1,22 +1,34 @@
 /# locals: (position:, control_button:, namespace: nil)
 
-- header = card_header(title: "Pipeline", icon_style: "fa-list-check")
+- header = card_header(title: t("positions.pipeline"), icon_style: "fa-list-check")
 
 = card_show "pipeline", target_model: position, header:
   .row.row-gap-2
     .col-12.col-md-6.col-lg-12.col-xl-6.vstack.gap-2
       - position.stages.each do |stage|
-        = render LabeledComponent.new( \
-          left_class: "text-gray-600 d-flex align-items-center",
-          visible_if_blank: true,
-          right_class: "col-form-label-sm" \
-        ) do |c|
-          - c.with_label(stage.name)
-          - if (scorecard_template = stage.scorecard_template).present?
-            = link_to scorecard_template.title, ats_scorecard_template_path(scorecard_template), data: { turbo: false }
-          - elsif allowed_to?(:new?, with: ATS::ScorecardTemplatePolicy)
-            = render ButtonLinkComponent.new( \
-                new_ats_scorecard_template_path(position_stage_id: stage.id),
-                type: :submit, size: :tiny, variant: :cancel, data: { turbo: false } \
-              )
-              | Add scorecard template
+        span id="position_stage#{stage.id}"
+          = render LabeledComponent.new( \
+            left_class: "text-gray-600 d-flex align-items-center",
+            visible_if_blank: true,
+            right_class: "col-form-label-sm d-inline-flex justify-content-between flex-column row-gap-2 flex-md-row" \
+          ) do |c|
+            - c.with_label(stage.name)
+            - if (scorecard_template = stage.scorecard_template).present?
+              = link_to scorecard_template.title,
+                ats_scorecard_template_path(scorecard_template),
+                data: { turbo: false }
+            - elsif allowed_to?(:new?, with: ATS::ScorecardTemplatePolicy)
+              div
+                = render ButtonLinkComponent.new( \
+                    new_ats_scorecard_template_path(position_stage_id: stage.id),
+                    type: :submit, size: :tiny, variant: :cancel, data: { turbo: false } \
+                  )
+                  = t("scorecard_templates.add")
+            div
+              - if allowed_to?(:destroy?, stage) && !stage.name.in?(Position::DEFAULT_STAGES)
+                = render ButtonLinkComponent.new( \
+                  ats_position_stage_path(stage),
+                  data: { turbo_frame: :turbo_modal_window, turbo_method: :delete },
+                  variant: :danger_secondary, size: :tiny, type: :button \
+                )
+                  = t("position_stages.delete_button")

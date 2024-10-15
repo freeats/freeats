@@ -48,6 +48,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :position_stages, only: :destroy
+
     resources :positions, except: %i[edit update] do
       get "/", to: redirect("/ats/positions/%{id}/info"), on: :member, id: /\d+/
       get "tasks/:task_id", to: "positions#show", on: :member, as: "task"

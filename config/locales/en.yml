@@ -219,17 +219,31 @@ en:
     visible_to: Visible to:<br>%{members}
     visible_to_all_members: Visible to all members
 
+  position_stages:
+    already_deleted: The stage has already been deleted. Please reload the page.
+    cannot_be_deleted: Default stages cannot be deleted.
+    delete_button: Delete stage
+    delete_stage_body: Before deleting this pipeline stage, please specify to which stage candidates on this stage should be moved?
+    delete_stage_title: Delete %{name} stage?
+    name_not_unique: "Stage name is not unique: %{name}"
+    new_stage_deleted: The next stage in the process has been deleted. Please reload the page and try again.
+    succesfully_deleted: The stage was successfully deleted.
+
   positions:
     active_recruiter_must_be_assigned_error: "The assigned recruiter is inactive.
       Please assign an active recruiter and try again."
     delete_button: Delete position
     delete_title: Delete position?
     no_in_dashboard: No draft, open or on hold positions
+    pipeline: Pipeline
     recruiter_must_be_assigned_error: A recruiter must be assigned to this position.
     sequence_templates_archived: "%{name} has been successfully archived."
     succesfully_deleted: The position was successfully deleted.
     successfully_created: Position draft was successfully created.
     your_positions: Your positions
+
+  scorecard_templates:
+    add: Add scorecard template
 
   tasks:
     add_task_button: Add task
