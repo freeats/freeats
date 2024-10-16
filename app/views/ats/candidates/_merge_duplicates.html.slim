@@ -28,8 +28,7 @@
                   t("candidates.same_phones", phones: same_phones.join(', '))
               end
               link_to duplicate.full_name,
-                      tab_ats_candidate_path(duplicate, :info,
-                                             candidates_carousel_keep_previous_candidate_id: candidate.id),
+                      tab_ats_candidate_path(duplicate, :info),
                       data: { bs_toggle: "tooltip", bs_html: true },
                       title: safe_join([same_emails_tooltip, same_links_tooltip, same_phones_tooltip].compact, "<br>")
             end,

@@ -14,14 +14,7 @@
         .card-title.mb-0
           .d-flex.justify-content-between.font-medium
             = link_to placement.candidate.full_name,
-                      tab_ats_candidate_path( \
-                        placement.candidate_id,
-                        :info,
-                        candidates_carousel: { type: :positions_pipeline,
-                                               position_id: placement.position_id,
-                                               pipeline_tab: params[:pipeline_tab],
-                                               assigned_only: params[:assigned_only] },
-                      ),
+                      tab_ats_candidate_path(placement.candidate_id, :info),
                       class: "text-truncate",
                       title: placement.candidate.full_name
         .d-flex.col-12.justify-content-end
