@@ -110,11 +110,12 @@ class Member < ApplicationRecord
     with_linked_email_service.map(&:imap_account)
   end
 
-  # Gmail accounts are mutated during request, changes should be persisted back to database.
+  # Imap accounts are mutated during request, changes should be persisted back to database.
   def self.postprocess_imap_account(imap_account, update_imap_uid: true)
-    if imap_account.status != :succeeded
+    if !imap_account.status.in?(%i[succeeded network_issues])
       find_by_address(imap_account.email)
         .reset_email_service_tokens
+      imap_account.logger.warn(status: imap_account.status, method: "postprocess_imap_account")
     elsif update_imap_uid
       find_by_address(imap_account.email)
         .update!(last_email_synchronization_uid: imap_account.last_message_uid)

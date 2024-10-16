@@ -17,7 +17,7 @@ class Imap::Account
 
   class AuthError < Net::IMAP::Error; end
 
-  attr_reader :imap_service, :status
+  attr_reader :imap_service, :status, :logger
 
   # Variables necessary for init imap service.
   attr_reader :email, :access_token, :refresh_token, :imap_address, :imap_port
@@ -44,6 +44,7 @@ class Imap::Account
     @last_email_synchronization_uid = last_email_synchronization_uid
 
     @imap_service = init_imap_service
+    @logger = ATS::Logger.new(where: "Imap::Account::@email=#{email}")
   end
 
   # Get authenticated imap service.
@@ -104,9 +105,13 @@ class Imap::Account
     end
 
     @status = :succeeded
-    @last_message_uid = messages.map(&:imap_uid).max
+    @last_message_uid = messages.map(&:imap_uid).max if messages.present?
 
     messages
+  rescue OpenSSL::SSL::SSLError, Net::OpenTimeout,
+         Errno::ECONNRESET, Socket::ResolutionError
+    @status = :network_issues
+    []
   rescue AuthError
     @status = :unauthenticated
     []
