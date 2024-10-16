@@ -243,6 +243,7 @@ class ATS::CandidatesController < AuthorizedController
   end
 
   def update_header
+    set_header_variables
     case Candidates::Change.new(
       candidate: @candidate,
       actor_account: current_account,
@@ -629,13 +630,11 @@ class ATS::CandidatesController < AuthorizedController
           EmailThread.get_threads_with_addresses(email_address: @candidate.all_emails).select(:id)
       ).count
     set_placements_variables
+    set_header_variables
   end
 
   def set_header_variables
-    @created_at = @candidate.created_at
-    # @created_at = @candidate.events.find_by(type: :candidate_added)&.performed_at ||
-    #               @candidate.created_at
-    # @all_internal_recruiter_names = Member.member.order("users.name").pluck("users.name")
+    @created_at = @candidate.added_event.performed_at
   end
 
   def set_candidate

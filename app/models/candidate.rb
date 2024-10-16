@@ -31,6 +31,12 @@ class Candidate < ApplicationRecord
   has_many :note_threads, as: :notable, dependent: :destroy
   has_many :events, as: :eventable, dependent: :destroy
   has_many :tasks, as: :taskable, dependent: :destroy
+  has_one :added_event,
+          -> { where(type: :candidate_added) },
+          class_name: "Event",
+          as: :eventable,
+          inverse_of: false,
+          dependent: nil
 
   belongs_to :candidate_source, optional: true
   belongs_to :location, optional: true

@@ -55,10 +55,10 @@ ruby:
       / ACTIVITY
       .row.font-small.text-secondary.mt-3.gx-2
         .col-auto.text-nowrap.mb-2 [data-bs-toggle="tooltip"
-            title=t("core.added_on_time", time: @candidate.created_at.to_fs(:datetime_full))]
+            title=t("core.added_on_time", time: @created_at.to_fs(:datetime_full))]
           i.fas.fa-plus-square
           | &nbsp;
-          = t("core.created_time", time: short_time_ago_in_words(@candidate.created_at))
+          = t("core.created_time", time: short_time_ago_in_words(@created_at))
         .col-auto.text-nowrap.mb-2 [data-bs-toggle="tooltip"
             title=t("core.last_activity_on", time: @candidate.last_activity_at.to_fs(:datetime_full))]
           i.fas.fa-hourglass-half

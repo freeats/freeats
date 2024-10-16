@@ -262,3 +262,45 @@ golang_interviewed_position_stage_removed:
   changed_from: 240447283
   performed_at: <%= 1.hour.ago %>
   tenant: toughbyte_tenant
+
+john_candidate_added:
+  type: :candidate_added
+  actor_account: admin_account
+  eventable: john (Candidate)
+  performed_at: <%= 2.days.ago %>
+  tenant: toughbyte_tenant
+
+jane_candidate_added:
+  type: :candidate_added
+  actor_account: admin_account
+  eventable: jane (Candidate)
+  performed_at: <%= 3.days.ago %>
+  tenant: toughbyte_tenant
+
+jake_candidate_added:
+  type: :candidate_added
+  actor_account: admin_account
+  eventable: jake (Candidate)
+  performed_at: <%= 2.days.ago %>
+  tenant: toughbyte_tenant
+
+sam_candidate_added:
+  type: :candidate_added
+  actor_account: admin_account
+  eventable: sam (Candidate)
+  performed_at: <%= 5.days.ago %>
+  tenant: toughbyte_tenant
+
+john_duplicate_candidate_added:
+  type: :candidate_added
+  actor_account: admin_account
+  eventable: john_duplicate (Candidate)
+  performed_at: <%= 4.days.ago %>
+  tenant: toughbyte_tenant
+
+ilia_liamshin_candidate_added:
+  type: :candidate_added
+  actor_account: admin_account
+  eventable: ilia_liamshin (Candidate)
+  performed_at: <%= 2.days.ago %>
+  tenant: suroviy_byte_tenant

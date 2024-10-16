@@ -29,7 +29,7 @@ class ATS::DashboardPositionsGrid
     :status,
     header: "",
     order: false,
-    # preload: :added_event,
+    preload: :added_event,
     html: true
   ) do |model|
     status_html = position_html_status_circle(model, tooltip_placement: "right")
