@@ -75,7 +75,7 @@ class ATS::SettingsController < AuthorizedController
       redirect_to ats_settings_path,
                   alert: "The linked email #{linked_email} does not match the current email."
     in Success()
-      ReceiveEmailMessageUpdatesForMemberJob.perform_later(current_member.id)
+      # ReceiveEmailMessageUpdatesForMemberJob.perform_later(current_member.id)
       redirect_to ats_settings_path, notice: "Gmail successfully linked."
     end
   end
