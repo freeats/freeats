@@ -51,6 +51,6 @@ class ATS::ProfileTasksGrid
     preload: { assignee: :account },
     order: ->(scope) { scope.joins(assignee: :account).group("account.id").order("accounts.name") }
   ) do |model|
-    model.assignee.account.name
+    model.assignee&.account&.name
   end
 end

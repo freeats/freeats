@@ -104,10 +104,23 @@ module ATS::TasksHelper
     end
 
     if task_card
-      "changed #{field.humanize} from <b>#{from}</b> to <b>#{to}</b>"
-    else
+      if field == "assignee_id" && to.present? && from.present? || field != "assignee_id"
+        "changed #{field.humanize} from <b>#{from}</b> to <b>#{to}</b>"
+      elsif field == "assignee_id" && to.present?
+        "assigned #{event_actor_account_name_for_assignment(event:, member: to_member)} to the task"
+      elsif field == "assignee_id" && from.present?
+        "unassigned #{event_actor_account_name_for_assignment(event:, member: from_member)} " \
+          "from the task"
+      end
+    elsif field == "assignee_id" && to.present? && from.present? || field != "assignee_id"
       "changed <b>#{event.eventable.name}</b> task's #{field.humanize} " \
         "from <b>#{from}</b> to <b>#{to}</b>"
+    elsif field == "assignee_id" && to.present?
+      "assigned #{event_actor_account_name_for_assignment(event:, member: to_member)} " \
+        "to <b>#{event.eventable.name}</b> task "
+    elsif field == "assignee_id" && from.present?
+      "unassigned #{event_actor_account_name_for_assignment(event:, member: from_member)} " \
+        "from <b>#{event.eventable.name}</b> task "
     end
   end
 end

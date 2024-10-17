@@ -2,6 +2,7 @@
 / form_options:,
 / modal_size:,
 / assignee_options:,
+/ watchers_options:,
 / default_assignee:,
 / default_watchers:,
 / current_member:,
@@ -39,7 +40,6 @@
         - c.with_label(t("core.assignee"), for_field: "task[assignee_id]", color_class: "text-gray-600")
         = select_tag "task[assignee_id]", options_for_select(assignee_options, default_assignee),
                       class: "form-control selectpicker flex-fill",
-                      required: true,
                       data: { live_search: true,
                               turbo_modal_tasks_target: "selectAssignee selectpicker" }
       / Watchers
@@ -47,7 +47,7 @@
                                     left_layout_class: "col-lg-3", right_layout_class: "col-lg-9") do |c|
         - c.with_label(t("core.watchers"), for_field: "task[watcher_ids]", color_class: "text-gray-600")
         = select_tag "task[watcher_ids]",
-                      options_for_select(assignee_options,
+                      options_for_select(watchers_options,
                                         { selected: [*default_watchers, default_assignee, current_member.id],
                                         disabled: default_assignee }),
                       class: "form-control selectpicker",

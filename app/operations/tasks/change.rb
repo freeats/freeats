@@ -1,27 +1,25 @@
 # frozen_string_literal: true
 
-class Tasks::Change
+class Tasks::Change < ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :task, Types::Instance(Task)
-    option :params, Types::Strict::Hash.schema(
-      name?: Types::Strict::String,
-      due_date?: Types::Strict::String | Types::Instance(Date),
-      description?: Types::Strict::String,
-      repeat_interval?: Types::String.enum(*Task.repeat_intervals.keys),
-      assignee_id?: Types::Strict::String.optional,
-      watcher_ids?: Types::Strict::Array.of(Types::Strict::String.optional)
-    ).strict
-    option :actor_account, Types::Instance(Account)
-  end
+  option :task, Types::Instance(Task)
+  option :params, Types::Strict::Hash.schema(
+    name?: Types::Strict::String,
+    due_date?: Types::Strict::String | Types::Instance(Date),
+    description?: Types::Strict::String,
+    repeat_interval?: Types::String.enum(*Task.repeat_intervals.keys),
+    assignee_id?: Types::Strict::String.optional,
+    watcher_ids?: Types::Strict::Array.of(Types::Strict::String.optional)
+  ).strict
+  option :actor_account, Types::Instance(Account)
 
   def call
     old_values = {
       name: task.name,
       due_date: task.due_date,
       repeat_interval: task.repeat_interval,
-      assignee_id: task.assignee.id,
+      assignee_id: task.assignee_id,
       watcher_ids: task.watchers.ids
     }
 
@@ -99,6 +97,6 @@ class Tasks::Change
         [*task.watchers]
       end
 
-    watchers.uniq
+    watchers.uniq.compact
   end
 end

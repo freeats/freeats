@@ -1,5 +1,6 @@
 /# locals: (task:,
 / assignee_options:,
+/ watchers_options:,
 / added_by_account:,
 / added_on_time:,
 / grid:
@@ -62,7 +63,7 @@
       = f.label :watcher_ids, t("core.watchers"), class: label_classes
       .col-lg-9
         = f.select :watcher_ids,
-                   assignee_options,
+                   watchers_options,
                    { selected: task.watchers.ids, disabled: task.assignee_id },
                    include_blank: true,
                    class: "form-control selectpicker",

@@ -70,10 +70,13 @@ class ATS::TasksGrid
         )
         .order("accounts.name")
         .pluck("accounts.name", :id)
+        .unshift([I18n.t("core.no_assignee"), "nil"])
     },
     include_blank: I18n.t("core.assignee"),
     placeholder: I18n.t("core.assignee")
-  )
+  ) do |assignee_id|
+    where(assignee_id: assignee_id == "nil" ? nil : assignee_id)
+  end
 
   filter(
     :watched,
@@ -143,6 +146,6 @@ class ATS::TasksGrid
     preload: { assignee: :account },
     order: ->(scope) { scope.joins(assignee: :account).group("accounts.id").order("accounts.name") }
   ) do |model|
-    model.assignee.account.name
+    model.assignee&.account&.name
   end
 end

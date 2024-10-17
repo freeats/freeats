@@ -1,24 +1,23 @@
 # frozen_string_literal: true
 
-class Tasks::Add
+class Tasks::Add < ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :params, Types::Strict::Hash.schema(
-      name: Types::Strict::String,
-      due_date: Types::Strict::String | Types::Instance(Date),
-      description?: Types::Strict::String,
-      repeat_interval?: Types::String.enum(*Task.repeat_intervals.keys),
-      taskable_id?: Types::Strict::String.optional | Types::Strict::Integer.optional,
-      taskable_type?: Types::Strict::String.optional,
-      assignee_id: Types::Strict::String.optional | Types::Strict::Integer.optional,
-      watcher_ids?: Types::Strict::Array.of(Types::Strict::String.optional)
-    ).strict
-    option :actor_account, Types::Instance(Account).optional
-  end
+  option :params, Types::Strict::Hash.schema(
+    name: Types::Strict::String,
+    due_date: Types::Strict::String | Types::Instance(Date),
+    description?: Types::Strict::String,
+    repeat_interval?: Types::String.enum(*Task.repeat_intervals.keys),
+    taskable_id?: Types::Strict::String.optional | Types::Strict::Integer.optional,
+    taskable_type?: Types::Strict::String.optional,
+    assignee_id: Types::Strict::String.optional | Types::Strict::Integer.optional,
+    watcher_ids?: Types::Strict::Array.of(Types::Strict::String.optional) |
+                  Types::Strict::Array.of(Types::Strict::Integer.optional)
+  ).strict
+  option :actor_account, Types::Instance(Account).optional, optional: true
 
   def call
-    if Member.find(params[:assignee_id]).inactive?
+    if params[:assignee_id].present? && Member.find(params[:assignee_id]).inactive?
       return Failure[:inactive_assignee, "Assignee must be an active member."]
     end
 
@@ -84,6 +83,6 @@ class Tasks::Add
         [*Task.default_watchers(taskable), Member.find_by(id: params[:assignee_id])]
       end
 
-    watchers.uniq
+    watchers.uniq.compact
   end
 end

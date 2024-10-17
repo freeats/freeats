@@ -68,10 +68,13 @@ class ATS::PositionsGrid
         )
         .order("accounts.name")
         .pluck("accounts.name", :id)
+        .unshift([I18n.t("core.no_assignee"), "nil"])
     },
     include_blank: I18n.t("core.recruiter"),
     placeholder: I18n.t("core.recruiter")
-  )
+  ) do |recruiter_id|
+    where(recruiter_id: recruiter_id == "nil" ? nil : recruiter_id)
+  end
 
   filter(
     :collaborators,
@@ -96,11 +99,13 @@ class ATS::PositionsGrid
         )
         .order("accounts.name")
         .pluck("accounts.name", :id)
+        .unshift([I18n.t("core.no_assignee"), "nil"])
     },
     include_blank: I18n.t("core.collaborator"),
     placeholder: I18n.t("core.collaborator")
   ) do |collaborator_id|
-    joins(:collaborators).where(positions_collaborators: { collaborator_id: })
+    collaborator_id = nil if collaborator_id == "nil"
+    left_joins(:collaborators).where(positions_collaborators: { collaborator_id: })
   end
 
   filter(
@@ -126,11 +131,13 @@ class ATS::PositionsGrid
         )
         .order("accounts.name")
         .pluck("accounts.name", :id)
+        .unshift([I18n.t("core.no_assignee"), "nil"])
     },
     include_blank: I18n.t("core.hiring_manager"),
     placeholder: I18n.t("core.hiring_manager")
   ) do |hiring_manager_id|
-    joins(:hiring_managers).where(positions_hiring_managers: { hiring_manager_id: })
+    hiring_manager_id = nil if hiring_manager_id == "nil"
+    left_joins(:hiring_managers).where(positions_hiring_managers: { hiring_manager_id: })
   end
 
   #

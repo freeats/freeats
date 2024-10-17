@@ -36,6 +36,7 @@ en:
     location: Location
     more_button: More
     name: Name
+    no_assignee: No assignee
     notes: Notes
     outdated: Outdated
     position: Position
@@ -55,6 +56,7 @@ en:
     team: Team
     today: Today
     tomorrow: Tomorrow
+    unassign: Unassign
     unassign_recruiter: Unassign recruiter
     updated_time: "%{time} ago"
     upload_button: Upload

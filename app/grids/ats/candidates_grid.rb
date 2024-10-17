@@ -106,11 +106,17 @@ class ATS::CandidatesGrid
   filter(
     :recruiter,
     :enum,
-    select: -> { Member.active.order("accounts.name").pluck("accounts.name", :id) },
+    select: lambda {
+      Member
+        .active
+        .order("accounts.name")
+        .pluck("accounts.name", :id)
+        .unshift([I18n.t("core.no_assignee"), "nil"])
+    },
     include_blank: I18n.t("core.recruiter"),
     placeholder: I18n.t("core.recruiter")
   ) do |recruiter_id|
-    where(recruiter_id:)
+    where(recruiter_id: recruiter_id == "nil" ? nil : recruiter_id)
   end
 
   filter(

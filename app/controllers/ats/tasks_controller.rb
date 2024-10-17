@@ -43,6 +43,7 @@ class ATS::TasksController < AuthorizedController
         form_options: { url: ats_tasks_path, data: { turbo_frame: :turbo_tasks_grid } },
         modal_size: "modal-lg",
         assignee_options:,
+        watchers_options:,
         default_assignee:,
         default_watchers: Task.default_watchers(@taskable).map(&:id),
         current_member:,
@@ -72,6 +73,7 @@ class ATS::TasksController < AuthorizedController
       locals: {
         task: @task,
         assignee_options:,
+        watchers_options:,
         added_by_account: @task.added_event.actor_account,
         added_on_time: @task.added_event.performed_at,
         all_active_members:,
@@ -125,13 +127,23 @@ class ATS::TasksController < AuthorizedController
   private
 
   def assignee_options
-    assignees = Member
-                .joins(:account)
-                .active
-                .order("accounts.name ASC")
-                .pluck("accounts.name", :id)
-    assignees << [@task.assignee.account.name, @task.assignee.id] if @task
-    assignees.uniq
+    [[t("core.unassign"), nil]] + watchers_options
+  end
+
+  def watchers_options
+    return @watchers_options if @watchers_options.present?
+
+    @watchers_options =
+      Member
+      .joins(:account)
+      .active
+      .order("accounts.name ASC")
+      .pluck("accounts.name", :id)
+
+    if @task&.assignee.present?
+      @watchers_options << [@task.assignee.account.name, @task.assignee.id]
+    end
+    @watchers_options = @watchers_options.uniq
   end
 
   def default_assignee
@@ -221,6 +233,7 @@ class ATS::TasksController < AuthorizedController
           locals: {
             task: @task,
             assignee_options:,
+            watchers_options:,
             added_by_account: @task.added_event.actor_account,
             added_on_time: @task.added_event.performed_at,
             grid: params[:grid]

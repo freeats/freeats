@@ -23,23 +23,31 @@ export default class extends Controller {
       newUrl.pathname = newUrl.pathname.replace(/\/(new|\d+)$/, "");
       window.history.replaceState({}, null, newUrl);
     });
+
     if (!this.hasWatchersFormTarget) {
       const $selectWatchers = $(this.selectPickerWatchersTarget);
       const $selectAssignee = $(this.selectAssigneeTarget);
       const $defaultWatchers = $(this.defaultWatchersTarget);
       const currentMember = this.currentMemberValue;
+
       $selectAssignee.on("changed.bs.select", (e, clickedIndex, isSelected, previousValue) => {
         const assignee = $selectAssignee.val();
         let watchers = $selectWatchers.val();
         $selectWatchers.find("option[disabled]").removeAttr("disabled");
-        $selectWatchers.find(`option[value=${assignee}]`).attr("disabled", "disabled");
-        watchers.push(assignee);
+
+        if (assignee !== "") {
+          $selectWatchers.find(`option[value=${assignee}]`).attr("disabled", "disabled");
+          watchers.push(assignee);
+        }
+
         const indexElement = watchers.indexOf(previousValue);
+
         if (currentMember === previousValue) {
           watchers.push(previousValue);
         } else if (indexElement !== -1) {
           watchers = watchers.splice(indexElement, 1);
         }
+
         watchers = [...new Set(watchers.concat($defaultWatchers.val().split(" ")))];
         $selectWatchers.selectpicker("val", watchers);
         $selectWatchers.selectpicker("refresh");
