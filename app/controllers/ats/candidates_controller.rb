@@ -165,7 +165,7 @@ class ATS::CandidatesController < AuthorizedController
                 "JOIN note_threads ON note_threads.id = notes.note_thread_id " \
                 "JOIN candidates ON note_threads.notable_id = candidates.id " \
                 "AND note_threads.notable_type = 'Candidate'"
-              )
+              ).where(note_threads: { id: NoteThread.visible_to(current_member).select(:id) })
               .where(candidates: { id: @candidate.id })
             )
             # @candidate.files is an ActiveStorage::Attached::Many class,
