@@ -1,29 +1,27 @@
 # frozen_string_literal: true
 
-class Scorecards::Change
+class Scorecards::Change < ApplicationOperation
   include Dry::Monads[:result, :try, :do]
 
-  include Dry::Initializer.define -> do
-    option :params, Types::Params::Hash.schema(
-      interviewer_id: Types::Params::Integer,
-      score: Types::Params::String,
-      summary?: Types::Params::String
+  option :params, Types::Params::Hash.schema(
+    interviewer_id: Types::Params::Integer,
+    score: Types::Params::String,
+    summary?: Types::Params::String
+  )
+  option :questions_params, Types::Strict::Array.of(
+    Types::Strict::Hash.schema(
+      id: Types::Params::Integer,
+      answer?: Types::Params::String
     )
-    option :questions_params, Types::Strict::Array.of(
-      Types::Strict::Hash.schema(
-        id: Types::Params::Integer,
-        answer?: Types::Params::String
-      )
-    ).optional
-    option :scorecard, Types.Instance(Scorecard)
-    option :actor_account, Types.Instance(Account)
-  end
+  ).optional
+  option :scorecard, Types::Instance(Scorecard)
+  option :actor_account, Types::Instance(Account).optional, optional: true
 
   def call
     old_values = {
       interviewer: scorecard.interviewer,
       score: scorecard.score,
-      summary: scorecard.summary.body.to_s,
+      summary: scorecard.summary.body&.to_plain_text || "",
       questions_params: existing_questions_params(scorecard)
     }
 
@@ -92,7 +90,7 @@ class Scorecards::Change
   def scorecard_changed?(old_values:, scorecard:)
     old_values[:interviewer] != scorecard.interviewer ||
       old_values[:score] != scorecard.score ||
-      old_values[:summary] != scorecard.summary.body.to_s ||
+      old_values[:summary] != scorecard.summary.body.to_plain_text ||
       old_values[:questions_params] != existing_questions_params(scorecard)
   end
 
