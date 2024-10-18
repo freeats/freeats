@@ -496,6 +496,7 @@ class Candidate < ApplicationRecord
             SELECT 1
             FROM positions_collaborators
             WHERE positions_collaborators.position_id = positions.id
+            AND positions_collaborators.collaborator_id = :current_member_id
             )
           )
           AND NOT EXISTS (

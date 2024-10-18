@@ -85,6 +85,10 @@ class CandidateTest < ActiveSupport::TestCase
 
     assert_empty candidate.positions_for_quick_assignment(current_member.id)
 
+    position.collaborators = [members(:helen_member)]
+
+    assert_empty candidate.positions_for_quick_assignment(current_member.id)
+
     position.collaborators = [current_member]
 
     assert_equal candidate.positions_for_quick_assignment(current_member.id), [position]
