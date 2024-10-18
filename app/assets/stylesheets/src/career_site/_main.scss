@@ -1,0 +1,66 @@
+body {
+  padding-top: 0rem;
+}
+
+.container-small {
+  min-width: 320px;
+  max-width: 980px;
+
+  padding-top: 24px;
+  padding-bottom: 48px;
+}
+
+// place the footer at the bottom of the page
+.wrapper {
+  min-height: calc(100% - #{$footer-min-height});
+}
+
+#back_on_all_positions {
+  color: $blue-500;
+}
+
+footer {
+  height: $footer-min-height;
+
+  a,
+  span,
+  div {
+    color: $gray-600;
+    &:visited:not(.btn, .nav-link, .dropdown-item, .badge) {
+      color: $gray-600;
+    }
+  }
+}
+
+#application_form {
+  form {
+    @media (min-width: 768px) {
+      max-width: 400px;
+    }
+  }
+}
+
+.list-group {
+  border: none;
+}
+
+.list-group .custom-list-item {
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom: 1px solid $gray-500;
+}
+
+.list-group .custom-list-item:hover {
+  background-color: $blue-100;
+}
+
+#recaptcha-modal {
+  .modal-content {
+    height: 13rem;
+    width: 40.57rem;
+  }
+  #rc-anchor-container {
+    width: inherit;
+  }
+}

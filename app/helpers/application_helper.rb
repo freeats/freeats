@@ -123,6 +123,18 @@ module ApplicationHelper
     render partial: "ats/teams/deactivate", locals: { account: model }
   end
 
+  def public_recaptcha_v3_verified?(recaptcha_v3_score:, recaptcha_v2_response:)
+    return true unless Rails.env.production?
+
+    recaptcha_v3_score >= RecaptchaV3::MIN_SCORE || recaptcha_v2_response.present?
+  end
+
+  def public_recaptcha_v2_verified?(recaptcha_v2_response:)
+    return true unless Rails.env.production?
+
+    Recaptcha.verify_via_api_call(recaptcha_v2_response, {})
+  end
+
   private
 
   def compose_select_component(grid:, filter:)

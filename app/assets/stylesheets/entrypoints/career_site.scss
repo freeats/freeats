@@ -1,0 +1,17 @@
+$font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
+
+// jQuery
+@import "jquery-ui/themes/base/theme";
+
+// Bootstrap
+@import "../src/shared/variables";
+@import "../src/shared/colors";
+@import "bootstrap/scss/bootstrap";
+@import "tributejs/dist/tribute";
+
+@import "../src/shared/scaffolds";
+
+// Custom component styles
+@import "../src/shared/components";
+
+@import "../src/career_site/main";

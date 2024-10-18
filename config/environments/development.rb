@@ -78,6 +78,7 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :solid_queue
 
+  config.hosts = nil
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
   # Emails are saved to tmp/mails by default. Change to :smtp and add environment variables for
   # user_name and password to test as it works in production.

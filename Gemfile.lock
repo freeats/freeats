@@ -206,6 +206,8 @@ GEM
     faraday-net_http (3.1.0)
       net-http
     ffi (1.16.3)
+    friendly_id (5.5.1)
+      activerecord (>= 4.0.0)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -621,6 +623,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   faraday
+  friendly_id (~> 5.5)
   gon
   googleauth
   hashie

@@ -2,6 +2,7 @@
 
 class Position < ApplicationRecord
   include Locatable
+  extend FriendlyId
 
   acts_as_tenant(:tenant)
 
@@ -115,9 +116,16 @@ class Position < ApplicationRecord
 
   strip_attributes collapse_spaces: true, allow_empty: true, only: :name
 
+  friendly_id :name_with_id, use: :slugged, routes: nil
+
+  validates :slug, presence: true
   validate :active_recruiter_must_be_assigned_if_career_site_is_enabled,
            if: :status_changed_to_open?
   validate :location_must_be_city, if: :location_id_changed?
+
+  after_create do
+    update!(slug: name_with_id) if slug.exclude?(id.to_s)
+  end
 
   def self.color_codes_table
     positions = Position.arel_table
@@ -194,5 +202,17 @@ class Position < ApplicationRecord
 
   def status_changed_to_open?
     status_changed?(to: :open)
+  end
+
+  def name_with_id
+    if !persisted? && name.downcase.in?(friendly_id_config.reserved_words)
+      "#{name}-position".parameterize
+    else
+      "#{name}-#{id}".parameterize
+    end
+  end
+
+  def should_generate_new_friendly_id?
+    slug.nil? || name_changed?
   end
 end

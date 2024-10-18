@@ -1,0 +1,45 @@
+doctype html
+html
+  head
+    meta content="text/html; charset=UTF-8" http-equiv="Content-Type"
+    title = content_for(:title) || @page_title || "FreeATS"
+    meta content="width=device-width, initial-scale=1.0" name="viewport"
+    link rel="preconnect" href="https://fonts.googleapis.com" crossorigin=""
+    link rel="dns-prefetch" href="https://fonts.googleapis.com"
+    link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""
+    link rel="dns-prefetch" href="https://fonts.gstatic.com"
+    link [rel="preload" as="style"
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap"]
+    link [rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap"]
+    link href="/favicon#{'-dev' if Rails.env.development?}.ico" rel="icon"
+    link href="/icon#{'-dev' if Rails.env.development?}.svg" rel="icon" type="image/svg+xml"
+    link href="/apple-touch-icon.png" rel="apple-touch-icon"
+    link href="/site.webmanifest" rel="manifest"
+    link color="#d52b1e" href="/safari-pinned-tab.svg" rel="mask-icon"
+    meta content="#da532c" name="msapplication-TileColor"
+    meta content="#041727" name="theme-color"
+    meta content="false" name="turbo-prefetch"
+
+    = csrf_meta_tags
+    = include_gon
+    = stylesheet_link_tag "career_site", media: "all", "data-turbo-track": "reload"
+
+    - # rubocop:disable Rails/OutputSafety
+    - if @custom_styles.present?
+      style
+        = @custom_styles.html_safe
+    - # rubocop:enable Rails/OutputSafety
+    = javascript_include_tag "fontawesome_all", "data-turbo-track": "reload"
+    = javascript_include_tag "ats", "data-turbo-track": "reload"
+    = javascript_include_tag "https://www.gstatic.com/charts/loader.js"
+    - if !rodauth.logged_in? && Rails.env.production?
+      = javascript_include_tag "recaptcha"
+      - onload = "&onload=onGrecaptchaLoad"
+      script[defer="true" src="https://www.google.com/recaptcha/api.js?render=#{RecaptchaV3::SITE_KEY}#{onload}"]
+  body#career_site data-controller="alerts"
+    .wrapper.bg-white id=@page_id
+      main.container.container-small
+        = render partial: "shared/notification"
+        = yield
+    = render "layouts/career_site/footer"

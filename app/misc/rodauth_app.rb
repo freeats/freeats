@@ -20,6 +20,8 @@ class RodauthApp < Rodauth::Rails::App
 
     rodauth.load_memory # autologin remembered users
 
+    return if r.path.match?(%r{^/positions})
+
     # Authentication in testing.
     if Rails.env.test?
       r.on "test-environment-only" do

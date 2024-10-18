@@ -1362,6 +1362,39 @@ ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
 
 
 --
+-- Name: friendly_id_slugs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.friendly_id_slugs (
+    id bigint NOT NULL,
+    slug character varying NOT NULL,
+    sluggable_id integer NOT NULL,
+    sluggable_type character varying(50),
+    scope character varying,
+    created_at timestamp(6) without time zone
+);
+
+
+--
+-- Name: friendly_id_slugs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.friendly_id_slugs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: friendly_id_slugs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.friendly_id_slugs_id_seq OWNED BY public.friendly_id_slugs.id;
+
+
+--
 -- Name: location_aliases; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1684,7 +1717,8 @@ CREATE TABLE public.positions (
     tenant_id bigint,
     external_source_id bigint,
     location_id bigint,
-    status public.position_status DEFAULT 'draft'::public.position_status NOT NULL
+    status public.position_status DEFAULT 'draft'::public.position_status NOT NULL,
+    slug character varying
 );
 
 
@@ -2634,6 +2668,13 @@ ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.event
 
 
 --
+-- Name: friendly_id_slugs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.friendly_id_slugs ALTER COLUMN id SET DEFAULT nextval('public.friendly_id_slugs_id_seq'::regclass);
+
+
+--
 -- Name: location_aliases id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3050,6 +3091,14 @@ ALTER TABLE ONLY public.email_threads
 
 ALTER TABLE ONLY public.events
     ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: friendly_id_slugs friendly_id_slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.friendly_id_slugs
+    ADD CONSTRAINT friendly_id_slugs_pkey PRIMARY KEY (id);
 
 
 --
@@ -3713,6 +3762,27 @@ CREATE INDEX index_events_on_type_and_performed_at ON public.events USING btree 
 
 
 --
+-- Name: index_friendly_id_slugs_on_slug_and_sluggable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_friendly_id_slugs_on_slug_and_sluggable_type ON public.friendly_id_slugs USING btree (slug, sluggable_type);
+
+
+--
+-- Name: index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope ON public.friendly_id_slugs USING btree (slug, sluggable_type, scope);
+
+
+--
+-- Name: index_friendly_id_slugs_on_sluggable_type_and_sluggable_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_friendly_id_slugs_on_sluggable_type_and_sluggable_id ON public.friendly_id_slugs USING btree (sluggable_type, sluggable_id);
+
+
+--
 -- Name: index_location_aliases_on_alias; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4004,6 +4074,13 @@ CREATE INDEX index_positions_on_location_id ON public.positions USING btree (loc
 --
 
 CREATE INDEX index_positions_on_recruiter_id ON public.positions USING btree (recruiter_id);
+
+
+--
+-- Name: index_positions_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_positions_on_slug ON public.positions USING btree (slug);
 
 
 --
@@ -4853,6 +4930,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241015130851'),
 ('20241015130608'),
 ('20241015125238'),
+('20241015101251'),
+('20241015101237'),
 ('20241014103851'),
 ('20241011094049'),
 ('20241010123414'),

@@ -1,0 +1,57 @@
+- content_for :title do
+  = "#{@position.name} at #{@company_name}"
+
+.row
+  span#back_on_all_positions
+    = link_to positions_path do
+      i.fa-light.fa-chevron-left.me-1
+      = t("career_site.positions.all_positions", name: @company_name)
+.row#position_heading.mt-3.gap-3.justify-content-between
+  .col-12.col-md-10
+    .col
+      h2 = @position.name
+    .col
+      = @position.location&.short_name
+  - if @position.open?
+    .col-12.col-md-auto.align-items-center.d-flex
+      = render ButtonLinkComponent.new( \
+          "#application_form",
+          size: :medium, class: "w-100" \
+        ).with_content(t("career_site.positions.apply_button"))
+- unless @position.open?
+  .row#closed_section.mt-2
+    .col-12.mb-3
+      = t("career_site.positions.closed_alert")
+    .col-12.col-md-auto
+      = render ButtonLinkComponent.new( \
+          positions_path, size: :medium, class: "w-100" \
+        ).with_content(t("career_site.positions.view_all"))
+- if @position.open?
+  - if @position.description.body.present?
+    .row#position_description.mt-4
+      h2.mb-3 = t("career_site.positions.description")
+      .text-break
+        = sanitize @position.description.body&.to_html
+  hr.my-4
+  #application_form
+    h2.mb-3 Apply for this job
+    = form_with url: position_apply_path(@position.id), class: "d-flex flex-column gap-2" do |form|
+      #turbo_recaptcha.position-absolute
+      = render TextInputComponent.new(form, method: :full_name, required: true, placeholder: "Full name")
+      = render TextInputComponent.new( \
+          form,
+          method: :email,
+          required: true,
+          type: :email,
+          pattern: EmailRegexp::HTML_EMAIL_PATTERN,
+          placeholder: "Email" \
+        )
+      = form.file_field :file, class: "form-control", id: "formFile", type: "file",
+                               required: true, accept: ".pdf,.doc,.docx,.odt,.rtf"
+
+      = hidden_field_tag :recaptcha_v3_score
+      = render ButtonComponent.new( \
+          variant: :primary,
+          size: :medium,
+          class: "flex-grow-1 flex-lg-grow-0 mt-2" \
+        ).with_content(t("career_site.positions.submit_application"))

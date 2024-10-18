@@ -17,6 +17,10 @@ Rails.application.routes.draw do
   get "invitation" => "rodauth#invite"
   post "accept_invite" => "rodauth#accept_invite"
 
+  resources :positions, only: %i[index show], controller: "career_site/positions" do
+    post :apply
+  end
+
   namespace :ats do
     resources :candidates, except: %i[show edit] do
       get "/", to: redirect("/ats/candidates/%{id}/info"), on: :member, id: /\d+/

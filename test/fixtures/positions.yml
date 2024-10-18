@@ -5,6 +5,7 @@ ruby_position:
   change_status_reason: filled
   tenant: toughbyte_tenant
   location: helsinki_city
+  slug: ruby-developer-<%= ActiveRecord::FixtureSet.identify(:ruby_position) %>
 
 golang_position:
   name: Golang developer
@@ -12,6 +13,7 @@ golang_position:
   change_status_reason: filled
   hiring_managers: [hiring_manager_member]
   tenant: toughbyte_tenant
+  slug: golang-developer-<%= ActiveRecord::FixtureSet.identify(:golang_position) %>
 
 closed_position:
   recruiter: admin_member
@@ -19,6 +21,7 @@ closed_position:
   status: closed
   change_status_reason: other
   tenant: toughbyte_tenant
+  slug: java-developer-<%= ActiveRecord::FixtureSet.identify(:closed_position) %>
 
 suroviy_open_position:
   recruiter: suroviy_grigoriy_member
@@ -26,6 +29,7 @@ suroviy_open_position:
   status: open
   change_status_reason: filled
   tenant: suroviy_byte_tenant
+  slug: ocaml-developer-<%= ActiveRecord::FixtureSet.identify(:suroviy_open_position) %>
 
 suroviy_close_position:
   recruiter: suroviy_grigoriy_member
@@ -34,3 +38,4 @@ suroviy_close_position:
   change_status_reason: no_longer_relevant
   tenant: suroviy_byte_tenant
   location: copenhagen_city
+  slug: haskell-developer-<%= ActiveRecord::FixtureSet.identify(:suroviy_close_position) %>

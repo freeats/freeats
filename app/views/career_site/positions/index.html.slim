@@ -1,0 +1,7 @@
+#positions.container.container-small
+  h1.mb-2 = t("career_site.positions.open_positions_header", name: @positions.first.tenant.name)
+  .list-group.gap-3 id="position-list" role="list"
+    - @positions.each do |position|
+      .list-group-item.custom-list-item.px-1 id="position_#{position.id}"
+        .position_name.text-break.mb-1 = link_to position.name, position_path(position.slug)
+        .position_location.mb-0 = position&.location&.short_name
