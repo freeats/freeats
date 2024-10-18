@@ -539,6 +539,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
   test "should assign and unassign recruiter for candidate, create event and update last_activity_at" do
     actor_account = accounts(:admin_account)
+    sign_out
     sign_in actor_account
 
     candidate = Candidate.first

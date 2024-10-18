@@ -6,7 +6,6 @@ class Account < ApplicationRecord
 
   acts_as_tenant(:tenant)
 
-  has_many :identities, dependent: :destroy
   has_one :member, dependent: :destroy
 
   enum :status, unverified: 1, verified: 2, closed: 3

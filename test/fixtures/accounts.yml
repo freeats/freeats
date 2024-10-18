@@ -29,7 +29,6 @@ interviewer_account:
   status: verified
   tenant: toughbyte_tenant
 
-# Inactive account doesn't have any identities.
 inactive_account:
   email: inactive@mail.com
   name: Jimmy Bean

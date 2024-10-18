@@ -8,7 +8,6 @@ class MemberTest < ActiveSupport::TestCase
     member.deactivate
 
     assert_equal member.access_level, "inactive"
-    assert_empty member.account.identities
   end
 
   test "should return mentioned members in text" do

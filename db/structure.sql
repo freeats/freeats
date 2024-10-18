@@ -447,37 +447,6 @@ ALTER SEQUENCE public.access_tokens_id_seq OWNED BY public.access_tokens.id;
 
 
 --
--- Name: account_identities; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.account_identities (
-    id bigint NOT NULL,
-    account_id bigint,
-    provider character varying NOT NULL,
-    uid character varying NOT NULL
-);
-
-
---
--- Name: account_identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.account_identities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: account_identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.account_identities_id_seq OWNED BY public.account_identities.id;
-
-
---
 -- Name: account_password_reset_keys; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2349,13 +2318,6 @@ ALTER TABLE ONLY public.access_tokens ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- Name: account_identities id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.account_identities ALTER COLUMN id SET DEFAULT nextval('public.account_identities_id_seq'::regclass);
-
-
---
 -- Name: account_password_reset_keys id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2718,14 +2680,6 @@ ALTER TABLE ONLY public.tenants ALTER COLUMN id SET DEFAULT nextval('public.tena
 
 ALTER TABLE ONLY public.access_tokens
     ADD CONSTRAINT access_tokens_pkey PRIMARY KEY (id);
-
-
---
--- Name: account_identities account_identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.account_identities
-    ADD CONSTRAINT account_identities_pkey PRIMARY KEY (id);
 
 
 --
@@ -3192,20 +3146,6 @@ CREATE INDEX index_access_tokens_on_sent_to ON public.access_tokens USING btree 
 --
 
 CREATE INDEX index_access_tokens_on_tenant_id ON public.access_tokens USING btree (tenant_id);
-
-
---
--- Name: index_account_identities_on_account_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_account_identities_on_account_id ON public.account_identities USING btree (account_id);
-
-
---
--- Name: index_account_identities_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_account_identities_on_provider_and_uid ON public.account_identities USING btree (provider, uid);
 
 
 --
@@ -4434,14 +4374,6 @@ ALTER TABLE ONLY public.positions_collaborators
 
 
 --
--- Name: account_identities fk_rails_8868aa7ac0; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.account_identities
-    ADD CONSTRAINT fk_rails_8868aa7ac0 FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
-
-
---
 -- Name: attachment_informations fk_rails_89a7cd7423; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4632,6 +4564,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241018092829'),
 ('20241018063719'),
 ('20241017110924'),
 ('20241017101832'),

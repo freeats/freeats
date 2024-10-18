@@ -94,9 +94,6 @@ class Member < ApplicationRecord
 
     joins(:account).where(accounts: { name: names })
   }
-  scope :with_email, lambda {
-    active.includes(user: :identities).where(users: { identities: { provider: "toughbyte" } })
-  }
   scope :with_linked_email_service, -> {
     where.not(refresh_token: "")
   }
@@ -137,7 +134,6 @@ class Member < ApplicationRecord
   def deactivate
     transaction do
       update!(access_level: :inactive)
-      account.identities.destroy_all
     end
   end
 

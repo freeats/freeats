@@ -194,27 +194,9 @@ module ManagePassword
   end
 end
 
-# https://github.com/janko/rodauth-omniauth
-module Omniauth
-  extend ActiveSupport::Concern
-
-  included do
-    configure do
-      enable :omniauth_base
-
-      # Google OAuth 2.0
-      omniauth_provider :google_oauth2,
-                        Rails.application.credentials.google_oauth.client_id!,
-                        Rails.application.credentials.google_oauth.client_secret!,
-                        scope: "email", access_type: "online"
-    end
-  end
-end
-
 class RodauthMain < Rodauth::Rails::Auth
   include CreateAccount
   include LoginLogout
-  include Omniauth
   include Remember
   include VerifyAccount
   include ManagePassword

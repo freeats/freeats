@@ -26,7 +26,7 @@ module ActiveSupport
     def sign_in(account)
       # We have to set the host because for some reason this request addresses the `example.com` domain,
       # and we did not find a better way to fix this.
-      post("http://localhost:3000/test-environment-only/please-login", params: { email: account.email })
+      post("http://localhost:3000/sign_in", params: { email: account.email, password: "password" })
     end
 
     def sign_out
