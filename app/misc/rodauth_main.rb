@@ -43,7 +43,7 @@ module CreateAccount
           account.verified!
           Member.create!(account_id:, tenant_id:, access_level: :member)
         else
-          tenant = Tenant.create!(name: param("company_name"), locale: I18n.locale)
+          tenant = Tenant.create!(name: param("company_name"))
           Account.find(account_id).update!(tenant_id: tenant.id)
           Member.create!(account_id:, tenant:, access_level: :admin)
           CandidateSource.create!(tenant:, name: "LinkedIn")

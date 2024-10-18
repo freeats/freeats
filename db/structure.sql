@@ -327,16 +327,6 @@ CREATE TYPE public.task_status AS ENUM (
 
 
 --
--- Name: tenant_locale; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.tenant_locale AS ENUM (
-    'en',
-    'ru'
-);
-
-
---
 -- Name: array_deduplicate(anyarray); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -2456,7 +2446,6 @@ CREATE TABLE public.tasks_watchers (
 CREATE TABLE public.tenants (
     id bigint NOT NULL,
     name character varying NOT NULL,
-    locale public.tenant_locale NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     career_site_enabled boolean DEFAULT false NOT NULL,
@@ -4925,6 +4914,7 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20241018063719'),
+('20241017101832'),
 ('20241015130853'),
 ('20241015130852'),
 ('20241015130851'),

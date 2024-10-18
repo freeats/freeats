@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Tenant < ApplicationRecord
-  enum locale: %i[en ru].index_with(&:to_s)
-
   validates :name, presence: true
 
   validate :all_active_positions_have_recruiter_when_career_site_enabled

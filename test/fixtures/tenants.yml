@@ -6,10 +6,8 @@
 #
 toughbyte_tenant:
   name: Toughbyte
-  locale: en
   subdomain: careers
   domain: toughbyte.localhost
 
 suroviy_byte_tenant:
   name: Суровый байт
-  locale: ru
