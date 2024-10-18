@@ -365,7 +365,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
   test "should return not_found when trying to delete a position belonging to another tenant" do
     sign_out
 
-    account = accounts(:suroviy_grigoriy_account)
+    account = accounts(:acme_grigoriy_account)
     position = positions(:ruby_position)
 
     assert_not_equal position.tenant_id, account.tenant_id

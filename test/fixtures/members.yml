@@ -36,12 +36,12 @@ george_member:
   access_level: member
   tenant: toughbyte_tenant
 
-suroviy_grigoriy_member:
-  account: suroviy_grigoriy_account
+acme_grigoriy_member:
+  account: acme_grigoriy_account
   access_level: member
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant
 
-suroviy_alex_member:
-  account: suroviy_alex_account
+acme_alex_member:
+  account: acme_alex_account
   access_level: member
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant

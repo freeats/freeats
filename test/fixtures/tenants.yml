@@ -9,5 +9,5 @@ toughbyte_tenant:
   subdomain: careers
   domain: toughbyte.localhost
 
-suroviy_byte_tenant:
-  name: Суровый байт
+acme_tenant:
+  name: ACME

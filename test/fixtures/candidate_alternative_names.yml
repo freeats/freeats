@@ -16,4 +16,4 @@ jake_alt_name:
 ilia_alt_name:
   candidate: ilia_liamshin
   name: Ilya
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant

@@ -92,9 +92,9 @@ candidate6:
   name: One-handed clap
   status: open
   taskable: ilia_liamshin (Candidate)
-  assignee: suroviy_alex_member
+  assignee: acme_alex_member
   due_date: <%= Time.zone.yesterday %>
   description: Just some text
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant
   watchers:
-    - suroviy_grigoriy_member
+    - acme_grigoriy_member

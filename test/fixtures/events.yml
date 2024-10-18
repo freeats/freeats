@@ -17,17 +17,17 @@ closed_position_added:
   eventable: closed_position (Position)
   tenant: toughbyte_tenant
 
-suroviy_active_position_added:
+acme_open_position_added:
   type: :position_added
-  actor_account: suroviy_grigoriy_account
-  eventable: suroviy_active_position (Position)
-  tenant: suroviy_byte_tenant
+  actor_account: acme_grigoriy_account
+  eventable: acme_open_position (Position)
+  tenant: acme_tenant
 
-suroviy_close_position_added:
+acme_close_position_added:
   type: :position_added
-  actor_account: suroviy_grigoriy_account
-  eventable: suroviy_close_position (Position)
-  tenant: suroviy_byte_tenant
+  actor_account: acme_grigoriy_account
+  eventable: acme_close_position (Position)
+  tenant: acme_tenant
 
 ruby_position_recruiter_assigned:
   type: :position_recruiter_assigned
@@ -303,4 +303,4 @@ ilia_liamshin_candidate_added:
   actor_account: admin_account
   eventable: ilia_liamshin (Candidate)
   performed_at: <%= 2.days.ago %>
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant

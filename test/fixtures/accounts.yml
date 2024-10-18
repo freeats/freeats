@@ -57,18 +57,18 @@ admin_ru_account:
   name: Админ Админ
   password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
   status: verified
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant
 
-suroviy_grigoriy_account:
+acme_grigoriy_account:
   email: grigoriy@mail.com
   name: Grigoriy Grigoriyov
   password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
   status: verified
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant
 
-suroviy_alex_account:
+acme_alex_account:
   email: alex@mail.com
   name: Alex Alexandov
   password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
   status: verified
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant

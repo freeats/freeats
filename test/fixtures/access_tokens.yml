@@ -16,5 +16,5 @@ other_company_member_invitation:
   sent_to: "heidegger@gmail.com"
   hashed_token: <%= Base64.encode64(Digest::SHA256.digest("test3")) %>
   context: "member_invitation"
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant
   sent_at: <%= Time.zone.yesterday %>

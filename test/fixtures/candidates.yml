@@ -32,4 +32,4 @@ ilia_liamshin:
   full_name: Ilia Liamshin
   location: nizhniy_novgorod_city
   candidate_source: headhunter
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant

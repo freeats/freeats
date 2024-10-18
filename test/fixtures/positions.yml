@@ -23,19 +23,19 @@ closed_position:
   tenant: toughbyte_tenant
   slug: java-developer-<%= ActiveRecord::FixtureSet.identify(:closed_position) %>
 
-suroviy_open_position:
-  recruiter: suroviy_grigoriy_member
+acme_open_position:
+  recruiter: acme_grigoriy_member
   name: OCaml developer
   status: open
   change_status_reason: filled
-  tenant: suroviy_byte_tenant
-  slug: ocaml-developer-<%= ActiveRecord::FixtureSet.identify(:suroviy_open_position) %>
+  tenant: acme_tenant
+  slug: ocaml-developer-<%= ActiveRecord::FixtureSet.identify(:acme_open_position) %>
 
-suroviy_close_position:
-  recruiter: suroviy_grigoriy_member
+acme_close_position:
+  recruiter: acme_grigoriy_member
   name: Haskell developer
   status: closed
   change_status_reason: no_longer_relevant
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant
   location: copenhagen_city
-  slug: haskell-developer-<%= ActiveRecord::FixtureSet.identify(:suroviy_close_position) %>
+  slug: haskell-developer-<%= ActiveRecord::FixtureSet.identify(:acme_close_position) %>

@@ -62,4 +62,4 @@ ilia_liamshin_email_address:
   type: personal
   source: other
   status: current
-  tenant: suroviy_byte_tenant
+  tenant: acme_tenant
