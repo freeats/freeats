@@ -1608,7 +1608,6 @@ CREATE TABLE public.placements (
     position_stage_id bigint NOT NULL,
     candidate_id bigint NOT NULL,
     status public.placement_status DEFAULT 'qualified'::public.placement_status NOT NULL,
-    greenhouse_id integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     tenant_id bigint,
@@ -1644,7 +1643,6 @@ CREATE TABLE public.position_stages (
     position_id bigint NOT NULL,
     name character varying NOT NULL,
     list_index integer NOT NULL,
-    greenhouse_id integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     tenant_id bigint,
@@ -1824,7 +1822,6 @@ CREATE TABLE public.scorecard_templates (
     id bigint NOT NULL,
     position_stage_id bigint NOT NULL,
     title character varying NOT NULL,
-    greenhouse_id integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     tenant_id bigint
@@ -1860,7 +1857,6 @@ CREATE TABLE public.scorecards (
     placement_id bigint NOT NULL,
     title character varying NOT NULL,
     score public.scorecard_score NOT NULL,
-    greenhouse_id integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     interviewer_id bigint NOT NULL,
@@ -3934,13 +3930,6 @@ CREATE UNIQUE INDEX index_placements_on_external_source_id ON public.placements 
 
 
 --
--- Name: index_placements_on_greenhouse_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_placements_on_greenhouse_id ON public.placements USING btree (greenhouse_id);
-
-
---
 -- Name: index_placements_on_position_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3966,13 +3955,6 @@ CREATE INDEX index_placements_on_tenant_id ON public.placements USING btree (ten
 --
 
 CREATE INDEX index_position_stages_on_external_source_id ON public.position_stages USING btree (external_source_id);
-
-
---
--- Name: index_position_stages_on_greenhouse_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_position_stages_on_greenhouse_id ON public.position_stages USING btree (greenhouse_id);
 
 
 --
@@ -4067,13 +4049,6 @@ CREATE INDEX index_scorecard_template_questions_on_tenant_id ON public.scorecard
 
 
 --
--- Name: index_scorecard_templates_on_greenhouse_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_scorecard_templates_on_greenhouse_id ON public.scorecard_templates USING btree (greenhouse_id);
-
-
---
 -- Name: index_scorecard_templates_on_position_stage_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4085,13 +4060,6 @@ CREATE UNIQUE INDEX index_scorecard_templates_on_position_stage_id ON public.sco
 --
 
 CREATE INDEX index_scorecard_templates_on_tenant_id ON public.scorecard_templates USING btree (tenant_id);
-
-
---
--- Name: index_scorecards_on_greenhouse_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_scorecards_on_greenhouse_id ON public.scorecards USING btree (greenhouse_id);
 
 
 --
@@ -4879,6 +4847,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241018063719'),
 ('20241015130853'),
 ('20241015130852'),
 ('20241015130851'),
