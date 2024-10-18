@@ -8,8 +8,8 @@ class Scheduler::ReceiveEmailMessageUpdatesJob < ApplicationJob
   queue_as :scheduler
 
   def perform
-    # Member.with_linked_email_service.pluck(:id).each do |member_id|
-    #   ReceiveEmailMessageUpdatesForMemberJob.perform_later(member_id)
-    # end
+    Member.with_linked_email_service.pluck(:id).each do |member_id|
+      ReceiveEmailMessageUpdatesForMemberJob.perform_later(member_id)
+    end
   end
 end
