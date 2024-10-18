@@ -117,9 +117,14 @@ class ATS::PlacementsController < AuthorizedController
       else
         placements.where(status: :qualified)
       end
+    position_stage_id =
+      position
+      .stages
+      .find_by(position_stages: { name: params[:stage] })
+      .id
     fetched_placements =
       placements
-      .where(position_stage_id: params[:position_stage_id])
+      .where(position_stage_id:)
       .join_last_placement_added_or_changed_event
       .order("events.performed_at DESC")
       .offset(params[:offset])
