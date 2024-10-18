@@ -136,9 +136,9 @@ class ATS::PlacementsController < AuthorizedController
 
   # rubocop:disable Naming/AccessorMethodName
   def set_placements_variables(placement)
+    candidate = placement.candidate
     all_placements =
-      placement
-      .candidate
+      candidate
       .placements
       .select("placements.*, events.performed_at AS added_at")
       .joins(:added_event)
@@ -147,6 +147,7 @@ class ATS::PlacementsController < AuthorizedController
     # Sort by created_at is intentional.
     @irrelevant_placements = all_placements.filter(&:disqualified?).sort_by(&:added_at).reverse
     @relevant_placements = (all_placements - @irrelevant_placements).sort_by(&:added_at).reverse
+    @positions_for_quick_assignment = candidate.positions_for_quick_assignment(current_member.id)
   end
   # rubocop:enable Naming/AccessorMethodName
 
@@ -232,7 +233,8 @@ class ATS::PlacementsController < AuthorizedController
     locals = {
       candidate: placement.candidate,
       relevant_placements: @relevant_placements,
-      irrelevant_placements: @irrelevant_placements
+      irrelevant_placements: @irrelevant_placements,
+      positions_for_quick_assignment: @positions_for_quick_assignment
     }
 
     render_turbo_stream(
@@ -249,7 +251,8 @@ class ATS::PlacementsController < AuthorizedController
       params
       .permit(
         :position_id,
-        :candidate_id
+        :candidate_id,
+        :suggestion_disqualify_reason
       )
 
     @placement_params

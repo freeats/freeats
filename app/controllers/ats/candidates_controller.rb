@@ -722,6 +722,7 @@ class ATS::CandidatesController < AuthorizedController
     # Sort by created_at is intentional.
     @irrelevant_placements = all_placements.filter(&:disqualified?).sort_by(&:added_at).reverse
     @relevant_placements = (all_placements - @irrelevant_placements).sort_by(&:added_at).reverse
+    @positions_for_quick_assignment = @candidate.positions_for_quick_assignment(current_member.id)
 
     @all_active_members = Member.active.to_a
     @suggested_names = suggested_members_names_for(@all_active_members)

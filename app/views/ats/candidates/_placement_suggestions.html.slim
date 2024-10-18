@@ -1,0 +1,8 @@
+/# locals: (candidate:, positions_for_quick_assignment:)
+
+#turbo_placement_suggestions
+  - if positions_for_quick_assignment.size.positive?
+    .mt-2
+      = render partial: "ats/positions/suggestion",
+        collection: positions_for_quick_assignment,
+        locals: { candidate_id: candidate.id }

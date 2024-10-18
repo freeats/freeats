@@ -76,4 +76,42 @@ class CandidateTest < ActiveSupport::TestCase
 
     assert_equal sequence.reload.status, "replied"
   end
+
+  test "positions_for_quick_assignment should suggest a position " \
+       "where current member is a recruiter" do
+    current_member = members(:admin_member)
+    candidate = candidates(:jake)
+    position = positions(:ruby_position)
+
+    assert_empty position.collaborators
+    assert_equal position.recruiter, current_member
+    assert_equal candidate.positions_for_quick_assignment(current_member.id), [position]
+  end
+
+  test "positions_for_quick_assignment should suggest a position " \
+       "where current member is a collaborator" do
+    current_member = members(:employee_member)
+    candidate = candidates(:jane)
+    position = positions(:ruby_position)
+
+    assert_empty candidate.positions_for_quick_assignment(current_member.id)
+
+    position.collaborators = [current_member]
+
+    assert_equal candidate.positions_for_quick_assignment(current_member.id), [position]
+  end
+
+  test "positions_for_quick_assignment should not suggest a position " \
+       "if a candidate is already placed on it" do
+    tenant = tenants(:toughbyte_tenant)
+    current_member = members(:admin_member)
+    candidate = candidates(:jake)
+    position = positions(:ruby_position)
+
+    assert_equal candidate.positions_for_quick_assignment(current_member.id), [position]
+
+    create(:placement, candidate:, position:, position_stage: position.stages.first, tenant:)
+
+    assert_empty candidate.positions_for_quick_assignment(current_member.id)
+  end
 end

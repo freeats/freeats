@@ -107,7 +107,8 @@
   = render partial: "ats/candidates/placements_notes_panel",
            locals: { candidate: @candidate,
                      relevant_placements: @relevant_placements,
-                     irrelevant_placements: @irrelevant_placements }
+                     irrelevant_placements: @irrelevant_placements,
+                     positions_for_quick_assignment: @positions_for_quick_assignment }
   hr
     = render partial: "ats/candidates/notes_panel",
             locals: { all_active_members: @all_active_members,

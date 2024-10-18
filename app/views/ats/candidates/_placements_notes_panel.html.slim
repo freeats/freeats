@@ -1,4 +1,4 @@
-/# locals: (candidate:, relevant_placements:, irrelevant_placements:)
+/# locals: (candidate:, relevant_placements:, irrelevant_placements:, positions_for_quick_assignment:)
 
 ruby:
   search_path = fetch_positions_api_v1_positions_path(q: "QUERY")
@@ -8,6 +8,8 @@ ruby:
       data-placements-notes-panel-position-search-url-value=search_path]
     - if allowed_to?(:create?, with: ATS::PlacementPolicy)
       = render partial: "ats/candidates/add_placement", locals: { candidate: }
+      = render partial: "ats/candidates/placement_suggestions",
+               locals: { candidate:, positions_for_quick_assignment: }
     - if relevant_placements.present? || irrelevant_placements.present?
       hr.my-4
     = render partial: "ats/candidates/placements_section",

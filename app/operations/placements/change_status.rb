@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-class Placements::ChangeStatus
+class Placements::ChangeStatus < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
-  include Dry::Initializer.define -> do
-    option :new_status, Types::Strict::String
-    option :placement, Types::Instance(Placement)
-    option :actor_account, Types::Instance(Account)
-  end
+  option :new_status, Types::Strict::String
+  option :placement, Types::Instance(Placement)
+  option :actor_account, Types::Instance(Account).optional, optional: true
 
   def call
     old_status = placement.status

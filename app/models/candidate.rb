@@ -485,4 +485,27 @@ class Candidate < ApplicationRecord
 
     validate ? save! : save(validate:)
   end
+
+  def positions_for_quick_assignment(current_member_id)
+    Position
+      .where(status: %w[draft open])
+      .where(
+        <<~SQL,
+          (positions.recruiter_id = :current_member_id
+            OR EXISTS (
+            SELECT 1
+            FROM positions_collaborators
+            WHERE positions_collaborators.position_id = positions.id
+            )
+          )
+          AND NOT EXISTS (
+            SELECT 1
+            FROM placements
+            WHERE candidate_id = :id
+            AND position_id = positions.id
+          )
+        SQL
+        current_member_id:, id:
+      )
+  end
 end

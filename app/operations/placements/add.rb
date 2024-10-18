@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
-class Placements::Add
+class Placements::Add < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
-  include Dry::Initializer.define -> do
-    option :params, Types::Strict::Hash.schema(
-      candidate_id: Types::Coercible::Integer,
-      position_id: Types::Coercible::Integer
-    )
-    option :create_duplicate_placement, Types::Strict::Bool, default: -> { false }
-    option :actor_account, Types::Instance(Account).optional
-  end
+  option :params, Types::Strict::Hash.schema(
+    candidate_id: Types::Coercible::Integer,
+    position_id: Types::Coercible::Integer,
+    suggestion_disqualify_reason?: Types::Strict::String.optional
+  )
+  option :create_duplicate_placement, Types::Strict::Bool, default: -> { false }
+  option :actor_account, Types::Instance(Account).optional, optional: true
 
   def call
     placement = Placement.new(
@@ -38,6 +37,14 @@ class Placements::Add
     ActiveRecord::Base.transaction do
       yield save_placement(placement)
       yield add_event(placement:, actor_account:)
+
+      if (reason = params[:suggestion_disqualify_reason]).present?
+        yield Placements::ChangeStatus.new(
+          new_status: reason,
+          placement:,
+          actor_account:
+        ).call
+      end
     end
 
     Success(placement.reload)
