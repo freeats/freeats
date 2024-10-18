@@ -79,12 +79,6 @@ class Event < ApplicationRecord
     scorecard_template_removed
     scorecard_template_updated
     scorecard_updated
-    sequence_exited
-    sequence_initialized
-    sequence_replied
-    sequence_resumed
-    sequence_started
-    sequence_stopped
     task_added
     task_changed
     task_status_changed
@@ -102,12 +96,7 @@ class Event < ApplicationRecord
 
   def update_candidate_last_activity
     candidates_to_update =
-      if type.in?(%w[sequence_initialized sequence_started sequence_stopped sequence_exited
-                     sequence_replied])
-        Candidate
-          .not_merged
-          .search_by_emails(eventable.to)
-      elsif type.in?(%w[placement_added placement_changed])
+      if type.in?(%w[placement_added placement_changed])
         [eventable.candidate]
       elsif type == "note_added" && eventable.note_thread.notable.is_a?(Candidate)
         [eventable.note_thread.notable]

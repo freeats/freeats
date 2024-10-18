@@ -4,8 +4,6 @@ class ATS::PlacementPolicy < ApplicationPolicy
   def destroy?
     (available_for_admin? || placement_creator?) &&
       record.stage == "Sourced" && record.scorecards.blank?
-    # TODO: After implementing sequences.
-    # && record.sequences.blank?
   end
 
   private

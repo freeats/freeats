@@ -5,12 +5,11 @@ class ATS::PositionsController < AuthorizedController
 
   layout "ats/application"
 
-  TABS = [
-    "Info",
-    "Pipeline",
-    "Tasks",
-    # "Sequence templates",
-    "Activities"
+  TABS = %w[
+    Info
+    Pipeline
+    Tasks
+    Activities
   ].freeze
   ACTIVITIES_PAGINATION_LIMIT = 25
   BATCH_SIZE_OF_PLACEMENTS_PER_COLUMN = 15
@@ -74,14 +73,6 @@ class ATS::PositionsController < AuthorizedController
       @tasks_grid.scope { _1.where(taskable: @position).page(params[:page]).per(10) }
     when "activities"
       set_activities_variables
-    when "sequence_templates"
-      @sequence_templates_grid = ATS::SequenceTemplatesGrid.new do |scope|
-        scope
-          .where(position: @position)
-          .order(:name)
-          .page(params[:page])
-          .per(10)
-      end
     end
 
     render "#{@active_tab}_tab", layout: "ats/position_profile"

@@ -100,9 +100,6 @@ class ATS::CandidatesController < AuthorizedController
             end
           @specified_mail_to = params[:mail_to]
           @mail_to_address = @candidate.all_emails(status: :current, type: :personal).first
-          # TODO: uncomment after adding sequences.
-          # @running_sequences = Sequence.where(to: candidate_emails, status: :running)
-          @running_sequences = []
         when "scorecards"
           # Do not use `includes` for position `stages`, it breaks their order by list_index.
           @placements_with_scorecard_templates =

@@ -82,7 +82,6 @@ class Position < ApplicationRecord
   has_many :placements, dependent: :destroy
   has_many :events, as: :eventable, dependent: :destroy
   has_many :tasks, as: :taskable, dependent: :destroy
-  has_many :sequence_templates, dependent: :nullify
 
   has_one :added_event,
           -> { where(type: :position_added) },

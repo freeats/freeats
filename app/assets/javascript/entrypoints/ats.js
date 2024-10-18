@@ -34,7 +34,3 @@ import { activateInstanceSubmit, activateKeybindShortcuts } from "../src/shared/
 initConfirmations();
 activateInstanceSubmit();
 activateKeybindShortcuts();
-
-// Cocoon depends on Jquery, so should be loaded after.
-// Therefore using 'require' instead of async 'import'.
-require("@nathanvda/cocoon");

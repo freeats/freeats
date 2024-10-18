@@ -31,9 +31,6 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
           li.nav-item
             = link_to t("core.team"), ats_team_path,
                       class: "nav-link#{' nav-link-selected' if @nav_item == :team}"
-        / li.nav-item
-          = link_to "Sequences", "/", # TODO: Replace with the correct path \
-            class: "nav-link#{' nav-link-selected' if @nav_item == :sequences}"
 
       / Necessary to place the profile button on the right side of the navbar.
       .flex-fill

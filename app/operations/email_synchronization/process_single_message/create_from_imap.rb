@@ -7,7 +7,7 @@ class EmailSynchronization::ProcessSingleMessage::CreateFromImap
     option :message, Types::Instance(Imap::Message)
     option :email_thread_id, Types::Coercible::Integer
     option :message_member, Types::Instance(EmailSynchronization::MessageMember)
-    option :sent_via, Types::Symbol.enum(:gmail, :hub_compose, :hub_reply, :hub_sequence)
+    option :sent_via, Types::Symbol.enum(:gmail, :hub_compose, :hub_reply)
   end
 
   def call

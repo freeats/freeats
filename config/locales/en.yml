@@ -239,7 +239,6 @@ en:
     no_in_dashboard: No draft, open or on hold positions
     pipeline: Pipeline
     recruiter_must_be_assigned_error: A recruiter must be assigned to this position.
-    sequence_templates_archived: "%{name} has been successfully archived."
     succesfully_deleted: The position was successfully deleted.
     successfully_created: Position draft was successfully created.
     your_positions: Your positions

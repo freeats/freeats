@@ -114,20 +114,6 @@ class ImapMessageTest < ActiveSupport::TestCase
     assert_includes message.html_body, "Reply from hub!"
   end
 
-  test "should parse sequence message" do
-    message = Imap::Message.new_from_api(ITH::SEQUENCE_MESSAGE, MESSAGE_UID, MESSAGE_FLAGS)
-
-    assert_equal message.to, ["test <test@gmail.com>"]
-    assert_equal message.from, ["Arthur Morgan <arthur.morgan@toughbyte.com>"]
-    assert_equal message.subject, "Hey test, let's discuss the Scala Developer Position"
-    assert_equal message.timestamp, Time.parse("Fri, 26 Jan 2024 07:12:26 -0800").to_i
-
-    assert_includes(
-      message.html_body,
-      "/assets/email_icons/toughbyte-icon-4cee2a446ffbd279c414027f1bb7fb78886947e991ff20edadd82c066050bb24.png"
-    )
-  end
-
   test "should parse message with encoded body" do
     message = Imap::Message.new_from_api(ITH::MESSAGE_WITH_ENCODED_BODY, MESSAGE_UID, MESSAGE_FLAGS)
 

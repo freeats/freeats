@@ -51,9 +51,6 @@ module ImapTestHelper
   REPLY_TO_MESSAGE = Mail.new(
     Rails.root.join("test/lib/imap/reply_to_message.raw").read
   )
-  SEQUENCE_MESSAGE = Mail.new(
-    Rails.root.join("test/lib/imap/sequence_message.raw").read
-  )
   SIMPLE_MESSAGE = Mail.new(
     Rails.root.join("test/lib/imap/simple_message.raw").read
   )

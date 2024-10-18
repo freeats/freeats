@@ -31,24 +31,14 @@ class EmailSynchronization::ProcessSingleMessage
         sent_via: :gmail
       ).call.value!
       unsuccessful_delivery_reason = message.find_unsuccessful_delivery_reason
-      is_auto_replied = message.auto_replied?
+      if unsuccessful_delivery_reason == "address_not_found"
+        mark_address_as_outdated_or_invalid(email_message)
+      end
+
       timestamp_is_old = old_timestamp?(email_message)
 
-      # Messages from our members do not affect sequences.
       if message_member.field != :from && !timestamp_is_old
-        result = StopSequences.new(
-          email_message:,
-          message_member:,
-          unsuccessful_delivery_reason:,
-          is_auto_replied:
-        ).call
-        case result
-        in Success(:failed_delivery_sequences_stopped) |
-           Success(:auto_reply_sequences_stopped)
-          nil
-        in Success()
-          AdvancePlacementsToRepliedStage.new(email_message:).call.value!
-        end
+        AdvancePlacementsToRepliedStage.new(email_message:).call.value!
       elsif timestamp_is_old
         Log.tagged("EmailSynchronization::ProcessSingleMessage#call") do |log|
           log.error("Received a message with old timestamp", email_message_id: email_message.id)
@@ -81,7 +71,6 @@ class EmailSynchronization::ProcessSingleMessage
       EmailMessage.exists?(message_id: [message.in_reply_to, message.references.last].compact_blank)
 
     if !is_message_with_existing_addresses && !is_message_related_to_existing_thread ||
-       # We need to synchronize such messages to stop sequences if email address not found.
        (message.from_mail_service? || message.to_mail_service?) &&
        !message.failed_delivery?
       Failure(:not_relevant_message)
@@ -152,39 +141,36 @@ class EmailSynchronization::ProcessSingleMessage
       .uniq
   end
 
+  def mark_address_as_outdated_or_invalid(email_message)
+    email_address = email_message.plain_body[CVParser::Content::EMAIL_REGEX]
+    return if email_address.blank?
+
+    new_email_addresses_status =
+      if EmailMessage.messages_from_addresses(from: email_address).exists?
+        :outdated
+      else
+        :invalid
+      end
+    CandidateEmailAddress
+      .joins(:candidate)
+      .where(address: email_address)
+      .where(candidate: { merged_to: nil })
+      .find_each do |candidate_email_address|
+      candidate_email_address.update!(status: new_email_addresses_status)
+    end
+  end
+
   def old_timestamp?(email_message)
     if (parent = email_message.find_parent).present?
-      reply_is_before_messages = email_message.timestamp < parent.timestamp - REPLY_DURATION.to_i
+      email_message.timestamp < parent.timestamp - REPLY_DURATION.to_i
     else
       earliest_message =
         EmailMessage
         .messages_to_addresses(to: email_message.fetch_from_addresses)
         .min_by(&:timestamp)
       if earliest_message.present?
-        reply_is_before_messages =
-          email_message.timestamp < earliest_message.timestamp - REPLY_DURATION.to_i
-      else
-        no_messages_to_compare_timestamp_with = true
+        email_message.timestamp < earliest_message.timestamp - REPLY_DURATION.to_i
       end
     end
-
-    # TODO: uncomment after added sequences
-    # earliest_sequence =
-    #   email_message
-    #   .email_thread
-    #   .candidates_in_thread
-    #   .map { Sequence.to_stop(_1.person_emails) }
-    #   .flatten
-    #   .min_by(&:created_at)
-    # if earliest_sequence.present?
-    #   reply_is_before_sequences = email_message.timestamp < earliest_sequence&.created_at&.to_i
-    reply_is_before_sequences = false
-    # else
-    no_sequences_to_compare_timestamp_with = true
-    # end
-
-    reply_is_before_messages && reply_is_before_sequences ||
-      reply_is_before_messages && no_sequences_to_compare_timestamp_with ||
-      no_messages_to_compare_timestamp_with && reply_is_before_sequences
   end
 end

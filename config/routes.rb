@@ -39,7 +39,6 @@ Rails.application.routes.draw do
       delete :delete_cv_file, on: :member
       patch :change_cv_status, on: :member
       get :download_cv_file, on: :member
-      post :stop_sequences, on: :member
       post :synchronize_email_messages, on: :member
       get :merge_duplicates_modal, on: :member
       post :merge_duplicates, on: :member
@@ -60,7 +59,7 @@ Rails.application.routes.draw do
       get ":tab",
           to: "positions#show",
           on: :member,
-          tab: /info|pipeline|tasks|sequence_templates||activities/,
+          tab: /info|pipeline|tasks|activities/,
           as: "tab"
       patch :change_status, on: :member
       get :show_header, on: :member
@@ -103,12 +102,6 @@ Rails.application.routes.draw do
 
     resources :email_threads, only: [] do
       get :fetch_messages, on: :member
-    end
-
-    resources :sequence_templates, only: %i[new create show edit update] do
-      get :setup_test, on: :member
-      get :test, on: :member
-      patch :archive, on: :member
     end
 
     resources :tasks, only: %i[index create update new show] do

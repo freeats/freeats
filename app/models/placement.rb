@@ -8,7 +8,6 @@ class Placement < ApplicationRecord
        overpriced overqualified underqualified position_closed other].freeze
   has_many :events, as: :eventable, dependent: :destroy
   has_many :scorecards, dependent: :destroy
-  has_many :sequences, dependent: :destroy
 
   has_one :added_event,
           -> { where(type: "placement_added") },
