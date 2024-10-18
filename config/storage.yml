@@ -11,7 +11,7 @@ amazon:
   access_key_id: <%= Rails.application.credentials.dig(:amazon, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:amazon, :secret_access_key) %>
   bucket: <%= Rails.application.credentials.dig(:amazon, :bucket) || "dummy" %>
-  region: eu-west-1
+  region: <%= ENV.fetch("AMAZON_REGION", "dummy") %>
   public: true
 # Remember not to checkin your GCS keyfile to a repository
 # google:

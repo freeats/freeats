@@ -15,7 +15,7 @@
       - all_files.each do |file|
         tr
           td.text-truncate
-            = link_to file.blob.filename, file.url.to_s, target: :_blank
+            = link_to file.blob.filename, url_for(file), target: :_blank
           td
             - if file.added_event.actor_account_id?
               = picture_avatar_icon file.added_event.actor_account.avatar, {}, class: "small-avatar-thumbnail"

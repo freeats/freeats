@@ -2,13 +2,13 @@
 
 div
   - if file.present?
-    - if File.extname(file.url).casecmp?(".pdf")
-      object data="#{file.url}" height="800px" type="application/pdf" width="100%"
+    - if File.extname(url_for(file)).casecmp?(".pdf")
+      object data="#{url_for(file)}" height="800px" type="application/pdf" width="100%"
         | Your browser does not support inline PDF document view.
-    - elsif File.extname(file.url).downcase.in? %w[.doc .docx]
+    - elsif File.extname(url_for(file)).downcase.in? %w[.doc .docx]
       iframe [frameborder="0" height="800px" width="100%" loading="lazy"
-        src="https://view.officeapps.live.com/op/embed.aspx?src=#{file.url}"]
+        src="https://view.officeapps.live.com/op/embed.aspx?src=#{url_for(file)}"]
     - else
       .border.p-4
-        = raw t('candidates.cv_file_extension_alert', extension: File.extname(file.url),
-                download_link: link_to(t("candidates.download_file"), file.url, target: "_blank"))
+        = raw t('candidates.cv_file_extension_alert', extension: File.extname(url_for(file)),
+                download_link: link_to(t("candidates.download_file"), url_for(file), target: "_blank"))

@@ -25,7 +25,7 @@
         - if @candidate.cv.present?
           / On mobile devices this text is located at the top of the buttons.
           .d-md-none.mt-2
-            = link_to @candidate.cv.blob.filename, @candidate.cv.url.to_s, target: "_blank"
+            = link_to @candidate.cv.blob.filename, url_for(@candidate.cv), target: "_blank"
             .mt-2 data-bs-toggle="tooltip" title=@candidate.cv.added_event.performed_at.to_fs(:datetime_full)
               = t("core.uploaded_on", time: short_time_ago_in_words(@candidate.cv.added_event.performed_at))
         .d-flex.justify-content-between
