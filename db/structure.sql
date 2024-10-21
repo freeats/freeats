@@ -160,8 +160,6 @@ CREATE TYPE public.event_type AS ENUM (
     'active_storage_attachment_removed',
     'candidate_added',
     'candidate_changed',
-    'candidate_interview_resolved',
-    'candidate_interview_scheduled',
     'candidate_merged',
     'candidate_recruiter_assigned',
     'candidate_recruiter_unassigned',
@@ -4564,6 +4562,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241018104859'),
 ('20241018092829'),
 ('20241018063719'),
 ('20241017110924'),

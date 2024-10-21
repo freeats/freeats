@@ -220,31 +220,6 @@ note_task_added:
   performed_at: <%= 1.day.ago %>
   tenant: toughbyte_tenant
 
-jake_candidate_interview_scheduled:
-  type: :candidate_interview_scheduled
-  actor_account: admin_account
-  eventable: jake (Candidate)
-  properties:
-    scheduled_for: <%= (Time.zone.now +  1.day).rfc3339 %>
-  tenant: toughbyte_tenant
-
-john_candidate_interview_scheduled:
-  type: :candidate_interview_scheduled
-  actor_account: admin_account
-  eventable: john (Candidate)
-  properties:
-    scheduled_for: <%= (Time.zone.now +  1.day).rfc3339 %>
-  tenant: toughbyte_tenant
-
-john_candidate_interview_resolved:
-  type: :candidate_interview_resolved
-  actor_account: admin_account
-  eventable: john (Candidate)
-  properties:
-    status: "missed_by_candidate"
-    pair_event_id: <%= ActiveRecord::FixtureSet.identify(:john_candidate_interview_scheduled) %>
-  tenant: toughbyte_tenant
-
 golang_interviewed_position_stage_added:
   type: :position_stage_added
   actor_account: admin_account

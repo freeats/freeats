@@ -48,8 +48,6 @@ class Event < ApplicationRecord
     active_storage_attachment_removed
     candidate_added
     candidate_changed
-    candidate_interview_resolved
-    candidate_interview_scheduled
     candidate_merged
     candidate_recruiter_assigned
     candidate_recruiter_unassigned

@@ -93,31 +93,6 @@ module CandidatesHelper
         "<b>#{event.eventable.name}</b> task"
       when "task_changed"
         ats_task_changed_display_activity(event)
-      when "candidate_interview_scheduled"
-        "#{actor_account_name} appointed interview for " \
-        "#{event.properties['scheduled_for'].to_datetime.in_time_zone.to_fs(:datetime)}"
-      when "candidate_interview_resolved"
-        scheduled_event = event.becomes(Candidate::Interview).pair_event
-        scheduled =
-          "scheduled for #{scheduled_event.scheduled_for.to_fs(:datetime)}"
-        case event.properties["status"]
-        when "passed"
-          "#{actor_account_name} conducted interview #{scheduled} " \
-          "and candidate <b>passed</b>"
-        when "failed"
-          "#{actor_account_name} conducted interview #{scheduled} " \
-          "and candidate <b>failed</b>"
-        when "canceled_by_candidate"
-          "Candidate canceled interview with #{actor_account_name} #{scheduled}"
-        when "canceled_by_recruiter"
-          "#{actor_account_name} canceled interview #{scheduled}"
-        when "missed_by_candidate"
-          "Candidate missed interview with #{actor_account_name} #{scheduled}"
-        when "canceled"
-          "Interview with #{actor_account_name} #{scheduled} was canceled"
-        else
-          "Unknown status for interview, please contact support"
-        end
       else
         Log.tagged("candidate_display_activity") do |log|
           log.external_log("unhandled event type #{event.type}")
