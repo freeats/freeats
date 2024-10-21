@@ -87,14 +87,16 @@ class ATS::TasksController < AuthorizedController
   end
 
   def create
-    case Tasks::Add.new(
+    result = Tasks::Add.new(
       params: task_params.to_h.deep_symbolize_keys,
       actor_account: current_account
     ).call
-    in Success[task]
+    case result
+    in Success(task)
       render_tasks_grid(task)
-    in Failure[:inactive_assignee, _error] | Failure[:task_invalid, _error]
-      render_error _error, status: :unprocessable_entity
+    in Failure(:inactive_assignee) | Failure(:assignee_not_found) | Failure[:task_invalid, _error]
+      error_message = Tasks::Add.result_to_string(result)
+      render_error(error_message)
     end
   end
 
@@ -104,7 +106,7 @@ class ATS::TasksController < AuthorizedController
       params: task_params.to_h.deep_symbolize_keys,
       actor_account: current_account
     ).call
-    in Success[_task]
+    in Success(_task)
       render_task_card
     in Failure[:task_invalid, _error]
       render_error _error, status: :unprocessable_entity
@@ -195,6 +197,11 @@ class ATS::TasksController < AuthorizedController
     render_turbo_stream(
       [
         turbo_stream.replace(:turbo_tasks_grid, partial: "tasks_grid"),
+        turbo_stream.replace(
+          :turbo_navbar_tasks_counter,
+          partial: "ats/tasks/navbar_counter",
+          locals: { pending_tasks_count: current_member.tasks_count }
+        ),
         if task.taskable
           turbo_stream.replace_all(
             ".turbo_tab_tasks_counter",
@@ -238,6 +245,11 @@ class ATS::TasksController < AuthorizedController
             added_on_time: @task.added_event.performed_at,
             grid: params[:grid]
           }
+        ),
+        turbo_stream.replace(
+          :turbo_navbar_tasks_counter,
+          partial: "ats/tasks/navbar_counter",
+          locals: { pending_tasks_count: current_member.tasks_count }
         ),
         turbo_stream.replace(
           task_dom_id,

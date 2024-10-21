@@ -17,8 +17,11 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
                       class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
         - if allowed_to?(:index?, with: ATS::TaskPolicy)
           li.nav-item
-            = link_to t("core.tasks"), ats_tasks_path,
-                      class: "nav-link#{' nav-link-selected' if @nav_item == :tasks}"
+            = link_to ats_tasks_path,
+              class: "nav-link#{' nav-link-selected' if @nav_item == :tasks} d-inline-flex align-items-center " \
+                     "gap-2 pt-md-2"
+              = t("core.tasks")
+              = render partial: "ats/tasks/navbar_counter", locals: { pending_tasks_count: @pending_tasks_count }
         - if allowed_to?(:index?, with: ATS::CandidatePolicy)
           li.nav-item
             = link_to t("core.candidates"), ats_candidates_path,

@@ -164,4 +164,8 @@ class Member < ApplicationRecord
   def reset_email_service_tokens
     update!(token: "", refresh_token: "")
   end
+
+  def tasks_count
+    Task.pending_for(self).size
+  end
 end

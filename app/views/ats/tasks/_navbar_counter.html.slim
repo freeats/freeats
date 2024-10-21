@@ -1,0 +1,6 @@
+/# locals: (pending_tasks_count:)
+
+span.d-inline-flex id="turbo_navbar_tasks_counter"
+  - if pending_tasks_count&.positive?
+    span.badge.bg-light.text-dark
+      = pending_tasks_count

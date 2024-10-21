@@ -4,6 +4,11 @@ class AuthorizedController < ApplicationController
   set_current_tenant_through_filter
 
   before_action :set_tenant
+  before_action :set_navbar_variables,
+                unless: -> {
+                          request.format.json? || request.format.js? ||
+                            request.format.turbo_stream?
+                        }
   rescue_from ActionPolicy::Unauthorized, with: :user_not_authorized
 
   authorize :member, through: :current_member
@@ -33,5 +38,9 @@ class AuthorizedController < ApplicationController
   def set_tenant
     current_tenant = current_account&.tenant
     set_current_tenant(current_tenant)
+  end
+
+  def set_navbar_variables
+    @pending_tasks_count = current_member.tasks_count if current_member
   end
 end

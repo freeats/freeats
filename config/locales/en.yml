@@ -249,7 +249,9 @@ en:
 
   tasks:
     add_task_button: Add task
+    assignee_not_found: Assignee has not been found.
     description: Description
+    inactive_assignee: Assignee must be an active member.
     repeat: Repeat
     repeat_interval:
       daily: Daily

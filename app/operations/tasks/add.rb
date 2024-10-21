@@ -16,9 +16,26 @@ class Tasks::Add < ApplicationOperation
   ).strict
   option :actor_account, Types::Instance(Account).optional, optional: true
 
+  def self.result_to_string(result)
+    case result
+    in Success(_task)
+      I18n.t("tasks.successfully_created")
+    in Failure(:inactive_assignee)
+      I18n.t("tasks.inactive_assignee")
+    in Failure(:assignee_not_found)
+      I18n.t("tasks.assignee_not_found")
+    in Failure[:task_invalid, error]
+      error
+    end
+  end
+
   def call
-    if params[:assignee_id].present? && Member.find(params[:assignee_id]).inactive?
-      return Failure[:inactive_assignee, "Assignee must be an active member."]
+    if params[:assignee_id].present?
+      assignee = Member.find_by(id: params[:assignee_id])
+
+      return Failure(:assignee_not_found) if assignee.nil?
+
+      return Failure(:inactive_assignee) if assignee.inactive?
     end
 
     params[:watcher_ids] = watchers.map(&:id)
