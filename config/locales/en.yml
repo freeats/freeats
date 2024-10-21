@@ -108,6 +108,7 @@ en:
     actions:
       deactivate_member:
         menu: Deactivate
+        title: Deactivate
 
   candidates:
     address: Address
