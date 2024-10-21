@@ -119,7 +119,7 @@ class Position < ApplicationRecord
 
   validates :slug, presence: true
   validate :active_recruiter_must_be_assigned_if_career_site_is_enabled,
-           if: :status_changed_to_open?
+           if: -> { status_changed_to_open? || recruiter_id_changed? && open? }
   validate :location_must_be_city, if: :location_id_changed?
 
   after_create do

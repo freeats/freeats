@@ -141,9 +141,21 @@ class PositionTest < ActiveSupport::TestCase
     assert_not position.valid?
     assert_includes position.errors[:base], I18n.t("positions.recruiter_must_be_assigned_error")
 
+    position.recruiter = inactive_recruiter
+
+    assert_not position.valid?
+    assert_includes position.errors[:base], I18n.t("positions.active_recruiter_must_be_assigned_error")
+
     position.recruiter = active_recruiter
 
     assert_predicate position, :valid?
+
+    position.save!
+
+    position.recruiter = nil
+
+    assert_not position.valid?
+    assert_includes position.errors[:base], I18n.t("positions.recruiter_must_be_assigned_error")
 
     position.recruiter = inactive_recruiter
 
