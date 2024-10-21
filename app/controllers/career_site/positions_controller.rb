@@ -97,8 +97,9 @@ class CareerSite::PositionsController < ApplicationController
       actor_account: nil
     ).call
     in Success
-      render_turbo_stream([], notice: t("career_site.positions.successfully_applied",
-                                        position_name: position.name))
+      redirect_to position_path(position.slug),
+                  notice: t("career_site.positions.successfully_applied",
+                            position_name: position.name)
     in Failure[:candidate_invalid, candidate_or_message]
       error_message =
         if candidate_or_message.is_a?(Candidate)

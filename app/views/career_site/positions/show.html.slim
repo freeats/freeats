@@ -15,7 +15,7 @@
   - if @position.open?
     .col-12.col-md-auto.align-items-center.d-flex
       = render ButtonLinkComponent.new( \
-          "#application_form",
+          "#full_name",
           size: :medium, class: "w-100" \
         ).with_content(t("career_site.positions.apply_button"))
 - unless @position.open?
@@ -37,7 +37,12 @@
     h2.mb-3 Apply for this job
     = form_with url: position_apply_path(@position.id), class: "d-flex flex-column gap-2" do |form|
       #turbo_recaptcha.position-absolute
-      = render TextInputComponent.new(form, method: :full_name, required: true, placeholder: "Full name")
+      = render TextInputComponent.new( \
+          form,
+          method: :full_name,
+          required: true,
+          placeholder: "Full name" \
+        )
       = render TextInputComponent.new( \
           form,
           method: :email,

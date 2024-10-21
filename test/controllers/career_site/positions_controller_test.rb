@@ -45,10 +45,8 @@ class CareerSite::PositionsControllerTest < ActionDispatch::IntegrationTest
 
     apply_mock.verify
 
-    assert_turbo_stream action: :replace, target: "alerts", status: :ok do
-      assert_select("template",
-                    text: I18n.t("career_site.positions.successfully_applied", position_name: position.name))
-    end
+    assert_redirected_to position_path(position.slug)
+    assert_equal flash[:notice], I18n.t("career_site.positions.successfully_applied", position_name: position.name)
   end
 
   test "apply should return error if errors occurred during the process" do
