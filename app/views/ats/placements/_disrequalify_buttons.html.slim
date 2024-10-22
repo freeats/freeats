@@ -19,8 +19,15 @@
 - if position_pipeline_card && placement.reserved?
   span style="width: 36px;"
 - if placement.qualified? || placement.reserved?
-  span.btn-group [data-bs-display=("static" if data_display_static) aria-expanded="false" aria-haspopup="true"
-      data-bs-toggle="dropdown" type="button"]
+  = tag.span( \
+      class: "btn-group",
+      type: :button,
+      aria: { expanded: false, haspopup: true },
+      data: { action: "shown.bs.dropdown->pipeline-placements#onDisqualifyDropdownToggle " \
+                      "hidden.bs.dropdown->pipeline-placements#onDisqualifyDropdownToggle",
+              bs_toggle: :dropdown,
+              bs_display: ("static" if data_display_static) },
+    )
     button.btn.btn-light.placement-dropdown-toggle.placement-button [data-bs-toggle="tooltip"
       data-bs-title="Disqualify" data-bs-placement="bottom"]
       i.far.fa-ban

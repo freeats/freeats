@@ -24,7 +24,8 @@
                 = placement.status.humanize
             - if allowed_to?(:change_stage?, placement, with: ATS::PlacementPolicy)
               .card-hidden-container [
-                  class=("d-flex flex-row-reverse gap-1 col-sm-12 justify-content-sm-between" if placement.reserved?)]
+                  class=("d-flex flex-row-reverse gap-1 col-sm-12 justify-content-sm-between" if placement.reserved?)
+                  data-pipeline-placements-target="disqualifyButtonHiddenContainer"]
                 = render "ats/placements/disrequalify_buttons",
                          placement:,
                          data_display_static: true,

@@ -133,18 +133,19 @@
     .card-right-container {
       width: calc(100% - 80px);
       flex: 0 0 auto;
+
+      .btn {
+        padding: unset;
+        width: 36px;
+        height: 36px;
+      }
+
       .card-hidden-container {
         opacity: 1;
         transition: opacity 0.2s linear;
 
         @media (hover: hover) {
           opacity: 0;
-        }
-
-        .btn {
-          padding: unset;
-          width: 36px;
-          height: 36px;
         }
 
         .overflow-y-scroll {
