@@ -421,3 +421,9 @@ ul.dropdown-menu {
     font-size: 1.25rem;
   }
 }
+
+.copy-to-clipboard-tooltip {
+  .popover-body {
+    padding: 8px;
+  }
+}

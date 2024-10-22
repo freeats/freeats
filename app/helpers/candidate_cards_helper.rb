@@ -62,12 +62,14 @@ module CandidateCardsHelper
 
     safe_join(
       [candidate.candidate_email_addresses.map do |e|
-         link_to_with_copy_popover_button(
-           e.address,
-           "mailto:#{e[:address]}",
-           data: { turbo_frame: "_top" },
-           class: "text-truncate"
-         )
+         tag.div(class: "d-flex column-gap-1") do
+           link_to_with_copy_popover_button(
+             e.address,
+             "mailto:#{e[:address]}",
+             data: { turbo_frame: "_top" },
+             class: "text-truncate"
+           )
+         end
        end]
     )
   end
