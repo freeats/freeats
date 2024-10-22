@@ -626,6 +626,7 @@ class ATS::CandidatesController < AuthorizedController
         email_thread_id:
           EmailThread.get_threads_with_addresses(email_address: @candidate.all_emails).select(:id)
       ).count
+    @scorecards_count = @candidate.scorecards.count
     set_placements_variables
     set_header_variables
   end

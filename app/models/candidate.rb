@@ -509,4 +509,19 @@ class Candidate < ApplicationRecord
         current_member_id:, id:
       )
   end
+
+  def scorecards
+    Scorecard
+      .where(
+        <<~SQL,
+          EXISTS (
+            SELECT 1
+            FROM placements
+            WHERE placements.candidate_id = :candidate_id
+            AND scorecards.placement_id = placements.id
+          )
+        SQL
+        candidate_id: id
+      )
+  end
 end

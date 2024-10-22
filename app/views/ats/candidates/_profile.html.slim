@@ -40,6 +40,9 @@
 
   - tab_labels[:scorecards] = capture
     | Scorecards
+    - if @scorecards_count.positive?
+      | &nbsp;
+      span.badge.bg-secondary = @scorecards_count
 
   - tab_labels[:files] = capture
     | Files
