@@ -9,7 +9,8 @@ class CareerSite::PositionsControllerTest < ActionDispatch::IntegrationTest
     position = positions(:ruby_position)
     tenant = position.tenant
     file = fixture_file_upload("empty.pdf", "application/pdf")
-    candidate_params = { full_name: "John Smith", email: "KdQ5j@example.com", file: }
+    candidate_params =
+      { full_name: "John Smith", email: "KdQ5j@example.com", file:, recaptcha_v3_score: 1.0 }
 
     post position_apply_path(position_id: position.id), params: candidate_params
 
@@ -53,7 +54,8 @@ class CareerSite::PositionsControllerTest < ActionDispatch::IntegrationTest
     position = positions(:ruby_position)
     tenant = position.tenant
     file = fixture_file_upload("empty.pdf", "application/pdf")
-    candidate_params = { full_name: "John Smith", email: "KdQ5j@example.com", file: }
+    candidate_params =
+      { full_name: "John Smith", email: "KdQ5j@example.com", file:, recaptcha_v3_score: 1.0 }
 
     tenant.career_site_enabled = true
     tenant.save!(validate: false)

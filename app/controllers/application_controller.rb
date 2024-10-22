@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
 
     gon.nginx_file_size_limit_in_mega_bytes =
       ENV.fetch("NGINX_FILE_SIZE_LIMIT_IN_MEGA_BYTES", default_value_in_megabytes)
-    gon.recaptcha_v3_site_key = Rails.application.credentials.recaptcha_v3.site_key!
+    gon.recaptcha_v3_site_key = RecaptchaV3::SITE_KEY if RecaptchaV3::ENABLED
   end
 
   def set_sentry_account_context

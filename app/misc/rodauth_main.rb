@@ -367,14 +367,15 @@ class RodauthMain < Rodauth::Rails::Auth
   end
 
   def verify_recaptcha
-    return if Rails.env.development?
-
     recaptcha_v3_score = param("recaptcha_v3_score").to_f
+
+    return if RecaptchaV3::ENABLED && recaptcha_v3_score >= RecaptchaV3::MIN_SCORE
+
+    return unless Recaptcha::ENABLED
+
     # Retrieve this value from `resuest.params` because on production this `param` is blank
     # when the form is submitted with the recaptcha v2.
     recaptcha_v2_response = request.params["g-recaptcha-response"]
-
-    return if recaptcha_v3_score >= RecaptchaV3::MIN_SCORE
 
     if recaptcha_v2_response.blank?
       return_response(

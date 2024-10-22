@@ -74,4 +74,10 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   ENV["HOST_URL"] = "localhost:3000"
+
+  ENV["RECAPTCHA_V2_SITE_KEY"] = "dummy"
+  ENV["RECAPTCHA_V2_SECRET_KEY"] = "dummy"
+
+  ENV["RECAPTCHA_V3_SITE_KEY"] = "dummy"
+  ENV["RECAPTCHA_V3_SECRET_KEY"] = "dummy"
 end

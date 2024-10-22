@@ -68,19 +68,29 @@ class CareerSite::PositionsController < ApplicationController
 
     position = Position.where.not(status: :draft).find(params[:position_id])
 
-    unless helpers.public_recaptcha_v3_verified?(
-      recaptcha_v3_score: params[:recaptcha_v3_score],
-      recaptcha_v2_response: params["g-recaptcha-response"]
-    )
-      render turbo_stream: turbo_stream.update(:turbo_recaptcha,
-                                               partial: "public/application/recaptcha_modal")
-      return
+    recaptcha_v2_modal_was_shown = !params["g-recaptcha-response"].nil?
+
+    recaptcha_v3_passed =
+      RecaptchaV3::ENABLED &&
+      !recaptcha_v2_modal_was_shown &&
+      helpers.public_recaptcha_v3_verified?(
+        recaptcha_v3_score: params[:recaptcha_v3_score]
+      )
+
+    unless recaptcha_v3_passed
+      if Recaptcha::ENABLED && !recaptcha_v2_modal_was_shown
+        render turbo_stream: turbo_stream.update(:turbo_recaptcha,
+                                                 partial: "public/recaptcha_modal")
+        return
+      else
+        render_error t("career_site.recaptcha_error"), status: :unprocessable_entity
+      end
     end
 
-    unless helpers.public_recaptcha_v2_verified?(
+    if recaptcha_v2_modal_was_shown && !helpers.public_recaptcha_v2_verified?(
       recaptcha_v2_response: params["g-recaptcha-response"]
     )
-      render_error I18n.t("career_site.recaptcha_error"), status: :unprocessable_entity
+      render_error t("career_site.recaptcha_error"), status: :unprocessable_entity
       return
     end
 
