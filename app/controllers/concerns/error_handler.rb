@@ -5,7 +5,7 @@ module ErrorHandler
 
   def render403
     message = "Unauthorized"
-    status = :not_found
+    status = :forbidden
     respond_to do |format|
       format.html do
         render "errors/403", layout: "ats/application", status:

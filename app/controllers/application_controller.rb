@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
   before_action :set_sentry_context
   before_action :set_selector_id_for_page
 
+  authorize :member, through: :current_member
+
   add_flash_types :warning
 
   private

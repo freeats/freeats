@@ -11,8 +11,6 @@ class AuthorizedController < ApplicationController
                         }
   rescue_from ActionPolicy::Unauthorized, with: :user_not_authorized
 
-  authorize :member, through: :current_member
-
   private
 
   def user_not_authorized
