@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-class EmailSynchronization::ProcessSingleMessage
+class EmailSynchronization::ProcessSingleMessage < ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :message, Types::Instance(Imap::Message)
-  end
+  option :message, Types::Instance(Imap::Message)
 
   REPLY_DURATION = 1.hour
 

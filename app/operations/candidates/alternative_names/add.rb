@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-class Candidates::AlternativeNames::Add
+class Candidates::AlternativeNames::Add < ApplicationOperation
   include Dry::Monads[:result, :try]
 
-  include Dry::Initializer.define -> do
-    option :candidate, Types::Instance(Candidate)
-    option :alternative_name, Types::Strict::String
-  end
+  option :candidate, Types::Instance(Candidate)
+  option :alternative_name, Types::Strict::String
 
   def call
     result = Try[ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique] do

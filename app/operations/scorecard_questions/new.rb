@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-class ScorecardQuestions::New
+class ScorecardQuestions::New < ApplicationOperation
   include Dry::Monads[:result]
 
-  include Dry::Initializer.define -> do
-    option :params, Types::Strict::Hash.schema(
-      scorecard: Types.Instance(Scorecard),
-      list_index: Types::Integer,
-      question: Types::String
-    )
-  end
+  option :params, Types::Strict::Hash.schema(
+    scorecard: Types.Instance(Scorecard),
+    list_index: Types::Integer,
+    question: Types::String
+  )
 
   def call
     scorecard_question = ScorecardQuestion.new(params)

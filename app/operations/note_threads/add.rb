@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-class NoteThreads::Add
+class NoteThreads::Add < ApplicationOperation
   include Dry::Monads[:result, :try]
 
-  include Dry::Initializer.define -> do
-    option :params, Types::Strict::Hash.schema(
-      candidate_id?: Types::Params::Integer,
-      task_id?: Types::Params::Integer
-    )
-    option :actor_account, Types::Instance(Account)
-  end
+  option :params, Types::Strict::Hash.schema(
+    candidate_id?: Types::Params::Integer,
+    task_id?: Types::Params::Integer
+  )
+  option :actor_account, Types::Instance(Account)
 
   def call
     notable_id, notable_type =

@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
-class ScorecardTemplates::Add
+class ScorecardTemplates::Add < ApplicationOperation
   include Dry::Monads[:result, :try, :do]
 
-  include Dry::Initializer.define -> do
-    option :params, Types::Params::Hash.schema(
-      position_stage_id: Types::Params::Integer,
-      title: Types::Params::String
-    )
-    option :questions_params, Types::Strict::Array.of(
-      Types::Strict::Hash.schema(question: Types::Params::String)
-    ).optional
-    option :actor_account, Types.Instance(Account)
-  end
+  option :params, Types::Params::Hash.schema(
+    position_stage_id: Types::Params::Integer,
+    title: Types::Params::String
+  )
+  option :questions_params, Types::Strict::Array.of(
+    Types::Strict::Hash.schema(question: Types::Params::String)
+  ).optional
+  option :actor_account, Types.Instance(Account)
 
   def call
     scorecard_template = ScorecardTemplate.new(params)

@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-class ScorecardQuestions::Change
+class ScorecardQuestions::Change < ApplicationOperation
   include Dry::Monads[:result, :try]
 
-  include Dry::Initializer.define -> do
-    option :scorecard_question, Types.Instance(ScorecardQuestion)
-    option :answer, Types::Params::String
-  end
+  option :scorecard_question, Types.Instance(ScorecardQuestion)
+  option :answer, Types::Params::String
 
   def call
     scorecard_question.answer = answer

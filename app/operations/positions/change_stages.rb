@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-class Positions::ChangeStages
+class Positions::ChangeStages < ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :position, Types::Instance(Position)
-    option :stages_attributes, Types::Strict::Hash
-    option :actor_account, Types::Instance(Account)
-  end
+  option :position, Types::Instance(Position)
+  option :stages_attributes, Types::Strict::Hash
+  option :actor_account, Types::Instance(Account)
 
   def call
     new_and_changed_stages = stages_attributes.values.filter { _1[:name].present? }

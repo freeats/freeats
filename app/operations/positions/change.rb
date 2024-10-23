@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
-class Positions::Change
+class Positions::Change < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
-  include Dry::Initializer.define -> do
-    option :position, Types::Instance(Position)
-    option :params, Types::Strict::Hash.schema(
-      name?: Types::Strict::String,
-      recruiter_id?: Types::Strict::String.optional,
-      location_id?: Types::Strict::String.optional,
-      collaborator_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
-      hiring_manager_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
-      interviewer_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
-      description?: Types::Strict::String
-    ).strict
-    option :actor_account, Types::Instance(Account)
-  end
+  option :position, Types::Instance(Position)
+  option :params, Types::Strict::Hash.schema(
+    name?: Types::Strict::String,
+    recruiter_id?: Types::Strict::String.optional,
+    location_id?: Types::Strict::String.optional,
+    collaborator_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
+    hiring_manager_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
+    interviewer_ids?: Types::Strict::Array.of(Types::Strict::String.optional),
+    description?: Types::Strict::String
+  ).strict
+  option :actor_account, Types::Instance(Account)
 
   def call
     old_values = {

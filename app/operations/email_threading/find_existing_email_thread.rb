@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-class EmailThreading::FindExistingEmailThread
+class EmailThreading::FindExistingEmailThread < ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :imap_message, Types::Instance(Imap::Message)
-  end
+  option :imap_message, Types::Instance(Imap::Message)
 
   def call
     # Try to go easy route and find the message current one replies to.

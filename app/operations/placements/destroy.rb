@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-class Placements::Destroy
+class Placements::Destroy < ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :placement, Types::Instance(Placement)
-    option :actor_account, Types::Instance(Account)
-  end
+  option :placement, Types::Instance(Placement)
+  option :actor_account, Types::Instance(Account)
 
   def call
     ActiveRecord::Base.transaction do

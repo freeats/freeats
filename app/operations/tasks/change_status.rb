@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-class Tasks::ChangeStatus
+class Tasks::ChangeStatus < ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :task, Types::Instance(Task)
-    option :new_status, Types::Strict::String.enum(*Task.statuses.keys)
-    option :actor_account, Types::Instance(Account)
-  end
+  option :task, Types::Instance(Task)
+  option :new_status, Types::Strict::String.enum(*Task.statuses.keys)
+  option :actor_account, Types::Instance(Account)
 
   def call
     return Success(task) if task.status == new_status

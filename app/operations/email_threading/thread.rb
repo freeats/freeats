@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Based on the algorithm described at https://www.jwz.org/doc/threading.html.
-class EmailThreading::Thread
+class EmailThreading::Thread < ApplicationOperation
   class Container
     attr_accessor :message, :parent, :children
 
@@ -80,9 +80,7 @@ class EmailThreading::Thread
     end
   end
 
-  include Dry::Initializer.define -> do
-    param :messages, [Types::Instance(Message)]
-  end
+  param :messages, [Types::Instance(Message)]
 
   # rubocop:disable Layout/EmptyLinesAroundBlockBody, Style/Next
   def call

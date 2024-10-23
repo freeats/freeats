@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
-class ScorecardTemplates::Change
+class ScorecardTemplates::Change < ApplicationOperation
   include Dry::Monads[:result, :try, :do]
 
-  include Dry::Initializer.define -> do
-    option :params, Types::Strict::Hash.schema(
-      title?: Types::String
-    )
-    option :questions_params, Types::Strict::Array.of(
-      Types::Strict::Hash.schema(question: Types::String)
-    ).optional
-    option :scorecard_template, Types.Instance(ScorecardTemplate)
-    option :actor_account, Types.Instance(Account)
-  end
+  option :params, Types::Strict::Hash.schema(
+    title?: Types::String
+  )
+  option :questions_params, Types::Strict::Array.of(
+    Types::Strict::Hash.schema(question: Types::String)
+  ).optional
+  option :scorecard_template, Types.Instance(ScorecardTemplate)
+  option :actor_account, Types.Instance(Account)
 
   def call
     old_values = {

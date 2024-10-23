@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-class EmailSynchronization::ProcessSingleMessage::UploadAttachments
+class EmailSynchronization::ProcessSingleMessage::UploadAttachments < ApplicationOperation
   # Do not include "do" here, apparently it doesn't play nice with file manipulations and
   # causes flaky tests with the error:
   # NoMethodError: super: no superclass method `call'
   include Dry::Monads[:result]
 
-  include Dry::Initializer.define -> do
-    option :email_message, Types::Instance(EmailMessage)
-    option :imap_message, Types::Instance(Imap::Message)
-  end
+  option :email_message, Types::Instance(EmailMessage)
+  option :imap_message, Types::Instance(Imap::Message)
 
   def call
     # TODO: adapt to new file storage logic.

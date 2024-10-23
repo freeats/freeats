@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-class Placements::ChangeStage
+class Placements::ChangeStage < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
-  include Dry::Initializer.define -> do
-    option :new_stage, Types::Strict::String
-    option :placement, Types::Instance(Placement)
-    option :actor_account, Types::Instance(Account).optional, optional: true
-  end
+  option :new_stage, Types::Strict::String
+  option :placement, Types::Instance(Placement)
+  option :actor_account, Types::Instance(Account).optional, optional: true
 
   def call
     old_stage = placement.stage

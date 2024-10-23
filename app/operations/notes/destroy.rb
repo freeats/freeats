@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-class Notes::Destroy
+class Notes::Destroy < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
-  include Dry::Initializer.define -> do
-    option :id, Types::Strict::String | Types::Strict::Integer
-    option :actor_account, Types::Instance(Account)
-  end
+  option :id, Types::Strict::String | Types::Strict::Integer
+  option :actor_account, Types::Instance(Account)
 
   def call
     note = Note.find(id)

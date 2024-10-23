@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-class ScorecardTemplates::New
+class ScorecardTemplates::New < ApplicationOperation
   include Dry::Monads[:result]
 
-  include Dry::Initializer.define -> do
-    option :position_stage_id, Types::Params::Integer
-  end
+  option :position_stage_id, Types::Params::Integer
 
   def call
     position_stage = PositionStage.find(position_stage_id)

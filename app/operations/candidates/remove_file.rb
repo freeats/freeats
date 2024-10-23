@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-class Candidates::RemoveFile
+class Candidates::RemoveFile < ApplicationOperation
   include Dry::Monads[:result, :try]
 
-  include Dry::Initializer.define -> do
-    option :candidate, Types::Instance(Candidate)
-    option :actor_account, Types::Instance(Account)
-    option :file, Types::Instance(ActiveStorage::Attachment)
-  end
+  option :candidate, Types::Instance(Candidate)
+  option :actor_account, Types::Instance(Account)
+  option :file, Types::Instance(ActiveStorage::Attachment)
 
   def call
     result = Try[ActiveRecord::RecordInvalid] do

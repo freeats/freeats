@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-class Positions::Add
+class Positions::Add < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
-  include Dry::Initializer.define -> do
-    option :params, Types::Strict::Hash.schema(
-      name: Types::Strict::String,
-      location_id: Types::Coercible::Integer
-    )
-    option :actor_account, Types::Instance(Account)
-  end
+  option :params, Types::Strict::Hash.schema(
+    name: Types::Strict::String,
+    location_id: Types::Coercible::Integer
+  )
+  option :actor_account, Types::Instance(Account)
 
   def call
     auto_assigned_params = {

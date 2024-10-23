@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-class AttachmentInformations::Add
+class AttachmentInformations::Add < ApplicationOperation
   include Dry::Monads[:result]
 
-  include Dry::Initializer.define -> do
-    option :params, Types::Strict::Hash
-  end
+  option :params, Types::Strict::Hash
 
   def call
     attachment_information = AttachmentInformation.new

@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-class Positions::ChangeStatus
+class Positions::ChangeStatus < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
-  include Dry::Initializer.define -> do
-    option :position, Types::Instance(Position)
-    option :actor_account, Types::Instance(Account)
-    option :new_status, Types::Strict::String
-    option :new_change_status_reason, Types::Strict::String
-    option :comment, Types::Strict::String
-  end
+  option :position, Types::Instance(Position)
+  option :actor_account, Types::Instance(Account)
+  option :new_status, Types::Strict::String
+  option :new_change_status_reason, Types::Strict::String
+  option :comment, Types::Strict::String
 
   def call
     old_status = position.status

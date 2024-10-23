@@ -1,25 +1,23 @@
 # frozen_string_literal: true
 
-class Scorecards::Add
+class Scorecards::Add < ApplicationOperation
   include Dry::Monads[:result, :try, :do]
 
-  include Dry::Initializer.define -> do
-    option :params, Types::Params::Hash.schema(
-      title: Types::Params::String,
-      interviewer_id: Types::Params::Integer,
-      score: Types::Params::String,
-      summary?: Types::Params::String,
-      position_stage_id: Types::Params::Integer,
-      placement_id: Types::Params::Integer
+  option :params, Types::Params::Hash.schema(
+    title: Types::Params::String,
+    interviewer_id: Types::Params::Integer,
+    score: Types::Params::String,
+    summary?: Types::Params::String,
+    position_stage_id: Types::Params::Integer,
+    placement_id: Types::Params::Integer
+  )
+  option :questions_params, Types::Strict::Array.of(
+    Types::Strict::Hash.schema(
+      question: Types::Params::String,
+      answer?: Types::Params::String
     )
-    option :questions_params, Types::Strict::Array.of(
-      Types::Strict::Hash.schema(
-        question: Types::Params::String,
-        answer?: Types::Params::String
-      )
-    ).optional
-    option :actor_account, Types.Instance(Account)
-  end
+  ).optional
+  option :actor_account, Types.Instance(Account)
 
   def call
     scorecard = Scorecard.new(params)

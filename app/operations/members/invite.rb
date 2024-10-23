@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-class Members::Invite
+class Members::Invite < ApplicationOperation
   include Dry::Monads[:result]
 
-  include Dry::Initializer.define -> do
-    option :email, Types::Strict::String
-    option :actor_account, Types::Instance(Account)
-  end
+  option :email, Types::Strict::String
+  option :actor_account, Types::Instance(Account)
 
   def call
     access_token = nil

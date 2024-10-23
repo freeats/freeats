@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
-class Candidates::Apply
+class Candidates::Apply < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
-  include Dry::Initializer.define -> do
-    option :actor_account, Types::Instance(Account).optional
-    option :params, Types::Strict::Hash.schema(
-      file: Types::Instance(ActionDispatch::Http::UploadedFile),
-      full_name: Types::Strict::String,
-      email: Types::Strict::String
-    )
-    option :position_id, Types::Coercible::Integer
-  end
+  option :actor_account, Types::Instance(Account).optional
+  option :params, Types::Strict::Hash.schema(
+    file: Types::Instance(ActionDispatch::Http::UploadedFile),
+    full_name: Types::Strict::String,
+    email: Types::Strict::String
+  )
+  option :position_id, Types::Coercible::Integer
 
   def call
     candidate_email_addresses =

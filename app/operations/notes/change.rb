@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-class Notes::Change
+class Notes::Change < ApplicationOperation
   include Dry::Monads[:result, :try]
 
-  include Dry::Initializer.define -> do
-    option :id, Types::Strict::String
-    option :text, Types::Strict::String
-    option :actor_account, Types::Instance(Account)
-    option :add_hidden_thread_members, Types::Strict::Bool, default: -> { false }
-  end
+  option :id, Types::Strict::String
+  option :text, Types::Strict::String
+  option :actor_account, Types::Instance(Account)
+  option :add_hidden_thread_members, Types::Strict::Bool, default: -> { false }
 
   def call
     note = Note.find(id)

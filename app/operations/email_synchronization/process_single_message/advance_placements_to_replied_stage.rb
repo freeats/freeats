@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-class EmailSynchronization::ProcessSingleMessage::AdvancePlacementsToRepliedStage
+class EmailSynchronization::ProcessSingleMessage::AdvancePlacementsToRepliedStage <
+      ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :email_message, Types::Instance(EmailMessage)
-  end
+  option :email_message, Types::Instance(EmailMessage)
 
   def call
     email_message.email_thread.candidates_in_thread.each do |candidate|

@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-class Locations::Order
+class Locations::Order < ApplicationOperation
   include Dry::Monads[:result]
 
-  include Dry::Initializer.define -> do
-    option :locations, Types::Strict::Array.of(Types::Instance(Location))
-    option :query, Types::Strict::String
-  end
+  option :locations, Types::Strict::Array.of(Types::Instance(Location))
+  option :query, Types::Strict::String
 
   def call
     string_for_regex = Regexp.escape(query).chars.map { |letter| DIACRITICS[letter] || letter }.join

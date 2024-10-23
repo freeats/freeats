@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
-class Candidates::AlternativeNames::Change
+class Candidates::AlternativeNames::Change < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
-  include Dry::Initializer.define -> do
-    option :candidate, Types::Instance(Candidate)
-    option :actor_account, Types::Instance(Account)
-    option :alternative_names, Types::Strict::Array.of(
-      Types::Strict::Hash.schema(
-        name: Types::Strict::String
-      )
+  option :candidate, Types::Instance(Candidate)
+  option :actor_account, Types::Instance(Account)
+  option :alternative_names, Types::Strict::Array.of(
+    Types::Strict::Hash.schema(
+      name: Types::Strict::String
     )
-  end
+  )
 
   def call
     old_alternative_names = candidate.candidate_alternative_names.pluck(:name)

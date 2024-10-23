@@ -1,55 +1,53 @@
 # frozen_string_literal: true
 
-class Candidates::Add
+class Candidates::Add < ApplicationOperation
   include Dry::Monads[:do, :result, :try]
 
-  include Dry::Initializer.define -> do
-    option :actor_account, Types::Instance(Account).optional
-    option :params, Types::Strict::Hash.schema(
-      avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
-      remove_avatar?: Types::Strict::String,
-      file?: Types::Instance(ActionDispatch::Http::UploadedFile),
-      cover_letter?: Types::Strict::String,
-      file_id_to_remove?: Types::Strict::String,
-      file_id_to_change_cv_status?: Types::Strict::String,
-      location_id?: Types::Strict::String,
-      full_name?: Types::Strict::String,
-      company?: Types::Strict::String,
-      blacklisted?: Types::Strict::String,
-      headline?: Types::Strict::String,
-      telegram?: Types::Strict::String,
-      skype?: Types::Strict::String,
-      source?: Types::Strict::String,
-      links?: Types::Strict::Array.of(
-        Types::Strict::Hash.schema(
-          url: Types::Strict::String,
-          status: Types::Strict::String
-        ).optional
-      ),
-      alternative_names?: Types::Strict::Array.of(
-        Types::Strict::Hash.schema(
-          name: Types::Strict::String
-        ).optional
-      ),
-      emails?: Types::Strict::Array.of(
-        Types::Strict::Hash.schema(
-          address: Types::Strict::String,
-          status: Types::Strict::String,
-          url?: Types::Strict::String,
-          source: Types::Strict::String,
-          type: Types::Strict::String
-        ).optional
-      ),
-      phones?: Types::Strict::Array.of(
-        Types::Strict::Hash.schema(
-          phone: Types::Strict::String,
-          status: Types::Strict::String,
-          source: Types::Strict::String,
-          type: Types::Strict::String
-        ).optional
-      )
+  option :actor_account, Types::Instance(Account).optional
+  option :params, Types::Strict::Hash.schema(
+    avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
+    remove_avatar?: Types::Strict::String,
+    file?: Types::Instance(ActionDispatch::Http::UploadedFile),
+    cover_letter?: Types::Strict::String,
+    file_id_to_remove?: Types::Strict::String,
+    file_id_to_change_cv_status?: Types::Strict::String,
+    location_id?: Types::Strict::String,
+    full_name?: Types::Strict::String,
+    company?: Types::Strict::String,
+    blacklisted?: Types::Strict::String,
+    headline?: Types::Strict::String,
+    telegram?: Types::Strict::String,
+    skype?: Types::Strict::String,
+    source?: Types::Strict::String,
+    links?: Types::Strict::Array.of(
+      Types::Strict::Hash.schema(
+        url: Types::Strict::String,
+        status: Types::Strict::String
+      ).optional
+    ),
+    alternative_names?: Types::Strict::Array.of(
+      Types::Strict::Hash.schema(
+        name: Types::Strict::String
+      ).optional
+    ),
+    emails?: Types::Strict::Array.of(
+      Types::Strict::Hash.schema(
+        address: Types::Strict::String,
+        status: Types::Strict::String,
+        url?: Types::Strict::String,
+        source: Types::Strict::String,
+        type: Types::Strict::String
+      ).optional
+    ),
+    phones?: Types::Strict::Array.of(
+      Types::Strict::Hash.schema(
+        phone: Types::Strict::String,
+        status: Types::Strict::String,
+        source: Types::Strict::String,
+        type: Types::Strict::String
+      ).optional
     )
-  end
+  )
 
   def call
     candidate = Candidate.new

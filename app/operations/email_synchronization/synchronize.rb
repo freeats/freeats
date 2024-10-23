@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-class EmailSynchronization::Synchronize
+class EmailSynchronization::Synchronize < ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :imap_account, Types::Instance(Imap::Account)
-    option :only_for_email_addresses, [Types::Strict::String], default: proc { [] }
-  end
+  option :imap_account, Types::Instance(Imap::Account)
+  option :only_for_email_addresses, [Types::Strict::String], default: proc { [] }
 
   BATCH_SIZE = 50
 

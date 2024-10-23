@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-class Candidates::UploadFile
+class Candidates::UploadFile < ApplicationOperation
   include Dry::Monads[:result, :try]
 
-  include Dry::Initializer.define -> do
-    option :candidate, Types::Instance(Candidate)
-    option :actor_account, Types::Instance(Account).optional
-    option :file, Types::Instance(ActionDispatch::Http::UploadedFile)
-    option :cv, Types::Strict::Bool.optional, default: proc { false }
-  end
+  option :candidate, Types::Instance(Candidate)
+  option :actor_account, Types::Instance(Account).optional
+  option :file, Types::Instance(ActionDispatch::Http::UploadedFile)
+  option :cv, Types::Strict::Bool.optional, default: proc { false }
 
   def call
     result = Try[ActiveRecord::RecordInvalid] do

@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-class Scorecards::New
+class Scorecards::New < ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :scorecard_template, Types.Instance(ScorecardTemplate)
-    option :placement, Types.Instance(Placement)
-  end
+  option :scorecard_template, Types.Instance(ScorecardTemplate)
+  option :placement, Types.Instance(Placement)
 
   def call
     params = { placement: }

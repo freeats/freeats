@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-class PositionStages::Change
+class PositionStages::Change < ApplicationOperation
   include Dry::Monads[:result, :try, :do]
 
-  include Dry::Initializer.define -> do
-    option :params, Types::Strict::Hash.schema(
-      id: Types::Params::Integer,
-      name: Types::Params::String
-    )
-    option :actor_account, Types::Instance(Account)
-  end
+  option :params, Types::Strict::Hash.schema(
+    id: Types::Params::Integer,
+    name: Types::Params::String
+  )
+  option :actor_account, Types::Instance(Account)
 
   def call
     position_stage = PositionStage.find(params[:id])

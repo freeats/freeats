@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-class EmailSynchronization::RetrieveGmailTokens
+class EmailSynchronization::RetrieveGmailTokens < ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :current_member, Types::Instance(Member)
-    option :code, Types::Strict::String
-    option :redirect_uri, Types::Strict::String
-  end
+  option :current_member, Types::Instance(Member)
+  option :code, Types::Strict::String
+  option :redirect_uri, Types::Strict::String
 
   def call
     access_token, refresh_token = yield fetch_tokens

@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-class EmailSynchronization::ProcessSingleMessage::CreateFromImap
+class EmailSynchronization::ProcessSingleMessage::CreateFromImap < ApplicationOperation
   include Dry::Monads[:result, :do]
 
-  include Dry::Initializer.define -> do
-    option :message, Types::Instance(Imap::Message)
-    option :email_thread_id, Types::Coercible::Integer
-    option :message_member, Types::Instance(EmailSynchronization::MessageMember)
-    option :sent_via, Types::Symbol.enum(:gmail, :hub_compose, :hub_reply)
-  end
+  option :message, Types::Instance(Imap::Message)
+  option :email_thread_id, Types::Coercible::Integer
+  option :message_member, Types::Instance(EmailSynchronization::MessageMember)
+  option :sent_via, Types::Symbol.enum(:gmail, :hub_compose, :hub_reply)
 
   def call
     email_message = EmailMessage.create!(

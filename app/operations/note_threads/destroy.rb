@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-class NoteThreads::Destroy
+class NoteThreads::Destroy < ApplicationOperation
   include Dry::Monads[:result, :try]
 
-  include Dry::Initializer.define -> do
-    option :note_thread, Types::Instance(NoteThread)
-  end
+  option :note_thread, Types::Instance(NoteThread)
 
   def call
     result = Try[ActiveRecord::RecordInvalid] do
