@@ -84,15 +84,8 @@ Rails.application.configure do
   # user_name and password to test as it works in production.
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.smtp_settings = {
-    user_name: Rails.application.credentials.sendgrid.username!,
-    password: Rails.application.credentials.sendgrid.password!,
-    address: "smtp.sendgrid.net",
-    port: 587,
-    domain: "app.freeats.com",
-    authentication: "plain",
-    enable_starttls_auto: true
-  }
+  # Put all settings to env as a JSON string '{"user_name": "NAME", ...}'.
+  config.action_mailer.smtp_settings = JSON.parse(ENV.fetch("SMPT_SETTINGS", "{}"))
 
   ENV["HOST_URL"] = "localhost:3000"
 end

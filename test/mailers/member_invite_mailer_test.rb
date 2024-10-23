@@ -4,7 +4,7 @@ require "test_helper"
 
 class MemberInviteMailerTest < ActionMailer::TestCase
   setup do
-    @reply_to = "doreply@toughbyte.com"
+    @reply_to = "doreply@example.com"
   end
   test "should send an email with invitation" do
     actor_account = accounts(:admin_account)

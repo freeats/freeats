@@ -4,7 +4,7 @@ require "test_helper"
 
 class MemberNoteMailerTest < ActionMailer::TestCase
   setup do
-    @reply_to = "doreply@toughbyte.com"
+    @reply_to = "doreply@example.com"
   end
   test "should send an email about the creation of the note" do
     current_account = accounts(:admin_account)

@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class ApplicationMailer < ActionMailer::Base
+  DEFAULT_FROM = ENV.fetch("MAILER_DEFAULT_FROM", "doreply@#{ENV.fetch('HOST_URL', 'example')}.com")
   helper_method :account_name
   helper :mailer
   helper :main
 
-  default from: '"Toughbyte" <doreply@toughbyte.com>',
+  default from: DEFAULT_FROM,
           to: -> { @to },
           cc: -> { @cc },
           reply_to: -> { @reply_to }
@@ -22,7 +23,7 @@ class ApplicationMailer < ActionMailer::Base
   private
 
   def account_name(account)
-    account&.name || "Hub"
+    account&.name || "FreeATS"
   end
 
   def set_headers

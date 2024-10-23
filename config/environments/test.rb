@@ -75,6 +75,8 @@ Rails.application.configure do
 
   ENV["HOST_URL"] = "localhost:3000"
 
+  ENV["MAILER_REPLY_TO"] = "doreply@example.com"
+
   ENV["RECAPTCHA_V2_SITE_KEY"] = "dummy"
   ENV["RECAPTCHA_V2_SECRET_KEY"] = "dummy"
 

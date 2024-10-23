@@ -7,7 +7,7 @@ class MemberNoteMailer < ApplicationMailer
     @model_name = @model.try(:full_name) || @model.name
     @task_prefix = " on #{@model.taskable_name}" if @model.is_a?(Task) && @model.taskable.present?
 
-    @reply_to = "doreply@toughbyte.com"
+    @reply_to = ENV.fetch("MAILER_REPLY_TO", "")
 
     thread_unique_id = "<note_threads/#{@note.note_thread.id}@#{ENV.fetch('HOST_URL', 'domain')}>"
     headers({ "In-Reply-To" => thread_unique_id, "References" => thread_unique_id })
