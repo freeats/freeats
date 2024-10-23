@@ -7,6 +7,8 @@ module Gmail::Auth
   class ServerError < ::Gmail::Error; end
   class ClientError < ::Gmail::Error; end
   class AuthorizationError < ClientError; end
+  CLIENT_ID = ENV.fetch("GMAIL_LINKING_CLIENT_ID", nil)
+  CLIENT_SECRET = ENV.fetch("GMAIL_LINKING_CLIENT_SECRET", nil)
 
   class << self
     def authorization_uri(redirect_uri:)
@@ -27,8 +29,8 @@ module Gmail::Auth
       Signet::OAuth2::Client.new(
         authorization_uri: "https://accounts.google.com/o/oauth2/auth",
         token_credential_uri: "https://oauth2.googleapis.com/token",
-        client_id: Rails.application.credentials.gmail_linking.client_id!,
-        client_secret: Rails.application.credentials.gmail_linking.client_secret!,
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
         scope: <<~TEXT,
           https://mail.google.com
         TEXT
@@ -43,8 +45,8 @@ module Gmail::Auth
       Signet::OAuth2::Client.new(
         authorization_uri: "https://accounts.google.com/o/oauth2/auth",
         token_credential_uri: "https://oauth2.googleapis.com/token",
-        client_id: Rails.application.credentials.gmail_linking.client_id!,
-        client_secret: Rails.application.credentials.gmail_linking.client_secret!,
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
         scope: <<~TEXT,
           https://mail.google.com
           email

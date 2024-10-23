@@ -80,4 +80,7 @@ Rails.application.configure do
 
   ENV["RECAPTCHA_V3_SITE_KEY"] = "dummy"
   ENV["RECAPTCHA_V3_SECRET_KEY"] = "dummy"
+
+  ENV["GMAIL_LINKING_CLIENT_ID"] = "dummy"
+  ENV["GMAIL_LINKING_CLIENT_SECRET"] = "dummy"
 end
