@@ -3,6 +3,8 @@
 class DevopsAuthenticationController < ActionController::Base # rubocop:disable Rails/ApplicationController
   include ErrorHandler
 
-  http_basic_authenticate_with name: Rails.application.credentials.superuser.name!,
-                               password: Rails.application.credentials.superuser.password!
+  http_basic_authenticate_with(
+    name: ENV.fetch("SUPERUSER_NAME", "devops"),
+    password: ENV.fetch("SUPERUSER_PASSWORD", SecureRandom.alphanumeric(10))
+  )
 end

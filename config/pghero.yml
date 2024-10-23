@@ -36,8 +36,8 @@ databases:
 # time_zone: "Pacific Time (US & Canada)"
 
 # Basic authentication
-username: <%= Rails.application.credentials.superuser.name! %>
-password: <%= Rails.application.credentials.superuser.password! %>
+username: <%= ENV.fetch("SUPERUSER_NAME", "devops") %>
+password: <%= ENV.fetch("SUPERUSER_PASSWORD", SecureRandom.alphanumeric(10)) %>
 # Stats database URL (defaults to app database)
 # stats_database_url: <%= ENV["PGHERO_STATS_DATABASE_URL"] %>
 
