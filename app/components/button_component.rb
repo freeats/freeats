@@ -2,6 +2,7 @@
 
 class ButtonComponent < ApplicationComponent
   renders_one :icon, "FontAwesomeIconComponent"
+  renders_one :tabler_icon, "InnerIconComponent"
 
   class FontAwesomeIconComponent < ApplicationComponent
     ICON_POSITION = {
@@ -17,6 +18,28 @@ class ButtonComponent < ApplicationComponent
 
     def call
       tag.i(class: [classes, position_class])
+    end
+
+    private
+
+    def position_class
+      ICON_POSITION[position]
+    end
+  end
+
+  class InnerIconComponent < IconComponent
+    ICON_POSITION = {
+      left: "",
+      right: "order-last"
+    }.freeze
+
+    option :position,
+           Types::Symbol.enum(*ICON_POSITION.keys),
+           optional: true,
+           default: -> { :right }
+
+    def before_render
+      additional_options[:class] = [*additional_options[:class], position_class]
     end
 
     private
@@ -72,7 +95,7 @@ class ButtonComponent < ApplicationComponent
         type:,
         **additional_options
       ) do
-        safe_join([icon, content])
+        safe_join([icon, tabler_icon, content])
       end
 
     if tooltip_title

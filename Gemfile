@@ -47,6 +47,7 @@ gem "solid_queue"
 gem "sprockets-rails"
 gem "stimulus-rails"
 gem "strip_attributes"
+gem "tabler_icons_ruby"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "view_component", "~> 3.0"
