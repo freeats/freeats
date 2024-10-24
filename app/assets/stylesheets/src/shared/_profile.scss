@@ -30,12 +30,8 @@
 
 #notes,
 .notes-block {
-  :target {
-    background-color: #e4f1ff !important;
-  }
   :target,
   .modal-note-active {
-    background-color: #e4f1ff;
     box-shadow: 0px 0px 0px 4px #e4f1ff;
   }
 }

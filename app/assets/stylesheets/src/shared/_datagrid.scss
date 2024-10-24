@@ -39,30 +39,15 @@
       min-width: 2.125rem;
       padding: 0.25rem 0.5rem;
       text-align: center;
-      border-color: $gray-500;
       background-clip: content-box;
     }
     &:not(.active) .page-link:hover {
-      background-color: $gray-100;
       text-decoration: none;
     }
     &.active .page-link {
-      color: $gray-900;
       font-weight: bold;
     }
-    &:not(.disabled) .page-link {
-      color: $blue;
-      &:hover {
-        color: $blue;
-      }
-    }
   }
-}
-
-.pagination .disabled span,
-.pagination .disabled a {
-  background-color: transparent;
-  color: $gray-600;
 }
 
 /* table.ats_positions_grid, */

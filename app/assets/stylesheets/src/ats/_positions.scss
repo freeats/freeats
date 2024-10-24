@@ -25,9 +25,6 @@
   }
 
   .pipeline-column {
-    @include media-breakpoint-up(sm) {
-      background-color: $gray-100;
-    }
     min-width: 252px;
   }
 
