@@ -1,7 +1,6 @@
 en:
   career_site:
-    by_freeats: by FreeATS
-    career_site: Career site
+    footer_text: Career site by FreeATS
     positions:
       all_positions: All positions at %{name}
       apply_button: Apply
