@@ -35,9 +35,7 @@
   hr.my-4
   #application_form
     h2.mb-3 Apply for this job
-    = form_with url: position_apply_path(@position.id),
-                data: { controller: "recaptcha-v3 recaptcha-v2", recaptcha_v2_target: "form" },
-                class: "d-flex flex-column gap-2" do |form|
+    = form_with url: position_apply_path(@position.id), class: "d-flex flex-column gap-2" do |form|
       #turbo_recaptcha.position-absolute
       = render TextInputComponent.new( \
           form,
