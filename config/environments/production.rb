@@ -101,7 +101,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.default_url_options = { host: ENV.fetch("HOST_URL", nil) }
   # Put all settings to env as a JSON string '{"user_name": "NAME", ...}'.
-  config.action_mailer.smtp_settings = JSON.parse(ENV.fetch("SMPT_SETTINGS", "{}"))
+  config.action_mailer.smtp_settings = JSON.parse(ENV.fetch("SMTP_SETTINGS", "{}")).symbolize_keys
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [

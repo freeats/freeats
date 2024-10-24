@@ -85,7 +85,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
   # Put all settings to env as a JSON string '{"user_name": "NAME", ...}'.
-  config.action_mailer.smtp_settings = JSON.parse(ENV.fetch("SMPT_SETTINGS", "{}"))
+  config.action_mailer.smtp_settings = JSON.parse(ENV.fetch("SMTP_SETTINGS", "{}")).symbolize_keys
 
   ENV["HOST_URL"] = "localhost:3000"
 end
