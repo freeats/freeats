@@ -70,9 +70,6 @@ berlin_city_alias6:
 boston_city_alias1:
   location: boston_city
   alias: Boston
-boston_city_alias2:
-  location: boston_city
-  alias: Бостон
 budapest_city_alias1:
   location: budapest_city
   alias: Budapest

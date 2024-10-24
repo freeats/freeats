@@ -4,7 +4,7 @@ require "test_helper"
 
 class RodauthTest < ActionDispatch::IntegrationTest
   setup do
-    @account = accounts(:admin_ru_account)
+    @account = accounts(:admin_account)
   end
 
   test "logs in with a user and a password" do

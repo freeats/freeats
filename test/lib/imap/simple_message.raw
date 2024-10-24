@@ -1,4 +1,4 @@
-Delivered-To: developers@toughbyte.com
+Delivered-To: developers@example.com
 Received: by 2002:a59:a763:0:b0:44a:ccd8:b1ad with SMTP id z3csp634500vqs;
         Wed, 24 Jan 2024 17:59:37 -0800 (PST)
 X-Received: by 2002:a05:6512:52f:b0:50e:30a8:4c8e with SMTP id o15-20020a056512052f00b0050e30a84c8emr95121lfc.43.1706147976752;
@@ -24,22 +24,22 @@ ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          kIM0tteleRyrwHNm0IYrV+mRRUgAp88PasMuSrCby0cm8mkG0vThHV1ni1QTTWqs12OV
          ctCA==
 ARC-Authentication-Results: i=3; mx.google.com;
-       dkim=pass header.i=@toughbyte.com header.s=google header.b=GmVThoSo;
-       arc=pass (i=2 spf=pass spfdomain=toughbyte.com dkim=pass dkdomain=toughbyte.com dmarc=pass fromdomain=toughbyte.com);
-       spf=pass (google.com: domain of developers+bncbdv4xz5qtaibbb4by6wqmgqenbnhvha@toughbyte.com designates 209.85.220.69 as permitted sender) smtp.mailfrom=developers+bncBDV4XZ5QTAIBBB4BY6WQMGQENBNHVHA@toughbyte.com;
-       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toughbyte.com
-Return-Path: <developers+bncBDV4XZ5QTAIBBB4BY6WQMGQENBNHVHA@toughbyte.com>
+       dkim=pass header.i=@example.com header.s=google header.b=GmVThoSo;
+       arc=pass (i=2 spf=pass spfdomain=example.com dkim=pass dkdomain=example.com dmarc=pass fromdomain=example.com);
+       spf=pass (google.com: domain of developers+bncbdv4xz5qtaibbb4by6wqmgqenbnhvha@example.com designates 209.85.220.69 as permitted sender) smtp.mailfrom=developers+bncBDV4XZ5QTAIBBB4BY6WQMGQENBNHVHA@example.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=example.com
+Return-Path: <developers+bncBDV4XZ5QTAIBBB4BY6WQMGQENBNHVHA@example.com>
 Received: from mail-sor-f69.google.com (mail-sor-f69.google.com. [209.85.220.69])
         by mx.google.com with SMTPS id p25-20020a056512329900b005101702db2dsor437450lfe.18.2024.01.24.17.59.36
-        for <developers@toughbyte.com>
+        for <developers@example.com>
         (Google Transport Security);
         Wed, 24 Jan 2024 17:59:36 -0800 (PST)
-Received-SPF: pass (google.com: domain of developers+bncbdv4xz5qtaibbb4by6wqmgqenbnhvha@toughbyte.com designates 209.85.220.69 as permitted sender) client-ip=209.85.220.69;
+Received-SPF: pass (google.com: domain of developers+bncbdv4xz5qtaibbb4by6wqmgqenbnhvha@example.com designates 209.85.220.69 as permitted sender) client-ip=209.85.220.69;
 Authentication-Results: mx.google.com;
-       dkim=pass header.i=@toughbyte.com header.s=google header.b=GmVThoSo;
-       arc=pass (i=2 spf=pass spfdomain=toughbyte.com dkim=pass dkdomain=toughbyte.com dmarc=pass fromdomain=toughbyte.com);
-       spf=pass (google.com: domain of developers+bncbdv4xz5qtaibbb4by6wqmgqenbnhvha@toughbyte.com designates 209.85.220.69 as permitted sender) smtp.mailfrom=developers+bncBDV4XZ5QTAIBBB4BY6WQMGQENBNHVHA@toughbyte.com;
-       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toughbyte.com
+       dkim=pass header.i=@example.com header.s=google header.b=GmVThoSo;
+       arc=pass (i=2 spf=pass spfdomain=example.com dkim=pass dkdomain=example.com dmarc=pass fromdomain=example.com);
+       spf=pass (google.com: domain of developers+bncbdv4xz5qtaibbb4by6wqmgqenbnhvha@example.com designates 209.85.220.69 as permitted sender) smtp.mailfrom=developers+bncBDV4XZ5QTAIBBB4BY6WQMGQENBNHVHA@example.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=example.com
 ARC-Seal: i=2; a=rsa-sha256; t=1706147976; cv=pass;
         d=google.com; s=arc-20160816;
         b=om7hcNRfUrEQiq1AF3yuB6aY8VugeLNNdJ3mxNJvXkyayaB9EoBbCmopJoSXp3kt+Y
@@ -61,11 +61,11 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          O2K+/8afplAw0xhVdHG5mlhKAQKgt9uMO23VCmsNzU+o+tnc3BIPgn02W0z+vZ7hsoYU
          xQ2g==
 ARC-Authentication-Results: i=2; mx.google.com;
-       dkim=pass header.i=@toughbyte.com header.s=google header.b=TzxdsK4Z;
+       dkim=pass header.i=@example.com header.s=google header.b=TzxdsK4Z;
        spf=pass (google.com: domain of admin@mail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=admin@mail.com;
-       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toughbyte.com
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=example.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toughbyte.com; s=google; t=1706147976; x=1706752776; darn=toughbyte.com;
+        d=example.com; s=google; t=1706147976; x=1706752776; darn=example.com;
         h=list-unsubscribe:list-archive:list-help:list-post:list-id
          :mailing-list:precedence:x-original-authentication-results
          :x-original-sender:to:subject:message-id:date:from:mime-version:from
@@ -96,7 +96,7 @@ X-Gm-Message-State: AOJu0Yz2JCgPST31a5fCupE6glbJ+KRQJlFg8Bx31i5dRmUGuzeTOCae
 X-Google-Smtp-Source: AGHT+IErdha3hqG45iYbmb9mNP4ORbZkDiiOB4S5H4zjUEJ/5JJ8MyC7jWecMd/xYrA8R+ExkLEwiw==
 X-Received: by 2002:a19:674b:0:b0:50e:b2f0:3dbb with SMTP id e11-20020a19674b000000b0050eb2f03dbbmr74949lfj.79.1706147975979;
         Wed, 24 Jan 2024 17:59:35 -0800 (PST)
-X-BeenThere: developers@toughbyte.com
+X-BeenThere: developers@example.com
 Received: by 2002:a05:6512:238e:b0:50e:79a5:777e with SMTP id
  c14-20020a056512238e00b0050e79a5777els9159lfv.2.-pod-delta-00-eu; Wed, 24 Jan
  2024 17:59:34 -0800 (PST)
@@ -121,12 +121,12 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          4Z80mfiksB0Ly1X4dSlKXnPoRzMw7G3RfSgOHwFz+Zol+zesZdbFSXYkOXgMyCyh/LXM
          UcSw==
 ARC-Authentication-Results: i=1; mx.google.com;
-       dkim=pass header.i=@toughbyte.com header.s=google header.b=TzxdsK4Z;
+       dkim=pass header.i=@example.com header.s=google header.b=TzxdsK4Z;
        spf=pass (google.com: domain of admin@mail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=admin@mail.com;
-       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toughbyte.com
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=example.com
 Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
         by mx.google.com with SMTPS id o16-20020a198c10000000b005101c043967sor55353lfd.12.2024.01.24.17.59.33
-        for <developers@toughbyte.com>
+        for <developers@example.com>
         (Google Transport Security);
         Wed, 24 Jan 2024 17:59:33 -0800 (PST)
 Received-SPF: pass (google.com: domain of admin@mail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
@@ -138,32 +138,32 @@ From: Admin Admin <admin@mail.com>
 Date: Thu, 25 Jan 2024 07:59:22 +0600
 Message-ID: <CAHj9ApeDMFnA-nGED5MGsLr3kM3ZF7qztj75To_CxO5Ft7jF+Q@mail.gmail.com>
 Subject: Report for 25.01.24
-To: Developers <developers@toughbyte.com>
+To: Developers <developers@example.com>
 Content-Type: multipart/alternative; boundary="000000000000dc78cd060fbb87e8"
 X-Original-Sender: admin@mail.com
 X-Original-Authentication-Results: mx.google.com;       dkim=pass
- header.i=@toughbyte.com header.s=google header.b=TzxdsK4Z;       spf=pass
+ header.i=@example.com header.s=google header.b=TzxdsK4Z;       spf=pass
  (google.com: domain of admin@mail.com designates
  209.85.220.41 as permitted sender) smtp.mailfrom=admin@mail.com;
-       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toughbyte.com
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=example.com
 Precedence: list
-Mailing-list: list developers@toughbyte.com; contact developers+owners@toughbyte.com
-List-ID: <developers.toughbyte.com>
-X-Spam-Checked-In-Group: developers@toughbyte.com
+Mailing-list: list developers@example.com; contact developers+owners@example.com
+List-ID: <developers.example.com>
+X-Spam-Checked-In-Group: developers@example.com
 X-Google-Group-Id: 494641124923
-List-Post: <https://groups.google.com/a/toughbyte.com/group/developers/post>, <mailto:developers@toughbyte.com>
-List-Help: <https://support.google.com/a/toughbyte.com/bin/topic.py?topic=25838>,
- <mailto:developers+help@toughbyte.com>
-List-Archive: <https://groups.google.com/a/toughbyte.com/group/developers/>
+List-Post: <https://groups.google.com/a/example.com/group/developers/post>, <mailto:developers@example.com>
+List-Help: <https://support.google.com/a/example.com/bin/topic.py?topic=25838>,
+ <mailto:developers+help@example.com>
+List-Archive: <https://groups.google.com/a/example.com/group/developers/>
 List-Unsubscribe: <mailto:googlegroups-manage+494641124923+unsubscribe@googlegroups.com>,
- <https://groups.google.com/a/toughbyte.com/group/developers/subscribe>
+ <https://groups.google.com/a/example.com/group/developers/subscribe>
 
 --000000000000dc78cd060fbb87e8
 Content-Type: text/plain; charset="UTF-8"
 
 Stefan Hammond
-Software Developer at Toughbyte
-<https://www.toughbyte.com/?utm_campaign=bikmeyev&utm_medium=email&utm_source=email>
+Software Developer at ACME
+<https://www.example.com/?utm_campaign=hammond&utm_medium=email&utm_source=email>
 
 --000000000000dc78cd060fbb87e8
 Content-Type: text/html; charset="UTF-8"
@@ -172,16 +172,12 @@ Content-Transfer-Encoding: quoted-printable
 <div dir=3D"ltr"><br clear=3D"all"><div><div dir=3D"ltr" class=3D"gmail_sig=
 nature" data-smartmail=3D"gmail_signature"><div dir=3D"ltr"><br>
 <div><table style=3D"font-family:Arial,sans-serif;border-spacing:0;max-widt=
-h:600px;color:#212529"><tbody><tr><td style=3D"overflow:hidden;line-height:=
-1.38;vertical-align:top"><img width=3D"48" height=3D"48" style=3D"border-ra=
-dius:2px" src=3D"https://dfk1pdma5nc8m.cloudfront.net/assets/email_icons/to=
-ughbyte-icon-4cee2a446ffbd279c414027f1bb7fb78886947e991ff20edadd82c066050bb=
-24.png"></td><td style=3D"vertical-align:middle;padding:0 0 0 12px;margin-t=
+h:600px;color:#212529"><tbody><tr><td style=3D"vertical-align:middle;padding:0 0 0 12px;margin-t=
 op:1.5px"><div style=3D"font-size:16px;font-weight:700;line-height:24px">St=
 efan Hammond</div><div style=3D"font-size:14px;line-height:21px">Softwar=
 e Developer at <a style=3D"font-weight:700" rel=3D"noopener noreferrer" hre=
-f=3D"https://www.toughbyte.com/?utm_campaign=3Dbikmeyev&amp;utm_medium=3Dem=
-ail&amp;utm_source=3Demail" target=3D"_blank">Toughbyte</a></div></td></tr>=
+f=3D"https://www.example.com/?utm_campaign=3Dhammond&amp;utm_medium=3Dem=
+ail&amp;utm_source=3Demail" target=3D"_blank">ACME</a></div></td></tr>=
 </tbody></table></div></div></div></div></div>
 
 --000000000000dc78cd060fbb87e8--

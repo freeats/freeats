@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Sentry.init do |config|
-  config.dsn = Rails.application.credentials.sentry.dsn!
+  config.dsn = ENV.fetch("SENTRY_DSN", "dummy")
 
   config.breadcrumbs_logger = [:active_support_logger]
 
@@ -9,6 +9,7 @@ Sentry.init do |config|
 
   # Scrape values: user ip, user cookie, request body.
   config.send_default_pii = true
-
-  config.enabled_environments = %w[production]
+  # List all environments on which you would like to use Sentry ast comma-separated string, example:
+  # SENTRY_ENABLED_ENVIRONMENTS="production,staging"
+  config.enabled_environments = ENV.fetch("SENTRY_ENABLED_ENVIRONMENTS", "").split(",")
 end

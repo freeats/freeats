@@ -16,13 +16,7 @@ jane_link:
   status: current
   tenant: toughbyte_tenant
 
-sam_link1:
-  candidate: sam
-  url: "https://hh.ru/resume/sam"
-  status: current
-  tenant: toughbyte_tenant
-
-sam_link2:
+sam_link:
   candidate: sam
   url: "https://www.linkedin.com/in/sam/"
   status: current

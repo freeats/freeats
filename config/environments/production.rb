@@ -55,12 +55,18 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
 
-  # Log to STDOUT by default
-  config.logger =
-    ActiveSupport::Logger
-    .new($stdout)
-    .tap  { |logger| logger.formatter = Logger::Formatter.new }
-    .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = Logger::Formatter.new
+
+  # Use a different logger for distributed setups.
+  # require 'syslog/logger'
+  # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
+
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new($stdout)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
@@ -94,8 +100,15 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.default_url_options = { host: ENV.fetch("HOST_URL", nil) }
-  # Put all settings to env as a JSON string '{"user_name": "NAME", ...}'.
-  config.action_mailer.smtp_settings = JSON.parse(ENV.fetch("SMPT_SETTINGS", "{}"))
+  config.action_mailer.smtp_settings = {
+    user_name: ENV.fetch("MAILER_SMTP_USER_NAME", ""),
+    password: ENV.fetch("MAILER_SMTP_PASSWORD", ""),
+    address: ENV.fetch("MAILER_SMTP_ADDRESS", ""),
+    port: ENV.fetch("MAILER_SMTP_PORT", "").to_i,
+    domain: ENV.fetch("MAILER_SMTP_DOMAIN", ""),
+    authentication: ENV.fetch("MAILER_SMTP_AUTHENTICATION", ""),
+    enable_starttls_auto: ENV.fetch("MAILER_SMTP_ENABLE_STARTTLS_AUTO", "true") == "true"
+  }
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [

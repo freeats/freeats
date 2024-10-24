@@ -1,4 +1,4 @@
-Delivered-To: shamsa.khamisi@toughbyte.com
+Delivered-To: arthur.morgan@example.com
 Received: by 2002:a05:7010:a89:b0:3b5:1d6f:2c43 with SMTP id fm9csp704768mdb;
         Fri, 15 Mar 2024 13:21:42 -0700 (PDT)
 X-Google-Smtp-Source: AGHT+IFM4Ca/qpOWGF+vFbpK9REqkhKLWHcfIWfpBBcTrhoW0PlVkaPUE/rhOPWldYWJedwL/C46
@@ -26,20 +26,20 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          nwqQ==;
         dara=google.com
 ARC-Authentication-Results: i=2; mx.google.com;
-       dkim=pass header.i=@ingranosolutions.onmicrosoft.com header.s=selector2-ingranosolutions-onmicrosoft-com header.b=ZnH0mcoR;
-       arc=pass (i=1 spf=pass spfdomain=ingrano-solutions.com dkim=pass dkdomain=ingrano-solutions.com dmarc=pass fromdomain=ingrano-solutions.com);
-       spf=pass (google.com: domain of ramona.winter@ingrano-solutions.com designates 2a01:111:f400:7e1a::71a as permitted sender) smtp.mailfrom=ramona.winter@ingrano-solutions.com
-Return-Path: <ramona.winter@ingrano-solutions.com>
+       dkim=pass header.i=@acmesolutions.onmicrosoft.com header.s=selector2-acmesolutions-onmicrosoft-com header.b=ZnH0mcoR;
+       arc=pass (i=1 spf=pass spfdomain=acme-solutions.com dkim=pass dkdomain=acme-solutions.com dmarc=pass fromdomain=acme-solutions.com);
+       spf=pass (google.com: domain of mary.smith@acme-solutions.com designates 2a01:111:f400:7e1a::71a as permitted sender) smtp.mailfrom=mary.smith@acme-solutions.com
+Return-Path: <mary.smith@acme-solutions.com>
 Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2071a.outbound.protection.outlook.com. [2a01:111:f400:7e1a::71a])
         by mx.google.com with ESMTPS id fq7-20020a056214258700b00690dc323cfcsi3462451qvb.233.2024.03.15.13.21.41
-        for <shamsa.khamisi@toughbyte.com>
+        for <arthur.morgan@example.com>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
         Fri, 15 Mar 2024 13:21:42 -0700 (PDT)
-Received-SPF: pass (google.com: domain of ramona.winter@ingrano-solutions.com designates 2a01:111:f400:7e1a::71a as permitted sender) client-ip=2a01:111:f400:7e1a::71a;
+Received-SPF: pass (google.com: domain of mary.smith@acme-solutions.com designates 2a01:111:f400:7e1a::71a as permitted sender) client-ip=2a01:111:f400:7e1a::71a;
 Authentication-Results: mx.google.com;
-       dkim=pass header.i=@ingranosolutions.onmicrosoft.com header.s=selector2-ingranosolutions-onmicrosoft-com header.b=ZnH0mcoR;
-       arc=pass (i=1 spf=pass spfdomain=ingrano-solutions.com dkim=pass dkdomain=ingrano-solutions.com dmarc=pass fromdomain=ingrano-solutions.com);
-       spf=pass (google.com: domain of ramona.winter@ingrano-solutions.com designates 2a01:111:f400:7e1a::71a as permitted sender) smtp.mailfrom=ramona.winter@ingrano-solutions.com
+       dkim=pass header.i=@acmesolutions.onmicrosoft.com header.s=selector2-acmesolutions-onmicrosoft-com header.b=ZnH0mcoR;
+       arc=pass (i=1 spf=pass spfdomain=acme-solutions.com dkim=pass dkdomain=acme-solutions.com dmarc=pass fromdomain=acme-solutions.com);
+       spf=pass (google.com: domain of mary.smith@acme-solutions.com designates 2a01:111:f400:7e1a::71a as permitted sender) smtp.mailfrom=mary.smith@acme-solutions.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
  b=FdsR/sEf5DxtjTD85slvh20YEuIxG4FlprrFFfjpCLIrsbMRxJhb3Vos7HNHoBHzcwFBLJmN224V4OlcmeUVNPZIu+K7KCd9W09PVhMVp+9ZSDQDjBxIo1oB7z6BRG5aCaXrsWeRcXKThPm430BOqq7rrynnzHPDrprZNqEJhEYu550jbPsX63aJ1ozsJIkceosvLWCRmhSsNFqvNGfJFtqatzHOEBgT82kFoISDd415tCOsKnRjyXcF6nalC3/QMPtIkJk5rDwmAI753qYW6YgJ9z4IeiOabTHpLVZO/mVGDNpdlGr9QihfusQDaeO8YHxSi4h3niSqkmGGLeBSHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
@@ -48,12 +48,12 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  bh=MgNbmFz3ChVrpTPMIX7DR/KOaqGdQEBmQ2/O+HPywGU=;
  b=aR/Xa8B4B0vYRBbkNX3lsPLoVuszlHPS5LIR/dCSC0cxhQCZmPKwjdVKfvpWx3Z9UeJXL7/kVPPxzgfEmns7epeC4KHIdR9DTZqyV6uuc8Dv0uIruOk2NS2kBdXW7acVtr2vAeU680Zy5HpXqJyMiS7e0aU7xYE6Wvq2cY8uWr5Z5r/cqPPhWvaLwHPSgHjhhwMngP8Bulil4ulGKXAMnBOgeWQa7FIEKVqe9b3imoCMlbMhon2xxoXxtq0IsLh5Ux2oc6sIsaGocE8wv8OrGrSpKDSI3yvnXqFVzjPU/xGtq2igwHRg2+6Q7TcqZ63XUoaaBNI8nxYF6RHhUmGCLw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ingrano-solutions.com; dmarc=pass action=none
- header.from=ingrano-solutions.com; dkim=pass header.d=ingrano-solutions.com;
+ smtp.mailfrom=acme-solutions.com; dmarc=pass action=none
+ header.from=acme-solutions.com; dkim=pass header.d=acme-solutions.com;
  arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ingranosolutions.onmicrosoft.com;
- s=selector2-ingranosolutions-onmicrosoft-com;
+ d=acmesolutions.onmicrosoft.com;
+ s=selector2-acmesolutions-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
  bh=MgNbmFz3ChVrpTPMIX7DR/KOaqGdQEBmQ2/O+HPywGU=;
  b=ZnH0mcoRp/osHwPpe9Z/rFOpaEbwREpZdDoXiv0B2SUt2qDjpppuWAHsrmcd/lzfiermCExVTZzdMicf6EfynovxnGKI8hfa1FrliQGjnhzU1x2eQH/K4KhqkQ8b2diERHVIsOXOx+aq504bMDV4MQdwLqN2BgRrkhv3b7XIt9Q=
@@ -65,10 +65,10 @@ Received: from DU0P194MB2074.EURP194.PROD.OUTLOOK.COM
  ([fe80::5bea:2ec7:6e0f:77e4]) by DU0P194MB2074.EURP194.PROD.OUTLOOK.COM
  ([fe80::5bea:2ec7:6e0f:77e4%3]) with mapi id 15.20.7386.020; Fri, 15 Mar 2024
  20:21:40 +0000
-From: Ramona Winter <ramona.winter@ingrano-solutions.com>
-To: Shamsa Khamisi <shamsa.khamisi@toughbyte.com>
-Subject: AW: Finding a Java software engineer for Ingrano Solutions
-Thread-Topic: Finding a Java software engineer for Ingrano Solutions
+From: Mary Smith <mary.smith@acme-solutions.com>
+To: Arthur Morgan <arthur.morgan@example.com>
+Subject: AW: Finding a Java software engineer for ACME Solutions
+Thread-Topic: Finding a Java software engineer for ACME Solutions
 Thread-Index: AQHadTDlq3U9spzp106vA4ntn7mDtrE4lR8AgACsS/U=
 Date: Fri, 15 Mar 2024 20:21:40 +0000
 Message-ID:
@@ -83,7 +83,7 @@ Content-Language: de-DE
 X-MS-Has-Attach: yes
 X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=ingrano-solutions.com;
+ header.d=none;dmarc=none action=none header.from=acme-solutions.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: DU0P194MB2074:EE_|VI1P194MB0637:EE_
 x-ms-office365-filtering-correlation-id: 97728660-c7df-48d1-d66f-08dc452d85e1
@@ -130,7 +130,7 @@ Content-Type: application/pkcs7-mime; name=\"smime.p7m\"
 Content-Disposition: attachment; filename=\"smime.p7m\"
 Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-OriginatorOrg: ingrano-solutions.com
+X-OriginatorOrg: acme-solutions.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DU0P194MB2074.EURP194.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-Network-Message-Id: 97728660-c7df-48d1-d66f-08dc452d85e1

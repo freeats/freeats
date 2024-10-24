@@ -13,16 +13,16 @@ class ATS::Logger
     end
 
     def log(...)
-      if Rails.env.production?
-        production_log(...)
+      if Rails.env.in?(Sentry.configuration.enabled_environments)
+        sentry_log(...)
       else
-        development_log(...)
+        stream_log(...)
       end
     end
 
     private
 
-    def production_log(exception_or_message, **payload)
+    def sentry_log(exception_or_message, **payload)
       payload[:where] = where if where.present?
       case exception_or_message
       when String then Sentry.capture_message(exception_or_message, extra: payload)
@@ -32,7 +32,8 @@ class ATS::Logger
       end
     end
 
-    def development_log(exception_or_message, **)
+    # It could be stdout, log file, both or passed via param stream, see default_stream.
+    def stream_log(exception_or_message, **)
       logger.warn(exception_or_message, **)
     end
   end

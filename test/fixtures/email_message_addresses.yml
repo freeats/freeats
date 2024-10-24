@@ -7,14 +7,14 @@ john_msg1_to:
 
 jane_msg1_from:
   field: from
-  address: jane@toughbyte.com
+  address: jane@example.com
   position: 1
   email_message: john_msg1
   tenant: toughbyte_tenant
 
 john_msg2_to:
   field: to
-  address: oleg@toughbyte.com
+  address: oleg@example.com
   position: 1
   email_message: john_msg2
   tenant: toughbyte_tenant

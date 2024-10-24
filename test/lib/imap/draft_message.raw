@@ -2,7 +2,7 @@ MIME-Version: 1.0
 Date: Fri, 2 Feb 2024 17:43:03 +0300
 Message-ID: <CA+frY=t+BkHG9v78i5j64E7-JDfXDXs+djQFuJT3FvgDnDvr_Q@mail.gmail.com>
 Subject: test draft
-From: Arthur Morgan <arthur.morgan@toughbyte.com>
+From: Arthur Morgan <arthur.morgan@example.com>
 To: Test User <test@gmail.com>
 Content-Type: multipart/alternative; boundary="0000000000002ab4fb061067212f"
 
@@ -11,8 +11,8 @@ Content-Type: text/plain; charset="UTF-8"
 
 123
 Arthur Morgan
-Software Developer at Toughbyte 
-<https://www.toughbyte.com/?utm_campaign=butsaev&utm_medium=email&utm_source=email>
+Software Developer at ACME
+<https://www.example.com/?utm_campaign=morgan&utm_medium=email&utm_source=email>
 
 --0000000000002ab4fb061067212f
 Content-Type: text/html; charset="UTF-8"
@@ -23,18 +23,13 @@ signature" data-smartmail=3D"gmail_signature"><div dir=3D"ltr"><table style=
 =3D"caption-side:bottom;border-collapse:collapse;color:rgb(33,37,41);font-s=
 ize:14px;font-family:Arial,sans-serif;border-spacing:0px;max-width:600px"><=
 tbody style=3D"border-style:solid;border-width:0px"><tr style=3D"border-sty=
-le:solid;border-width:0px"><td style=3D"border-color:inherit;border-style:s=
-olid;border-width:0px;overflow:hidden;line-height:1.38;vertical-align:top">=
-<img width=3D"48" height=3D"48" src=3D"https://dfk1pdma5nc8m.cloudfront.net=
-/assets/email_icons/toughbyte-icon-4cee2a446ffbd279c414027f1bb7fb78886947e9=
-91ff20edadd82c066050bb24.png" style=3D"vertical-align:middle;border-radius:=
-2px"></td><td style=3D"border-color:inherit;border-style:solid;border-width=
+le:solid;border-width:0px"><td style=3D"border-color:inherit;border-style:solid;border-width=
 :0px;vertical-align:middle;padding:0px 0px 0px 12px;margin-top:1.5px"><div =
 style=3D"font-size:16px;font-weight:700;line-height:24px">Arthur Morgan</d=
 iv><div style=3D"line-height:21px">Software Developer at=C2=A0<a rel=3D"noo=
-pener noreferrer" href=3D"https://www.toughbyte.com/?utm_campaign=3Dbutsaev=
+pener noreferrer" href=3D"https://www.example.com/?utm_campaign=3Dmorgan=
 &amp;utm_medium=3Demail&amp;utm_source=3Demail" style=3D"font-weight:700" t=
-arget=3D"_blank">Toughbyte</a></div></td></tr></tbody></table></div></div><=
+arget=3D"_blank">ACME</a></div></td></tr></tbody></table></div></div><=
 /div></div>
 
 --0000000000002ab4fb061067212f--

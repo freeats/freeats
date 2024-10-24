@@ -273,9 +273,9 @@ john_duplicate_candidate_added:
   performed_at: <%= 4.days.ago %>
   tenant: toughbyte_tenant
 
-ilia_liamshin_candidate_added:
+ivan_ivanov_candidate_added:
   type: :candidate_added
   actor_account: admin_account
-  eventable: ilia_liamshin (Candidate)
+  eventable: ivan_ivanov (Candidate)
   performed_at: <%= 2.days.ago %>
   tenant: acme_tenant

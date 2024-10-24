@@ -27,7 +27,14 @@ class Public::RecaptchaController < ApplicationController
 
     render json: res.to_json
   rescue StandardError => e
-    Sentry.capture_exception(e)
+    ATS::Logger
+      .new(where: "Public::RecaptchaController#verify")
+      .external_log(
+        "Recaptcha verification failed",
+        extra: {
+          error_message: e
+        }
+      )
     render json: { error: { title: e.message } }, status: :unprocessable_entity
   end
 end

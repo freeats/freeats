@@ -65,6 +65,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_sentry_account_context
+    return unless Rails.env.in?(Sentry.configuration.enabled_environments)
+
     if current_account
       Sentry.set_user(
         id: current_account.id,
@@ -78,6 +80,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_sentry_context
+    return unless Rails.env.in?(Sentry.configuration.enabled_environments)
+
     Sentry.set_extras(params: params.to_unsafe_h, url: request.url)
   end
 end
