@@ -10,10 +10,10 @@ jane_alt_name:
 
 jake_alt_name:
   candidate: jake
-  name: Vanya
+  name: Jacky
   tenant: toughbyte_tenant
 
-ilia_alt_name:
-  candidate: ilia_liamshin
-  name: Ilya
+ivan_alt_name:
+  candidate: ivan_ivanov
+  name: Vanya
   tenant: acme_tenant

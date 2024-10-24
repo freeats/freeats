@@ -6,8 +6,8 @@ class API::V1::DocumentsControllerTest < ActionDispatch::IntegrationTest
   test "should create candidate" do
     sign_in accounts(:admin_account)
 
-    url = "https://www.linkedin.com/in/samuel/"
-    full_name = "Samuel Gap"
+    url = "https://www.linkedin.com/in/username/"
+    full_name = "Sam Smith"
     cv = fixture_file_upload("empty.pdf", "application/pdf")
 
     assert_difference "Candidate.count" do
@@ -25,7 +25,7 @@ class API::V1::DocumentsControllerTest < ActionDispatch::IntegrationTest
     sign_in accounts(:admin_account)
 
     candidate = candidates(:sam)
-    url = candidate_links(:sam_link2).url
+    url = candidate_links(:sam_link).url
     cv = fixture_file_upload("empty.pdf", "application/pdf")
 
     assert_equal candidate.source, "HeadHunter"

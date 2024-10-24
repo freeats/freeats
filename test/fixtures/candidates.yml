@@ -28,8 +28,8 @@ john_duplicate:
   blacklisted: true
   tenant: toughbyte_tenant
 
-ilia_liamshin:
-  full_name: Ilia Liamshin
+ivan_ivanov:
+  full_name: Ivan Ivanov
   location: nizhniy_novgorod_city
   candidate_source: headhunter
   tenant: acme_tenant

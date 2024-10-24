@@ -91,7 +91,7 @@ no_taskable:
 candidate6:
   name: One-handed clap
   status: open
-  taskable: ilia_liamshin (Candidate)
+  taskable: ivan_ivanov (Candidate)
   assignee: acme_alex_member
   due_date: <%= Time.zone.yesterday %>
   description: Just some text

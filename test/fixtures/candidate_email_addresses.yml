@@ -55,9 +55,9 @@ sam_email_address:
   status: current
   tenant: toughbyte_tenant
 
-ilia_liamshin_email_address:
-  candidate: ilia_liamshin
-  address: lyamsh@yandex.kz
+ivan_ivanov_email_address:
+  candidate: ivan_ivanov
+  address: ivanov@yandex.kz
   list_index: 1
   type: personal
   source: other

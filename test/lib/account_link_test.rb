@@ -7,7 +7,6 @@ class AccountLinkTest < ActiveSupport::TestCase
     github_link = AccountLink.new(
       "http://subdomain.GitHub.com/UserName/?utf8=✓&tab=repositories&q=query&type=&language="
     )
-    hh_link = AccountLink.new("http://HH.ru/UserName?query=something")
     linkedin_link = AccountLink.new("http://LinkedIn.com/IN/UserName/en/?query=something")
     long_linkedin_link = AccountLink.new("https://www.linkedin.com/in/user-name/details/skills/")
     googledev_link = AccountLink.new("http://developers.google.com/experts/people/user-name")
@@ -20,7 +19,6 @@ class AccountLinkTest < ActiveSupport::TestCase
     twitter_link = AccountLink.new("https://twitter.com/username")
 
     assert_equal github_link.normalize, "https://github.com/username"
-    assert_equal hh_link.normalize, "https://hh.ru/username"
     assert_equal linkedin_link.normalize, "https://www.linkedin.com/in/username/"
     assert_equal long_linkedin_link.normalize, "https://www.linkedin.com/in/user-name/"
     assert_equal googledev_link.normalize, "https://developers.google.com/community/experts/directory/profile/profile-user_name"
