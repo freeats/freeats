@@ -12,7 +12,7 @@ ruby:
     .email-header.row.mb-3
       .col-auto
         = image_tag message.sender_avatar_url(hashed_avatars, message.from_addresses.map(&:second)) || \
-                    "icons/user.png", class: "email-sender-avatar rounded"
+                    "icons/user.png", class: "avatar avatar-lg"
       .col.text-muted.fw-light
         | From: #{ats_pretty_email_addresses(message.from_addresses)}
         br

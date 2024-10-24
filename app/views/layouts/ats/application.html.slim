@@ -32,7 +32,7 @@ html
       - onload = "&onload=onGrecaptchaLoad"
       script[defer="true" src="https://www.google.com/recaptcha/api.js?render=#{RecaptchaV3::SITE_KEY}#{onload}"]
   body data-controller="alerts"
-    .wrapper.bg-white id=@page_id
+    .wrapper id=@page_id
       = render "layouts/ats/navbar"
       main.container-fluid
         = render partial: "shared/notification"

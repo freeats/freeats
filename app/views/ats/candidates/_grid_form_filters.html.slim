@@ -4,7 +4,7 @@
 .card.mb-3
   .card-body.p-3
     = form_for grid, method: :get, url: ats_candidates_path, local: true,
-               html: { class: "datagrid ats_candidates_grid" } do |f|
+               html: { class: "ats_candidates_grid" } do |f|
       .row
         - grid.filters.each do |filter|
           .datagrid-filter.filter.mb-3.col-xl-2.col-md-3.col-sm-4

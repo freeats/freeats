@@ -35,7 +35,7 @@ class ATS::PositionsGrid
   end
 
   filter(
-    :status,
+    :position_status,
     :enum,
     select: -> { Position.statuses.transform_keys(&:humanize) },
     multiple: true,
@@ -145,7 +145,7 @@ class ATS::PositionsGrid
   #
 
   column(
-    :status,
+    :position_status,
     order: false,
     header: "",
     html: true

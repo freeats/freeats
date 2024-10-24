@@ -1,5 +1,5 @@
 $footer-min-height: 117px;
-$navbar-min-height: 56px;
+$navbar-min-height: 53px;
 
 html,
 body {
@@ -78,7 +78,7 @@ footer .container-fluid {
 }
 
 [class*="container"] {
-  --bs-gutter-x: 3rem;
+  --tblr-gutter-x: 3rem;
 }
 
 .linkedin-blue {
@@ -257,77 +257,8 @@ footer .container-fluid {
   }
 }
 
-body {
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-
-// Change styles to Bootstrap v4.
-.table {
-  & > :not(:first-child) {
-    border-top: 1px solid $gray-500;
-  }
-  & > thead {
-    border-top: 1px solid $gray-500;
-  }
-  tr:not(:last-child) {
-    border-bottom: 1px solid $gray-500;
-  }
-  tbody tr:last-child {
-    border-bottom: none;
-  }
-  td,
-  th {
-    padding: 0.75rem;
-    border-bottom: none;
-    color: $gray-900;
-  }
-}
-
-.btn {
-  --bs-btn-font-size: 0.875rem;
-}
-
-.btn.btn-sm {
-  padding: 0.125rem 0.5rem;
-}
-
-input,
-button {
-  &.btn-link {
-    text-decoration: none;
-  }
-  &.btn-link:hover {
-    text-decoration: underline;
-  }
-}
-
-.selectpicker-button {
-  border: 1px solid $gray-500;
-  background-color: unset;
-  color: unset;
-  &:hover,
-  &:active {
-    border: 1px solid $gray-500;
-    background-color: $gray-100;
-    color: unset;
-  }
-}
-
 .hidden {
   display: none; // does not include !important flag as bootstrap d-none class
-}
-
-h1 {
-  font-size: 1.5rem;
-  line-height: 2rem;
-  font-weight: bold;
-}
-
-h2 {
-  font-size: 1.25rem;
-  line-height: 2rem;
-  font-weight: bold;
 }
 
 .links-row {
@@ -336,22 +267,22 @@ h2 {
   }
 }
 
-a {
-  &:not(.btn, .dropdown-item) {
-    text-decoration: none;
-  }
-  &:hover:not(.btn, .nav-link, .dropdown-item, .badge) {
-    text-decoration: underline;
-  }
-  &:visited:not(.btn, .nav-link, .dropdown-item, .badge) {
-    color: $blue-600;
-  }
-}
+/* a { */
+/*   &:not(.btn, .dropdown-item) { */
+/*     text-decoration: none; */
+/*   } */
+/*   &:hover:not(.btn, .nav-link, .dropdown-item, .badge) { */
+/*     text-decoration: underline; */
+/*   } */
+/*   &:visited:not(.btn, .nav-link, .dropdown-item, .badge) { */
+/*     color: $blue-600; */
+/*   } */
+/* } */
 
-.nav-link .badge {
-  padding: 0.25rem;
-  vertical-align: bottom;
-}
+/* .nav-link .badge { */
+/*   padding: 0.25rem; */
+/*   vertical-align: bottom; */
+/* } */
 
 .sortable-handle {
   margin-top: 0.75rem;
@@ -394,19 +325,19 @@ picture {
 }
 
 ul.dropdown-menu {
-  --bs-dropdown-font-size: 0.875rem;
-  --bs-dropdown-min-width: 100%;
+  --tbrl-dropdown-font-size: 0.875rem;
+  --tbrl-dropdown-min-width: 100%;
 }
 
 .note-show {
   ul.dropdown-menu {
-    --bs-dropdown-min-width: 10rem;
+    --tbrl-dropdown-min-width: 10rem;
   }
 }
 
 #turbo_placement_suggestions {
   ul.dropdown-menu {
-    --bs-dropdown-min-width: 10rem;
+    --tbrl-dropdown-min-width: 10rem;
   }
 }
 

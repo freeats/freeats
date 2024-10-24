@@ -1,25 +1,25 @@
 // ButtonComponent styles
 .btn {
   &-light {
-    --bs-btn-color: var(--bs-gray-900);
+    --tblr-btn-color: var(--tblr-gray-900);
   }
 
   &-tiny {
-    --bs-btn-font-size: 12px;
-    --bs-btn-padding-x: 8px;
-    --bs-btn-padding-y: 4px;
+    --tblr-btn-font-size: 12px;
+    --tblr-btn-padding-x: 8px;
+    --tblr-btn-padding-y: 4px;
   }
 
   &-small {
-    --bs-btn-font-size: 14px;
-    --bs-btn-padding-x: 9px;
-    --bs-btn-padding-y: 4.5px;
+    --tblr-btn-font-size: 14px;
+    --tblr-btn-padding-x: 9px;
+    --tblr-btn-padding-y: 4.5px;
   }
 
   &-medium {
-    --bs-btn-font-size: 16px;
-    --bs-btn-padding-x: 14px;
-    --bs-btn-padding-y: 7px;
+    --tblr-btn-font-size: 16px;
+    --tblr-btn-padding-x: 14px;
+    --tblr-btn-padding-y: 7px;
   }
 }
 
@@ -96,9 +96,9 @@
   // Bootstrap 5 does not support the `btn-group-xs` size.
   // Used in case of a select component with the `dropdown_buttons` plugin for the `selectize` library.
   .btn-group-xs button {
-    --bs-btn-font-size: 12px;
-    --bs-btn-padding-x: 8px;
-    --bs-btn-padding-y: 4px;
+    --tblr-btn-font-size: 12px;
+    --tblr-btn-padding-x: 8px;
+    --tblr-btn-padding-y: 4px;
   }
 
   .selectize-input {

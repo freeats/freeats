@@ -43,7 +43,7 @@ class LabeledComponent < ApplicationComponent
 
   option :left_layout_class, Types::Strict::String,
          optional: true,
-         default: -> { "col-12 col-md-profile" }
+         default: -> { "col-12 col-md-3" }
   option :right_layout_class, Types::Strict::String,
          optional: true,
          default: -> { "col-12 col-md" }

@@ -15,10 +15,3 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 body {
   padding: 1rem;
 }
-
-@include media-breakpoint-up(md) {
-  .col-md-profile {
-    flex: 0 0 137px;
-    max-width: 137px;
-  }
-}

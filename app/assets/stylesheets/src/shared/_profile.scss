@@ -1,76 +1,4 @@
-.profile-button {
-  button {
-    padding: 0;
-    margin: 0;
-
-    &:after {
-      content: none;
-    }
-  }
-
-  .profile-avatar-thumbnail {
-    @extend .rounded-circle;
-    height: 2rem;
-    width: 2rem;
-    border: 1px solid $gray-900;
-    background-color: $white;
-  }
-
-  .dropdown-item {
-    font-size: 14px;
-  }
-  a.dropdown-item:visited {
-    color: $navbar-text;
-  }
-
-  input {
-    outline: none;
-  }
-}
-
-#header-edit {
-  .card-body {
-    @extend .py-md-2;
-  }
-  .header-edit-avatar-row {
-    .card-row {
-      @extend .mt-md-0;
-    }
-    .card-row-left-side {
-      @extend .py-md-0;
-    }
-  }
-}
-
 #profile {
-  @include media-breakpoint-down(xs) {
-    #tab-list {
-      .nav-tabs {
-        border-bottom: none;
-
-        .nav-link {
-          &.active {
-            color: $gray-900;
-          }
-        }
-      }
-    }
-  }
-
-  @include media-breakpoint-up(md) {
-    .col-md-profile {
-      flex: 0 0 150px;
-      max-width: 150px;
-      padding-right: 0;
-    }
-
-    #tab-list {
-      .nav-tabs {
-        border-bottom: 1px solid $gray-500;
-      }
-    }
-  }
-
   .link-font {
     font-size: 1.25rem;
   }
@@ -113,25 +41,6 @@
   h1 {
     svg:not(.fa-user-group, .fa-user-clock) {
       width: 21px;
-    }
-  }
-
-  .card {
-    border-color: $gray-500;
-
-    .card-title {
-      font-size: 1rem;
-    }
-
-    .card-header {
-      background-color: $gray-100;
-      border-bottom-color: $gray-500;
-      border-radius: 0.25rem 0.25rem 0 0;
-      padding: 0.75rem 1rem;
-    }
-
-    .card-body {
-      padding: 0.5rem 1rem;
     }
   }
 
@@ -187,71 +96,6 @@
       line-height: 0.9rem;
     }
   }
-}
-
-.profile-avatar {
-  width: 150px;
-  height: 150px;
-  padding: 10px;
-  border-radius: 0.25rem;
-  border: 1px solid $gray-500;
-
-  position: relative;
-
-  img,
-  svg {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 95%;
-    height: 95%;
-    object-fit: contain;
-    margin: auto;
-  }
-
-  .alert-gray {
-    --bs-alert-bg: #{$gray-100};
-    --bs-alert-color: #{$gray-800};
-    --bs-alert-border-color: #{$gray-200};
-  }
-
-  .profile-avatar-overlay {
-    --overlay-bg-color: rgba(19, 19, 19, 0.92);
-
-    position: absolute;
-    height: 36px;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--bs-alert-bg, var(--overlay-bg-color));
-    color: var(--bs-alert-color, #fff);
-    @extend .font-small;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom-left-radius: 0.25rem;
-    border-bottom-right-radius: 0.25rem;
-
-    &::after {
-      border: 1px solid var(--bs-alert-border-color, var(--overlay-bg-color));
-      border-bottom-left-radius: 0.25rem;
-      border-bottom-right-radius: 0.25rem;
-      bottom: -1px;
-      content: "";
-      left: -1px;
-      position: absolute;
-      right: -1px;
-      top: -1px;
-    }
-  }
-}
-
-.profile-avatar-edit {
-  width: 60px;
-  height: 60px;
 }
 
 #notes,

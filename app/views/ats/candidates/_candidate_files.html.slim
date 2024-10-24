@@ -17,11 +17,12 @@
           td.text-truncate
             = link_to file.blob.filename, url_for(file), target: :_blank
           td
-            - if file.added_event.actor_account_id?
-              = picture_avatar_icon file.added_event.actor_account.avatar, {}, class: "small-avatar-thumbnail"
-              =< file.added_event.actor_account.name
-            - else
-              | ATS
+            .hstack.gap-1
+              - if file.added_event.actor_account_id?
+                = picture_avatar_icon file.added_event.actor_account.avatar, {}, class: "avatar avatar-sm"
+                =< file.added_event.actor_account.name
+              - else
+                | ATS
           td
             span data-bs-toggle="tooltip" title=file.added_event.performed_at.to_fs(:datetime_full)
               => short_time_ago_in_words(file.added_event.performed_at)

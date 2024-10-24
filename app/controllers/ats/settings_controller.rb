@@ -6,7 +6,7 @@ class ATS::SettingsController < AuthorizedController
   include Dry::Monads[:result]
 
   before_action { authorize! :profile }
-  before_action :set_partial_variables, only: :show
+  # before_action :set_partial_variables, only: :show
   before_action :set_gon_variables, only: :show
 
   def show; end
