@@ -31,7 +31,7 @@ html
       = javascript_include_tag "recaptcha"
       - onload = "&onload=onGrecaptchaLoad"
       script[defer="true" src="https://www.google.com/recaptcha/api.js?render=#{RecaptchaV3::SITE_KEY}#{onload}"]
-  body data-controller="alerts"
+  body
     .wrapper id=@page_id
       = render "layouts/ats/navbar"
       main.container-fluid

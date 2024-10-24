@@ -1,9 +1,5 @@
 #profile {
-  .link-font {
-    font-size: 1.25rem;
-  }
   .links-row {
-    margin-top: -0.25rem;
     .linkedin-icon {
       color: $linkedin-blue;
     }
@@ -25,76 +21,10 @@
     .telegram-icon {
       color: $telegram-color;
     }
-    a,
-    span {
-      max-height: 1.5rem;
-      margin-top: 0.25rem;
-    }
-    img {
-      vertical-align: bottom;
-    }
-    i {
-      vertical-align: bottom;
-    }
-  }
-
-  h1 {
-    svg:not(.fa-user-group, .fa-user-clock) {
-      width: 21px;
-    }
-  }
-
-  .empty-card-templates {
-    .empty-card {
-      padding-top: 1.5rem;
-      padding-bottom: 1.5rem;
-      border: 1px solid #e1e4e8;
-      border-style: dashed;
-      background-color: inherit;
-      &:hover {
-        background-color: #f8f9fa;
-      }
-    }
-  }
-
-  .reassignment-button {
-    @include media-breakpoint-down(md) {
-      & > * {
-        max-width: 216px;
-      }
-    }
-  }
-
-  .full-width-reassignment-button {
-    .reassignment-button {
-      @include media-breakpoint-down(md) {
-        & > * {
-          max-width: 100% !important;
-        }
-      }
-    }
   }
 
   .accordion {
-    --bs-accordion-active-bg: #{$gray-100};
-  }
-
-  .private-thread {
-    background-color: lightgoldenrodyellow;
-    box-shadow: 0px 0px 0px 4px lightgoldenrodyellow;
-
-    .list-group-item {
-      background-color: inherit;
-    }
-    .btn-circle {
-      width: 26px;
-      height: 26px;
-      padding: 5px 0px;
-      border-radius: 50%;
-      text-align: center;
-      font-size: 12px;
-      line-height: 0.9rem;
-    }
+    --tblr-accordion-active-bg: #{$gray-100};
   }
 }
 
@@ -107,43 +37,5 @@
   .modal-note-active {
     background-color: #e4f1ff;
     box-shadow: 0px 0px 0px 4px #e4f1ff;
-  }
-  .card {
-    border: 0;
-    border-radius: 0;
-
-    .card-body {
-      padding: 0.1rem 0;
-    }
-
-    .card-footer {
-      padding: 0.5rem 0 0 0;
-      border-top: 0px;
-      background-color: inherit;
-      text-align: end;
-    }
-  }
-  .list-group-item.note {
-    padding: 0;
-    border: 0;
-    margin-top: 4px;
-    &:first-child {
-      border-top: 0;
-    }
-  }
-  .list-group-scrollable {
-    height: 300px;
-    margin-bottom: 10px;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
-  p:last-child {
-    margin-bottom: 0;
-  }
-
-  button {
-    &:focus {
-      box-shadow: none;
-    }
   }
 }

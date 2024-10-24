@@ -7,7 +7,7 @@ ruby:
 .note-thread id=dom_id(thread) data-controller="note-thread"
   hr
   ul.list-group.list-group-flush
-    .card class=("private-thread" if thread.hidden)
+    .card class=("bg-yellow-lt" if thread.hidden)
       - if thread_notes.size.positive?
         = render "shared/notes/note", note: thread_notes.first, thread:,
                                       all_active_members:,

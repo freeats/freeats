@@ -24,7 +24,7 @@
                   = status.first.humanize
       / POSITION EDIT
       - if allowed_to?(:edit_header?)
-        .d-flex.profile-header-actions
+        div
           = link_to edit_header_ats_position_path(@position),
                     class: "btn btn-light btn-tiny control-grey-icon",
                     data: { bs_toggle: "tooltip", bs_title: "Edit" }

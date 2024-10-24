@@ -126,7 +126,7 @@ class AccountLink
   DOMAINS = Hashie::Rash.new(
     %r{\.linkedin\.com/in/|linkedin\.com/pub/} => {
       type: :font_awesome,
-      params: [{ class: "fab fa-linkedin link-font" }],
+      params: [{ class: "fab fa-linkedin fs-2" }],
       class: "linkedin"
     },
     %r{hh\.(ru|kz)/resume/\w+$|headhunter\.(ru|kz)/resume/\w+$} => {
@@ -136,18 +136,18 @@ class AccountLink
     },
     %r{github\.com/[\w-]+$} => {
       type: :font_awesome,
-      params: [{ class: "fab fa-github link-font" }],
+      params: [{ class: "fab fa-github fs-2" }],
       class: "github"
     },
     %r{bitbucket\.org/[%\w-]+$} => { class: "bitbucket" },
     %r{facebook\.com/[\w.]+|fb\.com/[\w.]+} => {
       type: :font_awesome,
-      params: [{ class: "fab fa-facebook-square link-font" }],
+      params: [{ class: "fab fa-facebook-square fs-2" }],
       class: "facebook"
     },
     %r{^(https://|http://)?(www.)?(x\.com)/\w+$} => {
       type: :font_awesome,
-      params: [{ class: "fab fa-square-x-twitter link-font" }],
+      params: [{ class: "fab fa-square-x-twitter fs-2" }],
       class: "twitter"
     },
     %r{500px\.com/\w+} => { params: [{ height: 18, width: 18 }], class: "500px" },
@@ -155,7 +155,7 @@ class AccountLink
     %r{angel\.co/[\w-]+$} => { class: "angel" },
     %r{apple\.com/[\w/-]+$} => {
       type: :font_awesome,
-      params: [{ class: "fab fa-apple link-font" }],
+      params: [{ class: "fab fa-apple fs-2" }],
       class: "apple"
     },
     %r{askubuntu\.com/users/\w+} => { class: "askubuntu" },
@@ -204,7 +204,7 @@ class AccountLink
     %r{pluralsight\.com/id/profile/[\w-]+$} => { class: "pluralsight" },
     %r{play\.google\.com/[\w/+]+$} => {
       type: :font_awesome,
-      params: [{ class: "fab fa-google-play link-font" }],
+      params: [{ class: "fab fa-google-play fs-2" }],
       class: "play"
     },
     %r{profiles\.google\.com/\w+} => { class: "profiles" },
@@ -232,7 +232,7 @@ class AccountLink
     %r{vimeo\.com/\w+$} => { class: "vimeo" },
     %r{vk\.com/[\w._-]+$|vkontakte\.ru/[\w._-]+$} => {
       type: :font_awesome,
-      params: [{ class: "fab fa-vk link-font" }],
+      params: [{ class: "fab fa-vk fs-2" }],
       class: "vk"
     },
     %r{\.wordpress\.com/} => { class: "wordpress" },

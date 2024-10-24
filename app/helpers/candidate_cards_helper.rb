@@ -97,7 +97,7 @@ module CandidateCardsHelper
         tag.i("", class: "fab fa-telegram"),
         "http://t.me/#{candidate.telegram.delete_prefix('@')}",
         data: { copy_link_tooltip: candidate.telegram },
-        class: "col-auto d-flex text-decoration-none link-font telegram-icon"
+        class: "col-auto d-flex text-decoration-none fs-2 telegram-icon"
       )
     end
     if candidate.skype.present?
@@ -105,7 +105,7 @@ module CandidateCardsHelper
         tag.i("", class: "fab fa-skype"),
         "skype:#{candidate.skype}",
         data: { copy_link_tooltip: candidate.skype },
-        class: "col-auto d-flex text-decoration-none link-font skype-icon"
+        class: "col-auto d-flex text-decoration-none fs-2 skype-icon"
       )
     end
     return if chat_links.empty?
