@@ -34,15 +34,17 @@ ruby:
                                 "turbo:submit-end->notes#clearNoteForm" } do |note_form|
       - if @task.present?
         = hidden_field_tag "render_time", Time.zone.now
-      .card-title.d-flex.align-items-center
-        = picture_avatar_icon current_member.account.avatar, {}, class: "avatar avatar-sm"
-        .ms-2 = current_member.account.name
-      .card-text.p-0
-        = additional_create_param_input
-        div id="note-textarea-#{model_id}"
-          = note_form.text_area :text, class: "form-control note-textarea new-note-area",
-            rows: 4, placeholder: t("notes.start_new_thread"), required: true,
-            data: { notes_target: "noteTextArea", model_id: }
+      .card-body
+        .card-title.d-flex.align-items-center
+          = picture_avatar_icon current_member.account.avatar, {}, class: "avatar avatar-sm"
+          .ms-2 = current_member.account.name
+
+        .card-text.p-0
+          = additional_create_param_input
+          div id="note-textarea-#{model_id}"
+            = note_form.text_area :text, class: "form-control note-textarea new-note-area",
+              rows: 4, placeholder: t("notes.start_new_thread"), required: true,
+              data: { notes_target: "noteTextArea", model_id: }
       .card-footer
         = render ButtonComponent.new(size: :tiny,
                                      data: { bs_toggle: "tooltip",

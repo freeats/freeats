@@ -46,7 +46,7 @@ ruby:
           = render ButtonLinkComponent.new(cancel_path, variant: :secondary, size: :tiny, type: :submit)
             = t("core.cancel_button")
 
-      .div
+      .card-body
         = yield form
 
 - if card_name != 'header'
