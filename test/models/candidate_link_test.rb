@@ -6,10 +6,10 @@ class CandidateLinkTest < ActiveSupport::TestCase
   test "should normalize url during save" do
     candidate_link = CandidateLink.create!(
       candidate: candidates(:john),
-      url: "https://github.com/WrmK",
+      url: "https://github.com/AsdF",
       tenant: tenants(:toughbyte_tenant)
     )
 
-    assert_equal candidate_link.url, "https://github.com/wrmk"
+    assert_equal candidate_link.url, "https://github.com/asdf"
   end
 end

@@ -9,28 +9,28 @@ class AccountLinkTest < ActiveSupport::TestCase
     )
     hh_link = AccountLink.new("http://HH.ru/UserName?query=something")
     linkedin_link = AccountLink.new("http://LinkedIn.com/IN/UserName/en/?query=something")
-    long_linkedin_link = AccountLink.new("https://www.linkedin.com/in/andrey-flegontov/details/skills/")
-    googledev_link = AccountLink.new("http://developers.google.com/experts/people/jerry-jalava")
-    fb_link = AccountLink.new("https://www.facebook.com/profile.php?id=100003586208563&sk=about")
+    long_linkedin_link = AccountLink.new("https://www.linkedin.com/in/user-name/details/skills/")
+    googledev_link = AccountLink.new("http://developers.google.com/experts/people/user-name")
+    fb_link = AccountLink.new("https://www.facebook.com/profile.php?id=000000000000000&sk=about")
     some_link = AccountLink.new("http://SomeSite.com/UserName?query=something&another_query=something")
     some_link_with_sub_domain = AccountLink.new("http://UserName.SomeSite.com?query=something&another_query=something")
     link_with_anchor = AccountLink.new("https://Some.SiteWithAnchor.com/#/content?param=test")
-    link_with_non_ansi_char = AccountLink.new("https://www.linkedin.com/in/сергей-пашин-bb1924166/")
-    x_twitter_link = AccountLink.new("https://x.com/elonmusk")
-    twitter_link = AccountLink.new("https://twitter.com/elonmusk")
+    link_with_non_ansi_char = AccountLink.new("https://www.linkedin.com/in/úšéŕ-ñáḿé-bb0000000/")
+    x_twitter_link = AccountLink.new("https://x.com/username")
+    twitter_link = AccountLink.new("https://twitter.com/username")
 
     assert_equal github_link.normalize, "https://github.com/username"
     assert_equal hh_link.normalize, "https://hh.ru/username"
     assert_equal linkedin_link.normalize, "https://www.linkedin.com/in/username/"
-    assert_equal long_linkedin_link.normalize, "https://www.linkedin.com/in/andrey-flegontov/"
-    assert_equal googledev_link.normalize, "https://developers.google.com/community/experts/directory/profile/profile-jerry_jalava"
+    assert_equal long_linkedin_link.normalize, "https://www.linkedin.com/in/user-name/"
+    assert_equal googledev_link.normalize, "https://developers.google.com/community/experts/directory/profile/profile-user_name"
     assert_equal some_link.normalize, "http://somesite.com/UserName"
     assert_equal some_link_with_sub_domain.normalize, "http://username.somesite.com"
     assert_equal link_with_anchor.normalize, "https://some.sitewithanchor.com/"
-    assert_equal link_with_non_ansi_char.normalize, "https://www.linkedin.com/in/%D1%81%D0%B5%D1%80%D0%B3%D0%B5%D0%B9-%D0%BF%D0%B0%D1%88%D0%B8%D0%BD-bb1924166/"
-    assert_equal fb_link.normalize, "https://www.facebook.com/profile.php?id=100003586208563"
-    assert_equal twitter_link.normalize, "https://x.com/elonmusk"
-    assert_equal x_twitter_link.normalize, "https://x.com/elonmusk"
+    assert_equal link_with_non_ansi_char.normalize, "https://www.linkedin.com/in/%C3%BA%C5%A1%C3%A9%C5%95-%C3%B1%C3%A1%E1%B8%BF%C3%A9-bb0000000/"
+    assert_equal fb_link.normalize, "https://www.facebook.com/profile.php?id=000000000000000"
+    assert_equal twitter_link.normalize, "https://x.com/username"
+    assert_equal x_twitter_link.normalize, "https://x.com/username"
   end
 
   test "blacklisted? method should work" do
@@ -42,15 +42,15 @@ class AccountLinkTest < ActiveSupport::TestCase
     assert_predicate AccountLink.new("https://raw.githubusercontent.com/visual-studio-code.png"), :blacklisted?
     assert_predicate AccountLink.new("https://www.linkedin.com/profile/view?id=42361418"), :blacklisted?
 
-    assert_not AccountLink.new("https://www.linkedin.com/in/stepanov").blacklisted?
-    assert_not AccountLink.new("https://github.com/greenfork").blacklisted?
-    assert_not AccountLink.new("https://play.google.com/store/apps/developer?id=Trino+Alberto+Parra+Figueroa").blacklisted?
+    assert_not AccountLink.new("https://www.linkedin.com/in/username").blacklisted?
+    assert_not AccountLink.new("https://github.com/username").blacklisted?
+    assert_not AccountLink.new("https://play.google.com/store/apps/developer?id=Firstname+Lastname").blacklisted?
   end
 
   test "social? method should work" do
-    assert_predicate AccountLink.new("https://www.linkedin.com/in/stepanov"), :social?
-    assert_predicate AccountLink.new("https://github.com/greenfork"), :social?
-    assert_predicate AccountLink.new("https://www.xing.com/profile/AlfredoNicolas_Almiron/cv"), :social?
+    assert_predicate AccountLink.new("https://www.linkedin.com/in/username"), :social?
+    assert_predicate AccountLink.new("https://github.com/username"), :social?
+    assert_predicate AccountLink.new("https://www.xing.com/profile/FirstName_LastName/cv"), :social?
 
     assert_not AccountLink.new("http://klevu.com/").social?
     assert_not AccountLink.new("https://askubuntu.com/questions/1291720/cant-use-the-updated-youtube-dl").social?
@@ -65,8 +65,8 @@ class AccountLinkTest < ActiveSupport::TestCase
   end
 
   test "behance links containing dash should be recognized" do
-    behance_link_with_dash = AccountLink.new("https://www.behance.net/vagharspoghosy-uiux")
-    behance_link_no_dash = AccountLink.new("https://www.behance.net/vagharspoghosyuiux")
+    behance_link_with_dash = AccountLink.new("https://www.behance.net/username-skill")
+    behance_link_no_dash = AccountLink.new("https://www.behance.net/usernameskill")
 
     assert_equal behance_link_with_dash.domain, { class: "behance" }
     assert_equal behance_link_no_dash.domain, { class: "behance" }
@@ -84,18 +84,18 @@ class AccountLinkTest < ActiveSupport::TestCase
     gitlab_link = AccountLink.new("http://www.gitlab.io/users/user-number123")
     normalized_gitlab_link = AccountLink.new("http://gitlab.io/user-number123")
     username_with_dot_link = AccountLink.new("http://user.number123.gitlab.io/")
-    weird_link = AccountLink.new("http://zdenda.online.gitlab.io/technology-registry/registry.html")
+    weird_link = AccountLink.new("http://username.online.gitlab.io/technology-registry/registry.html")
 
     assert_equal gitlab_resume_link.normalize, "https://gitlab.com/user-number123"
     assert_equal gitlab_link.normalize, "https://gitlab.com/user-number123"
     assert_equal normalized_gitlab_link.normalize, "https://gitlab.com/user-number123"
     assert_equal username_with_dot_link.normalize, "https://gitlab.com/user.number123"
-    assert_equal weird_link.normalize, "https://gitlab.com/zdenda.online"
+    assert_equal weird_link.normalize, "https://gitlab.com/username.online"
   end
 
   test "should downcase only username part for github domain" do
-    github_link = AccountLink.new("https://github.com/WrMk/Wrmk/blob/main/README.md")
+    github_link = AccountLink.new("https://github.com/AsDF/Asdf/blob/main/README.md")
 
-    assert_equal github_link.normalize, "https://github.com/wrmk/Wrmk/blob/main/README.md"
+    assert_equal github_link.normalize, "https://github.com/asdf/Asdf/blob/main/README.md"
   end
 end

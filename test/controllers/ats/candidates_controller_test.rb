@@ -304,7 +304,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
           update_header_ats_candidate_path(candidate),
           params: {
             candidate: {
-              full_name: "Vasya",
+              full_name: "New Awesome Name",
               headline: "new headline",
               company: "New awesome company",
               blacklisted: true,
@@ -333,7 +333,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_equal events.third.eventable, candidate
     assert_equal events.third.changed_field, "full_name"
     assert_equal events.third.changed_from, "Jane Doe"
-    assert_equal events.third.changed_to, "Vasya"
+    assert_equal events.third.changed_to, "New Awesome Name"
 
     assert_equal events.fourth.eventable, candidate
     assert_equal events.fourth.changed_field, "company"
@@ -353,7 +353,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     candidate.reload
 
     assert_predicate candidate.last_activity_at, :tomorrow?
-    assert_equal candidate.full_name, "Vasya"
+    assert_equal candidate.full_name, "New Awesome Name"
     assert_equal candidate.headline, "new headline"
     assert_equal candidate.company, "New awesome company"
     assert candidate.blacklisted
@@ -388,7 +388,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
       },
       candidate_phones_attributes: {
         "0" => {
-          phone: "+79259283344",
+          phone: "+11111111111",
           source: "other",
           type: "personal",
           status: "current"
@@ -424,7 +424,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_equal events.third.eventable, candidate
     assert_equal events.third.changed_field, "phones"
     assert_empty events.third.changed_from
-    assert_equal events.third.changed_to, ["+79259283344"]
+    assert_equal events.third.changed_to, ["+11111111111"]
 
     assert_equal events.fourth.eventable, candidate
     assert_equal events.fourth.changed_field, "links"

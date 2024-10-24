@@ -432,14 +432,14 @@ class Candidates::MergeTest < ActiveSupport::TestCase
 
   test "should merge and refresh different phones" do
     old_phone = [{
-      phone: "+79248877722",
+      phone: "+22222222222",
       source: "linkedin",
       status: "outdated",
       type: "personal",
       list_index: 1
     }]
     new_phone = [{
-      phone: "+79248888833",
+      phone: "+33333333333",
       source: "linkedin",
       status: "current",
       type: "personal",
@@ -463,14 +463,14 @@ class Candidates::MergeTest < ActiveSupport::TestCase
 
   test "should merge and refresh the same phones" do
     old_phone = [{
-      phone: "+79248877722",
+      phone: "+12345678901",
       source: "linkedin",
       status: "outdated",
       type: "personal",
       list_index: 1
     }]
     same_phone = [{
-      phone: "+79248877722",
+      phone: "+12345678901",
       source: "linkedin",
       status: "current",
       type: "personal",
@@ -494,14 +494,14 @@ class Candidates::MergeTest < ActiveSupport::TestCase
 
   test "should merge the same phones with different sources" do
     phone_with_source_other = [{
-      phone: "+74995527744",
+      phone: "+12345678901",
       source: "other",
       status: "current",
       type: "personal",
       list_index: 1
     }]
     same_phone_with_source_github = [{
-      phone: "+74995527744",
+      phone: "+12345678901",
       source: "github",
       status: "current",
       type: "personal",

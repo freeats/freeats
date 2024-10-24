@@ -100,13 +100,13 @@ class EmailSynchronization::RetrieveGmailTokensTest < ActiveSupport::TestCase
       "refresh_token": "#{REFRESH_TOKEN}"
     }
   JSON
-  EMAIL_ADDRESS = "dmitry.matveyev@toughbyte.com"
+  EMAIL_ADDRESS = "arthur.morgan@example.com"
   FETCH_USERINFO_RESPONSE = <<~JSON.freeze
     {
       "picture": "https://lh3.googleusercontent.com/a-/ALV-UjXMNdDc46rHncbuG5O7aTtirZeLQdd5K1S_CHowXIheWrn4jFU=s96-c",
       "verified_email": true,
       "id": "113829453307197181863",
-      "hd": "toughbyte.com",
+      "hd": "example.com",
       "email": "#{EMAIL_ADDRESS}"
     }
   JSON

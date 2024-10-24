@@ -1,25 +1,25 @@
-Delivered-To: arthur.morgan@toughbyte.com
+Delivered-To: arthur.morgan@example.com
 MIME-Version: 1.0
-To: "John Founder" <assignments@toughbyte.com>
+To: "John Founder" <assignments@example.com>
 From: "Right People Group" <leo.bloom@gmail.com>
 Date: Thu, 25 Jan 2024 07:59:22 +0600
 Message-ID: <CAHj9ApeDMFnA-nGED5MGsLr3kM3ZF7qztj75To_CxO5Ft7jF+Q@mail.gmail.com>
 Subject: Report for 25.01.24
 Content-Type: multipart/alternative; boundary="000000000000dc78cd060fbb87e8"
 Precedence: list
-Mailing-list: list developers@toughbyte.com; contact developers+owners@toughbyte.com
-List-ID: <developers.toughbyte.com>
-X-Spam-Checked-In-Group: developers@toughbyte.com
+Mailing-list: list developers@example.com; contact developers+owners@example.com
+List-ID: <developers.example.com>
+X-Spam-Checked-In-Group: developers@example.com
 X-Google-Group-Id: 494641124923
-List-Post: <https://groups.google.com/a/toughbyte.com/group/developers/post>, <mailto:developers@toughbyte.com>
-List-Help: <https://support.google.com/a/toughbyte.com/bin/topic.py?topic=25838>,
- <mailto:developers+help@toughbyte.com>
+List-Post: <https://groups.google.com/a/example.com/group/developers/post>, <mailto:developers@example.com>
+List-Help: <https://support.google.com/a/example.com/bin/topic.py?topic=25838>,
+ <mailto:developers+help@example.com>
 
 --000000000000dc78cd060fbb87e8
 Content-Type: text/plain; charset="UTF-8"
 
 Stefan Hammond
-Software Developer at Toughbyte
-<https://www.toughbyte.com/?utm_campaign=bikmeyev&utm_medium=email&utm_source=email>
+Software Developer at ACME
+<https://www.example.com/?utm_campaign=hammond&utm_medium=email&utm_source=email>
 
 --000000000000dc78cd060fbb87e8

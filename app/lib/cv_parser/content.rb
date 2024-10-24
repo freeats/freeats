@@ -4,7 +4,7 @@ class CVParser::Content
   PHONE_REGEX = /[+]*(?:[-()\u00a0\d]\s{0,2}){5,}/
   EMAIL_REGEX = /[^@\s\u00a0]+@[^@\s\u00a0]+/
   URL_REGEX = %r{(?:https?://)?(?:\w+\.)+(?:[a-zA-Z]{2,4})(?:[/\w.?%=:-]*)/?}
-  RUSSIAN_COUNTRY_CODE = "7"
+  DEFAULT_COUNTRY_CODE = "7"
 
   attr_reader :phones, :emails, :urls
 
@@ -16,7 +16,7 @@ class CVParser::Content
 
   class << self
     def extract_from_text(text, country_code:)
-      country_code ||= RUSSIAN_COUNTRY_CODE
+      country_code ||= DEFAULT_COUNTRY_CODE
       phones =
         text
         .scan(PHONE_REGEX)

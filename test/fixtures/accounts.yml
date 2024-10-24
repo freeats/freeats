@@ -51,13 +51,6 @@ george_account:
   status: verified
   tenant: toughbyte_tenant
 
-admin_ru_account:
-  email: admin@mail.ru
-  name: Админ Админ
-  password_hash: <%= RodauthApp.rodauth.allocate.password_hash("password") %>
-  status: verified
-  tenant: acme_tenant
-
 acme_grigoriy_account:
   email: grigoriy@mail.com
   name: Grigoriy Grigoriyov
