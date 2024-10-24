@@ -5,7 +5,7 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 // Bootstrap
 @import "../src/shared/variables";
 @import "../src/shared/colors";
-@import "bootstrap/scss/bootstrap";
+@import "@tabler/core/src/scss/tabler";
 
 // Custom component styles
 @import "../src/shared/selectize";

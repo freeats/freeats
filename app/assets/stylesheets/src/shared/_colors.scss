@@ -24,7 +24,7 @@ $gray-700: #495057;
 $gray-800: #343a40;
 $gray-900: #212529;
 
-@import "bootstrap/scss/variables";
+@import "@tabler/core/src/scss/tabler";
 
 // Other colors.
 $accordion-border-color: $gray-500;
