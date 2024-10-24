@@ -100,8 +100,15 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.default_url_options = { host: ENV.fetch("HOST_URL", nil) }
-  # Put all settings to env as a JSON string '{"user_name": "NAME", ...}'.
-  config.action_mailer.smtp_settings = JSON.parse(ENV.fetch("SMTP_SETTINGS", "{}")).symbolize_keys
+  config.action_mailer.smtp_settings = {
+    user_name: ENV.fetch("MAILER_SMTP_USER_NAME", ""),
+    password: ENV.fetch("MAILER_SMTP_PASSWORD", ""),
+    address: ENV.fetch("MAILER_SMTP_ADDRESS", ""),
+    port: ENV.fetch("MAILER_SMTP_PORT", "").to_i,
+    domain: ENV.fetch("MAILER_SMTP_DOMAIN", ""),
+    authentication: ENV.fetch("MAILER_SMTP_AUTHENTICATION", ""),
+    enable_starttls_auto: ENV.fetch("MAILER_SMTP_ENABLE_STARTTLS_AUTO", "true") == "true"
+  }
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
