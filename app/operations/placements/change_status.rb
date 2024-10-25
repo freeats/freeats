@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Placements::ChangeStatus < ApplicationOperation
-  include Dry::Monads[:result, :do, :try]
+  include Dry::Monads[:result, :do]
 
   option :new_status, Types::Strict::String
   option :placement, Types::Instance(Placement)
@@ -34,15 +34,10 @@ class Placements::ChangeStatus < ApplicationOperation
   private
 
   def save_placement(placement)
-    result = Try[ActiveRecord::RecordInvalid] do
-      placement.save!
-    end.to_result
+    placement.save!
 
-    case result
-    in Success(_)
-      Success()
-    in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:placement_invalid, placement.errors.full_messages.presence || e.to_s]
-    end
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:placement_invalid, placement.errors.full_messages.presence || e.to_s]
   end
 end

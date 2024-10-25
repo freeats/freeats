@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Notes::Add < ApplicationOperation
-  include Dry::Monads[:result, :do, :try]
+  include Dry::Monads[:result, :do]
 
   option :text, Types::Strict::String
   option :note_thread_params, Types::Strict::Hash.schema(
@@ -39,7 +39,7 @@ class Notes::Add < ApplicationOperation
         ).call
 
       note.note_thread = note_thread
-      note.save!
+      yield save_note(note)
 
       yield Events::Add.new(
         params:
@@ -54,13 +54,19 @@ class Notes::Add < ApplicationOperation
     send_notifications(note:, actor_account:)
 
     Success(note)
+  end
+
+  private
+
+  def save_note(note)
+    note.save!
+
+    Success()
   rescue ActiveRecord::RecordInvalid => e
     Failure[:note_invalid, note.errors.full_messages.presence || e.to_s]
   rescue ActiveRecord::RecordNotUnique => e
     Failure[:note_not_unique, note.errors.full_messages.presence || e.to_s]
   end
-
-  private
 
   def mentioned_in_hidden_thread_members(note_thread:, text:, current_member_id:)
     thread_is_hidden = note_thread.hidden

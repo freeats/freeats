@@ -49,6 +49,8 @@ class EmailSynchronization::Synchronize < ApplicationOperation
       nil
     in Success[:with_log_report, payload]
       logger.error(payload[:error_name], **extra.merge(payload.except(:error_name)))
+    in Failure[:email_thread_invalid, error]
+      logger.error("Failed to create email_thread", error)
     in Failure(:no_from_addresses)
       logger.error("Received a message with no 'from' addresses", **extra)
     in Failure(:no_to_addresses)

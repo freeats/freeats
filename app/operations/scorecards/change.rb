@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Scorecards::Change < ApplicationOperation
-  include Dry::Monads[:result, :try, :do]
+  include Dry::Monads[:result, :do]
 
   option :params, Types::Params::Hash.schema(
     interviewer_id: Types::Params::Integer,
@@ -39,25 +39,13 @@ class Scorecards::Change < ApplicationOperation
   private
 
   def save_scorecard(scorecard)
-    result = Try[ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique,
-                 ActiveRecord::NotNullViolation] do
-      scorecard.save!
-    end.to_result
+    scorecard.save!
 
-    case result
-    in Success(_)
-      Success(scorecard)
-    in Failure[ActiveRecord::RecordInvalid => _e] |
-       Failure[ActiveRecord::NotNullViolation => _e]
-      Failure[:scorecard_invalid,
-              scorecard.errors.full_messages.presence || _e.to_s]
-    in Failure[ActiveRecord::RecordNotUnique => e]
-      Failure[:scorecard_not_unique,
-              scorecard.errors.full_messages.presence || e.to_s]
-    in Failure[:scorecard_question_invalid, _e] |
-       Failure[:scorecard_question_not_unique, _e]
-      result
-    end
+    Success()
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::NotNullViolation => e
+    Failure[:scorecard_invalid, scorecard.errors.full_messages.presence || e.to_s]
+  rescue ActiveRecord::RecordNotUnique => e
+    Failure[:scorecard_not_unique, scorecard.errors.full_messages.presence || e.to_s]
   end
 
   def change_questions(scorecard:, questions_params:)

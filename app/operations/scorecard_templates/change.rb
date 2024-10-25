@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ScorecardTemplates::Change < ApplicationOperation
-  include Dry::Monads[:result, :try, :do]
+  include Dry::Monads[:result, :do]
 
   option :params, Types::Strict::Hash.schema(
     title?: Types::String
@@ -32,20 +32,14 @@ class ScorecardTemplates::Change < ApplicationOperation
   private
 
   def save_scorecard_template(scorecard_template)
-    result = Try[ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique] do
-      scorecard_template.save!
-    end.to_result
+    scorecard_template.save!
 
-    case result
-    in Success(_)
-      Success(scorecard_template)
-    in Failure(ActiveRecord::RecordInvalid => e)
-      Failure[:scorecard_template_invalid,
-              scorecard_template.errors.full_messages.presence || e.to_s]
-    in Failure[ActiveRecord::RecordNotUnique => e]
-      Failure[:scorecard_template_not_unique,
-              scorecard_template.errors.full_messages.presence || e.to_s]
-    end
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:scorecard_template_invalid, scorecard_template.errors.full_messages.presence || e.to_s]
+  rescue ActiveRecord::RecordNotUnique => e
+    Failure[:scorecard_template_not_unique,
+            scorecard_template.errors.full_messages.presence || e.to_s]
   end
 
   def change_scorecard_template_questions(scorecard_template:, questions_params:)

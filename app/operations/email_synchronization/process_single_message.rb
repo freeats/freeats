@@ -21,7 +21,7 @@ class EmailSynchronization::ProcessSingleMessage < ApplicationOperation
     payload = nil
     email_message = nil
     ActiveRecord::Base.transaction do
-      email_thread = EmailThread.create! if email_thread.nil?
+      email_thread = yield create_email_thread if email_thread.nil?
       email_message = CreateFromImap.new(
         message:,
         email_thread_id: email_thread.id,
@@ -51,6 +51,14 @@ class EmailSynchronization::ProcessSingleMessage < ApplicationOperation
   end
 
   private
+
+  def create_email_thread
+    email_thread = EmailThread.create!
+
+    Success(email_thread)
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:email_thread_invalid, email_thread.errors.full_messages.presence || e.to_s]
+  end
 
   def check_message_from_to_fields_presence(message)
     if message.clean_from_emails.blank?

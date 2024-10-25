@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Positions::Add < ApplicationOperation
-  include Dry::Monads[:result, :do, :try]
+  include Dry::Monads[:result, :do]
 
   option :params, Types::Strict::Hash.schema(
     name: Types::Strict::String,
@@ -27,16 +27,11 @@ class Positions::Add < ApplicationOperation
   private
 
   def save_position(position)
-    result = Try[ActiveRecord::RecordInvalid] do
-      position.save!
-    end.to_result
+    position.save!
 
-    case result
-    in Success(_)
-      Success(position)
-    in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
-    end
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
   end
 
   def add_default_stages(position, actor_account:)

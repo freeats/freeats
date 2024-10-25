@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Candidates::Change < ApplicationOperation
-  include Dry::Monads[:result, :do, :try]
+  include Dry::Monads[:result, :do]
 
   option :candidate, Types::Instance(Candidate)
   option :actor_account, Types::Instance(Account).optional
@@ -56,10 +56,10 @@ class Candidates::Change < ApplicationOperation
     old_values = remember_old_values(candidate)
 
     prepared_params = prepare_params(candidate:, params:, old_values:, actor_account:, namespace:)
+    candidate.assign_attributes(prepared_params.except(:alternative_names))
 
     ActiveRecord::Base.transaction do
-      candidate.assign_attributes(prepared_params.except(:alternative_names))
-      candidate.save!
+      yield save_candidate(candidate)
 
       if prepared_params.key?(:alternative_names)
         yield Candidates::AlternativeNames::Change.new(
@@ -88,6 +88,14 @@ class Candidates::Change < ApplicationOperation
   end
 
   private
+
+  def save_candidate(candidate)
+    candidate.save!
+
+    Success()
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+    Failure[:candidate_invalid, candidate.errors.full_messages.presence || e.to_s]
+  end
 
   def remember_old_values(candidate)
     {
