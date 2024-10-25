@@ -82,3 +82,11 @@
   font-style: italic;
   margin: 0.5rem 0 0 0;
 }
+
+.modal-body {
+  .container:first-child,
+  .container-fluid:first-child {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
