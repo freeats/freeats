@@ -99,4 +99,8 @@ RailsAdmin.config do |config|
     field :changed_to, :jsonb
     field :changed_from, :jsonb
   end
+
+  config.model("Position") do
+    exclude_fields :slug
+  end
 end

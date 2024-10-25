@@ -3,7 +3,7 @@
 
 .row
   span#back_on_all_positions
-    = link_to positions_path do
+    = link_to career_site_positions_path do
       i.fa-light.fa-chevron-left.me-1
       = t("career_site.positions.all_positions", name: @company_name)
 .row#position_heading.mt-3.gap-3.justify-content-between
@@ -24,7 +24,7 @@
       = t("career_site.positions.closed_alert")
     .col-12.col-md-auto
       = render ButtonLinkComponent.new( \
-          positions_path, size: :medium, class: "w-100" \
+          career_site_positions_path, size: :medium, class: "w-100" \
         ).with_content(t("career_site.positions.view_all"))
 - if @position.open?
   - if @position.description.body.present?
@@ -35,7 +35,9 @@
   hr.my-4
   #application_form
     h2.mb-3 Apply for this job
-    = form_with url: position_apply_path(@position.id), class: "d-flex flex-column gap-2" do |form|
+    = form_with url: apply_career_site_position_path( \
+                       tenant_slug: @current_tenant.slug, position_id: @position.id \
+                     ), class: "d-flex flex-column gap-2" do |form|
       #turbo_recaptcha.position-absolute
       = render TextInputComponent.new( \
           form,

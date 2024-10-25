@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 class Tenant < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: :slugged, routes: nil
+
   validates :name, presence: true
+  validates :slug, presence: { message: I18n.t("tenants.slug_should_by_present_error") },
+                   if: -> { career_site_enabled }
 
   validate :all_active_positions_have_recruiter_when_career_site_enabled
-  validate :domain_or_subdomain_should_by_present, if: -> { career_site_enabled }
 
   private
 
@@ -22,10 +26,7 @@ class Tenant < ApplicationRecord
     errors.add(:base, I18n.t("tenants.invalid_positions_error", count: invalid_positions_count))
   end
 
-  def domain_or_subdomain_should_by_present
-    return if domain.present? || subdomain.present?
-
-    errors.add(:base,
-               I18n.t("tenants.domain_or_subdomain_should_by_present_error"))
+  def should_generate_new_friendly_id?
+    slug.nil?
   end
 end

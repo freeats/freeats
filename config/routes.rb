@@ -17,10 +17,6 @@ Rails.application.routes.draw do
   get "invitation" => "rodauth#invite"
   post "accept_invite" => "rodauth#accept_invite"
 
-  resources :positions, only: %i[index show], controller: "career_site/positions" do
-    post :apply
-  end
-
   namespace :ats do
     resources :candidates, except: %i[show edit] do
       get "/", to: redirect("/ats/candidates/%{id}/info"), on: :member, id: /\d+/
@@ -160,4 +156,8 @@ Rails.application.routes.draw do
   constraints(Rodauth::Rails.authenticate { |rodauth| rodauth.admin? || rodauth.member? }) do
     mount Blazer::Engine, at: "stats"
   end
+
+  get ":tenant_slug/positions", to: "career_site/positions#index", as: "career_site_positions"
+  post ":tenant_slug/positions/:position_id/apply", to: "career_site/positions#apply", as: "apply_career_site_position"
+  get ":tenant_slug/positions/:id", to: "career_site/positions#show", as: "career_site_position"
 end

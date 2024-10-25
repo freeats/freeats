@@ -14,6 +14,11 @@ class CareerSite::PositionsController < ApplicationController
       render404
       return
     end
+
+    if current_tenant.slug != params[:tenant_slug]
+      redirect_to career_site_positions_path(tenant_slug: current_tenant.slug)
+      return
+    end
     set_current_tenant(current_tenant)
 
     @positions = Position.open
@@ -40,7 +45,9 @@ class CareerSite::PositionsController < ApplicationController
         @position = position_base_query.find_by(id: position_id)
         # If such position exists, redirect to proper route.
         if @position.present?
-          redirect_to position_path(@position.slug), status: :moved_permanently
+          redirect_to career_site_position_path(
+            tenant_slug: current_tenant.slug, id: @position.slug
+          ), status: :moved_permanently
           return
         end
       end
@@ -49,8 +56,9 @@ class CareerSite::PositionsController < ApplicationController
       return
     end
 
-    if params[:id] != @position.slug
-      redirect_to position_path(@position.slug), status: :moved_permanently
+    if params[:id] != @position.slug || current_tenant.slug != params[:tenant_slug]
+      redirect_to career_site_position_path(tenant_slug: current_tenant.slug, id: @position.slug),
+                  status: :moved_permanently
       return
     end
 
@@ -81,10 +89,10 @@ class CareerSite::PositionsController < ApplicationController
       if Recaptcha::ENABLED && !recaptcha_v2_modal_was_shown
         render turbo_stream: turbo_stream.update(:turbo_recaptcha,
                                                  partial: "public/recaptcha_modal")
-        return
       else
         render_error t("career_site.recaptcha_error"), status: :unprocessable_entity
       end
+      return
     end
 
     if recaptcha_v2_modal_was_shown && !helpers.public_recaptcha_v2_verified?(
@@ -107,7 +115,7 @@ class CareerSite::PositionsController < ApplicationController
       actor_account: nil
     ).call
     in Success
-      redirect_to position_path(position.slug),
+      redirect_to career_site_position_path(tenant_slug: current_tenant.slug, id: position.slug),
                   notice: t("career_site.positions.successfully_applied",
                             position_name: position.name)
     in Failure[:candidate_invalid, candidate_or_message]
@@ -144,8 +152,7 @@ class CareerSite::PositionsController < ApplicationController
 
   def current_tenant
     @current_tenant ||=
-      Tenant.find_by(domain: request.host) ||
-      Tenant.find_by(subdomain: request.subdomain.presence)
+      Tenant.friendly.find(params[:tenant_slug])
   end
 
   def set_cors_headers
