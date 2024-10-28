@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module ActiveStorageBlob
-  def build_after_unfurling(*args, **kwargs)
+  def build_after_unfurling(*, **kwargs)
     attached_as = kwargs.delete(:attached_as)
 
-    blob = super(*args, **kwargs)
+    blob = super
 
     # The initial `blob.key` is a unique secure token
     # https://github.com/rails/rails/blob/main/activestorage/app/models/active_storage/blob.rb#L188
