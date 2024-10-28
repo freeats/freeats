@@ -374,13 +374,13 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
           status: "current"
         },
         "1" => {
-          address: "sherlock@yandex.ru",
+          address: "sherlock@google.com",
           source: "other",
           type: "personal",
           status: "invalid"
         },
         "2" => {
-          address: "Sherlock@yandex.ru",
+          address: "Sherlock@google.com",
           source: "other",
           type: "personal",
           status: "outdated"
@@ -419,7 +419,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_equal events.second.eventable, candidate
     assert_equal events.second.changed_field, "email_addresses"
     assert_equal events.second.changed_from, ["jake@trujillo.com"]
-    assert_equal events.second.changed_to, ["sherlock@gmail.com", "sherlock@yandex.ru"]
+    assert_equal events.second.changed_to, ["sherlock@gmail.com", "sherlock@google.com"]
 
     assert_equal events.third.eventable, candidate
     assert_equal events.third.changed_field, "phones"

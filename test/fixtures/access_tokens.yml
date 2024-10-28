@@ -6,7 +6,7 @@ fresh_member_invitation:
   sent_at: <%= Time.zone.yesterday %>
 
 expired_member_invitation:
-  sent_to: "priest@mail.ru"
+  sent_to: "priest@gmail.com"
   hashed_token: <%= Base64.encode64(Digest::SHA256.digest("test2")) %>
   context: "member_invitation"
   tenant: toughbyte_tenant

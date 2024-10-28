@@ -8,7 +8,7 @@ class MemberInviteMailerTest < ActionMailer::TestCase
   end
   test "should send an email with invitation" do
     actor_account = accounts(:admin_account)
-    to = "pushkin.a.s@mail.ru"
+    to = "smith.j@gmail.com"
     invite_token = Random.urlsafe_base64(30)
 
     mail = MemberInviteMailer.with(

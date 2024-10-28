@@ -53,8 +53,8 @@ class ImapMessageTest < ActiveSupport::TestCase
   test "should parse reply message" do
     message = Imap::Message.new_from_api(ITH::REPLY_TO_MESSAGE, MESSAGE_UID, MESSAGE_FLAGS)
 
-    assert_equal message.in_reply_to, "<EC9C7AF8-CC38-4407-AEC9-8751A3229700@mail.ru>"
-    assert_equal message.references, ["<EC9C7AF8-CC38-4407-AEC9-8751A3229700@mail.ru>"]
+    assert_equal message.in_reply_to, "<EC9C7AF8-CC38-4407-AEC9-8751A3229700@gmail.com>"
+    assert_equal message.references, ["<EC9C7AF8-CC38-4407-AEC9-8751A3229700@gmail.com>"]
   end
 
   test "should parse auto-reply message" do
