@@ -93,19 +93,23 @@ module CandidateCardsHelper
   def candidate_card_chat_links(candidate)
     chat_links = []
     if candidate.telegram.present?
+      icon = inline_svg_tag("telegram.svg", { height: 18, width: 18, class: "telegram-icon" })
+      link = "http://t.me/#{candidate.telegram.delete_prefix('@')}"
+      data = { copy_link_tooltip: candidate.telegram }
+      klass = "col-auto d-flex text-decoration-none link-font telegram"
+
       chat_links << link_to_with_copy_popover_button(
-        tag.i("", class: "fab fa-telegram"),
-        "http://t.me/#{candidate.telegram.delete_prefix('@')}",
-        data: { copy_link_tooltip: candidate.telegram },
-        class: "col-auto d-flex text-decoration-none link-font telegram-icon"
+        icon, link, data:, class: klass
       )
     end
     if candidate.skype.present?
+      icon = inline_svg_tag("skype.svg", { height: 18, width: 18, class: "skype-icon" })
+      link = "skype:#{candidate.skype}"
+      data = { copy_link_tooltip: candidate.skype }
+      klass = "col-auto d-flex text-decoration-none link-font skype"
+
       chat_links << link_to_with_copy_popover_button(
-        tag.i("", class: "fab fa-skype"),
-        "skype:#{candidate.skype}",
-        data: { copy_link_tooltip: candidate.skype },
-        class: "col-auto d-flex text-decoration-none link-font skype-icon"
+        icon, link, data:, class: klass
       )
     end
     return if chat_links.empty?
