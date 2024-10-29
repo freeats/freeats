@@ -125,8 +125,8 @@ class AccountLink
   # rubocop:disable Layout/ClassStructure
   DOMAINS = Hashie::Rash.new(
     %r{\.linkedin\.com/in/|linkedin\.com/pub/} => {
-      type: :font_awesome,
-      params: [{ class: "fab fa-linkedin link-font" }],
+      type: :svg,
+      params: ["linkedin.svg", { height: 18, width: 18, class: "linkedin-blue" }],
       class: "linkedin"
     },
     %r{hh\.(ru|kz)/resume/\w+$|headhunter\.(ru|kz)/resume/\w+$} => {
@@ -135,27 +135,27 @@ class AccountLink
       class: "hh"
     },
     %r{github\.com/[\w-]+$} => {
-      type: :font_awesome,
-      params: [{ class: "fab fa-github link-font" }],
+      type: :svg,
+      params: ["github.svg", { height: 18, width: 18, class: "github-black" }],
       class: "github"
     },
     %r{bitbucket\.org/[%\w-]+$} => { class: "bitbucket" },
     %r{facebook\.com/[\w.]+|fb\.com/[\w.]+} => {
-      type: :font_awesome,
-      params: [{ class: "fab fa-facebook-square link-font" }],
+      type: :svg,
+      params: ["facebook.svg", { height: 18, width: 18, class: "facebook-blue" }],
       class: "facebook"
     },
     %r{^(https://|http://)?(www.)?(x\.com)/\w+$} => {
-      type: :font_awesome,
-      params: [{ class: "fab fa-square-x-twitter link-font" }],
+      type: :svg,
+      params: ["x.svg", { height: 18, width: 18, class: "twitter-black" }],
       class: "twitter"
     },
     %r{500px\.com/\w+} => { params: [{ height: 18, width: 18 }], class: "500px" },
     %r{about\.me/[\w.]+$} => { class: "about" },
     %r{angel\.co/[\w-]+$} => { class: "angel" },
     %r{apple\.com/[\w/-]+$} => {
-      type: :font_awesome,
-      params: [{ class: "fab fa-apple link-font" }],
+      type: :svg,
+      params: ["apple.svg", { height: 18, width: 18, class: "apple-blue" }],
       class: "apple"
     },
     %r{askubuntu\.com/users/\w+} => { class: "askubuntu" },
@@ -203,8 +203,8 @@ class AccountLink
     %r{pinterest\.com/\w+$} => { class: "pinterest" },
     %r{pluralsight\.com/id/profile/[\w-]+$} => { class: "pluralsight" },
     %r{play\.google\.com/[\w/+]+$} => {
-      type: :font_awesome,
-      params: [{ class: "fab fa-google-play link-font" }],
+      type: :svg,
+      params: ["google-play.svg", { height: 18, width: 18, class: "play-blue" }],
       class: "play"
     },
     %r{profiles\.google\.com/\w+} => { class: "profiles" },
@@ -231,8 +231,8 @@ class AccountLink
     %r{upwork\.com/o/profiles/users/} => { class: "upwork" },
     %r{vimeo\.com/\w+$} => { class: "vimeo" },
     %r{vk\.com/[\w._-]+$|vkontakte\.ru/[\w._-]+$} => {
-      type: :font_awesome,
-      params: [{ class: "fab fa-vk link-font" }],
+      type: :svg,
+      params: ["vk.svg", { height: 18, width: 18, class: "vk-blue" }],
       class: "vk"
     },
     %r{\.wordpress\.com/} => { class: "wordpress" },
