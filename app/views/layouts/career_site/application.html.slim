@@ -33,7 +33,7 @@ html
     = javascript_include_tag "fontawesome_all", "data-turbo-track": "reload"
     = javascript_include_tag "ats", "data-turbo-track": "reload"
     = javascript_include_tag "https://www.gstatic.com/charts/loader.js"
-    - if !rodauth.logged_in? && Rails.env.production?
+    - if RecaptchaV3::ENABLED
       = javascript_include_tag "recaptcha"
       - onload = "&onload=onGrecaptchaLoad"
       script[defer="true" src="https://www.google.com/recaptcha/api.js?render=#{RecaptchaV3::SITE_KEY}#{onload}"]

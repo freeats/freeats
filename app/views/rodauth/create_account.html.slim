@@ -5,7 +5,7 @@
       = t("rodauth.create_account_page_title")
     = form_with url: rodauth.create_account_path,
                 method: :post,
-                id: "verified-form",
+                id: "form-with-recaptcha",
                 data: { controller: "recaptcha-v3" }
       #turbo_recaptcha.position-absolute
       = render(TextInputComponent.new( \

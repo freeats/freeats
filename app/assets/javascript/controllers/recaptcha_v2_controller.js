@@ -9,7 +9,7 @@ export default class extends Controller {
     modal.show();
 
     window.recaptchaSubmit = function recaptchaSubmit() {
-      const form = document.getElementById("verified-form");
+      const form = document.getElementById("form-with-recaptcha");
 
       form.setAttribute("verified", "true");
       Turbo.navigator.submitForm(form);

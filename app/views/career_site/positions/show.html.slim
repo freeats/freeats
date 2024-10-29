@@ -37,10 +37,10 @@
     h2.mb-3 Apply for this job
     = form_with url: apply_career_site_position_path( \
                        tenant_slug: @current_tenant.slug,
-                       position_id: @position.id,
-                       id: "verified-form",
-                       data: { controller: "recaptcha-v3" }, \
-                     ), class: "d-flex flex-column gap-2" do |form|
+                       position_id: @position.id),
+                       id: "form-with-recaptcha",
+                       data: { controller: "recaptcha-v3" },
+                       class: "d-flex flex-column gap-2" do |form|
       #turbo_recaptcha.position-absolute
       = render TextInputComponent.new( \
           form,

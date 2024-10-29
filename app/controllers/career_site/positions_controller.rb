@@ -7,6 +7,7 @@ class CareerSite::PositionsController < ApplicationController
   layout "career_site/application"
 
   before_action :set_cors_headers
+  before_action :set_gon_variables
   protect_from_forgery with: :null_session, prepend: true
 
   def index
@@ -89,10 +90,13 @@ class CareerSite::PositionsController < ApplicationController
       if Recaptcha::ENABLED && !recaptcha_v2_modal_was_shown
         render turbo_stream: turbo_stream.update(:turbo_recaptcha,
                                                  partial: "public/recaptcha_modal")
-      else
-        render_error t("career_site.recaptcha_error"), status: :unprocessable_entity
+        return
       end
-      return
+
+      if RecaptchaV3::ENABLED && !Recaptcha::ENABLED
+        render_error t("career_site.recaptcha_error"), status: :unprocessable_entity
+        return
+      end
     end
 
     if recaptcha_v2_modal_was_shown && !helpers.public_recaptcha_v2_verified?(
