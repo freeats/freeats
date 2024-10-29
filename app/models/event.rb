@@ -72,11 +72,11 @@ class Event < ApplicationRecord
     position_stage_changed
     position_stage_removed
     scorecard_added
+    scorecard_changed
     scorecard_removed
     scorecard_template_added
+    scorecard_template_changed
     scorecard_template_removed
-    scorecard_template_updated
-    scorecard_updated
     task_added
     task_changed
     task_status_changed
@@ -98,7 +98,7 @@ class Event < ApplicationRecord
         [eventable.candidate]
       elsif type == "note_added" && eventable.note_thread.notable.is_a?(Candidate)
         [eventable.note_thread.notable]
-      elsif type.in?(%w[scorecard_added scorecard_updated])
+      elsif type.in?(%w[scorecard_added scorecard_changed])
         [eventable.placement.candidate]
       elsif type == "active_storage_attachment_added"
         [eventable.record]

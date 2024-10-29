@@ -57,7 +57,7 @@ module ATS::PositionsHelper
         "added scorecard template <b>#{event.eventable.title}</b>"
       when "scorecard_template_removed"
         "removed scorecard template from <b>#{event.eventable.name}</b> stage"
-      when "scorecard_template_updated"
+      when "scorecard_template_changed"
         "updated scorecard template <b>#{event.eventable.title}</b>"
       when "task_added"
         "created <b>#{event.eventable.name}</b> task"

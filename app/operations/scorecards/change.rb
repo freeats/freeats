@@ -64,13 +64,13 @@ class Scorecards::Change < ApplicationOperation
   def add_event(old_values:, scorecard:, actor_account:)
     return Success() unless scorecard_changed?(old_values:, scorecard:)
 
-    scorecard_updated_params = {
+    scorecard_changed_params = {
       actor_account:,
-      type: :scorecard_updated,
+      type: :scorecard_changed,
       eventable: scorecard
     }
 
-    yield Events::Add.new(params: scorecard_updated_params).call
+    yield Events::Add.new(params: scorecard_changed_params).call
 
     Success()
   end

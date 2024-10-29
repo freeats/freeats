@@ -22,7 +22,7 @@ class Scorecards::ChangeTest < ActiveSupport::TestCase
       summary: new_summary
     }
 
-    assert_difference "Event.where(type: 'scorecard_updated').count" do
+    assert_difference "Event.where(type: 'scorecard_changed').count" do
       Scorecards::Change.new(
         scorecard:,
         params:,
@@ -31,10 +31,10 @@ class Scorecards::ChangeTest < ActiveSupport::TestCase
       ).call.value!
     end
 
-    scorecard_updated_event = Event.where(type: :scorecard_updated).last
+    scorecard_changed_event = Event.where(type: :scorecard_changed).last
 
-    assert_equal scorecard_updated_event.eventable, scorecard
-    assert_equal scorecard_updated_event.actor_account, actor_account
+    assert_equal scorecard_changed_event.eventable, scorecard
+    assert_equal scorecard_changed_event.actor_account, actor_account
 
     assert_equal scorecard.reload.score, new_score
     assert_equal scorecard.interviewer_id, new_interviewer.id
