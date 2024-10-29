@@ -55,7 +55,7 @@ COPY --link . .
 RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompile assets
-RUN rails assets:precompile
+RUN rails assets:precompile SECRET_KEY_BASE="dummy"
 
 # Deployment options
 ENV LD_PRELOAD="libjemalloc.so.2" \
