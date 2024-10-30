@@ -16,7 +16,7 @@ ruby:
 
   assign_options = ats_task_assign_options(assignee_options:, selected_assignee_id: default_assignee)
   selected_watchers = [*default_watchers, default_assignee, current_member.id]
-  watcher_options =
+  watch_options =
     ats_task_watchers_options(watchers_options:, selected: selected_watchers, disabled: [default_assignee])
   repeat_interval_options = ats_task_repeat_interval_options(selected: "never")
 
@@ -57,7 +57,7 @@ ruby:
         - c.with_label(t("core.watchers"), for_field: "task[watcher_ids]", color_class: "text-gray-600")
         = render MultipleSelectComponent.new( \
                    "task[watcher_ids]",
-                   local: { options: watcher_options },
+                   local: { options: watch_options },
                    data: { deferred_selectize_turbo_modal_tasks_target: "selectWatchersInNewTask" } \
                  )
     / Third row
