@@ -5,7 +5,7 @@ class Positions::Add < ApplicationOperation
 
   option :params, Types::Strict::Hash.schema(
     name: Types::Strict::String,
-    location_id: Types::Coercible::Integer
+    location_id?: Types::Coercible::Integer.optional.fallback(nil)
   )
   option :actor_account, Types::Instance(Account)
 
@@ -71,13 +71,15 @@ class Positions::Add < ApplicationOperation
 
     yield Events::Add.new(params: position_recruiter_assigned_params).call
 
-    yield Events::AddChangedEvent.new(
-      eventable: position,
-      changed_field: "location",
-      old_value: nil,
-      new_value: position.location&.short_name,
-      actor_account:
-    ).call
+    if params[:location_id].present?
+      yield Events::AddChangedEvent.new(
+        eventable: position,
+        changed_field: "location",
+        old_value: nil,
+        new_value: position.location.short_name,
+        actor_account:
+      ).call
+    end
 
     Success()
   end
