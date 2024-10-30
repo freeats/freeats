@@ -129,7 +129,7 @@ class ATS::TasksController < AuthorizedController
   private
 
   def assignee_options
-    [[t("core.unassign"), nil]] + watchers_options
+    watchers_options
   end
 
   def watchers_options

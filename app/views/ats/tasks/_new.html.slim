@@ -48,6 +48,7 @@ ruby:
         - c.with_label(t("core.assignee"), for_field: "task[assignee_id]", color_class: "text-gray-600")
         = render SingleSelectComponent.new( \
                    "task[assignee_id]",
+                   include_blank: t("core.unassign"),
                    local: { options: assign_options },
                    data: { deferred_selectize_turbo_modal_tasks_target: "selectAssigneeInNewTask" } \
                  )
