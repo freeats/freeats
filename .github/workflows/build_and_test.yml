@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
     services:
       postgres:
         # This should match the version used in production
