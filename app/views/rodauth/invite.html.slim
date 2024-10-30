@@ -8,6 +8,7 @@
                  "full_name",
                  placeholder: true,
                  required: true,
+                 autofocus: true,
                  class: ("is-invalid" if rodauth.field_error("full_name")) \
                )
       span.invalid-feedback = rodauth.field_error("full_name")
