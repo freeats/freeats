@@ -1,0 +1,11 @@
+/# locals: (position:)
+
+div
+  .row.g-0.position-suggestion
+    .col-auto.my-auto.text-center.small-thumbnail-wrapper
+      span
+        = position_html_status_circle(position)
+    .col.ms-2
+      .row.g-0
+        .col-12.text-truncate
+          = position.name

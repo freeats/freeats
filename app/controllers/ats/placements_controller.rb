@@ -17,7 +17,7 @@ class ATS::PlacementsController < AuthorizedController
       actor_account: current_account
     ).call
     in Success[placement]
-      render_placements_notes_panel(placement)
+      render_placements_panel(placement)
     in Failure[:placement_already_exists, placement]
       partial_name = "placement_already_exists_modal"
       modal_render_options = {
@@ -55,7 +55,7 @@ class ATS::PlacementsController < AuthorizedController
       actor_account: current_account
     ).call
     in Success[placement]
-      render_placements_notes_panel(placement)
+      render_placements_panel(placement)
     in Failure[:placement_not_destroyed, error]
       render_error error, status: :unprocessable_entity
     end
@@ -76,7 +76,7 @@ class ATS::PlacementsController < AuthorizedController
       if position_pipeline_card
         render_pipeline_card_on_change_stage(old_stage:, new_stage:)
       else
-        render_placements_notes_panel(placement)
+        render_placements_panel(placement)
       end
     in Failure[:placement_invalid, _e] | Failure[:new_stage_invalid, _e]
       render_error _e
@@ -98,7 +98,7 @@ class ATS::PlacementsController < AuthorizedController
       if position_pipeline_card
         render_pipeline_card_on_change_status(placement:, old_status:, new_status:)
       else
-        render_placements_notes_panel(placement)
+        render_placements_panel(placement)
       end
     in Failure[:placement_invalid, error]
       render_error error
@@ -231,10 +231,10 @@ class ATS::PlacementsController < AuthorizedController
     render_turbo_stream([*render_placements])
   end
 
-  def render_placements_notes_panel(placement)
+  def render_placements_panel(placement)
     set_placements_variables(placement)
 
-    partial = "ats/candidates/placements_notes_panel"
+    partial = "ats/candidates/placements_panel"
     locals = {
       candidate: placement.candidate,
       relevant_placements: @relevant_placements,
@@ -244,7 +244,7 @@ class ATS::PlacementsController < AuthorizedController
 
     render_turbo_stream(
       [
-        turbo_stream.replace("turbo_placements_notes_panel", partial:, locals:)
+        turbo_stream.replace("turbo_placements_panel", partial:, locals:)
       ]
     )
   end

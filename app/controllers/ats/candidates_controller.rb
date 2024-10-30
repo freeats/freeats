@@ -23,14 +23,15 @@ class ATS::CandidatesController < AuthorizedController
                                          upload_file change_cv_status delete_file
                                          delete_cv_file download_cv_file upload_cv_file
                                          assign_recruiter synchronize_email_messages
-                                         merge_duplicates_modal merge_duplicates destroy]
+                                         merge_duplicates_modal merge_duplicates destroy
+                                         fetch_positions]
   before_action :authorize!, only: %i[create new index]
   before_action -> { authorize!(@candidate) },
                 only: %i[show show_header edit_header update_header
                          show_card edit_card update_card remove_avatar
                          upload_file change_cv_status delete_file
                          delete_cv_file download_cv_file upload_cv_file
-                         assign_recruiter synchronize_email_messages destroy]
+                         assign_recruiter synchronize_email_messages destroy fetch_positions]
 
   def index
     @candidates_grid = ATS::CandidatesGrid.new(
@@ -395,7 +396,7 @@ class ATS::CandidatesController < AuthorizedController
       # rubocop:disable Rails/SkipsModelValidations
       render_turbo_stream(
         [
-          # rendered_placements_notes_panel,
+          rendered_notes_panel,
           turbo_stream.update_all(
             ".turbo_candidate_reassign_recruiter_button",
             partial: "shared/profile/reassign_button",
@@ -540,6 +541,26 @@ class ATS::CandidatesController < AuthorizedController
     end
 
     render_error @candidate.errors.full_messages
+  end
+
+  def fetch_positions
+    query = params[:q]
+
+    positions =
+      Position
+      .where.not(status: :closed)
+      .search_by_name(query)
+      .order(:status, :name)
+      .limit(20)
+      .to_a
+
+    ordered_positions = Positions::Order.new(positions:, query:).call.value!
+
+    partials = ordered_positions.map do |position|
+      render_to_string(partial: "position_element", locals: { position: })
+    end
+
+    render partial: "ats/quick_search/options", locals: { dataset: ordered_positions, partials: }
   end
 
   private
@@ -737,5 +758,18 @@ class ATS::CandidatesController < AuthorizedController
   def page_of_activity(event_id)
     num_of_activity = @all_activities.index { |activity| activity.id == event_id.to_i }.to_i + 1
     (num_of_activity.to_f / ACTIVITIES_PAGINATION_LIMIT).ceil
+  end
+
+  def rendered_notes_panel
+    partial = "ats/candidates/notes_panel"
+    locals = {
+      all_active_members: @all_active_members,
+      suggested_names: @suggested_names,
+      note_threads: @note_threads,
+      additional_create_param_input:
+        helpers.hidden_field_tag("note[note_thread][candidate_id]", @candidate.id),
+      hide_visibility_controls: false
+    }
+    turbo_stream.replace("turbo_notes_panel", partial:, locals:)
   end
 end

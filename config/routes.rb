@@ -40,6 +40,7 @@ Rails.application.routes.draw do
       post :merge_duplicates, on: :member
       get ":tab", to: "candidates#show", on: :member,
                   tab: /info|tasks|emails|scorecards|files|activities/, as: "tab"
+      get :fetch_positions
 
       resources :placements, only: %i[create destroy], shallow: true do
         post :change_stage, on: :member
@@ -117,10 +118,6 @@ Rails.application.routes.draw do
     namespace :v1 do
       resource :locations, only: [] do
         get :fetch_locations
-      end
-
-      resource :positions, only: [] do
-        get :fetch_positions
       end
 
       post "candidates", to: "documents#create"

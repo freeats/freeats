@@ -1,4 +1,4 @@
-#placements-notes-panel {
+#placements-panel {
   .placement-buttons {
     border-radius: 5px !important;
     .btn-group {
@@ -64,4 +64,8 @@
   .card-footer {
     border-top-color: $gray-500;
   }
+}
+
+.position-suggestion .col {
+  min-width: 0;
 }

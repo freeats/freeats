@@ -107,7 +107,7 @@
 - content_for :side_info
   .turbo_candidate_reassign_recruiter_button.col-12.d-none.d-lg-block
     = capture(&render_reassign_button)
-  = render partial: "ats/candidates/placements_notes_panel",
+  = render partial: "ats/candidates/placements_panel",
            locals: { candidate: @candidate,
                      relevant_placements: @relevant_placements,
                      irrelevant_placements: @irrelevant_placements,

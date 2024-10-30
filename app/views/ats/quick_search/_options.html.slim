@@ -1,7 +1,6 @@
-/# locals: (dataset:, partials:, see_more_partial:)
+/# locals: (dataset:, partials:, see_more_partial: nil)
 
 - optgroup = dataset.first.class.name.downcase if dataset.present?
-- see_more_partial ||= nil
 
 - dataset.zip(partials).map do |data, partial|
   - label = data.try(:full_name) || data.name

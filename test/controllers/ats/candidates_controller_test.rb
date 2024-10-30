@@ -853,4 +853,17 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_empty(reference_activities - activities)
   end
+
+  test "should fetch positions" do
+    candidate = candidates(:john)
+    positions = [positions(:ruby_position), positions(:golang_position)]
+
+    get ats_candidate_fetch_positions_path(candidate, q: "dev")
+
+    assert_response :success
+
+    options = Nokogiri::HTML(response.body).css("option").map { _1.text.strip }
+
+    assert_equal options.sort, positions.map(&:name).sort
+  end
 end
