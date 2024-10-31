@@ -40,7 +40,7 @@ export default class extends SelectComponentController {
       selectOnTab: false,
       create: this.createNewOptionValue,
       createOnBlur: this.createNewOptionValue,
-      showArrow: false, //  Hide the default down arrow to replace it with our own.
+      showArrow: true,
       ...preloadedOptions,
       ...remoteSearchParams,
     });

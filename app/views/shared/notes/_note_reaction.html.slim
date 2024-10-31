@@ -9,20 +9,29 @@ ruby:
 = turbo_frame_tag "note_reaction_#{note.id}"
   - if member_react
     span data-note-reactions-target="iconReaction"
-      = form_with url: remove_reaction_url, class: "d-inline-block form-reaction",
-                  data: { action: "turbo:submit-start->note-reactions#hideTooltip" } do |form|
-        = form.button class: "btn btn-sm btn-light ms-2", title: liked_members,
-                      data: { bs_toggle: "tooltip", bs_html: true }
-          i.fas.fa-thumbs-up
-          span.note-reactions-count.ms-1
+      = form_with url: remove_reaction_url,
+                  class: "d-inline-block form-reaction",
+                  data: { action: "turbo:submit-start->note-reactions#hideTooltip" }
+        = render ButtonComponent.new( \
+                   variant: :cancel,
+                   size: :tiny,
+                   tooltip_title: liked_members,
+                   data: { bs_html: true },
+                 ) do |c|
+          - c.with_icon(:thumb_up, icon_type: :filled, size: c.size, position: :left)
+          span.note-reactions-count
             = reacted_names.count
   - else
     span data-note-reactions-target="iconReaction"
       = form_with url: add_reaction_url,
                   class: "d-inline-block form-reaction",
-                  data: { action: "turbo:submit-start->note-reactions#hideTooltip" } do |form|
-        = form.button class: "btn btn-sm btn-light ms-2", title: unpressed_like_tooltip,
-                      data: { bs_toggle: "tooltip", bs_html: true }
-          i.fal.fa-thumbs-up
-          span.note-reactions-count.ms-1
+                  data: { action: "turbo:submit-start->note-reactions#hideTooltip" }
+        = render ButtonComponent.new( \
+                   variant: :cancel,
+                   size: :tiny,
+                   tooltip_title: unpressed_like_tooltip,
+                   data: { bs_html: true },
+                 ) do |c|
+          - c.with_icon(:thumb_up, size: c.size, position: :left)
+          span.note-reactions-count
             = reacted_names.count

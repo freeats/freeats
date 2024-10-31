@@ -4,7 +4,7 @@
 .row
   span#back_on_all_positions
     = link_to career_site_positions_path do
-      i.fa-light.fa-chevron-left.me-1
+      = render IconComponent.new(:chevron_left, size: :medium, class: "me-1")
       = t("career_site.positions.all_positions", name: @company_name)
 .row#position_heading.mt-3.gap-3.justify-content-between
   .col-12.col-md-10

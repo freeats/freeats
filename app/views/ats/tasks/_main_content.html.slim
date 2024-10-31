@@ -24,9 +24,15 @@
       .hstack.justify-content-between data-inline-edit-form-target="showView"
         h2.d-inline-block.mb-0 style="min-height: 32px;"
           = task.name
-        button.btn.control-grey-icon.py-0.px-2.float-end [type="button" data-action="inline-edit-form#show"
-            data-bs-toggle="tooltip" title=t("core.edit_button")]
-          i.fas.fa-pencil-alt
+        = render IconButtonComponent.new( \
+                   :pencil,
+                   variant: :ghost,
+                   data: { \
+                     action: "inline-edit-form#show",
+                     bs_toggle: :tooltip,
+                     bs_title: t("core.edit_button"),
+                   } \
+                 )
       / Title edit
       .col.hidden data-inline-edit-form-target="editView"
         = form_with model: task,
@@ -121,9 +127,15 @@
       .vstack.gap-2
         .hstack.justify-content-between style="height: 32px;"
           = label_tag :description_show, t("tasks.description"), class: "col-form-label-sm text-gray-600"
-          button.btn.control-grey-icon.py-0.px-2.float-end [type="button" data-action="inline-edit-form#show"
-              data-bs-toggle="tooltip" title=t("core.edit_button")]
-            i.fas.fa-pencil-alt
+          = render IconButtonComponent.new( \
+                     :pencil,
+                     variant: :ghost,
+                     data: { \
+                       action: "inline-edit-form#show",
+                       bs_toggle: :tooltip,
+                       bs_title: t("core.edit_button"),
+                     } \
+                   )
         .w-100 style="min-height: 2rem;"
           = preformatted_plain_format(task.description)
     = form_with model: task, url: ats_task_path(task, grid:), class: "col-12 hidden",

@@ -20,9 +20,9 @@ module ApplicationHelper
     safe_join(
       options.map do |option|
         tag.option(value: option[:value], selected: option[:selected]) do
-          tag.div(class: "d-inline-flex align-items-center") do
+          tag.div(class: "d-inline-flex align-items-center gap-2") do
             safe_join [
-              tag.i("", class: "fas fa-solid fa-circle pe-2 #{option[:color]}"),
+              render(IconComponent.new(:circle, icon_type: :filled, class: option[:color])),
               option[:text]
             ]
           end

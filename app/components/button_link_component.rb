@@ -14,6 +14,7 @@ class ButtonLinkComponent < ButtonComponent
         size_class,
         disabled_class,
         hidden_class,
+        flex_content_position_class,
         additional_options.delete(:class)
       ],
       target:,

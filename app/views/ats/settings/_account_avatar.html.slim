@@ -5,8 +5,7 @@
     - if account.avatar.attached?
       = image_tag account.avatar.variant(:medium)
     - else
-      = link_to image_tag(ApplicationController.helpers.asset_path("icons/user.png")),
-                ApplicationController.helpers.asset_path("icons/user.png")
+      = render IconComponent.new(:user, class: "empty-avatar-icon")
 
   = form_with model: account,
               url: update_avatar_ats_settings_path,

@@ -106,7 +106,7 @@ module ATS::PositionsHelper
       HTML
   end
 
-  def position_html_status_circle(position, tooltip_placement: "top")
+  def position_html_status_circle(position, tooltip_placement: "top", icon_size: :small)
     tooltip_status_reason_text =
       ", #{change_status_reason_tooltip_text(position)}"
     event_type, event_performed_at =
@@ -146,15 +146,19 @@ module ATS::PositionsHelper
       }
     )
 
-    <<~HTML.html_safe # rubocop:disable Rails/OutputSafety
-      <i class="fa-fw fa-user #{colors[color_code]} #{position.draft? ? 'fal' : 'fas'}"
-         data-bs-toggle="tooltip"
-         data-bs-title='#{tooltip}'
-         data-bs-html="true"
-         data-bs-boundary="viewport"
-         data-bs-placement="#{tooltip_placement}">
-      </i>
-    HTML
+    render IconComponent.new(
+      :user,
+      icon_type: position.draft? ? :outline : :filled,
+      class: [colors[color_code], "flex-shrink-0"],
+      size: icon_size,
+      data: {
+        bs_toggle: :tooltip,
+        bs_title: tooltip,
+        bs_html: true,
+        bs_boundary: :viewport,
+        bs_placement: tooltip_placement
+      }
+    )
   end
 
   private

@@ -18,14 +18,6 @@ table.datagrid {
   }
 
   .links {
-    .fa-file-alt {
-      width: 1.3rem;
-    }
-
-    .fa-briefcase {
-      width: 1.3rem;
-    }
-
     a ~ a {
       @extend .ms-2;
     }

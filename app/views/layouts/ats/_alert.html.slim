@@ -18,4 +18,4 @@
       .notification class=class_name role="alert"
         = sanitize text, attributes: %w[href rel target]
         span.notification-close
-          i.fas.fa-times
+          = render IconComponent.new(:x)

@@ -1,31 +1,7 @@
 # frozen_string_literal: true
 
 class ButtonComponent < ApplicationComponent
-  renders_one :icon, "FontAwesomeIconComponent"
-  renders_one :tabler_icon, "InnerIconComponent"
-
-  class FontAwesomeIconComponent < ApplicationComponent
-    ICON_POSITION = {
-      left: "",
-      right: "order-last"
-    }.freeze
-
-    option :position,
-           Types::Symbol.enum(*ICON_POSITION.keys),
-           optional: true,
-           default: -> { :right }
-    param :classes, Types::Strict::String
-
-    def call
-      tag.i(class: [classes, position_class])
-    end
-
-    private
-
-    def position_class
-      ICON_POSITION[position]
-    end
-  end
+  renders_one :icon, "InnerIconComponent"
 
   class InnerIconComponent < IconComponent
     ICON_POSITION = {
@@ -69,7 +45,6 @@ class ButtonComponent < ApplicationComponent
     d-inline-flex
     gap-2
     align-items-center
-    justify-content-center
     text-nowrap
   ].freeze
 
@@ -80,6 +55,12 @@ class ButtonComponent < ApplicationComponent
   option :type, Types::Symbol.enum(:button, :submit, :reset), default: -> { :submit }
   option :tooltip_title, Types::Strict::String, optional: true
 
+  # Needed to place content inside the button horizontally.
+  # Responsive classes just pass them to a `:class` additional option.
+  option :flex_content_position,
+         Types::Strict::Symbol.enum(:start, :end, :center),
+         default: -> { :center }
+
   def call
     button_content =
       tag.button(
@@ -89,13 +70,14 @@ class ButtonComponent < ApplicationComponent
           size_class,
           hidden_class,
           disabled_class,
+          flex_content_position_class,
           additional_options.delete(:class)
         ],
         disabled:,
         type:,
         **additional_options
       ) do
-        safe_join([icon, tabler_icon, content])
+        safe_join([icon, content])
       end
 
     if tooltip_title
@@ -115,6 +97,10 @@ class ButtonComponent < ApplicationComponent
 
   def size_class
     SIZE_CLASSES[size]
+  end
+
+  def flex_content_position_class
+    ["justify-content", flex_content_position].join("-")
   end
 
   def disabled_class

@@ -11,7 +11,7 @@ class RailsAdmin::Config::Actions::DeactivateMember < RailsAdmin::Config::Action
     true
   end
   register_instance_option :link_icon do
-    "fa fa-times-circle"
+    "fas fa-circle-xmark"
   end
   register_instance_option :pjax? do
     false
