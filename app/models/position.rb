@@ -117,6 +117,7 @@ class Position < ApplicationRecord
 
   friendly_id :name_with_id, use: :slugged, routes: nil
 
+  validates :name, presence: true
   validates :slug, presence: true
   validate :active_recruiter_must_be_assigned_if_career_site_is_enabled,
            if: -> { status_changed_to_open? || recruiter_id_changed? && open? }
