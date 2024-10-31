@@ -2,7 +2,6 @@
 / form_options:,
 / modal_size:,
 / assignee_options:,
-/ watchers_options:,
 / default_assignee:,
 / default_watchers:,
 / current_member:,
@@ -17,7 +16,7 @@ ruby:
   assign_options = ats_task_assign_options(assignee_options:, selected_assignee_id: default_assignee)
   selected_watchers = [*default_watchers, default_assignee, current_member.id]
   watch_options =
-    ats_task_watchers_options(watchers_options:, selected: selected_watchers, disabled: [default_assignee])
+    ats_task_watchers_options(assignee_options:, selected: selected_watchers, disabled: [default_assignee])
   repeat_interval_options = ats_task_repeat_interval_options(selected: "never")
 
 - content_for :title

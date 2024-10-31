@@ -130,8 +130,8 @@ module ATS::TasksHelper
     end
   end
 
-  def ats_task_watchers_options(watchers_options:, selected:, disabled:)
-    watchers_options.map do |watcher_name, watcher_id|
+  def ats_task_watchers_options(assignee_options:, selected:, disabled:)
+    assignee_options.map do |watcher_name, watcher_id|
       {
         text: watcher_name,
         value: watcher_id,

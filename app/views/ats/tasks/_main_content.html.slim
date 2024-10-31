@@ -1,6 +1,5 @@
 /# locals: (task:,
 / assignee_options:,
-/ watchers_options:,
 / added_by_account:,
 / added_on_time:,
 / grid:
@@ -11,7 +10,7 @@ ruby:
 
   assign_options = ats_task_assign_options(assignee_options:, selected_assignee_id: task.assignee_id)
   watcher_options =
-    ats_task_watchers_options(watchers_options:, selected: task.watchers.ids, disabled: [task.assignee_id])
+    ats_task_watchers_options(assignee_options:, selected: task.watchers.ids, disabled: [task.assignee_id])
   repeat_interval_options = ats_task_repeat_interval_options(selected: task.repeat_interval)
 
 = turbo_frame_tag :turbo_task_main_content, data: { controller: "turbo-modal-tasks" }
