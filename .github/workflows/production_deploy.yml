@@ -32,12 +32,9 @@ jobs:
       - name: Rollback
         if: "${{ github.event.inputs.commit != '' }}"
         run: git checkout ${{ github.event.inputs.commit }}
-      # dokku/github-action can't find git repo when self-hosted
       - name: Push to Dokku
-        run: |
-          mkdir -p /root/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' >/root/.ssh/id_rsa
-          chmod 600 /root/.ssh/id_rsa
-          chmod 700 /root/.ssh
-          ssh-keyscan -t rsa ${{ vars.DOKKU_HOST }} >> /root/.ssh/known_hosts
-          git push --force ssh://dokku@${{ vars.DOKKU_HOST }}:22/${{ github.event.repository.name }} HEAD:master
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: "ssh://dokku@alpha.toughbyte.com:22/ats"
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          git_push_flags: --force
