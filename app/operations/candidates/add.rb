@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Candidates::Add < ApplicationOperation
-  include Dry::Monads[:do, :result, :try]
+  include Dry::Monads[:do, :result]
 
   option :actor_account, Types::Instance(Account).optional
   option :params, Types::Strict::Hash.schema(
@@ -61,48 +61,50 @@ class Candidates::Add < ApplicationOperation
 
     return Failure[:candidate_invalid, candidate] unless candidate.valid?
 
-    result = Try[ActiveRecord::RecordInvalid] do
-      ActiveRecord::Base.transaction do
-        candidate.save!
-        Events::Add.new(
-          params:
-            {
-              type: :candidate_added,
-              eventable: candidate,
-              actor_account:
-            }
-        ).call
+    ActiveRecord::Base.transaction do
+      yield save_candidate(candidate)
+      yield Events::Add.new(
+        params:
+          {
+            type: :candidate_added,
+            eventable: candidate,
+            actor_account:
+          }
+      ).call
 
-        Events::Add.new(
-          params:
-            {
-              type: :candidate_recruiter_assigned,
-              eventable: candidate,
-              actor_account:,
-              changed_to: candidate.recruiter_id
-            }
-        ).call
-
-        if file
-          yield Candidates::UploadFile.new(
-            candidate:,
+      yield Events::Add.new(
+        params:
+          {
+            type: :candidate_recruiter_assigned,
+            eventable: candidate,
             actor_account:,
-            file:,
-            cv: true
-          ).call
-        end
-        add_changed_events(candidate:, actor_account:, old_values:)
+            changed_to: candidate.recruiter_id
+          }
+      ).call
+
+      if file
+        yield Candidates::UploadFile.new(
+          candidate:,
+          actor_account:,
+          file:,
+          cv: true
+        ).call
       end
-    end.to_result
-    case result
-    in Success(_)
-      Success(candidate)
-    in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:candidate_invalid, candidate]
+      add_changed_events(candidate:, actor_account:, old_values:)
     end
+
+    Success(candidate)
   end
 
   private
+
+  def save_candidate(candidate)
+    candidate.save!
+
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:candidate_invalid, candidate.errors.full_messages.presence || e.to_s]
+  end
 
   def prepare_params(params:, actor_account:)
     if params[:emails].present?

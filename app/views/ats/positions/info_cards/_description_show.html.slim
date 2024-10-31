@@ -1,6 +1,6 @@
 /# locals: (position:, control_button:, namespace: nil)
 
-- header = card_header(title: "Description", icon_style: "fa-file-alt")
+- header = card_header(title: "Description", icon_style: :file_text)
 
 - if position.description.present?
   = card_show "description", target_model: position, header:, control_button:

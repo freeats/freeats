@@ -115,7 +115,7 @@ class ScorecardTest < ActiveSupport::TestCase
 
       event = Event.last
 
-      assert_equal event.type, "scorecard_updated"
+      assert_equal event.type, "scorecard_changed"
       assert_equal event.eventable_id, scorecard.id
       assert_equal event.eventable_type, "Scorecard"
       assert_equal event.actor_account_id, actor_account.id

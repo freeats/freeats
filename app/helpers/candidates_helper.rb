@@ -81,7 +81,7 @@ module CandidatesHelper
         position = event.eventable.position
         "removed scorecard <b>#{event.changed_from}</b> " \
           "for #{link_to(position.name, ats_position_path(position))}"
-      when "scorecard_updated"
+      when "scorecard_changed"
         scorecard = event.eventable
         position = scorecard.placement.position
         "updated scorecard #{link_to(scorecard.title, ats_scorecard_path(scorecard))} " \

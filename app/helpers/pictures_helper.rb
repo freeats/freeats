@@ -17,10 +17,22 @@ module PicturesHelper
         if (url = url_for(icon)).present?
           tag.img(src_sym => url, **opts)
         else
-          tag.i(class: ["fal fa-loader", html_opts.delete(:class)], **html_opts)
+          render(
+            IconComponent.new(
+              :loader,
+              class: [*html_opts.delete(:class), "empty-avatar-icon"],
+              **html_opts
+            )
+          )
         end
       else
-        image_tag("icons/user.png", **opts)
+        render(
+          IconComponent.new(
+            :user,
+            class: [*html_opts.delete(:class), "empty-avatar-icon"],
+            **html_opts
+          )
+        )
       end
     end
   end

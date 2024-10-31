@@ -1,7 +1,16 @@
 // This file contains everything that can't be properly categorized.
 
-.fa-loader {
-  @extend .text-secondary;
+@use "mixins";
+
+.small-avatar-thumbnail {
+  @extend .rounded;
+  max-height: 2rem;
+  width: 2rem;
+}
+
+.list-reset {
+  padding-left: 0;
+  list-style: none;
 }
 
 // Global colors for links also affect datepicker date cells.
@@ -25,28 +34,12 @@
   }
 }
 
-// Replace jquery-ui arrow icons with fa icons in datepicker.
 .ui-datepicker-header {
-  .ui-icon {
-    background-image: none !important;
-  }
-
-  .ui-icon-circle-triangle-e,
   .ui-icon-circle-triangle-w {
-    text-indent: 0;
-    &:before {
-      @extend .fa-light;
-      width: 100%;
-      text-align: center;
-      vertical-align: top;
-    }
+    @include mixins.icon("caret-left", "filled");
   }
 
-  .ui-icon-circle-triangle-w:before {
-    content: fa-content($fa-var-angle-left);
-  }
-
-  .ui-icon-circle-triangle-e:before {
-    content: fa-content($fa-var-angle-right);
+  .ui-icon-circle-triangle-e {
+    @include mixins.icon("caret-right", "filled");
   }
 }

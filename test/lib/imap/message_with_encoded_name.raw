@@ -25,42 +25,42 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          /cpA==;
         dara=google.com
 ARC-Authentication-Results: i=1; mx.google.com;
-       dkim=pass header.i=@mail.ru header.s=mail4 header.b=LHd5fB8w;
+       dkim=pass header.i=@gmail.com header.s=mail4 header.b=LHd5fB8w;
        spf=pass (google.com: domain of test@gmail.com designates 45.84.129.62 as permitted sender) smtp.mailfrom=test@gmail.com;
-       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=mail.ru
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=gmail.com
 Return-Path: <test@gmail.com>
-Received: from f557.i.mail.ru (f557.i.mail.ru. [45.84.129.62])
+Received: from f557.i.gmail.com (f557.i.gmail.com. [45.84.129.62])
         by mx.google.com with ESMTPS id y21-20020a197515000000b00511694ddea2si3194759lfe.568.2024.03.05.02.41.09
         for <arthur.morgan@example.com>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
         Tue, 05 Mar 2024 02:41:09 -0800 (PST)
 Received-SPF: pass (google.com: domain of test@gmail.com designates 45.84.129.62 as permitted sender) client-ip=45.84.129.62;
 Authentication-Results: mx.google.com;
-       dkim=pass header.i=@mail.ru header.s=mail4 header.b=LHd5fB8w;
+       dkim=pass header.i=@gmail.com header.s=mail4 header.b=LHd5fB8w;
        spf=pass (google.com: domain of test@gmail.com designates 45.84.129.62 as permitted sender) smtp.mailfrom=test@gmail.com;
-       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=mail.ru
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru; s=mail4;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gmail.com; s=mail4;
    h=Content-Type:Reply-To:Message-ID:Date:MIME-Version:Subject:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc; bh=FxNqHE15r60GtYlxSrAqO3mvq4mCR6el6qm/B+kpUuI=;
    t=1709635269;x=1709725269;
    b=LHd5fB8wRg45cdaDK06srwOGjFquG+L/iGd8EPesuD4aOwrhYdHmacRzP0h2UTE11o7VDs62oNyri6iOnMSwFYh/BNqcYL8zgoSLqbpE/fqk9+AiO5XLhoEeflKnM974VqrqT1XtJMsja5QlU2G2UyPjc78yq6IJg9YgJE9631NtlvcmPMU8i9egvyvVZ0dnZK6fMBNwQZ5bvV2XHtDEFQawtffyQoVhaZjzi11KhaT7mMxVp6EED65Eb10I5nePrRhvKtKmhUUPeA44m3S5PhlyV3DvKfpI2IKnDaKsqB3iFGPnnjyrDThMPF6BF39IjcXrrohvQ3JGff2DFQOoag==;
-Received: by f557.i.mail.ru with local (envelope-from <test@gmail.com>)
+Received: by f557.i.gmail.com with local (envelope-from <test@gmail.com>)
    id 1rhSEB-00036b-Cr
    for arthur.morgan@example.com; Tue, 05 Mar 2024 13:40:55 +0300
-Received: by e.mail.ru with HTTP;
+Received: by e.gmail.com with HTTP;
    Tue, 05 Mar 2024 13:40:55 +0300
 From: =?UTF-8?B?dGVzdA=?= <test@gmail.com>
 To: =?UTF-8?B?QXJ0aHVyIE1vcmdhbg==?= <arthur.morgan@example.com>
 Subject: =?UTF-8?B?QXJ0aHVyIE1vcmdhbg==?=
 MIME-Version: 1.0
-X-Mailer: Mail.Ru Mailer 1.0
+X-Mailer: GMail.Com Mailer 1.0
 X-SenderField-Remind: 0
 Date: Tue, 05 Mar 2024 13:40:55 +0300
-Message-ID: <1709635255.132498532@f545.i.mail.ru>
+Message-ID: <1709635255.132498532@f545.i.gmail.com>
 X-Priority: 3 (Normal)
 Reply-To: =?UTF-8?B?QXJ0aHVyIE1vcmdhbg==?= <test@gmail.com>
 Content-Type: multipart/alternative;
    boundary=\"--ALT--41eAaDa151d860694A4a9f51Fa37B56b1709635255\"
-Authentication-Results: f557.i.mail.ru; auth=pass smtp.auth=test@gmail.com smtp.mailfrom=test@gmail.com
+Authentication-Results: f557.i.gmail.com; auth=pass smtp.auth=test@gmail.com smtp.mailfrom=test@gmail.com
 X-Mailru-Src: fe
 X-4EC0790: 10
 X-7564579A: B8F34718100C35BD

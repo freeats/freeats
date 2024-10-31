@@ -5,7 +5,7 @@ module ScorecardsHelper
     case score
     when "irrelevant"
       label_tag(:score_irrelevant, class: "text-danger") do
-        concat(content_tag(:i, nil, class: "fas fa-frown"))
+        concat(render(IconComponent.new(:mood_sad, icon_type: :filled)))
         if with_text
           concat(
             content_tag(:span, class: "ms-2") do
@@ -16,7 +16,7 @@ module ScorecardsHelper
       end
     when "relevant"
       label_tag(:score_relevant, class: "text-warning") do
-        concat(content_tag(:i, nil, class: "fas fa-meh"))
+        concat(render(IconComponent.new(:mood_empty, icon_type: :filled)))
         if with_text
           concat(
             content_tag(:span, class: "ms-2") do
@@ -27,7 +27,7 @@ module ScorecardsHelper
       end
     when "good"
       label_tag(:score_good, class: "text-success") do
-        concat(content_tag(:i, nil, class: "fas fa-smile"))
+        concat(render(IconComponent.new(:mood_smile, icon_type: :filled)))
         if with_text
           concat(
             content_tag(:span, class: "ms-2") do
@@ -38,7 +38,7 @@ module ScorecardsHelper
       end
     when "perfect"
       label_tag(:score_perfect, class: "text-info") do
-        concat(content_tag(:i, nil, class: "fas fa-grin-stars"))
+        concat(render(IconComponent.new(:mood_happy, icon_type: :filled)))
         if with_text
           concat(
             content_tag(:span, class: "ms-2") do

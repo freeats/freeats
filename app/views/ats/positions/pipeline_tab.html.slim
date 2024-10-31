@@ -137,7 +137,6 @@ ruby:
                                   status: params[:pipeline_tab] || "qualified",
                                   order: :last_activity,
                                 },
-                                source_candidates_position_id: @position.id,
                               )
                     span.badge.badge-sm.bg-secondary.pipeline-stage-counter.ms-2 [
                       class="turbo_position_pipeline_#{stage}_stage_counter"]

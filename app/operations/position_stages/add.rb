@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PositionStages::Add < ApplicationOperation
-  include Dry::Monads[:result, :try, :do]
+  include Dry::Monads[:result, :do]
 
   option :params, Types::Strict::Hash.schema(
     list_index: Types::Params::Integer,
@@ -24,16 +24,11 @@ class PositionStages::Add < ApplicationOperation
   private
 
   def save_position_stage(position_stage)
-    result = Try[ActiveRecord::RecordInvalid] do
-      position_stage.save!
-    end.to_result
+    position_stage.save!
 
-    case result
-    in Success(_)
-      Success()
-    in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:position_stage_invalid, position_stage.errors.full_messages.presence || e.to_s]
-    end
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:position_stage_invalid, position_stage.errors.full_messages.presence || e.to_s]
   end
 
   def add_event(position_stage:, actor_account:)

@@ -184,11 +184,11 @@ CREATE TYPE public.event_type AS ENUM (
     'position_stage_changed',
     'position_stage_removed',
     'scorecard_added',
+    'scorecard_changed',
     'scorecard_removed',
     'scorecard_template_added',
+    'scorecard_template_changed',
     'scorecard_template_removed',
-    'scorecard_template_updated',
-    'scorecard_updated',
     'task_added',
     'task_changed',
     'task_status_changed',
@@ -2283,9 +2283,8 @@ CREATE TABLE public.tenants (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     career_site_enabled boolean DEFAULT false NOT NULL,
-    domain character varying DEFAULT ''::character varying NOT NULL,
-    subdomain character varying DEFAULT ''::character varying NOT NULL,
-    public_styles text DEFAULT ''::text NOT NULL
+    public_styles text DEFAULT ''::text NOT NULL,
+    slug character varying DEFAULT ''::character varying NOT NULL
 );
 
 
@@ -4134,17 +4133,10 @@ CREATE UNIQUE INDEX index_tasks_watchers_on_task_id_and_watcher_id ON public.tas
 
 
 --
--- Name: index_tenants_on_domain; Type: INDEX; Schema: public; Owner: -
+-- Name: index_tenants_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_tenants_on_domain ON public.tenants USING btree (domain) WHERE ((domain)::text <> ''::text);
-
-
---
--- Name: index_tenants_on_subdomain; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_tenants_on_subdomain ON public.tenants USING btree (subdomain) WHERE ((subdomain)::text <> ''::text);
+CREATE UNIQUE INDEX index_tenants_on_slug ON public.tenants USING btree (slug) WHERE ((slug)::text <> ''::text);
 
 
 --
@@ -4562,6 +4554,9 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241028124325'),
+('20241024082345'),
+('20241024082312'),
 ('20241018104859'),
 ('20241018092829'),
 ('20241018063719'),

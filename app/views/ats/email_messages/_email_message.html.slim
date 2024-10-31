@@ -11,8 +11,10 @@ ruby:
   li.list-group-item.pt-2.px-3.pb-3
     .email-header.row.mb-3
       .col-auto
-        = image_tag message.sender_avatar_url(hashed_avatars, message.from_addresses.map(&:second)) || \
-                    "icons/user.png", class: "avatar avatar-lg"
+        - if (sender_avatar = message.sender_avatar_url(hashed_avatars, message.from_addresses.map(&:second))).present?
+          = image_tag sender_avatar
+        - else
+          = render IconComponent.new(:user, class: "email-sender-avatar empty-avatar-icon rounded")
       .col.text-muted.fw-light
         | From: #{ats_pretty_email_addresses(message.from_addresses)}
         br
@@ -41,14 +43,15 @@ ruby:
               = ats_profile_button_tooltip_wrapper(tooltip: tooltip_text)
                 - if controller_name.present? && (page_id = candidate_ids)
                   span.d-inline-block title="Copy link" data-bs-toggle="tooltip"
-                    = button_tag class: "btn btn-sm btn-light",
-                                 type: "button",
-                                 data: { \
-                                   controller: "copy-to-clipboard",
-                                   clipboard_text: message.url(page_id, controller_name),
-                                   bs_title: "Copied!",
-                                   bs_trigger: "manual" \
-                                 }
-                      i.fa-solid.fa-link
+                    = render IconButtonComponent.new( \
+                               :link,
+                               type: :button,
+                               data: { \
+                                 controller: "copy-to-clipboard",
+                                 clipboard_text: message.url(page_id, controller_name),
+                                 bs_title: "Copied!",
+                                 bs_trigger: "manual",
+                               },
+                             )
     div
       = sanitized_message_body

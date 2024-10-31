@@ -23,21 +23,21 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          nmz2e8uEcj3/fowQeSJ85KQ29vqE8TrJiYrKBVNArGV0+t3LmDDMFn93rejpoHo4pse8
          ldAA==
 ARC-Authentication-Results: i=1; mx.google.com;
-       dkim=pass header.i=@mail.ru header.s=mail4 header.b="k9T7Yz/y";
+       dkim=pass header.i=@gmail.com header.s=mail4 header.b="k9T7Yz/y";
        spf=pass (google.com: domain of test@gmail.com designates 95.163.41.93 as permitted sender) smtp.mailfrom=test@gmail.com;
-       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=mail.ru
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=gmail.com
 Return-Path: <test@gmail.com>
-Received: from smtp55.i.mail.ru (smtp55.i.mail.ru. [95.163.41.93])
+Received: from smtp55.i.gmail.com (smtp55.i.gmail.com. [95.163.41.93])
         by mx.google.com with ESMTPS id u15-20020a2e9f0f000000b002cd03a3b7dbsi392835ljk.471.2024.01.26.05.40.13
         for <arthur.morgan@example.com>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 26 Jan 2024 05:40:13 -0800 (PST)
 Received-SPF: pass (google.com: domain of test@gmail.com designates 95.163.41.93 as permitted sender) client-ip=95.163.41.93;
 Authentication-Results: mx.google.com;
-       dkim=pass header.i=@mail.ru header.s=mail4 header.b="k9T7Yz/y";
+       dkim=pass header.i=@gmail.com header.s=mail4 header.b="k9T7Yz/y";
        spf=pass (google.com: domain of test@gmail.com designates 95.163.41.93 as permitted sender) smtp.mailfrom=test@gmail.com;
-       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=mail.ru
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gmail.com;
 	s=mail4; h=To:Date:Message-Id:Subject:Mime-Version:Content-Type:From:From:
 	Sender:Reply-To:To:Cc:Content-Type:Content-Transfer-Encoding:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
@@ -49,7 +49,7 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru;
 	wp8onkykKGFquKlRJSZzazU0COcOvr7g5FEOdb6q3UyInKou3SD6yD3zIGtXXiqGsfnlXvrr+YnUl
 	I1V/8W71nN1IDTziwHFwpgyxBbp9tN3rIzN6rXSvpwHE2GxouifXbG3W8qbLB+CW6FaeshgmkHJsU
 	NpeQuu6kQ9PxfkS+ytMrS+QY+HK/pqv04ROGeDJGmj9ikikeQIZiEWXqXylhUDTQ==;
-Received: by smtp55.i.mail.ru with esmtpa (envelope-from <test@gmail.com>)
+Received: by smtp55.i.gmail.com with esmtpa (envelope-from <test@gmail.com>)
 	id 1rTMRI-0000000Avo7-1IDk
 	for arthur.morgan@example.com; Fri, 26 Jan 2024 16:40:12 +0300
 From: Arthur Morgan <test@gmail.com>
@@ -57,11 +57,11 @@ Content-Type: multipart/mixed;
 	boundary="Apple-Mail=_3D9812C9-C3F0-4EBD-921A-1C38414BE991"
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
 Subject: Message with attachment
-Message-Id: <EC9C7AF8-CC38-4407-AEC9-8751A3229700@mail.ru>
+Message-Id: <EC9C7AF8-CC38-4407-AEC9-8751A3229700@gmail.com>
 Date: Fri, 26 Jan 2024 16:40:01 +0300
 To: Arthur Morgan <arthur.morgan@example.com>
 X-Mailer: Apple Mail (2.3774.300.61.1.2)
-Authentication-Results: smtp55.i.mail.ru; auth=pass smtp.auth=test@gmail.com smtp.mailfrom=test@gmail.com
+Authentication-Results: smtp55.i.gmail.com; auth=pass smtp.auth=test@gmail.com smtp.mailfrom=test@gmail.com
 X-Mailru-Src: smtp
 X-4EC0790: 10
 X-7564579A: EEAE043A70213CC8

@@ -20,7 +20,8 @@ class RodauthApp < Rodauth::Rails::App
 
     rodauth.load_memory # autologin remembered users
 
-    return if r.path.match?(%r{^/positions})
+    # Ignore configuration for career site. We don't need to authenticate.
+    return if r.path.match?(%r{\A/(?!ats\b)\w+/positions(/|\z)})
 
     # Ignore "remember" plugin's routes since we don't need them right now.
     r.is "remember" do

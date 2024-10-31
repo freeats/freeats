@@ -1,11 +1,7 @@
 /# locals: (candidate:, relevant_placements:, irrelevant_placements:, positions_for_quick_assignment:)
 
-ruby:
-  search_path = fetch_positions_api_v1_positions_path(q: "QUERY")
-
-#turbo_placements_notes_panel
-  #placements-notes-panel [data-controller="placements-notes-panel"
-      data-placements-notes-panel-position-search-url-value=search_path]
+#turbo_placements_panel
+  #placements-panel
     - if allowed_to?(:create?, with: ATS::PlacementPolicy)
       = render partial: "ats/candidates/add_placement", locals: { candidate: }
       = render partial: "ats/candidates/placement_suggestions",

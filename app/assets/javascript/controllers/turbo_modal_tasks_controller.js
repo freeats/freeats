@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 import $ from "jquery";
 import { arraysEqual, requestSubmitPolyfilled } from "../src/shared/input_utils";
+import { initBootstrapSelect } from "../src/shared/bootstrap_select";
 
 export default class extends Controller {
   static targets = [
@@ -15,6 +16,7 @@ export default class extends Controller {
 
   connect() {
     this.modalListeners(document.getElementById("turbo_modal_window"));
+    initBootstrapSelect();
   }
 
   modalListeners(modalWindow) {

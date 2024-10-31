@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Notes::Change < ApplicationOperation
-  include Dry::Monads[:result, :try]
+  include Dry::Monads[:result, :do]
 
   option :id, Types::Strict::String
   option :text, Types::Strict::String
@@ -31,18 +31,30 @@ class Notes::Change < ApplicationOperation
     end
 
     ActiveRecord::Base.transaction do
-      note.save!
-      note_thread.save!
+      yield save_note(note)
+      yield save_note_thread(note_thread)
     end
 
     send_notifications(note:, actor_account:, prev_mentioned_member_emails:)
 
     Success(note)
+  end
+
+  private
+
+  def save_note(note)
+    note.save!
+
+    Success()
   rescue ActiveRecord::RecordInvalid => e
     Failure[:note_invalid, note.errors.full_messages.presence || e.to_s]
   end
 
-  private
+  def save_note_thread(note_thread)
+    note_thread.save!
+
+    Success()
+  end
 
   def mentioned_in_hidden_thread_members(note_thread:, text:, current_member_id:)
     thread_is_hidden = note_thread.hidden

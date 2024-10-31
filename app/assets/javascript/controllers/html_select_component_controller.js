@@ -50,7 +50,7 @@ export default class extends SelectComponentController {
 
     $(target).selectize({
       plugins: ["auto_position"],
-      showArrow: false, // Hide the default down arrow to replace it with our own.
+      showArrow: true,
       selectOnTab: false,
       searchField: "html",
       dropdownParent: this.dropdownParentValue,

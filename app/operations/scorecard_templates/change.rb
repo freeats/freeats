@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ScorecardTemplates::Change < ApplicationOperation
-  include Dry::Monads[:result, :try, :do]
+  include Dry::Monads[:result, :do]
 
   option :params, Types::Strict::Hash.schema(
     title?: Types::String
@@ -32,20 +32,14 @@ class ScorecardTemplates::Change < ApplicationOperation
   private
 
   def save_scorecard_template(scorecard_template)
-    result = Try[ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique] do
-      scorecard_template.save!
-    end.to_result
+    scorecard_template.save!
 
-    case result
-    in Success(_)
-      Success(scorecard_template)
-    in Failure(ActiveRecord::RecordInvalid => e)
-      Failure[:scorecard_template_invalid,
-              scorecard_template.errors.full_messages.presence || e.to_s]
-    in Failure[ActiveRecord::RecordNotUnique => e]
-      Failure[:scorecard_template_not_unique,
-              scorecard_template.errors.full_messages.presence || e.to_s]
-    end
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:scorecard_template_invalid, scorecard_template.errors.full_messages.presence || e.to_s]
+  rescue ActiveRecord::RecordNotUnique => e
+    Failure[:scorecard_template_not_unique,
+            scorecard_template.errors.full_messages.presence || e.to_s]
   end
 
   def change_scorecard_template_questions(scorecard_template:, questions_params:)
@@ -67,13 +61,13 @@ class ScorecardTemplates::Change < ApplicationOperation
   def add_event(old_values:, scorecard_template:, actor_account:)
     return Success() unless scorecard_template_changed?(old_values:, scorecard_template:)
 
-    scorecard_template_updated_params = {
+    scorecard_template_changed_params = {
       actor_account:,
-      type: :scorecard_template_updated,
+      type: :scorecard_template_changed,
       eventable: scorecard_template
     }
 
-    yield Events::Add.new(params: scorecard_template_updated_params).call
+    yield Events::Add.new(params: scorecard_template_changed_params).call
 
     Success()
   end

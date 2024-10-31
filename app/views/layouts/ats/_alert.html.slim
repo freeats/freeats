@@ -18,3 +18,5 @@
       .alert.alert-dismissible class=class_name role="alert"
         = sanitize text, attributes: %w[href rel target]
         a.btn-close data-bs-dismiss="alert" aria-label="close"
+        / span.notification-close
+        /   = render IconComponent.new(:x)

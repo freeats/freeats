@@ -182,7 +182,7 @@ class EmailMessage < ApplicationRecord
           node.add_class("img-fluid")
         else
           node.replace(
-            '<i class="fa fa-times-square fa-3x" title="Embedded images not supported"></i>'
+            %(<img alt="[x]" title="Embedded images not supported" />)
           )
         end
       end
@@ -205,9 +205,7 @@ class EmailMessage < ApplicationRecord
             end
           end
         end
-        ellipsis = Nokogiri::HTML.fragment(
-          '<div><span class="folding-ellipsis"><i class="fas fa-ellipsis-h"></i></span></div>'
-        )
+        ellipsis = Nokogiri::HTML.fragment(%(<img alt="..." title="Expand blockquote" />))
         quote.add_previous_sibling(ellipsis)
       end
 

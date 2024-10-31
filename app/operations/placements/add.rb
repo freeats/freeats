@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Placements::Add < ApplicationOperation
-  include Dry::Monads[:result, :do, :try]
+  include Dry::Monads[:result, :do]
 
   option :params, Types::Strict::Hash.schema(
     candidate_id: Types::Coercible::Integer,
@@ -53,18 +53,13 @@ class Placements::Add < ApplicationOperation
   private
 
   def save_placement(placement)
-    result = Try[ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique] do
-      placement.save!
-    end.to_result
+    placement.save!
 
-    case result
-    in Success(_)
-      Success(placement)
-    in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:placement_invalid, placement.errors.full_messages.presence || e.to_s]
-    in Failure[ActiveRecord::RecordNotUnique => e]
-      Failure[:placement_not_unique, placement.errors.full_messages.presence || e.to_s]
-    end
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:placement_invalid, placement.errors.full_messages.presence || e.to_s]
+  rescue ActiveRecord::RecordNotUnique => e
+    Failure[:placement_not_unique, placement.errors.full_messages.presence || e.to_s]
   end
 
   def add_event(placement:, actor_account:)

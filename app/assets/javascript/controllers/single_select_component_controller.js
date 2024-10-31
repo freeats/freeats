@@ -37,7 +37,7 @@ export default class extends SelectComponentController {
       allowEmptyOption: this.allowEmptyOptionValue,
       selectOnTab: false,
       searchField: ["text", "value"],
-      showArrow: false, //  Hide the default down arrow to replace it with our own.
+      showArrow: true,
       dropdownParent: this.dropdownParentValue,
       ...preloadedOptions,
       ...remoteSearchParams,

@@ -34,27 +34,28 @@
                             candidate: { file_id_to_change_cv_status: file.id }),
                             method: :patch, class: "btn" do
                   span.clickable
-                    i.far.fa-check-circle.hide-on-hover
-                    i.far.fa-times-circle.text-danger.show-on-hover
+                    = render IconComponent.new(:circle_check, size: :medium, class: "hide-on-hover")
+                    = render IconComponent.new(:circle_x, size: :medium, class: "text-danger show-on-hover")
               - else
-                i.far.fa-check-circle
+                = render IconComponent.new(:circle_check, size: :medium)
             - elsif allowed_to?(:change_cv_status?)
               = form_with url: change_cv_status_ats_candidate_path(candidate,
                           candidate: { file_id_to_change_cv_status: file.id }),
                           method: :patch
                 button.btn type="submit"
                   span.clickable
-                    i.far.fa-check-circle.text-success.show-on-hover
+                    = render IconComponent.new(:circle_check, size: :medium, class: "text-success show-on-hover")
           - if allowed_to?(:delete_file?)
             td.text-end
-              = button_to delete_file_ats_candidate_path(candidate, candidate: { file_id_to_remove: file.id }),
-                          class: "btn btn-light",
-                          method: :delete,
-                          data: { \
-                            toggle: "ats-confirmation",
-                            title: t("candidates.delete_file"),
-                            btn_cancel_label: t("core.cancel_button"),
-                            btn_ok_label: t("core.delete_button"),
-                            btn_ok_class: "btn btn-danger btn-small" \
-                          }
-                i.fas.fa-trash-alt
+              = form_with url: delete_file_ats_candidate_path(candidate, candidate: { file_id_to_remove: file.id }),
+                          method: :delete
+                = render IconButtonComponent.new( \
+                           :trash,
+                           data: { \
+                             toggle: "ats-confirmation",
+                             title: t("candidates.delete_file"),
+                             btn_cancel_label: t("core.cancel_button"),
+                             btn_ok_label: t("core.delete_button"),
+                             btn_ok_class: "btn btn-danger btn-small",
+                           },
+                         )

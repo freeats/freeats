@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class Positions::Add < ApplicationOperation
-  include Dry::Monads[:result, :do, :try]
+  include Dry::Monads[:result, :do]
 
   option :params, Types::Strict::Hash.schema(
     name: Types::Strict::String,
-    location_id: Types::Coercible::Integer
+    location_id?: Types::Coercible::Integer.optional.fallback(nil)
   )
   option :actor_account, Types::Instance(Account)
 
@@ -27,16 +27,11 @@ class Positions::Add < ApplicationOperation
   private
 
   def save_position(position)
-    result = Try[ActiveRecord::RecordInvalid] do
-      position.save!
-    end.to_result
+    position.save!
 
-    case result
-    in Success(_)
-      Success(position)
-    in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
-    end
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
   end
 
   def add_default_stages(position, actor_account:)
@@ -76,13 +71,15 @@ class Positions::Add < ApplicationOperation
 
     yield Events::Add.new(params: position_recruiter_assigned_params).call
 
-    yield Events::AddChangedEvent.new(
-      eventable: position,
-      changed_field: "location",
-      old_value: nil,
-      new_value: position.location&.short_name,
-      actor_account:
-    ).call
+    if params[:location_id].present?
+      yield Events::AddChangedEvent.new(
+        eventable: position,
+        changed_field: "location",
+        old_value: nil,
+        new_value: position.location.short_name,
+        actor_account:
+      ).call
+    end
 
     Success()
   end

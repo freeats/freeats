@@ -267,7 +267,7 @@ en:
     invalid_positions_error: "%{count} open positions do not have an assigned
       recruiter or the recruiter is inactive. Please ensure all positions have
       an active recruiter before enabling career site."
-    domain_or_subdomain_should_by_present_error: Domain or subdomain must be specified.
+    slug_should_by_present_error: Slug must be specified.
 
   user_accounts:
     already_exists: Account with email %{email} already exists

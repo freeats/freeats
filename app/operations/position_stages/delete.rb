@@ -19,9 +19,10 @@ class PositionStages::Delete < ApplicationOperation
     scorecard_template = position_stage.scorecard_template
     position_stages_to_update =
       position.stages.filter { _1.list_index > position_stage.list_index }
+    position_stage.assign_attributes(deleted: true)
 
     ActiveRecord::Base.transaction do
-      position_stage.update!(deleted: true)
+      yield save_position_stage(position_stage)
 
       if scorecard_template.present?
         yield ScorecardTemplates::Destroy.new(scorecard_template:, actor_account:).call
@@ -48,7 +49,8 @@ class PositionStages::Delete < ApplicationOperation
       end
 
       position_stages_to_update.each do |stage|
-        stage.update!(list_index: stage.list_index - 1)
+        stage.assign_attributes(list_index: stage.list_index - 1)
+        yield save_position_stage(stage)
       end
     end
 
@@ -58,6 +60,14 @@ class PositionStages::Delete < ApplicationOperation
   end
 
   private
+
+  def save_position_stage(position_stage)
+    position_stage.save!
+
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:position_stage_invalid, position_stage.errors.full_messages.presence || e.to_s]
+  end
 
   def move_placements(placements:, stage:, new_stage_name:, actor_account:)
     if new_stage_name.blank? || !new_stage_name.in?([stage.prev_stage, stage.next_stage])

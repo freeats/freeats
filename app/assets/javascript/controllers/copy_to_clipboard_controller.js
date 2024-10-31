@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 import { Popover } from "bootstrap";
 import copyToClip from "../src/lib/clipboard";
+import copyIcon from "@tabler/icons/outline/copy.svg";
 
 export default class extends Controller {
   static values = { linkWithPopover: Boolean };
@@ -27,7 +28,8 @@ export default class extends Controller {
     const htmlTextToClipboard = element.dataset.copyLinkHtmlText;
     const plainTextToClipboard = element.dataset.copyLinkPlainText;
 
-    button.innerHTML = '<i class="far fa-copy"></i>';
+    this.insertSvgIcon(button, copyIcon, { width: 15, height: 15, "stroke-width": 1.25 });
+
     if (tooltipText && tooltipText !== "") {
       button.innerHTML = [`<span class="me-2">${tooltipText}</span>`, button.innerHTML].join("");
     }
@@ -146,5 +148,18 @@ export default class extends Controller {
     this.addEventListener("triggerCopy", copyToClip);
     this.dispatchEvent(event);
     setTimeout(() => this.classList.remove("disabled"), 500);
+  }
+
+  // TODO: move it to something like tabler icons utils
+  // and make a dynamic import by a name
+  insertSvgIcon(element, icon, options) {
+    element.innerHTML = icon;
+    const svgIcon = element.querySelector("svg");
+
+    for (const [key, value] of Object.entries(options)) {
+      svgIcon.setAttribute(key, value);
+    }
+
+    return element;
   }
 }

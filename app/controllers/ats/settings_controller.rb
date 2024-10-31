@@ -83,6 +83,8 @@ class ATS::SettingsController < AuthorizedController
   private
 
   def set_partial_variables
+    return unless allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
+
     @link_gmail_uri = Gmail::Auth.authorization_uri(redirect_uri: link_gmail_ats_settings_url)
   end
 end

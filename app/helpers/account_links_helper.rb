@@ -8,10 +8,12 @@ module AccountLinksHelper
     domain = account_link.domain
     unless domain
       return link_to(
-        tag.i(
-          "",
-          class: "fas fa-globe",
-          data: { bs_toggle: "tooltip", title: account_link_short_name(link) }
+        render(
+          IconComponent.new(
+            :world,
+            size: :medium,
+            data: { bs_toggle: :tooltip, bs_title: account_link_short_name(link) }
+          )
         ),
         account_link.humanize,
         target: "_blank",
@@ -24,8 +26,6 @@ module AccountLinksHelper
       case domain[:type]
       when :svg
         inline_svg_tag(domain[:params].first, **domain[:params].second)
-      when :font_awesome
-        tag.i("", **domain[:params].first)
       else
         image_tag(
           "#{PATH}#{domain[:class] || account_link.low_level_domain}" \
@@ -48,10 +48,7 @@ module AccountLinksHelper
         data: { "bs-toggle": "tooltip", "bs-title": t("core.outdated") },
         style: "font-size: 18px; line-height: 20px"
       ) do
-        tag.i(
-          "",
-          class: "fas fa-globe"
-        )
+        render(IconComponent.new(:world))
       end
     end
 
@@ -59,8 +56,6 @@ module AccountLinksHelper
       case domain[:type]
       when :svg
         inline_svg_tag(domain[:params].first, **domain[:params].second)
-      when :font_awesome
-        tag.i("", **domain[:params].first)
       else
         image_tag(
           "#{PATH}#{domain[:class] || account_link.low_level_domain}" \

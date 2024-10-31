@@ -45,7 +45,7 @@ export default class extends SelectComponentController {
       },
       searchField: ["text", "value"],
       selectOnTab: false,
-      showArrow: false, //  Hide the default down arrow to replace it with our own.
+      showArrow: true,
       ...preloadedOptions,
       ...remoteSearchParams,
     });

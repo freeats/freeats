@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Positions::Change < ApplicationOperation
-  include Dry::Monads[:result, :do, :try]
+  include Dry::Monads[:result, :do]
 
   option :position, Types::Instance(Position)
   option :params, Types::Strict::Hash.schema(
@@ -39,16 +39,11 @@ class Positions::Change < ApplicationOperation
   private
 
   def save_position(position)
-    result = Try[ActiveRecord::RecordInvalid] do
-      position.save!
-    end.to_result
+    position.save!
 
-    case result
-    in Success(_)
-      Success()
-    in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
-    end
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
   end
 
   def add_events(old_values:, position:, actor_account:)

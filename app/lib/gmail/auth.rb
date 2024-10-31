@@ -9,6 +9,7 @@ module Gmail::Auth
   class AuthorizationError < ClientError; end
   CLIENT_ID = ENV.fetch("GMAIL_LINKING_CLIENT_ID", nil)
   CLIENT_SECRET = ENV.fetch("GMAIL_LINKING_CLIENT_SECRET", nil)
+  ENABLED = !CLIENT_ID.nil? && !CLIENT_SECRET.nil?
 
   class << self
     def authorization_uri(redirect_uri:)

@@ -6,8 +6,7 @@
 #
 toughbyte_tenant:
   name: Toughbyte
-  subdomain: careers
-  domain: toughbyte.localhost
+  slug: toughbyte
 
 acme_tenant:
   name: ACME

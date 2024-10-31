@@ -7,13 +7,10 @@ class Locations::Order < ApplicationOperation
   option :query, Types::Strict::String
 
   def call
-    string_for_regex = Regexp.escape(query).chars.map { |letter| DIACRITICS[letter] || letter }.join
-    regex = /#{string_for_regex}/i
-
     locations_with_score = locations.map do |location|
-      location_score = calculate_score(name: location.name, query:, regex:)
+      location_score = SelectComponent::Score.new(text: location.name, query:).call.value!
       max_alias_score = location.aliases.map do |alias_name|
-        calculate_score(name: alias_name, query:, regex:)
+        SelectComponent::Score.new(text: alias_name, query:).call.value!
       end.max
 
       # All locations with population under `population_divider` are sorted by best-match.
@@ -27,43 +24,4 @@ class Locations::Order < ApplicationOperation
 
     Success(locations_with_score.sort_by { _1[:score] }.reverse.map { _1[:location] })
   end
-
-  private
-
-  def calculate_score(name:, query:, regex:)
-    index = name.index(regex)
-    return 0 if index.nil?
-
-    score = query.size / name.size.to_f
-    score += 0.5 if index.zero?
-    score
-  end
-
-  DIACRITICS = {
-    "a" => "[aḀḁĂăÂâǍǎȺⱥȦȧẠạÄäÀàÁáĀāÃãÅåąĄÃąĄ]",
-    "b" => "[b␢βΒB฿𐌁ᛒ]",
-    "c" => "[cĆćĈĉČčĊċC̄c̄ÇçḈḉȻȼƇƈɕᴄＣｃ]",
-    "d" => "[dĎďḊḋḐḑḌḍḒḓḎḏĐđD̦d̦ƉɖƊɗƋƌᵭᶁᶑȡᴅＤｄð]",
-    "e" => "[eÉéÈèÊêḘḙĚěĔĕẼẽḚḛẺẻĖėËëĒēȨȩĘęᶒɆɇȄȅẾếỀềỄễỂểḜḝḖḗḔḕȆȇẸẹỆệⱸᴇＥｅɘǝƏƐε]",
-    "f" => "[fƑƒḞḟ]",
-    "g" => "[gɢ₲ǤǥĜĝĞğĢģƓɠĠġ]",
-    "h" => "[hĤĥĦħḨḩẖẖḤḥḢḣɦʰǶƕ]",
-    "i" => "[iÍíÌìĬĭÎîǏǐÏïḮḯĨĩĮįĪīỈỉȈȉȊȋỊịḬḭƗɨɨ̆ᵻᶖİiIıɪＩｉ]",
-    "j" => "[jȷĴĵɈɉʝɟʲ]",
-    "k" => "[kƘƙꝀꝁḰḱǨǩḲḳḴḵκϰ₭]",
-    "l" => "[lŁłĽľĻļĹĺḶḷḸḹḼḽḺḻĿŀȽƚⱠⱡⱢɫɬᶅɭȴʟＬｌ]",
-    "n" => "[nŃńǸǹŇňÑñṄṅŅņṆṇṊṋṈṉN̈n̈ƝɲȠƞᵰᶇɳȵɴＮｎŊŋ]",
-    "o" => "[oØøÖöÓóÒòÔôǑǒŐőŎŏȮȯỌọƟɵƠơỎỏŌōÕõǪǫȌȍՕօ]",
-    "p" => "[pṔṕṖṗⱣᵽƤƥᵱ]",
-    "q" => "[qꝖꝗʠɊɋꝘꝙq̃]",
-    "r" => "[rŔŕɌɍŘřŖŗṘṙȐȑȒȓṚṛⱤɽ]",
-    "s" => "[sŚśṠṡṢṣꞨꞩŜŝŠšŞşȘșS̈s̈]",
-    "t" => "[tŤťṪṫŢţṬṭƮʈȚțṰṱṮṯƬƭ]",
-    "u" => "[uŬŭɄʉỤụÜüÚúÙùÛûǓǔŰűŬŭƯưỦủŪūŨũŲųȔȕ∪]",
-    "v" => "[vṼṽṾṿƲʋꝞꝟⱱʋ]",
-    "w" => "[wẂẃẀẁŴŵẄẅẆẇẈẉ]",
-    "x" => "[xẌẍẊẋχ]",
-    "y" => "[yÝýỲỳŶŷŸÿỸỹẎẏỴỵɎɏƳƴ]",
-    "z" => "[zŹźẐẑŽžŻżẒẓẔẕƵƶ]"
-  }.freeze
 end
