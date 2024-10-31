@@ -72,6 +72,7 @@ ruby:
         = render MultipleSelectComponent.new( \
                    f,
                    method: :watcher_ids,
+                   include_hidden: true,
                    local: { options: watcher_options },
                    instant_submit: true \
                  )
