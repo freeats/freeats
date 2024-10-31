@@ -15,7 +15,7 @@ class Placements::ChangeStage < ApplicationOperation
     old_stage_id = placement.position_stage_id
     placement.position_stage = placement.position.stages.find_by(name: new_stage)
 
-    return Failure[:new_stage_invalid, "Cannot find stage."] if placement.position_stage.blank?
+    return Failure(:new_stage_invalid) if placement.position_stage.blank?
 
     placement_changed_params = {
       actor_account:,

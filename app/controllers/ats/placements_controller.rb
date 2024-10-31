@@ -78,8 +78,10 @@ class ATS::PlacementsController < AuthorizedController
       else
         render_placements_panel(placement)
       end
-    in Failure[:placement_invalid, _e] | Failure[:new_stage_invalid, _e]
+    in Failure[:placement_invalid, _e]
       render_error _e
+    in Failure(:new_stage_invalid)
+      render_error t("position_stages.new_stage_deleted"), status: :unprocessable_entity
     end
   end
 
