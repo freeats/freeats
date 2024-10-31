@@ -622,6 +622,7 @@ DEPENDENCIES
   rubocop-minitest
   rubocop-performance
   rubocop-rails
+  rubyzip
   sassc-rails
   selenium-webdriver
   sentry-rails

@@ -1,6 +1,77 @@
 # frozen_string_literal: true
 
+require "zip"
+
 namespace :locations do
+  task fill_in_locations: :environment do
+    if ActiveRecord::Base.connection.table_exists?("location_aliases")
+      ActiveRecord::Base.connection.execute(
+        "TRUNCATE TABLE location_aliases RESTART IDENTITY CASCADE"
+      )
+    end
+
+    if ActiveRecord::Base.connection.table_exists?("locations")
+      ActiveRecord::Base.connection.execute(
+        "TRUNCATE TABLE locations RESTART IDENTITY CASCADE"
+      )
+    end
+
+    if ActiveRecord::Base.connection.table_exists?("location_hierarhies")
+      ActiveRecord::Base.connection.execute(
+        "TRUNCATE TABLE location_hierarhies RESTART IDENTITY CASCADE"
+      )
+    end
+
+    locations_csv_path = Rails.root.join("lib/tasks/location_tables.zip")
+    items = []
+    Zip::File.open(locations_csv_path) do |zipfile|
+      CSV.parse(zipfile.read("locations.csv"), headers: true) do |row|
+        item = row.to_h
+
+        item.map do |key, value|
+          next if value.present?
+
+          item[key] =
+            if Location.columns_hash[key].has_default?
+              Location.columns_hash[key].default
+            elsif Location.columns_hash[key].null
+              nil
+            else
+              ""
+            end
+        end
+
+        items << item
+      end
+
+      # rubocop:disable Rails/SkipsModelValidations
+      items.each_slice(10_000) do |batch|
+        Location.insert_all(batch)
+      end
+      # rubocop:enable Rails/SkipsModelValidations
+
+      items = []
+      CSV.parse(zipfile.read("location_aliases.csv"), headers: true) do |row|
+        item = row.to_h
+        items << item
+      end
+
+      # rubocop:disable Rails/SkipsModelValidations
+      LocationAlias.insert_all(items)
+      # rubocop:enable Rails/SkipsModelValidations
+
+      items = []
+      CSV.parse(zipfile.read("location_hierarchies.csv"), headers: true) do |row|
+        item = row.to_h
+        items << item
+      end
+
+      # rubocop:disable Rails/SkipsModelValidations
+      LocationHierarchy.insert_all(items)
+      # rubocop:enable Rails/SkipsModelValidations
+    end
+  end
+
   # After running this task we should remove a backup table if everything is fine
   # by running task `rails locations:remove_location_hierarchies_backup_table`.
   # To restore `location_hierarchies` table from the backup table
