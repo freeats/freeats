@@ -104,12 +104,6 @@ en:
           one: 1 second
           other: "%{count} seconds"
 
-  admin:
-    actions:
-      deactivate_member:
-        menu: Deactivate
-        title: Deactivate
-
   candidates:
     address: Address
     advancement:
