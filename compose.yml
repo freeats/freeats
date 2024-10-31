@@ -6,16 +6,19 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./db/postgres:/docker-entrypoint-initdb.d
     environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: ats
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ats_docker_production
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
 
   web:
     build:
       context: .
-      dockerfile: development.Dockerfile
+      dockerfile: Dockerfile
       args:
-        - NODE_ENV=development
+        NODE_ENV: docker_production
+        RAILS_ENV: docker_production
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
     volumes:
       - .:/rails
@@ -25,11 +28,12 @@ services:
     depends_on:
       - db
     environment:
-      - RAILS_ENV=development
-      - DATABASE_HOST=db
-      - DATABASE_USERNAME=ats
-      - BINDING=0.0.0.0
-      - PORT=3000
+      SECRET_KEY_BASE: 15
+      RAILS_ENV: docker_production
+      DATABASE_HOST: db
+      DATABASE_USERNAME: ats
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: ats_docker_production
     stdin_open: true
     tty: true
 
