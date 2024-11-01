@@ -116,12 +116,6 @@
     }
   }
 
-  h1 {
-    svg:not(.fa-user-group, .fa-user-clock) {
-      width: 21px;
-    }
-  }
-
   .card {
     border-color: $gray-500;
 
@@ -253,6 +247,10 @@
       top: -1px;
     }
   }
+}
+
+.empty-avatar-icon {
+  color: $gray-600;
 }
 
 .profile-avatar-edit {

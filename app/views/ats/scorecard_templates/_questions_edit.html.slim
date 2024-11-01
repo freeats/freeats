@@ -17,21 +17,22 @@ ruby:
     - index = questions_form.index
     .array-unit id="#{klass_name}_questions#{index}"
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
-        i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
+        = render IconComponent.new(:menu, type: :button, class: "sortable-handle")
         .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
           = render TextInputComponent.new(questions_form, method: :question,
                                           placeholder: "Enter question", type: :text,
                                           value: questions_form.object&.question)
           - if questions_form.object.id.present?
             = questions_form.hidden_field(:id)
-        button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
-            type="button"
-            class="#{klass_name}-delete-question-button"
-            id="#{klass_name}_delete_question_button#{index}"
-            style="font-size: 1.25rem;"
-            data-action="click->array-fields#deleteField"
-            data-array-fields-block-id-param="#{klass_name}_questions#{index}"]
-          i.fas.fa-trash-alt
+        = render IconButtonComponent.new( \
+                   :trash,
+                   variant: :ghost,
+                   type: :button,
+                   class: "#{klass_name}-delete-question-button",
+                   id: "#{klass_name}_delete_question_button#{index}",
+                   data: { action: "array-fields#deleteField",
+                           array_fields_block_id_param: "#{klass_name}_questions#{index}" },
+                 )
   .array-unit id="#{klass_name}_questions_hidden" hidden="true"
     = form.fields_for( \
       :scorecard_template_questions,
@@ -39,18 +40,19 @@ ruby:
       child_index: "id" \
     ) do |questions_form|
       .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-2
-        i.fas.fa-grip-lines.sortable-handle.align-self-start.me-2 type="button"
+        = render IconComponent.new(:menu, type: :button, class: "sortable-handle")
         .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1.me-sm-2
           = render TextInputComponent.new(questions_form, method: :question,
                                           placeholder: "Enter question", type: :text)
-        button.btn.btn-sm.text-secondary.shadow-none.align-self-start.pe-0[
-            type="button"
-            class="#{klass_name}-delete-question-button"
-            id="#{klass_name}_delete_question_button"
-            style="font-size: 1.25rem;"
-            data-action="click->array-fields#deleteField"
-            data-array-fields-block-id-param="#{klass_name}_questions"]
-          i.fas.fa-trash-alt
+        = render IconButtonComponent.new( \
+                   :trash,
+                   variant: :ghost,
+                   type: :button,
+                   class: "#{klass_name}-delete-question-button",
+                   id: "#{klass_name}_delete_question_button",
+                   data: { action: "array-fields#deleteField",
+                           array_fields_block_id_param: "#{klass_name}_questions" },
+                 )
   = render ButtonComponent.new(variant: :cancel,
                                size: :tiny,
                                type: :button,

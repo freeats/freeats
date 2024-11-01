@@ -24,10 +24,6 @@
 
 .selectize-control > .selectize-input {
   cursor: text !important;
-  &::after {
-    // Remove default arrow.
-    content: none !important;
-  }
 }
 
 .selectize-dropdown {

@@ -100,22 +100,22 @@ ruby:
           .col-auto
             = form.radio_button(:score, :irrelevant, required: true, class: "btn-check")
             = form.label(:score_irrelevant, class: "btn btn-sm btn-outline-danger")
-              i.fas.fa-frown
+              = render IconComponent.new(:mood_sad, icon_type: :filled)
               | <br>Completely<br>irrelevant
           .col-auto
             = form.radio_button(:score, :relevant, required: true, class: "btn-check")
             = form.label(:score_relevant, class: "btn btn-sm btn-outline-warning")
-              i.fas.fa-meh
+              = render IconComponent.new(:mood_empty, icon_type: :filled)
               | <br>Might be<br>irrelevant
           .col-auto
             = form.radio_button(:score, :good, required: true, class: "btn-check")
             = form.label(:score_good, class: "btn btn-sm btn-outline-success")
-              i.fas.fa-smile
+              = render IconComponent.new(:mood_smile, icon_type: :filled)
               | <br>Good<br>candidate
           .col-auto
             = form.radio_button(:score, :perfect, required: true, class: "btn-check")
             = form.label(:score_perfect, class: "btn btn-sm btn-outline-info")
-              i.fas.fa-grin-stars
+              = render IconComponent.new(:mood_happy, icon_type: :filled)
               | <br>Perfect<br>candidate
         .mt-3
             | Open-ended feedback

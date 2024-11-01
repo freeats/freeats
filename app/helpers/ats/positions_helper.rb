@@ -54,11 +54,15 @@ module ATS::PositionsHelper
       when "position_stage_removed"
         "removed stage <b>#{event.removed_stage.name}</b>"
       when "scorecard_template_added"
-        "added scorecard template <b>#{event.eventable.title}</b>"
+        scorecard_template = event.eventable
+        "added scorecard template " \
+          "#{link_to(scorecard_template.title, ats_scorecard_template_path(scorecard_template))}"
       when "scorecard_template_removed"
         "removed scorecard template from <b>#{event.eventable.name}</b> stage"
       when "scorecard_template_changed"
-        "updated scorecard template <b>#{event.eventable.title}</b>"
+        scorecard_template = event.eventable
+        "updated scorecard template " \
+          "#{link_to(scorecard_template.title, ats_scorecard_template_path(scorecard_template))}"
       when "task_added"
         "created <b>#{event.eventable.name}</b> task"
       when "task_status_changed"
@@ -102,7 +106,7 @@ module ATS::PositionsHelper
       HTML
   end
 
-  def position_html_status_circle(position, tooltip_placement: "top")
+  def position_html_status_circle(position, tooltip_placement: "top", icon_size: :small)
     tooltip_status_reason_text =
       ", #{change_status_reason_tooltip_text(position)}"
     event_type, event_performed_at =
@@ -142,15 +146,19 @@ module ATS::PositionsHelper
       }
     )
 
-    <<~HTML.html_safe # rubocop:disable Rails/OutputSafety
-      <i class="fa-fw fa-user #{colors[color_code]} #{position.draft? ? 'fal' : 'fas'}"
-         data-bs-toggle="tooltip"
-         data-bs-title='#{tooltip}'
-         data-bs-html="true"
-         data-bs-boundary="viewport"
-         data-bs-placement="#{tooltip_placement}">
-      </i>
-    HTML
+    render IconComponent.new(
+      :user,
+      icon_type: position.draft? ? :outline : :filled,
+      class: [colors[color_code], "flex-shrink-0"],
+      size: icon_size,
+      data: {
+        bs_toggle: :tooltip,
+        bs_title: tooltip,
+        bs_html: true,
+        bs_boundary: :viewport,
+        bs_placement: tooltip_placement
+      }
+    )
   end
 
   private

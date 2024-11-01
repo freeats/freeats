@@ -12,6 +12,6 @@ ruby:
   .card.mt-3.empty-card-templates [style="border: none;" data-bs-toggle="#{'tooltip' if tooltip_text.present?}"
       data-bs-title=tooltip_text.presence]
     = link_to public_send(edit_card_path, target_model, card_name:),
-      class: "btn d-inline-block empty-card #{'disabled' if tooltip_text.present?}"
-      i.fas.fa-plus
+              class: "btn d-inline-block text-center empty-card #{'disabled' if tooltip_text.present?}"
+      = render IconComponent.new(:plus)
       =< header || "#{card_name.humanize}"

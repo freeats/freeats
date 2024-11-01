@@ -2,8 +2,8 @@
 
 module CardsHelper
   def card_header(title:, icon_style:, &block)
-    content_tag(:div, class: "align-items-center text-truncate") do
-      concat(content_tag(:i, nil, class: "fal #{icon_style} me-2", style: "width: 20px;"))
+    content_tag(:div, class: "d-flex align-items-center text-truncate") do
+      concat(render(IconComponent.new(icon_style, size: :medium, class: "me-2")))
       concat(title)
       concat(capture(&block)) if block
     end

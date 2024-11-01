@@ -3,14 +3,14 @@
     .notification.alert-danger role="alert"
       = sanitize Array(alert).join("<br>"), attributes: %w[href rel target]
       span.notification-close
-        i.fas.fa-times
+        = render IconComponent.new(:x)
   - if notice.present?
     .notification.alert-success role="alert"
       = sanitize Array(notice).join("<br>"), attributes: %w[href rel target]
       span.notification-close
-        i.fas.fa-times
+        = render IconComponent.new(:x)
   - if warning.present?
     .notification.alert-warning role="alert"
       = sanitize Array(warning).join("<br>"), attributes: %w[href rel target]
       span.notification-close
-        i.fas.fa-times
+        = render IconComponent.new(:x)

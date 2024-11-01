@@ -91,8 +91,6 @@
 
 // SelectComponent styles
 .select-component {
-  --space_for_chevron: 10px;
-
   // Bootstrap 5 does not support the `btn-group-xs` size.
   // Used in case of a select component with the `dropdown_buttons` plugin for the `selectize` library.
   .btn-group-xs button {
@@ -137,29 +135,6 @@
     }
   }
 
-  // Do not show the chevron icon when the loading icon is visible.
-  &.with-chevron > :not(.loading) > .selectize-input {
-    input,
-    .item {
-      max-width: 100% !important;
-    }
-
-    &::before {
-      cursor: pointer;
-    }
-
-    &::after {
-      @extend .fa-light;
-
-      content: fa-content($fa-var-chevron-down) !important;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: var(--space_for_chevron);
-      color: $gray-900;
-    }
-  }
-
   // Start of sizes.
   &.tiny {
     --select_component_font_size: 12px;
@@ -174,10 +149,6 @@
         height: var(--select_component_font_size);
         width: var(--select_component_font_size);
       }
-    }
-
-    &.with-chevron > :not(.loading) > .selectize-input {
-      padding: 4px calc(8px + var(--space_for_chevron)) 4px 8px !important;
     }
   }
 
@@ -195,10 +166,6 @@
         width: var(--select_component_font_size);
       }
     }
-
-    &.with-chevron > :not(.loading) > .selectize-input {
-      padding: 4.5px calc(9px + var(--space_for_chevron)) 4.5px 9px !important;
-    }
   }
 
   &.medium {
@@ -214,10 +181,6 @@
         height: var(--select_component_font_size);
         width: var(--select_component_font_size);
       }
-    }
-
-    &.with-chevron > :not(.loading) > .selectize-input {
-      padding: 7px calc(14px + var(--space_for_chevron)) 7px 14px !important;
     }
   }
   // End of sizes.
@@ -255,14 +218,6 @@
       &:not(:first-child):before {
         content: ", ";
       }
-    }
-
-    .selected:after {
-      @extend .fa-light;
-
-      content: fa-content($fa-var-check);
-      left: 100%;
-      position: sticky;
     }
   }
 
@@ -340,5 +295,62 @@
   .selectize-dropdown-emptyoptionlabel {
     text-align: left;
     height: var(--select_component_min_height);
+  }
+}
+
+.icon-button-component {
+  @extend .btn, .btn-light;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+
+  &.default {
+    border: 1px solid $gray-500;
+    background-color: $gray-100;
+    color: $gray-900;
+
+    &:hover {
+      color: black;
+      background-color: var(--bs-btn-hover-bg);
+    }
+
+    &:active {
+      background-color: var(--bs-btn-active-bg);
+    }
+  }
+
+  &.ghost {
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: $gray-600;
+
+    &:hover {
+      --bs-btn-focus-box-shadow: 0 0 0 0 transparent;
+      color: $gray-900;
+    }
+
+    &:active {
+      background-color: transparent;
+      border-color: transparent;
+    }
+
+    &:focus {
+      color: $gray-900;
+      box-shadow: 0 0 0 0.25rem rgba(28, 109, 208, 0.25);
+    }
+  }
+
+  &.icon-medium {
+    padding: 9px;
+  }
+
+  &.icon-small {
+    padding: 6.5px;
+  }
+
+  &.icon-tiny {
+    padding: 5.5px;
   }
 }

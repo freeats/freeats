@@ -30,7 +30,6 @@ html
       style
         = @custom_styles.html_safe
     - # rubocop:enable Rails/OutputSafety
-    = javascript_include_tag "fontawesome_all", "data-turbo-track": "reload"
     = javascript_include_tag "ats", "data-turbo-track": "reload"
     = javascript_include_tag "https://www.gstatic.com/charts/loader.js"
     - if RecaptchaV3::ENABLED

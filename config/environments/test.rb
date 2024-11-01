@@ -85,4 +85,6 @@ Rails.application.configure do
 
   ENV["GMAIL_LINKING_CLIENT_ID"] = "dummy"
   ENV["GMAIL_LINKING_CLIENT_SECRET"] = "dummy"
+
+  ENV["EMAIL_NOTIFICATIONS"] = "enabled"
 end

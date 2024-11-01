@@ -6,13 +6,21 @@ require "sequel/core"
 # https://rodauth.jeremyevans.net/rdoc/files/doc/guides/registration_field_rdoc.html
 module CreateAccount
   extend ActiveSupport::Concern
+  MAILER_ENABLED = ENV.fetch("EMAIL_NOTIFICATIONS", "disabled") == "enabled"
 
   included do
     configure do
       enable :create_account
       create_account_route :register
+      create_account_autologin? do
+        Account.find_by(id: account[:id]).verified?
+      end
       create_account_redirect do
-        verify_account_resend_path(login_param => param(login_param))
+        if Account.find_by(id: account[:id]).verified?
+          login_redirect
+        else
+          verify_account_resend_path(login_param => param(login_param))
+        end
       end
 
       # Validate the presence of custom fields which are required
@@ -44,9 +52,12 @@ module CreateAccount
           Member.create!(account_id:, tenant_id:, access_level: :member)
         else
           tenant = Tenant.create!(name: param("company_name"))
-          Account.find(account_id).update!(tenant_id: tenant.id)
+          account = Account.find(account_id)
+          account.update!(tenant_id: tenant.id)
           Member.create!(account_id:, tenant:, access_level: :admin)
           CandidateSource.create!(tenant:, name: "LinkedIn")
+          # If mailer is not enabled, it's impossible to verify account via email.
+          account.verified! unless MAILER_ENABLED
         end
       end
 
@@ -151,7 +162,7 @@ module VerifyAccount
       send_verify_account_email do
         # Skip verification email on accepting invitation,
         # since the account is verified in the after_create_account hook.
-        return if internal_request?
+        return if internal_request? || !CreateAccount::MAILER_ENABLED
 
         create_verify_account_email.deliver!
       end

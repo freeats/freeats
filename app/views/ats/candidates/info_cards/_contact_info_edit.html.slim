@@ -1,7 +1,7 @@
 /# locals: (candidate:)
 
 ruby:
-  header = card_header(title: "Contact info", icon_style: "fa-at")
+  header = card_header(title: "Contact info", icon_style: :at)
   source_options = CandidateSource.pluck(:name).sort.map do |source|
     { value: source, text: source, selected: source == candidate.source }
   end

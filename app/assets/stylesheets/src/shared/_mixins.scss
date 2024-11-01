@@ -1,0 +1,11 @@
+@use "colors";
+
+@mixin icon($name, $icon_type: "outline", $width: 1rem, $height: 1rem) {
+  content: url("/assets/icons/#{$icon_type}/#{$name}.svg") !important;
+  width: $width;
+  height: $height;
+  stroke-width: 1.25;
+  color: colors.$gray-900;
+  background-size: contain;
+  background-repeat: no-repeat;
+}

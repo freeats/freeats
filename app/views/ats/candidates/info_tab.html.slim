@@ -54,7 +54,7 @@
               .dropdown.d-md-none
                 = render ButtonComponent.new(variant: :secondary,
                                              data: { bs_toggle: "dropdown" }) do |c|
-                  - c.with_icon("fa-light fa-chevron-down", position: :right)
+                  - c.with_icon(:chevron_down)
                   | Upload CV
                 ul.dropdown-menu
                   li = form_with model: @candidate, url: upload_cv_file_ats_candidate_path, local: true,

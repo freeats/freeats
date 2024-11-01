@@ -14,9 +14,18 @@ module ATS::MembersHelper
     end
 
     if unassignment_label.present?
-      nil_partial = ActionController::Base.helpers.sanitize(
-        "<div><i class='fas fa-ban pe-2 ms-1'></i>#{unassignment_label}</div>"
-      )
+      nil_partial = content_tag(:div, class: "d-flex align-items-center") do
+        concat(
+          content_tag(
+            :span,
+            class: "d-inline-flex align-items-center justify-content-center me-2",
+            style: "min-width: 32px; min-height: 32px;"
+          ) do
+            render(IconComponent.new(:ban, size: :medium))
+          end
+        )
+        concat(unassignment_label)
+      end
       nil_member = Struct.new(:id, :name).new("", "")
 
       partials.unshift(nil_partial)

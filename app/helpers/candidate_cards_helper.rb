@@ -120,17 +120,18 @@ module CandidateCardsHelper
   end
 
   def candidate_card_cover_letter_copy_button(candidate)
-    tag.button(
-      tag.i(class: "far fa-copy"),
-      type: "button",
-      class: "btn btn-link p-0 align-top ms-2",
-      data: {
-        controller: "copy-to-clipboard",
-        clipboard_text: candidate.cover_letter.body.to_html,
-        clipboard_plain_text: candidate.cover_letter.to_plain_text,
-        bs_title: "Copied!",
-        bs_trigger: "manual"
-      }
+    render(
+      IconComponent.new(
+        :copy,
+        class: "btn btn-link p-0 ms-2",
+        data: {
+          controller: "copy-to-clipboard",
+          clipboard_text: candidate.cover_letter.body.to_html,
+          clipboard_plain_text: candidate.cover_letter.to_plain_text,
+          bs_title: "Copied!",
+          bs_trigger: :manual
+        }
+      )
     )
   end
 end

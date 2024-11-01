@@ -13,16 +13,20 @@ module CandidatesGridHelper
            else
              placement.position.name
            end),
-          sanitize(
-            case placement.status
-            when "qualified"
-              placement.position_stage.name
-            when "reserved"
-              "<i class='far fa-clock'></i>&nbsp;#{placement.status.humanize}"
-            else
-              "<i class='fas fa-ban'></i>&nbsp;#{placement.status.humanize}"
-            end
-          )
+          case placement.status
+          when "qualified"
+            placement.position_stage.name
+          when "reserved"
+            safe_join(
+              [render(IconComponent.new(:clock, size: :tiny)), placement.status.humanize],
+              " "
+            )
+          else
+            safe_join(
+              [render(IconComponent.new(:ban, size: :tiny)), placement.status.humanize],
+              " "
+            )
+          end
         ],
         " - "
       )

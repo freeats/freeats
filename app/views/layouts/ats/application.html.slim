@@ -24,7 +24,6 @@ html
     = csrf_meta_tags
     = include_gon
     = stylesheet_link_tag "ats", media: "all", "data-turbo-track": "reload"
-    = javascript_include_tag "fontawesome_all", "data-turbo-track": "reload"
     = javascript_include_tag "ats", "data-turbo-track": "reload"
     = javascript_include_tag "https://www.gstatic.com/charts/loader.js"
     - if !rodauth.logged_in? && RecaptchaV3::ENABLED

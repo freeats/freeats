@@ -29,14 +29,23 @@
                 = render "ats/placements/disrequalify_buttons",
                          placement:,
                          data_display_static: true,
-                         tooltip: true,
                          position_pipeline_card: true
               - if placement.qualified? && placement.next_stage.present?
                 .card-hidden-container
-                  = render "ats/placements/reserve_buttons",
-                           placement:,
-                           position_pipeline_card: true
+                  = form_with url: change_status_ats_placement_path(placement, position_pipeline_card: true)
+                    = render IconButtonComponent.new( \
+                               :clock,
+                               name: :status,
+                               value: :reserved,
+                               data: { bs_toggle: :tooltip, bs_title: "Reserve", bs_placement: :bottom },
+                             )
                 .card-hidden-container
-                  = render "ats/placements/change_stage_buttons",
-                           placement:,
-                           position_pipeline_card: true
+                  - if placement.next_stage.present?
+                    = form_with url: change_stage_ats_placement_path(placement, position_pipeline_card: true),
+                              data: { turbo_frame: :turbo_modal_window }
+                      = render IconButtonComponent.new( \
+                                 :arrow_right,
+                                 name: :stage,
+                                 value: placement.next_stage,
+                                 class: "placement-button",
+                               )

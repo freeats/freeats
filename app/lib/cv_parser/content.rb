@@ -4,7 +4,7 @@ class CVParser::Content
   PHONE_REGEX = /[+]*(?:[-()\u00a0\d]\s{0,2}){5,}/
   EMAIL_REGEX = /[^@\s\u00a0]+@[^@\s\u00a0]+/
   URL_REGEX = %r{(?:https?://)?(?:\w+\.)+(?:[a-zA-Z]{2,4})(?:[/\w.?%=:-]*)/?}
-  DEFAULT_COUNTRY_CODE = "7"
+  DEFAULT_COUNTRY_CODE = ENV.fetch("COUNTRY_CODE_FOR_PHONE_PARSING", nil)
 
   attr_reader :phones, :emails, :urls
 
@@ -60,7 +60,7 @@ class CVParser::Content
     def parse_phone(phone, country_code)
       if Phonelib.valid_for_country?(phone, country_code)
         Phonelib.parse(phone, country_code)
-      elsif Phonelib.valid?(country_code + phone)
+      elsif country_code.present? && Phonelib.valid?(country_code + phone)
         Phonelib.parse(country_code + phone)
       else
         Phonelib.parse(phone)
