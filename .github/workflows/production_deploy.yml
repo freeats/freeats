@@ -33,7 +33,7 @@ jobs:
         if: "${{ github.event.inputs.commit != '' }}"
         run: git checkout ${{ github.event.inputs.commit }}
       - name: Push to Dokku
-        uses: dokku/github-action@main
+        uses: dokku/github-action@master
         with:
           git_remote_url: "ssh://dokku@${{ vars.DOKKU_HOST }}:22/${{ github.event.repository.name }}"
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
