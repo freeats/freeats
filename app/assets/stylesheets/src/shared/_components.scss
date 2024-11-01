@@ -6,30 +6,18 @@
     --tblr-btn-font-size: 12px;
     --tblr-btn-padding-x: 8px;
     --tblr-btn-padding-y: 4px;
-
-    .icon {
-      --tblr-btn-icon-size: 15px;
-    }
   }
 
   &-small {
     --tblr-btn-font-size: 14px;
     --tblr-btn-padding-x: 9px;
     --tblr-btn-padding-y: 4.5px;
-
-    .icon {
-      --tblr-btn-icon-size: 17px;
-    }
   }
 
   &-medium {
     --tblr-btn-font-size: 16px;
     --tblr-btn-padding-x: 14px;
     --tblr-btn-padding-y: 7px;
-
-    .icon {
-      --tblr-btn-icon-size: 20px;
-    }
   }
 
   .icon,
