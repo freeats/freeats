@@ -13,14 +13,18 @@
 
 2. Download the repository, you can do this via git or by downloading the zip file.
 
-3. Navigate to the project directory and build the Docker containers:
+3. Navigate to the project directory and build the Docker services:
 
    ```shell
       docker compose build
       docker compose run --rm web bundle exec rake db:create db:migrate
    ```
 
-4. To start the server, run `docker compose up`
+4. To start the server, run the following command:
+
+   ```shell
+      docker compose up -d
+   ```
 
 5. Open `http://<your_server_ip>:3000/register` and create an account.
 
