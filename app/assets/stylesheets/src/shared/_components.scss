@@ -1,21 +1,40 @@
 // ButtonComponent styles
 .btn {
+  --tblr-btn-line-height: 1.5;
+
   &-tiny {
     --tblr-btn-font-size: 12px;
     --tblr-btn-padding-x: 8px;
     --tblr-btn-padding-y: 4px;
+
+    .icon {
+      --tblr-btn-icon-size: 15px;
+    }
   }
 
   &-small {
     --tblr-btn-font-size: 14px;
     --tblr-btn-padding-x: 9px;
     --tblr-btn-padding-y: 4.5px;
+
+    .icon {
+      --tblr-btn-icon-size: 17px;
+    }
   }
 
   &-medium {
     --tblr-btn-font-size: 16px;
     --tblr-btn-padding-x: 14px;
     --tblr-btn-padding-y: 7px;
+
+    .icon {
+      --tblr-btn-icon-size: 20px;
+    }
+  }
+
+  .icon,
+  .avatar {
+    margin: unset;
   }
 }
 
@@ -233,18 +252,30 @@
   }
 }
 
+.icon-component {
+  $sizes:
+    tiny 15px,
+    small 17px,
+    medium 20px;
+
+  @each $name, $size in $sizes {
+    &.icon-component-#{$name} {
+      --tblr-icon-size: #{$size};
+      --tblr-btn-icon-size: #{$size};
+    }
+  }
+}
+
 .icon-button-component {
   @extend .btn, .btn-light;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
+  --tblr-box-shadow-input: none;
 
   &.default {
-    border: 1px solid $gray-500;
-    background-color: $gray-100;
-    color: $gray-900;
+    @extend .border;
 
     &:hover {
       color: black;
@@ -277,15 +308,18 @@
     }
   }
 
-  &.icon-medium {
-    padding: 9px;
-  }
+  $sizes:
+    tiny 15px 5.5px,
+    small 17px 6.5px,
+    medium 20px 9px;
 
-  &.icon-small {
-    padding: 6.5px;
-  }
-
-  &.icon-tiny {
-    padding: 5.5px;
+  @each $name, $size, $padding in $sizes {
+    &.icon-#{$name} {
+      // size of the icon + padding * 2 (both side) + border width (each 1px)
+      $button-size: calc($size + ($padding * 2) + 2px);
+      width: $button-size;
+      height: $button-size;
+      padding: $padding;
+    }
   }
 }
