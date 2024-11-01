@@ -1,5 +1,4 @@
 @use "colors";
-/* @use "@tabler/core/src/scss/tabler" as tabler; */
 
 @mixin icon($name, $icon_type: "outline", $width: 1rem, $height: 1rem) {
   content: url("/assets/icons/#{$icon_type}/#{$name}.svg") !important;
