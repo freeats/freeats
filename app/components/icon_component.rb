@@ -14,7 +14,7 @@ class IconComponent < ApplicationComponent
          Types::Strict::Symbol.enum(:outline, :filled),
          default: -> { :outline }
   option :size,
-          Types::Symbol.enum(*ICON_SIZE_CLASS.keys),
+         Types::Symbol.enum(*ICON_SIZE_CLASS.keys),
          optional: true
 
   # The rescue block is needed to test the icon in the lookbook
