@@ -146,18 +146,20 @@ module ATS::PositionsHelper
       }
     )
 
-    render IconComponent.new(
-      :user,
-      icon_type: position.draft? ? :outline : :filled,
-      class: [colors[color_code], "flex-shrink-0"],
-      size: icon_size,
-      data: {
-        bs_toggle: :tooltip,
-        bs_title: tooltip,
-        bs_html: true,
-        bs_boundary: :viewport,
-        bs_placement: tooltip_placement
-      }
+    render(
+      IconComponent.new(
+        :user,
+        icon_type: position.draft? ? :outline : :filled,
+        class: [colors[color_code], "flex-shrink-0"],
+        size: icon_size,
+        data: {
+          bs_toggle: :tooltip,
+          bs_title: tooltip,
+          bs_html: true,
+          bs_boundary: :viewport,
+          bs_placement: tooltip_placement
+        }
+      )
     )
   end
 
