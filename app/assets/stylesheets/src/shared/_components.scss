@@ -252,6 +252,20 @@
   }
 }
 
+.icon-component {
+  $sizes:
+    tiny 15px,
+    small 17px,
+    medium 20px;
+
+  @each $name, $size in $sizes {
+    &.icon-component-#{$name} {
+      --tblr-icon-size: #{$size};
+      --tblr-btn-icon-size: #{$size};
+    }
+  }
+}
+
 .icon-button-component {
   @extend .btn, .btn-light;
 
@@ -301,10 +315,6 @@
 
   @each $name, $size, $padding in $sizes {
     &.icon-#{$name} {
-      svg {
-        width: $size;
-        height: $size;
-      }
       // size of the icon + padding * 2 (both side) + border width (each 1px)
       $button-size: calc($size + ($padding * 2) + 2px);
       width: $button-size;

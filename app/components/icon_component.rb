@@ -9,6 +9,12 @@ class IconComponent < ApplicationComponent
     medium: 20
   }.freeze
 
+  ICON_SIZE_CLASS = {
+    tiny: "icon-component-tiny",
+    small: "icon-component-small",
+    medium: "icon-component-medium"
+  }.freeze
+
   param :icon_name, Types::Coercible::String
   option :icon_type,
          Types::Strict::Symbol.enum(:outline, :filled),
@@ -23,9 +29,9 @@ class IconComponent < ApplicationComponent
     render_icon(
       icon_name,
       icon_type:,
-      size: icon_size,
       color:,
       stroke_width: 1.25,
+      class: icon_classes,
       **additional_options
     )
   rescue TablerIcons::Error => e
@@ -34,7 +40,15 @@ class IconComponent < ApplicationComponent
 
   private
 
-  def icon_size
-    ICON_SIZES[size] || size
+  def icon_classes
+    [
+      "icon-component",
+      icon_size_class,
+      *additional_options.delete(:class)
+    ]
+  end
+
+  def icon_size_class
+    ICON_SIZE_CLASS[size]
   end
 end
