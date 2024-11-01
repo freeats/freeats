@@ -11,7 +11,7 @@
                      type: :button,
                      aria: { expanded: false, haspopup: true },
                      data: { bs_toggle: "dropdown" }) do |c|
-              - c.with_icon(:chevron_down, position: :right)
+              - c.with_icon(:chevron_down, size: c.size, position: :right)
               = @position.status.humanize
             ul.dropdown-menu.dropdown-menu-end
               - Position.statuses.except("draft", @position.status).each do |status|
