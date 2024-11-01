@@ -28,12 +28,13 @@ services:
     depends_on:
       - db
     environment:
-      SECRET_KEY_BASE: 15
+      SECRET_KEY_BASE: 462d54c7b15dcc1924e797d0b28e6d
       RAILS_ENV: docker_production
       DATABASE_HOST: db
       DATABASE_USERNAME: ats
       DATABASE_PASSWORD: password
       DATABASE_NAME: ats_docker_production
+      RAILS_LOG_TO_STDOUT: true
     stdin_open: true
     tty: true
 

@@ -7,4 +7,6 @@ Rails.application.configure do
 
   config.force_ssl = false
   config.assume_ssl = false
+
+  config.log_level = "debug"
 end
