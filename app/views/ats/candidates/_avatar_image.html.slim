@@ -1,7 +1,7 @@
 /# locals: (candidate:, is_form: false)
 / is_form - whether it is used as a form
 
-.profile-avatar.img-thumbnail class=("profile-avatar-edit float-md-end" if is_form)
+.avatar.avatar-xl class=("float-md-end" if is_form)
   - if candidate.avatar.attached?
     = image_tag candidate.avatar.variant(:medium)
   - else

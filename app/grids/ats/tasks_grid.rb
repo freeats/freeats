@@ -96,7 +96,7 @@ class ATS::TasksGrid
   # Columns
   #
 
-  column(:status, header: "", html: true, order: false) do |model|
+  column(:task_status, header: "", html: true, order: false) do |model|
     render partial: "ats/tasks/change_status_control", locals: { task: model, grid: :main }
   end
 

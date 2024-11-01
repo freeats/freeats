@@ -14,7 +14,7 @@
     / Checkbox and title show
     = form_with model: task, url: update_status_ats_task_path(task, grid:),
                 class: "turbo-instant-submit d-inline-block" do |f|
-      .task-large-checkbox class=("task-overdue-checkbox" if task.overdue?)
+      .w-4.h-4 class=("border-danger" if task.overdue?)
         - checkbox_id = "#{dom_id(task)}-status"
         = f.check_box :status,
                       { class: "form-check-input mt-0", id: checkbox_id },
@@ -108,10 +108,10 @@
       = label_tag :added_by, t("core.added_by"), class: ["col col-sm-4", label_classes]
       .col.col-sm-8.col-lg-9.hstack.gap-2
         - if added_by_account.present?
-          = picture_avatar_icon added_by_account.avatar, {}, class: "small-avatar-thumbnail"
+          = picture_avatar_icon added_by_account.avatar, {}, class: "avatar avatar-sm"
           = added_by_account.name
         - else
-          = inline_svg_tag "ats-icon.svg", class: "small-avatar-thumbnail"
+          = inline_svg_tag "ats-icon.svg", class: "avatar avatar-sm toughbyte-black"
           | FreeATS
 
     / Added on

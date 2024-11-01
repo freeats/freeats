@@ -2,11 +2,11 @@
 
 div
   = link_to tab_ats_position_path(position, :info) do
-    .hstack.quick-search-suggestion
-      .col-auto.my-auto.ms-3.text-center.small-thumbnail-wrapper
-        span
+    .hstack.quick-search-suggestion.gap-2.px-3
+      .col-auto.hstack
+        .d-flex.align-items-center.justify-content-center.w-5.h-5
           = position_html_status_circle(position)
-      .col.ms-2
+      .col
         .row.g-0
           .col-12.text-truncate
             = position.name

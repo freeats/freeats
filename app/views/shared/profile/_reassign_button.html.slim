@@ -27,7 +27,7 @@ ruby:
       data-reassignment-buttons-target="button" data-action="reassignment-buttons#showForm"
       data-bs-toggle="tooltip" data-bs-title=tooltip_title]
       - if currently_assigned_account.present?
-        = picture_avatar_icon currently_assigned_account.avatar, {}, class: "small-avatar-thumbnail me-1"
+        = picture_avatar_icon currently_assigned_account.avatar, {}, class: "avatar avatar-sm me-1"
         = currently_assigned_account.name
       - else
         = t("core.assign_button")
@@ -46,5 +46,5 @@ ruby:
       button.d-none type="submit" = t("core.hidden_save")
   - elsif currently_assigned_account.present?
     .w-100.text-start data-bs-toggle="tooltip" title=tooltip_title
-      = picture_avatar_icon currently_assigned_account.avatar, {}, class: "small-avatar-thumbnail me-1"
+      = picture_avatar_icon currently_assigned_account.avatar, {}, class: "avatar avatar-sm me-1"
       = currently_assigned_account.name

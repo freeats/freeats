@@ -1,46 +1,15 @@
 $footer-min-height: 117px;
-$navbar-min-height: 56px;
+$navbar-min-height: 53px;
 
 html,
 body {
   height: 100%;
   min-width: 320px;
-  margin: 0;
 }
 
 // place the footer at the bottom of the page
 .wrapper {
-  min-height: calc(100% - #{$footer-min-height});
-}
-
-.notification {
-  @extend .alert;
-}
-
-#alerts {
-  position: relative;
-  top: -8px;
-
-  .notification {
-    padding: 8px 30px 8px 16px;
-    border-radius: 0.25rem;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 24px;
-
-    .notification-close {
-      position: absolute;
-      top: 7px;
-      right: 14px;
-      width: 12px !important;
-    }
-  }
-}
-
-.notification-close {
-  cursor: pointer;
-  margin-left: 12px;
+  min-height: calc(100% - $footer-min-height);
 }
 
 .font-medium {
@@ -61,9 +30,7 @@ body {
 .form-control {
   padding: 0.375rem 0.563rem;
   @extend .font-medium;
-  border-color: $gray-500;
   text-overflow: ellipsis;
-  color: inherit;
 
   &:not(textarea):not(trix-editor) {
     padding: 5px 9px;
@@ -78,7 +45,7 @@ footer .container-fluid {
 }
 
 [class*="container"] {
-  --bs-gutter-x: 3rem;
+  --tblr-gutter-x: 3rem;
 }
 
 .linkedin-blue {
@@ -87,6 +54,10 @@ footer .container-fluid {
 
 .hh-red {
   color: $hh-red;
+}
+
+.toughbyte-black {
+  color: $toughbyte-black;
 }
 
 .code-green {
@@ -128,59 +99,10 @@ footer .container-fluid {
   }
 }
 
-// Use this mixin for buttons like on profile pages
-// $gap_size - for space between icons
-@mixin custom-button-group($gap-size: 8px) {
-  gap: $gap-size;
-  line-height: 0.875rem;
-
-  button,
-  a {
-    padding: 8px;
-
-    height: 32px;
-    position: relative;
-
-    border-width: 1px;
-    border-style: solid;
-
-    // some icons has less than 14px width
-    svg {
-      width: 14px;
-      max-height: 14px;
-    }
-
-    &:not(.hidden) {
-      display: inline-flex;
-    }
-    align-items: center;
-  }
-}
-
-// use button/a tag instead of span for wrapping icon-buttons
-#profile .profile-header-actions {
-  @include custom-button-group;
-
-  button,
-  a {
-    @extend .control-grey-icon;
-
-    &:not(:focus-visible) {
-      border: 1px solid transparent;
-      background-color: transparent;
-    }
-  }
-}
-
 // TODO: use this style for all similar buttons such as "pencil" icon
 // instead of a custom styling.
 .control-grey-icon {
-  color: $gray-600;
   border: 0;
-
-  &:hover {
-    color: $gray-800;
-  }
 
   svg {
     max-width: 14px;
@@ -253,104 +175,14 @@ footer .container-fluid {
   }
 }
 
-body {
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-
-// Change styles to Bootstrap v4.
-.table {
-  & > :not(:first-child) {
-    border-top: 1px solid $gray-500;
-  }
-  & > thead {
-    border-top: 1px solid $gray-500;
-  }
-  tr:not(:last-child) {
-    border-bottom: 1px solid $gray-500;
-  }
-  tbody tr:last-child {
-    border-bottom: none;
-  }
-  td,
-  th {
-    padding: 0.75rem;
-    border-bottom: none;
-    color: $gray-900;
-  }
-}
-
-.btn {
-  --bs-btn-font-size: 0.875rem;
-}
-
-.btn.btn-sm {
-  padding: 0.125rem 0.5rem;
-}
-
-input,
-button {
-  &.btn-link {
-    text-decoration: none;
-  }
-  &.btn-link:hover {
-    text-decoration: underline;
-  }
-}
-
-.selectpicker-button {
-  border: 1px solid $gray-500;
-  background-color: unset;
-  color: unset;
-  &:hover,
-  &:active {
-    border: 1px solid $gray-500;
-    background-color: $gray-100;
-    color: unset;
-  }
-}
-
 .hidden {
   display: none; // does not include !important flag as bootstrap d-none class
-}
-
-h1 {
-  font-size: 1.5rem;
-  line-height: 2rem;
-  font-weight: bold;
-}
-
-h2 {
-  font-size: 1.25rem;
-  line-height: 2rem;
-  font-weight: bold;
 }
 
 .links-row {
   .disabled {
     opacity: 0.65 !important;
   }
-}
-
-a {
-  &:not(.btn, .dropdown-item) {
-    text-decoration: none;
-  }
-  &:hover:not(.btn, .nav-link, .dropdown-item, .badge) {
-    text-decoration: underline;
-  }
-  &:visited:not(.btn, .nav-link, .dropdown-item, .badge) {
-    color: $blue-600;
-  }
-}
-
-.nav-link .badge {
-  padding: 0.25rem;
-  vertical-align: bottom;
-}
-
-.card-body ul {
-  margin-bottom: 0px;
 }
 
 .filter-option {
@@ -379,27 +211,11 @@ picture {
 .authentication-container {
   max-width: 460px;
 }
+
 // Alerts that precede the authentication-container should also be 460px in width.
 #alerts:has(+ .authentication-container) {
   max-width: 460px;
   margin: 0 auto;
-}
-
-ul.dropdown-menu {
-  --bs-dropdown-font-size: 0.875rem;
-  --bs-dropdown-min-width: 100%;
-}
-
-.note-show {
-  ul.dropdown-menu {
-    --bs-dropdown-min-width: 10rem;
-  }
-}
-
-#turbo_placement_suggestions {
-  ul.dropdown-menu {
-    --bs-dropdown-min-width: 10rem;
-  }
 }
 
 .error-pages {
@@ -410,11 +226,5 @@ ul.dropdown-menu {
   .font-subheader {
     line-height: 2rem;
     font-size: 1.25rem;
-  }
-}
-
-.copy-to-clipboard-tooltip {
-  .popover-body {
-    padding: 8px;
   }
 }

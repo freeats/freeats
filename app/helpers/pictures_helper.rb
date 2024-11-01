@@ -12,7 +12,7 @@ module PicturesHelper
       src_sym = :"data-src"
     end
 
-    tag.picture do
+    tag.picture(class: "d-flex align-items-center") do
       if attachment && (icon = attachment.variant(:icon)).present?
         if (url = url_for(icon)).present?
           tag.img(src_sym => url, **opts)

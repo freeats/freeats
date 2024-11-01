@@ -1,25 +1,21 @@
 // ButtonComponent styles
 .btn {
-  &-light {
-    --bs-btn-color: var(--bs-gray-900);
-  }
-
   &-tiny {
-    --bs-btn-font-size: 12px;
-    --bs-btn-padding-x: 8px;
-    --bs-btn-padding-y: 4px;
+    --tblr-btn-font-size: 12px;
+    --tblr-btn-padding-x: 8px;
+    --tblr-btn-padding-y: 4px;
   }
 
   &-small {
-    --bs-btn-font-size: 14px;
-    --bs-btn-padding-x: 9px;
-    --bs-btn-padding-y: 4.5px;
+    --tblr-btn-font-size: 14px;
+    --tblr-btn-padding-x: 9px;
+    --tblr-btn-padding-y: 4.5px;
   }
 
   &-medium {
-    --bs-btn-font-size: 16px;
-    --bs-btn-padding-x: 14px;
-    --bs-btn-padding-y: 7px;
+    --tblr-btn-font-size: 16px;
+    --tblr-btn-padding-x: 14px;
+    --tblr-btn-padding-y: 7px;
   }
 }
 
@@ -27,27 +23,9 @@
 .text-input-component {
   &-default {
     border-radius: 4px;
-    border-color: $gray-500;
-  }
-
-  &-default::placeholder {
-    color: $gray-600;
-  }
-
-  &-default:focus {
-    border-color: tint-color($blue, 50%);
-  }
-
-  &-disabled {
-    background-color: $gray-200;
-  }
-
-  &-disabled:focus {
-    background-color: $gray-200;
   }
 
   &-subscript {
-    color: $gray-600;
     font-size: 14px;
     line-height: 1.5;
   }
@@ -94,44 +72,26 @@
   // Bootstrap 5 does not support the `btn-group-xs` size.
   // Used in case of a select component with the `dropdown_buttons` plugin for the `selectize` library.
   .btn-group-xs button {
-    --bs-btn-font-size: 12px;
-    --bs-btn-padding-x: 8px;
-    --bs-btn-padding-y: 4px;
+    --tblr-btn-font-size: 12px;
+    --tblr-btn-padding-x: 8px;
+    --tblr-btn-padding-y: 4px;
   }
 
   .selectize-input {
     border-radius: 4px !important;
-    border-color: $gray-500;
     vertical-align: middle; // Fix the height of the component.
 
-    input::placeholder {
-      color: $gray-600;
-    }
-
-    &.focus {
-      border-color: tint-color($blue, 50%) !important;
-    }
-
     &.locked {
-      background-color: $gray-200 !important;
       opacity: 1 !important;
     }
 
     &.disabled {
       cursor: default !important;
-
-      .item {
-        color: $gray-600 !important;
-      }
     }
 
     input {
       @extend .text-truncate;
       cursor: text !important;
-    }
-
-    .item {
-      color: $gray-900 !important;
     }
   }
 
@@ -213,8 +173,6 @@
       padding: 0 !important;
       margin: 0rem !important;
 
-      background-color: inherit !important;
-
       &:not(:first-child):before {
         content: ", ";
       }
@@ -231,7 +189,6 @@
     .item {
       padding-top: 0 !important;
       padding-bottom: 0 !important;
-      background-color: $gray-200 !important;
       margin: 0rem !important;
       border-radius: 4px !important;
 
@@ -240,10 +197,6 @@
         padding-top: 0 !important;
         padding-bottom: 0 !important;
       }
-    }
-
-    .locked .item {
-      background-color: white !important;
     }
   }
 
@@ -265,27 +218,9 @@
 .selectize-dropdown {
   border-radius: 4px;
   box-shadow: none !important;
-  color: $gray-900;
-  border-color: $gray-500;
-
-  .selected {
-    background-color: white;
-    color: $gray-900;
-
-    // not disabled options.
-    &[data-selectable] {
-      background-color: $blue-500;
-      color: white;
-    }
-  }
 
   .option {
     font-size: var(--select_component_font_size);
-
-    &.active[data-selectable] {
-      background-color: $gray-200;
-      color: $gray-900;
-    }
   }
 
   .selectize-dropdown-content {
