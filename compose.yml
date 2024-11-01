@@ -34,7 +34,6 @@ services:
       DATABASE_USERNAME: ats
       DATABASE_PASSWORD: password
       DATABASE_NAME: ats_docker_production
-      RAILS_LOG_TO_STDOUT: true
     stdin_open: true
     tty: true
 

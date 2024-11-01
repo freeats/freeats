@@ -2,11 +2,8 @@
 
 require File.expand_path("production.rb", __dir__)
 
+# Here override any defaults
 Rails.application.configure do
-  # Here override any defaults
-
   config.force_ssl = false
   config.assume_ssl = false
-
-  config.log_level = "debug"
 end
