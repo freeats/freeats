@@ -12,7 +12,7 @@ module PicturesHelper
       src_sym = :"data-src"
     end
 
-    tag.picture(class: "d-flex align-items-center") do
+    tag.picture(class: ["d-flex", "align-items-center", *html_opts.delete(:class)]) do
       if attachment && (icon = attachment.variant(:icon)).present?
         if (url = url_for(icon)).present?
           tag.img(src_sym => url, **opts)
@@ -20,7 +20,6 @@ module PicturesHelper
           render(
             IconComponent.new(
               :loader,
-              class: [*html_opts.delete(:class), "empty-avatar-icon"],
               **html_opts
             )
           )
@@ -29,7 +28,6 @@ module PicturesHelper
         render(
           IconComponent.new(
             :user,
-            class: [*html_opts.delete(:class), "empty-avatar-icon"],
             **html_opts
           )
         )
