@@ -10,14 +10,14 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: ats_docker_production
     ports:
-      - "127.0.0.1:5432:5432"
+      - "5432:5432"
 
   web:
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        NODE_ENV: docker_production
+        NODE_ENV: production
         RAILS_ENV: docker_production
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
     volumes:
