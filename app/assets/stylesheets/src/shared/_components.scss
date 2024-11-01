@@ -6,21 +6,34 @@
     --tblr-btn-font-size: 12px;
     --tblr-btn-padding-x: 8px;
     --tblr-btn-padding-y: 4px;
+
+    .icon {
+      --tblr-btn-icon-size: 15px;
+    }
   }
 
   &-small {
     --tblr-btn-font-size: 14px;
     --tblr-btn-padding-x: 9px;
     --tblr-btn-padding-y: 4.5px;
+
+    .icon {
+      --tblr-btn-icon-size: 17px;
+    }
   }
 
   &-medium {
     --tblr-btn-font-size: 16px;
     --tblr-btn-padding-x: 14px;
     --tblr-btn-padding-y: 7px;
+
+    .icon {
+      --tblr-btn-icon-size: 20px;
+    }
   }
 
-  .icon, .avatar {
+  .icon,
+  .avatar {
     margin: unset;
   }
 }
@@ -240,19 +253,15 @@
 }
 
 .icon-button-component {
-  /* @extend .btn, .btn-light; */
-  @extend .btn-action;
+  @extend .btn, .btn-light;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
   --tblr-box-shadow-input: none;
 
   &.default {
-    border: 1px solid $gray-500;
-    background-color: $gray-100;
-    color: $gray-900;
+    @extend .border;
 
     &:hover {
       color: black;
