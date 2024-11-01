@@ -39,21 +39,21 @@
   because port 5432 is being used by local PostgreSQL service.
   It can be checked using command:
 
-   ```shell
-      sudo lsof -i :5432
-   ```
+  ```shell
+     sudo lsof -i :5432
+  ```
 
-   Local PostgreSQL service then can be stopped:
+  Local PostgreSQL service then can be stopped:
 
-   ```shell
-      sudo systemctl stop postgresql
-   ```
+  ```shell
+     sudo systemctl stop postgresql
+  ```
 
-   More details on [stackoverflow](https://stackoverflow.com/questions/38249434/docker-postgres-failed-to-bind-tcp-0-0-0-05432-address-already-in-use).
+  More details on [stackoverflow](https://stackoverflow.com/questions/38249434/docker-postgres-failed-to-bind-tcp-0-0-0-05432-address-already-in-use).
 
 - If files with root permissions were created during the process,
   you can change them using the command
 
-   ```shell
-      chmod -R 777 <file or directory name>
-   ```
+  ```shell
+     chmod -R 777 <file or directory name>
+  ```
