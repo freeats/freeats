@@ -1,10 +1,13 @@
 /# locals: (candidate:, is_form: false)
 / is_form - whether it is used as a form
 
-.avatar.avatar-xl class=("float-md-end" if is_form)
+- classes = ["avatar", "avatar-2xl", *("float-md-end" if is_form)]
+
+.position-relative
   - if candidate.avatar.attached?
-    = image_tag candidate.avatar.variant(:medium)
+    = image_tag candidate.avatar.variant(:medium), class: classes
   - else
-    = render IconComponent.new(:user)
-  - if !is_form && candidate.blacklisted
+    span class=classes
+      = render IconComponent.new(:user)
+  - if !is_form && !candidate.blacklisted
       .profile-avatar-overlay.alert-danger Blacklisted

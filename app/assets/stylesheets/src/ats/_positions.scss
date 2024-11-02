@@ -37,8 +37,10 @@
     .card-avatar {
       width: 64px;
       height: 64px;
-      img,
-      svg {
+      .avatar {
+        --tblr-avatar-icon-size: 2.5rem;
+      }
+      img {
         width: 100%;
         height: auto;
       }

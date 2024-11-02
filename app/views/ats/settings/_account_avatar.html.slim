@@ -1,10 +1,10 @@
 /# locals: (account:)
 
 #account_avatar.hstack.gap-2
-  .profile-avatar.img-thumbnail.profile-avatar-edit
-    - if account.avatar.attached?
-      = image_tag account.avatar.variant(:medium)
-    - else
+  - if account.avatar.attached?
+    = image_tag account.avatar.variant(:medium), class: "avatar avatar-md"
+  - else
+    span.avatar.avatar-md
       = render IconComponent.new(:user)
 
   = form_with model: account,

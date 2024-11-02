@@ -19,7 +19,7 @@
           td
             .hstack.gap-1
               - if file.added_event.actor_account_id?
-                = picture_avatar_icon file.added_event.actor_account.avatar, {}, class: "avatar avatar-sm"
+                = picture_avatar_icon file.added_event.actor_account.avatar, {}
                 =< file.added_event.actor_account.name
               - else
                 | ATS
