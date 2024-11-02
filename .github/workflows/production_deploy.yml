@@ -23,6 +23,7 @@ jobs:
   deploy:
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-22.04
+    branch: main
     steps:
       - name: Cloning repo
         uses: actions/checkout@v4
