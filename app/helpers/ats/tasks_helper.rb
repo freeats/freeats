@@ -123,4 +123,25 @@ module ATS::TasksHelper
         "from <b>#{event.eventable.name}</b> task "
     end
   end
+
+  def ats_task_assignee_options(assignee_options:, selected_assignee_id:)
+    assignee_options.map do |assignee_name, assignee_id|
+      { text: assignee_name, value: assignee_id, selected: assignee_id == selected_assignee_id }
+    end
+  end
+
+  def ats_task_watchers_options(assignee_options:, selected:, disabled:)
+    assignee_options.map do |watcher_name, watcher_id|
+      {
+        text: watcher_name,
+        value: watcher_id,
+        selected: selected.include?(watcher_id),
+        disabled: disabled.include?(watcher_id)
+      }
+    end
+  end
+
+  def ats_task_repeat_interval_options(selected:)
+    Task.repeat_intervals.map { |k, v| { text: k.humanize, value: v, selected: v == selected } }
+  end
 end
