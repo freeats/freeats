@@ -38,8 +38,8 @@
 
    ```shell
    docker compose down --volumes
-   docker image rmi ats-web
-   docker image rmi postgres:15
+   docker rmi ats-web
+   docker rmi postgres:15
    ```
 
 ### Troubleshooting
