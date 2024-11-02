@@ -33,4 +33,42 @@ class TenantTest < ActiveSupport::TestCase
 
     assert_predicate tenant, :valid?
   end
+
+  test "models_with_tenant should return table names of all models, associated with tenant" do
+    assert_includes Tenant.models_with_tenant, "candidates"
+    assert_includes Tenant.models_with_tenant, "positions"
+    assert_includes Tenant.models_with_tenant, "scorecards"
+    assert_includes Tenant.models_with_tenant, "events"
+    assert_includes Tenant.models_with_tenant, "email_threads"
+    assert_includes Tenant.models_with_tenant, "candidate_email_addresses"
+    assert_includes Tenant.models_with_tenant, "candidate_links"
+    assert_includes Tenant.models_with_tenant, "candidate_sources"
+    assert_includes Tenant.models_with_tenant, "email_messages"
+    assert_includes Tenant.models_with_tenant, "accounts"
+    assert_includes Tenant.models_with_tenant, "email_message_addresses"
+    assert_includes Tenant.models_with_tenant, "placements"
+    assert_includes Tenant.models_with_tenant, "scorecard_questions"
+    assert_includes Tenant.models_with_tenant, "scorecard_template_questions"
+    assert_includes Tenant.models_with_tenant, "tasks"
+    assert_includes Tenant.models_with_tenant, "scorecard_templates"
+    assert_includes Tenant.models_with_tenant, "note_threads"
+    assert_includes Tenant.models_with_tenant, "notes"
+    assert_includes Tenant.models_with_tenant, "position_stages"
+    assert_includes Tenant.models_with_tenant, "access_tokens"
+    assert_includes Tenant.models_with_tenant, "candidate_phones"
+    assert_includes Tenant.models_with_tenant, "members"
+    assert_includes Tenant.models_with_tenant, "candidate_alternative_names"
+  end
+
+  test "destroy_with_associations should destroy tenant and all associated models" do
+    tenant = tenants(:toughbyte_tenant)
+
+    assert_raises(ActiveRecord::InvalidForeignKey) do
+      tenant.destroy!
+    end
+
+    assert_nothing_raised do
+      tenant.destroy_with_associations
+    end
+  end
 end
