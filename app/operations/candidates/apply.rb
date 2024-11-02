@@ -20,8 +20,8 @@ class Candidates::Apply < ApplicationOperation
         type: "personal",
         created_via: "applied"
       }]
-    candidate_params =
-      { full_name: params[:full_name], emails: candidate_email_addresses, file: params[:file] }
+    candidate_params = { full_name: params[:full_name], emails: candidate_email_addresses }
+    file = params[:file]
 
     position = Position.find(position_id)
     recruiter = position.recruiter
@@ -29,6 +29,8 @@ class Candidates::Apply < ApplicationOperation
 
     Candidate.transaction do
       candidate = yield Candidates::Add.new(params: candidate_params, actor_account:).call
+
+      yield Candidates::UploadFile.new(candidate:, actor_account:, file:, cv: true).call
 
       placement = yield Placements::Add.new(
         params: { candidate_id: candidate.id, position_id: },
