@@ -38,24 +38,22 @@ module CreateAccount
         end
 
         account[:name] = name
+        account[:tenant_id] =
+          param("tenant_id").presence || Tenant.create!(name: param("company_name")).id
       end
 
       # The `internal_request` is used for creating a member for the existing tenant
       # when we invite a new member.
       # Otherwise we register a new tenant and a new member.
       after_create_account do
+        account = Account.find(account_id)
+        tenant_id = account.tenant.id
         if internal_request?
-          tenant_id = param("tenant_id")
-          account = Account.find(account_id)
-          account.update!(tenant_id:)
           account.verified!
           Member.create!(account_id:, tenant_id:, access_level: :member)
         else
-          tenant = Tenant.create!(name: param("company_name"))
-          account = Account.find(account_id)
-          account.update!(tenant_id: tenant.id)
-          Member.create!(account_id:, tenant:, access_level: :admin)
-          CandidateSource.create!(tenant:, name: "LinkedIn")
+          Member.create!(account_id:, tenant_id:, access_level: :admin)
+          CandidateSource.create!(tenant_id:, name: "LinkedIn")
           # If mailer is not enabled, it's impossible to verify account via email.
           account.verified! unless MAILER_ENABLED
         end
