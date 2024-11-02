@@ -3,10 +3,10 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 // jQuery
 @import "jquery-ui/themes/base/theme";
 
-// Bootstrap
+// Tabler
+@import "@tabler/core/src/scss/tabler";
 @import "../src/shared/variables";
 @import "../src/shared/colors";
-@import "bootstrap/scss/bootstrap";
 @import "tributejs/dist/tribute";
 
 @import "../src/shared/scaffolds";

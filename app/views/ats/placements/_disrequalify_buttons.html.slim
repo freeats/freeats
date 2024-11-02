@@ -5,7 +5,7 @@
               data: { bs_toggle: :tooltip, bs_title: "Requalify", bs_placement: :bottom }
     = render IconButtonComponent.new( \
                :reload,
-               size: :tiny,
+               size: (position_pipeline_card ? :small : :tiny),
                name: :status,
                value: :qualified,
                data: { toggle: "ats-confirmation",
@@ -29,7 +29,7 @@
     )
     = render IconButtonComponent.new( \
                :ban,
-               size: :tiny,
+               size: (position_pipeline_card ? :small : :tiny),
                class: "placement-dropdown-toggle placement-button",
                data: { bs_toggle: :tooltip, bs_title: "Disqualify", bs_placement: "bottom" },
              )

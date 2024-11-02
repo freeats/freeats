@@ -15,7 +15,6 @@
           end
         text = Array(alert[:text]).map { _1.ends_with?(".") ? _1 : "#{_1}." }.join("<br>")
 
-      .notification class=class_name role="alert"
+      .alert.alert-dismissible class=class_name role="alert"
         = sanitize text, attributes: %w[href rel target]
-        span.notification-close
-          = render IconComponent.new(:x)
+        a.btn-close data-bs-dismiss="alert" aria-label="close"

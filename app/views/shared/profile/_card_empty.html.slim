@@ -9,9 +9,9 @@ ruby:
       end
 
 = turbo_frame_tag "turbo_#{card_name}_section"
-  .card.mt-3.empty-card-templates [style="border: none;" data-bs-toggle="#{'tooltip' if tooltip_text.present?}"
+  .card.mt-3 [style="border: none;" data-bs-toggle="#{'tooltip' if tooltip_text.present?}"
       data-bs-title=tooltip_text.presence]
     = link_to public_send(edit_card_path, target_model, card_name:),
-              class: "btn d-inline-block text-center empty-card #{'disabled' if tooltip_text.present?}"
+              class: "btn d-inline-block py-4 #{'disabled' if tooltip_text.present?}"
       = render IconComponent.new(:plus)
       =< header || "#{card_name.humanize}"

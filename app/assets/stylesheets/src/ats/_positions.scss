@@ -1,83 +1,13 @@
-#ats-positions-show-info {
-  .copy-client-data {
-    max-height: 3.2rem;
-    margin-top: -0.7rem !important;
-  }
-}
-
+// HACK: that shows a tooltip without arrow
+// probably there is something built in for this
 .no-arrow-tooltip {
   .tooltip-arrow {
     display: none !important;
   }
 }
 
-#ats-positions-edit,
-#ats-positions-new {
-  .position {
-    &-pay {
-      &-dash {
-        display: none;
-      }
-      &-currency {
-        margin-top: 0.75rem;
-      }
-      &-maximum {
-        margin-left: 0rem;
-        margin-right: 0rem;
-      }
-
-      @media screen and (min-width: 1300px) {
-        flex-direction: row !important;
-
-        &-dash {
-          display: inline-block;
-        }
-        &-currency {
-          margin-top: 0;
-        }
-        &-maximum {
-          margin-left: 0.4rem;
-          margin-right: 0.4rem;
-        }
-      }
-    }
-  }
-}
-
-#pipeline-mobile-stage-nav {
-  .nav-link {
-    display: flex;
-    align-items: center;
-    padding: 0 0.25rem;
-
-    .badge {
-      margin-left: 0.75rem;
-    }
-
-    &.active {
-      background-color: $blue;
-
-      .badge {
-        background-color: transparent;
-      }
-    }
-  }
-}
-
-#change-status-modal {
-  select:invalid {
-    @extend .text-muted;
-  }
-  option {
-    &:disabled {
-      @extend .text-muted;
-    }
-    &:not(:checked) {
-      color: #000;
-    }
-  }
-}
-
+// NOTE: what to do with this custom styles?
+// some of them could be replaced by default some not
 #pipeline-body {
   // 248px = $('#pipeline-body').offset().top
   // 15px = scrollbar height
@@ -95,9 +25,6 @@
   }
 
   .pipeline-column {
-    @include media-breakpoint-up(sm) {
-      background-color: $gray-100;
-    }
     min-width: 252px;
   }
 

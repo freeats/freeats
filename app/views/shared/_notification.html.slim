@@ -1,16 +1,16 @@
 #alerts.font-medium
   - if alert.present?
-    .notification.alert-danger role="alert"
-      = sanitize Array(alert).join("<br>"), attributes: %w[href rel target]
-      span.notification-close
-        = render IconComponent.new(:x)
+    .alert.alert-danger.alert-dismissible role="alert"
+      .d-flex
+        = sanitize Array(alert).join("<br>"), attributes: %w[href rel target]
+      a.btn-close aria-label="close" data-bs-dismiss="alert"
   - if notice.present?
-    .notification.alert-success role="alert"
-      = sanitize Array(notice).join("<br>"), attributes: %w[href rel target]
-      span.notification-close
-        = render IconComponent.new(:x)
+    .alert.alert-success.alert-dismissible role="alert"
+      .d-flex
+        = sanitize Array(notice).join("<br>"), attributes: %w[href rel target]
+      a.btn-close aria-label="close" data-bs-dismiss="alert"
   - if warning.present?
-    .notification.alert-warning role="alert"
-      = sanitize Array(warning).join("<br>"), attributes: %w[href rel target]
-      span.notification-close
-        = render IconComponent.new(:x)
+    .alert.alert-warning.alert-dismissible role="alert"
+      .d-flex
+        = sanitize Array(warning).join("<br>"), attributes: %w[href rel target]
+      a.btn-close aria-label="close" data-bs-dismiss="alert"

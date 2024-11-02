@@ -19,11 +19,15 @@ module ATS::TasksHelper
 
     repeat_icon =
       if task.repeating?
-        render(IconComponent.new(
-                 :repeat,
-                 data: { bs_toggle: :tooltip,
-                         bs_title: I18n.t("tasks.repeat_interval.#{task.repeat_interval}") }
-               ))
+        render(
+          IconComponent.new(
+            :repeat,
+            data: {
+              bs_toggle: :tooltip,
+              bs_title: I18n.t("tasks.repeat_interval.#{task.repeat_interval}")
+            }
+          )
+        )
       end
 
     due_date_slot = tag.span(class: ("text-danger" if task.overdue?)) do

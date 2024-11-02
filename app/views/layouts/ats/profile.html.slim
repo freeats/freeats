@@ -7,9 +7,7 @@
 
       - if content_for?(:tab_list)
         section#tab-list.row.mt-2
-          .col
-            ul.nav.nav-tabs
-              = yield :tab_list
+          = yield :tab_list
 
       section#tab-content.tab-content
         .tab-pane.active

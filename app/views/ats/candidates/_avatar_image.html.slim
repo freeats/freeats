@@ -1,10 +1,10 @@
 /# locals: (candidate:, is_form: false)
 / is_form - whether it is used as a form
 
-.profile-avatar.img-thumbnail class=("profile-avatar-edit float-md-end" if is_form)
+.avatar.avatar-xl class=("float-md-end" if is_form)
   - if candidate.avatar.attached?
     = image_tag candidate.avatar.variant(:medium)
   - else
-    = render IconComponent.new(:user, class: "empty-avatar-icon")
+    = render IconComponent.new(:user)
   - if !is_form && candidate.blacklisted
       .profile-avatar-overlay.alert-danger Blacklisted

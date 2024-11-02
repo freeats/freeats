@@ -30,8 +30,8 @@ class ATS::TeamGrid
 
   attr_accessor(:current_member)
 
-  column(:avatar, html: true, header: "", order: false) do |model|
-    picture_avatar_icon model.avatar, {}, class: "small-avatar-thumbnail"
+  column(:avatar_image, html: true, header: "", order: false) do |model|
+    picture_avatar_icon model.avatar, {}, class: "avatar avatar-sm"
   end
 
   column(:name, header: I18n.t("core.name"), order: false)

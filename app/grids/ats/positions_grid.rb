@@ -145,7 +145,7 @@ class ATS::PositionsGrid
   #
 
   column(
-    :status,
+    :position_status,
     order: false,
     header: "",
     html: true
