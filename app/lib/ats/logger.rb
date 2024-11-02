@@ -108,7 +108,7 @@ class ATS::Logger
   end
 
   def default_stream
-    if Rails.env.production? || Rails.env.staging? || Rails.env.docker_production?
+    if Rails.env.production? || Rails.env.staging?
       # This logic is special-cased for production and copied to be the same as in
       # config/environments/production.rb.
       if ENV["RAILS_LOG_TO_STDOUT"].present?

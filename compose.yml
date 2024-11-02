@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: ats
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: ats_docker_production
+      POSTGRES_DB: ats_production
     ports:
       - "5432:5432"
 
@@ -17,8 +17,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        NODE_ENV: production
-        RAILS_ENV: docker_production
+        RAILS_ENV: production
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
     volumes:
       - .:/rails
@@ -30,12 +29,10 @@ services:
       - db
     environment:
       SECRET_KEY_BASE: 462d54c7b15dcc1924e797d0b28e6d
-      RAILS_ENV: docker_production
-      DATABASE_HOST: db
-      DATABASE_USERNAME: ats
-      DATABASE_PASSWORD: password
-      DATABASE_NAME: ats_docker_production
-      RAILS_LOG_TO_STDOUT: false
+      RAILS_ENV: production
+      DATABASE_URL: postgres://ats:password@db:5432/ats_production
+      ASSUME_SSL: false
+      FORCE_SSL: false
     stdin_open: true
     tty: true
 

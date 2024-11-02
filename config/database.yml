@@ -86,15 +86,6 @@ production:
   url: <%= ENV['DATABASE_URL'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-docker_production:
-  adapter: postgresql
-  encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: db
-  username: ats
-  password: password
-  database: ats_docker_production
-
 staging:
   adapter: postgresql
   encoding: unicode
