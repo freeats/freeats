@@ -52,7 +52,7 @@ gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[windows jruby]
 gem "view_component", "~> 3.0"
 
-group :production, :development, :staging do
+group :production, :docker_production, :development, :staging do
   gem "signet"
 end
 

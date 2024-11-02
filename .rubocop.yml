@@ -166,6 +166,7 @@ Rails/UnknownEnv:
     - development
     - test
     - staging
+    - docker_production
 Minitest/LiteralAsExpectedArgument:
   Enabled: true
 Style/MultilineBlockChain:
