@@ -35,6 +35,7 @@ class TenantTest < ActiveSupport::TestCase
   end
 
   test "models_with_tenant should return table names of all models, associated with tenant" do
+    assert_equal Tenant.models_with_tenant.count, 23
     assert_includes Tenant.models_with_tenant, "candidates"
     assert_includes Tenant.models_with_tenant, "positions"
     assert_includes Tenant.models_with_tenant, "scorecards"
