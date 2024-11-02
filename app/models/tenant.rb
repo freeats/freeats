@@ -10,6 +10,41 @@ class Tenant < ApplicationRecord
 
   validate :all_active_positions_have_recruiter_when_career_site_enabled
 
+  def self.models_with_tenant
+    query_to_find_all_tables_with_tenant_id =
+      <<~SQL
+        SELECT t.table_name
+        FROM information_schema.tables AS t
+        JOIN information_schema.columns AS c
+          ON c.table_name = t.table_name
+          AND c.table_schema = t.table_schema
+        WHERE c.column_name = 'tenant_id'
+          AND t.table_schema NOT IN ('information_schema', 'pg_catalog')
+          AND t.table_type = 'BASE TABLE'
+        ORDER BY
+          CASE t.table_name
+          WHEN 'positions' THEN 0  -- positions should be destroyed before members
+          WHEN 'scorecards' THEN 1 -- scorecards should be destroyed before members
+          WHEN 'events' THEN 2 -- events should be destroyed before accounts
+          ELSE 3
+          END
+      SQL
+    ActiveRecord::Base.connection.execute(query_to_find_all_tables_with_tenant_id).values.flatten
+  end
+
+  def destroy_with_associations
+    models = Tenant.models_with_tenant.map { Object.const_get(_1.classify) }
+    ActiveRecord::Base.transaction do
+      models.each do |model|
+        model.where(tenant_id: id).find_each(&:destroy!)
+      end
+
+      destroy!
+    end
+  rescue ActiveRecord::RecordNotDestroyed, ActiveRecord::InvalidForeignKey => e
+    errors.add(:base, e.message.to_s)
+  end
+
   private
 
   def all_active_positions_have_recruiter_when_career_site_enabled
