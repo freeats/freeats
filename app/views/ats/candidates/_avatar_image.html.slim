@@ -3,11 +3,12 @@
 
 - classes = ["avatar", "avatar-2xl", *("float-md-end" if is_form)]
 
-.position-relative
-  - if candidate.avatar.attached?
-    = image_tag candidate.avatar.variant(:medium), class: classes
-  - else
-    span class=classes
-      = render IconComponent.new(:user)
-  - if !is_form && !candidate.blacklisted
-      .profile-avatar-overlay.alert-danger Blacklisted
+div
+  .position-relative
+    - if candidate.avatar.attached?
+      = image_tag candidate.avatar.variant(:medium), class: classes
+    - else
+      span class=classes
+        = render IconComponent.new(:user)
+    - if !is_form && !candidate.blacklisted
+        .profile-avatar-overlay.alert-danger Blacklisted
