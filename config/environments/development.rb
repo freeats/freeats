@@ -93,6 +93,7 @@ Rails.application.configure do
     authentication: ENV.fetch("MAILER_SMTP_AUTHENTICATION", ""),
     enable_starttls_auto: ENV.fetch("MAILER_SMTP_ENABLE_STARTTLS_AUTO", "true") == "true"
   }
+  config.secret_key_base = ENV.fetch("SECRET_KEY_BASE")
 
   ENV["HOST_URL"] = "localhost:3000"
   ENV["EMAIL_NOTIFICATIONS"] = "enabled"
