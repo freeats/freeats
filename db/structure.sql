@@ -1150,6 +1150,39 @@ ALTER SEQUENCE public.candidates_id_seq OWNED BY public.candidates.id;
 
 
 --
+-- Name: disqualify_reasons; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.disqualify_reasons (
+    id bigint NOT NULL,
+    title character varying,
+    description character varying DEFAULT ''::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint
+);
+
+
+--
+-- Name: disqualify_reasons_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.disqualify_reasons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: disqualify_reasons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.disqualify_reasons_id_seq OWNED BY public.disqualify_reasons.id;
+
+
+--
 -- Name: email_message_addresses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2455,6 +2488,13 @@ ALTER TABLE ONLY public.candidates ALTER COLUMN id SET DEFAULT nextval('public.c
 
 
 --
+-- Name: disqualify_reasons id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.disqualify_reasons ALTER COLUMN id SET DEFAULT nextval('public.disqualify_reasons_id_seq'::regclass);
+
+
+--
 -- Name: email_message_addresses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2845,6 +2885,14 @@ ALTER TABLE ONLY public.candidate_sources
 
 ALTER TABLE ONLY public.candidates
     ADD CONSTRAINT candidates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: disqualify_reasons disqualify_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.disqualify_reasons
+    ADD CONSTRAINT disqualify_reasons_pkey PRIMARY KEY (id);
 
 
 --
@@ -3388,6 +3436,20 @@ CREATE INDEX index_candidates_on_recruiter_id ON public.candidates USING btree (
 --
 
 CREATE INDEX index_candidates_on_tenant_id ON public.candidates USING btree (tenant_id);
+
+
+--
+-- Name: index_disqualify_reasons_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_disqualify_reasons_on_tenant_id ON public.disqualify_reasons USING btree (tenant_id);
+
+
+--
+-- Name: index_disqualify_reasons_on_title_and_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_disqualify_reasons_on_title_and_tenant_id ON public.disqualify_reasons USING btree (title, tenant_id);
 
 
 --
@@ -4554,6 +4616,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241105130512'),
 ('20241028124325'),
 ('20241024082345'),
 ('20241024082312'),
