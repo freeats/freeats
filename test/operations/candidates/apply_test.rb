@@ -57,8 +57,7 @@ class Candidates::ApplyTest < ActionDispatch::IntegrationTest
     assert_equal task.description, ""
   end
 
-  test "apply should not create candidate, placement, task and assign recruiter " \
-       "when file is not uploaded" do
+  test "apply should not create candidate, placement and task when file is not uploaded" do
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     position = positions(:ruby_position)
     tempfile = fixture_file_upload("empty.pdf", "application/pdf")
