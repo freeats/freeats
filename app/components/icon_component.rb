@@ -35,6 +35,7 @@ class IconComponent < ApplicationComponent
   def icon_classes
     [
       "icon-component",
+      "flex-shrink-0",
       icon_size_class,
       *additional_options.delete(:class)
     ]
