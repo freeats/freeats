@@ -57,7 +57,7 @@ class Candidates::ApplyTest < ActionDispatch::IntegrationTest
     assert_equal task.description, ""
   end
 
-  test "apply should create candidate, placement, task and assign recruiter " \
+  test "apply should not create candidate, placement, task and assign recruiter " \
        "when file is not uploaded" do
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     position = positions(:ruby_position)
@@ -76,53 +76,25 @@ class Candidates::ApplyTest < ActionDispatch::IntegrationTest
     upload_file_mock = Minitest::Mock.new
     upload_file_mock.expect(:call, Failure[:file_invalid, "File is invalid"])
 
-    external_log_mock = Minitest::Mock.new
-    external_log_mock.expect(
-      :call,
-      true,
-      ["File is invalid"],
-      candidate_id: Integer
-    )
-
     assert_no_difference [
       "Event.where(type: 'active_storage_attachment_added').count",
-      "Event.where(type: 'candidate_changed', changed_field: 'cv').count"
+      "Event.where(type: 'candidate_changed', changed_field: 'cv').count",
+      "Candidate.count",
+      "Placement.count",
+      "Task.count"
     ] do
-      assert_difference "Candidate.count" => 1, "Placement.count" => 1, "Task.count" => 1 do
-        Log.stub :external_log, external_log_mock do
-          Candidates::UploadFile.stub(:new, ->(_params) { upload_file_mock }) do
-            Candidates::Apply.new(
-              params: candidate_params,
-              position_id: position.id,
-              actor_account: nil
-            ).call.value!
-          end
-        end
+      Candidates::UploadFile.stub(:new, ->(_params) { upload_file_mock }) do
+        result = Candidates::Apply.new(
+          params: candidate_params,
+          position_id: position.id,
+          actor_account: nil
+        ).call
+
+        assert_equal result, Failure[:file_invalid, "File is invalid"]
       end
     end
 
     upload_file_mock.verify
-    external_log_mock.verify
-
-    candidate = Candidate.last
-    placement = candidate.placements.first
-    task = candidate.tasks.first
-
-    assert_equal candidate.full_name, candidate_params[:full_name]
-    assert_equal candidate.emails, [candidate_params[:email].downcase]
-    assert_equal candidate.recruiter_id, position.recruiter_id
-    assert_predicate candidate.cv, :blank?
-
-    assert_equal placement.stage, "Replied"
-    assert_equal placement.position_id, position.id
-    assert_equal placement.candidate_id, candidate.id
-    assert_equal placement.status, "qualified"
-
-    assert_equal task.taskable, candidate
-    assert_equal task.assignee_id, position.recruiter_id
-    assert_equal task.status, "open"
-    assert_equal task.name, "Reply to application to Ruby developer"
-    assert_equal task.description, ""
   end
 
   test "apply should not create candidate, placement and task and assign recruiter " \
