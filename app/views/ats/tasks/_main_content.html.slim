@@ -1,12 +1,17 @@
 /# locals: (task:,
 / assignee_options:,
-/ watchers_options:,
 / added_by_account:,
 / added_on_time:,
 / grid:
 /)
 
-- label_classes = "col-lg-3 col-form-label-sm text-gray-600"
+ruby:
+  label_classes = "col-lg-3 col-form-label-sm text-gray-600"
+
+  composed_assignee_options = ats_task_assignee_options(assignee_options:, selected_assignee_id: task.assignee_id)
+  composed_watchers_options =
+    ats_task_watchers_options(assignee_options:, selected: task.watchers.ids, disabled: [task.assignee_id])
+  repeat_interval_options = ats_task_repeat_interval_options(selected: task.repeat_interval)
 
 = turbo_frame_tag :turbo_task_main_content, data: { controller: "turbo-modal-tasks" }
   / First row
@@ -57,25 +62,25 @@
                 class: "row flex-fill col-12 col-lg-6 turbo-instant-submit" do |f|
       = f.label :assignee_id, t("core.assignee"), class: label_classes
       .col-lg-9
-        = f.select :assignee_id, assignee_options, { include_blank: false },
-                   class: "form-control selectpicker flex-fill",
-                   data: { live_search: true,
-                           turbo_modal_tasks_target: "selectAssignee selectpicker" }
+        = render SingleSelectComponent.new( \
+                   f,
+                   include_blank: t("core.unassign"),
+                   method: :assignee_id,
+                   local: { options: composed_assignee_options } \
+                 )
 
     / Watchers
     = form_with model: task, url: ats_task_path(task, grid:),
-                class: "row flex-fill col-12 col-lg-6",
-                data: { turbo_modal_tasks_target: "watchersForm" } do |f|
+                class: "row flex-fill col-12 col-lg-6" do |f|
       = f.label :watcher_ids, t("core.watchers"), class: label_classes
       .col-lg-9
-        = f.select :watcher_ids,
-                   watchers_options,
-                   { selected: task.watchers.ids, disabled: task.assignee_id },
-                   include_blank: true,
-                   class: "form-control selectpicker",
-                   multiple: true,
-                   data: { live_search: true,
-                           turbo_modal_tasks_target: "selectPickerWatchers selectpicker" }
+        = render MultipleSelectComponent.new( \
+                   f,
+                   method: :watcher_ids,
+                   include_hidden: true,
+                   local: { options: composed_watchers_options },
+                   instant_submit: true \
+                 )
 
   / Third row
   .d-flex.flex-wrap.mt-lg-3.column-gap-4
@@ -95,11 +100,12 @@
                 class: "row flex-fill col-12 col-lg-6 turbo-instant-submit" do |f|
       = f.label :repeat_interval, t("tasks.repeat"), class: label_classes
       .col-lg-9
-        = f.select :repeat_interval,
-                   Task.repeat_intervals.transform_keys(&:humanize),
-                   { selected: task.repeat_interval },
-                   class: "form-control selectpicker",
-                   data: { turbo_modal_tasks_target: "selectpicker" }
+        = render SingleSelectComponent.new( \
+                   f,
+                   method: :repeat_interval,
+                   required: true,
+                   local: { options: repeat_interval_options },
+                 )
 
   / Fourth row
   .d-flex.flex-wrap.mt-3.column-gap-4
