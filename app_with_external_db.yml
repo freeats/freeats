@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         RAILS_ENV: production
+    network_mode: host
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
     volumes:
       - .:/rails
@@ -23,6 +24,3 @@ services:
 
 volumes:
   bundle:
-
-
-# docker compose build -e DATABASE_URL=postgres://ats@localhost:5432/ats_development

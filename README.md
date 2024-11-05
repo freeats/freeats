@@ -15,21 +15,38 @@
 
 3. Decide what database (containerized or external) you will use.\
    This app currently supports only PostgreSQL.\
-   Use docker-compose file `app_with_containerized_db.yml` if you want to use a containerized database.\
-   Use docker-compose file `app_with_external_db.yml` if you want to use own database.
+   Use docker-compose file `app_with_containerized_db.yml` if you want to create a containerized database.\
+   Use docker-compose file `app_with_external_db.yml` if you want to use your own database.
 
 4. Navigate to the project directory and build the Docker services:
 
-   ```shell
-   docker compose -f <docker_compose_file> build
-   docker compose -f <docker_compose_file> run --rm web bundle exec rake db:create db:migrate
-   ```
+   * For containerized database:
+
+      ```shell
+      docker compose -f <docker_compose_file> build
+      docker compose -f <docker_compose_file> run --rm web bundle exec rake db:create db:migrate
+      ```
+
+   * For external database:
+
+      ```shell
+      DATABASE_URL=<database_url> docker compose -f <docker_compose_file> build
+      DATABASE_URL=<database_url> docker compose -f <docker_compose_file> run --rm web bundle exec rake db:migrate
+      ```
 
 5. To start the server, run the following command:
 
-   ```shell
-   docker compose -f <docker_compose_file> up -d
-   ```
+   * For containerized database:
+
+      ```shell
+      docker compose -f <docker_compose_file> up -d
+      ```
+
+   * For external database:
+
+      ```shell
+      DATABASE_URL=<database_url> docker compose -f <docker_compose_file> up -d
+      ```
 
 6. Open `http://<your_server_ip>:3000/register` and create an account.
 
