@@ -13,33 +13,38 @@
 
 2. Download the repository, you can do this via git or by downloading the zip file.
 
-3. Navigate to the project directory and build the Docker services:
+3. Decide what database (containerized or external) you will use.\
+   This app currently supports only PostgreSQL.\
+   Use docker-compose file `app_with_containerized_db.yml` if you want to use a containerized database.\
+   Use docker-compose file `app_with_external_db.yml` if you want to use own database.
+
+4. Navigate to the project directory and build the Docker services:
 
    ```shell
-   docker compose build
-   docker compose run --rm web bundle exec rake db:create db:migrate
+   docker compose -f <docker_compose_file> build
+   docker compose -f <docker_compose_file> run --rm web bundle exec rake db:create db:migrate
    ```
 
-4. To start the server, run the following command:
+5. To start the server, run the following command:
 
    ```shell
-   docker compose up -d
+   docker compose -f <docker_compose_file> up -d
    ```
 
-5. Open `http://<your_server_ip>:3000/register` and create an account.
+6. Open `http://<your_server_ip>:3000/register` and create an account.
 
-6. To stop the running containers, use the following command:
+7. To stop the running containers, use the following command:
 
    ```shell
-   docker compose stop
+   docker compose -f <docker_compose_file> stop
    ```
 
-7. To remove the created images, containers and volumes, use the following commands:
+8. To remove the created images, containers and volumes, use the following commands:
 
    ```shell
-   docker compose down --volumes
-   docker rmi ats-web
-   docker rmi postgres:15
+   docker compose -f <docker_compose_file> down --volumes
+   docker rmi freeats-web
+   docker rmi postgres:15 # if you use containerized database.
    ```
 
 ### Troubleshooting
