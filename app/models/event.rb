@@ -90,7 +90,7 @@ class Event < ApplicationRecord
   validates :eventable_type, presence: true
   validates :eventable_id, presence: true # rubocop:disable Rails/RedundantPresenceValidationOnBelongsTo
 
-  # after_create :update_candidate_last_activity
+  after_create :update_candidate_last_activity
 
   def update_candidate_last_activity
     candidates_to_update =
