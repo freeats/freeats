@@ -27,6 +27,6 @@ ruby:
             controls: "other-thread-notes-thread-#{thread.id}" }) do
             span = t('notes.replies', count: other_thread_notes_size)
             span.icon-chevron-show.ms-1 class="#{'hidden' if expanded}" data-note-thread-target="collapsedStateIcon"
-              = render IconComponent.new(:chevron_down, size: :medium)
+              = render IconComponent.new(:chevron_down)
             span.icon-chevron-hide.ms-1 class="#{'hidden' unless expanded}" data-note-thread-target="collapsedStateIcon"
-              = render IconComponent.new(:chevron_up, size: :medium)
+              = render IconComponent.new(:chevron_up)
