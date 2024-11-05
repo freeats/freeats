@@ -57,9 +57,12 @@ class Candidates::Apply < ApplicationOperation
       candidate
     end
 
+    # File uploading did not work correctly inside the main transaction.
     case Candidates::UploadFile.new(candidate:, actor_account:, file:, cv: true).call
-    in Success(_) | Failure[:file_invalid, _]
+    in Success(_)
       nil
+    in Failure[:file_invalid, e]
+      Log.tagged("Candidates::UploadFile") { _1.external_log(e, candidate_id: candidate.id) }
     end
 
     Success()
