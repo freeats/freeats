@@ -27,10 +27,8 @@ class Candidates::Apply < ApplicationOperation
     recruiter = position.recruiter
     return Failure(:no_active_recruiter) if recruiter.blank? || recruiter.inactive?
 
-    Candidate.transaction do
+    candidate = Candidate.transaction do
       candidate = yield Candidates::Add.new(params: candidate_params, actor_account:).call
-
-      yield Candidates::UploadFile.new(candidate:, actor_account:, file:, cv: true).call
 
       placement = yield Placements::Add.new(
         params: { candidate_id: candidate.id, position_id: },
@@ -56,7 +54,14 @@ class Candidates::Apply < ApplicationOperation
         }
       ).call
 
-      Success()
+      candidate
     end
+
+    case Candidates::UploadFile.new(candidate:, actor_account:, file:, cv: true).call
+    in Success(_) | Failure[:file_invalid, _]
+      nil
+    end
+
+    Success()
   end
 end
