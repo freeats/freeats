@@ -6,7 +6,8 @@ class IconComponent < ApplicationComponent
   ICON_SIZE_CLASS = {
     tiny: "icon-component-tiny",
     small: "icon-component-small",
-    medium: "icon-component-medium"
+    medium: "icon-component-medium",
+    large: "icon-component-large"
   }.freeze
 
   param :icon_name, Types::Coercible::String

@@ -40,7 +40,7 @@
     / BASE INFO
     .col-12.col-md
       h1.mb-0.d-flex.align-items-center.gap-2
-        = position_html_status_circle(@position, tooltip_placement: "top", icon_size: :medium)
+        = position_html_status_circle(@position, tooltip_placement: "top", icon_size: :large)
         = @position.name
       - if @position.location_id?
         .mt-2.font-body

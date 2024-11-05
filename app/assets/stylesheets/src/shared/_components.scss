@@ -256,7 +256,8 @@
   $sizes:
     tiny 15px,
     small 17px,
-    medium 20px;
+    medium 20px,
+    large 29px;
 
   @each $name, $size in $sizes {
     &.icon-component-#{$name} {
