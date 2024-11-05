@@ -10,7 +10,6 @@
     "@tabler/icons": "^3.20.0",
     "bootbox": "^6.0.0",
     "bootstrap": "^5.3.3",
-    "bootstrap-select": "git+https://github.com/snapappointments/bootstrap-select.git#225ca0a9f092941d78d54ed449354655f258e5dd",
     "clipboard-polyfill": "^3.0.3",
     "esbuild": "^0.14.36",
     "esbuild-plugin-copy": "^2.1.1",
