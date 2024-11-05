@@ -20,33 +20,33 @@
 
 4. Navigate to the project directory and build the Docker services:
 
-   * For containerized database:
+   - For containerized database:
 
-      ```shell
-      docker compose -f <docker_compose_file> build
-      docker compose -f <docker_compose_file> run --rm web bundle exec rake db:create db:migrate
-      ```
+     ```shell
+     docker compose -f app_with_containerized_db.yml build
+     docker compose -f app_with_containerized_db.yml run --rm web bundle exec rake db:create db:migrate
+     ```
 
-   * For external database:
+   - For external database:
 
-      ```shell
-      DATABASE_URL=<database_url> docker compose -f <docker_compose_file> build
-      DATABASE_URL=<database_url> docker compose -f <docker_compose_file> run --rm web bundle exec rake db:migrate
-      ```
+     ```shell
+     DATABASE_URL=<database_url> docker compose -f app_with_external_db.yml build
+     DATABASE_URL=<database_url> docker compose -f app_with_external_db.yml run --rm web bundle exec rake db:migrate
+     ```
 
 5. To start the server, run the following command:
 
-   * For containerized database:
+   - For containerized database:
 
-      ```shell
-      docker compose -f <docker_compose_file> up -d
-      ```
+     ```shell
+     docker compose -f app_with_containerized_db.yml up -d
+     ```
 
-   * For external database:
+   - For external database:
 
-      ```shell
-      DATABASE_URL=<database_url> docker compose -f <docker_compose_file> up -d
-      ```
+     ```shell
+     DATABASE_URL=<database_url> docker compose -f app_with_external_db.yml up -d
+     ```
 
 6. Open `http://<your_server_ip>:3000/register` and create an account.
 
