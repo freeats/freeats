@@ -23,7 +23,6 @@ jobs:
   deploy:
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-22.04
-    branch: main
     steps:
       - name: Cloning repo
         uses: actions/checkout@v4
@@ -36,6 +35,7 @@ jobs:
       - name: Push to Dokku
         uses: dokku/github-action@master
         with:
+          branch: main
           git_remote_url: "ssh://dokku@${{ vars.DOKKU_HOST }}:22/ats"
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           git_push_flags: --force
