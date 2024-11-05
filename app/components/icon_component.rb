@@ -6,7 +6,8 @@ class IconComponent < ApplicationComponent
   ICON_SIZE_CLASS = {
     tiny: "icon-component-tiny",
     small: "icon-component-small",
-    medium: "icon-component-medium"
+    medium: "icon-component-medium",
+    large: "icon-component-large"
   }.freeze
 
   param :icon_name, Types::Coercible::String
@@ -35,6 +36,7 @@ class IconComponent < ApplicationComponent
   def icon_classes
     [
       "icon-component",
+      "flex-shrink-0",
       icon_size_class,
       *additional_options.delete(:class)
     ]
