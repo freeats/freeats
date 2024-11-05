@@ -7,6 +7,10 @@ body {
   min-width: 320px;
 }
 
+body {
+  --tblr-body-line-height: 1.5;
+}
+
 // place the footer at the bottom of the page
 .wrapper {
   min-height: calc(100% - $footer-min-height);
