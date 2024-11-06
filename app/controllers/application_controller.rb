@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   include ErrorHandler
 
-  CLARIFY_KEY = ENV.fetch("CLARIFY_KEY", nil)
+  CLARITY_KEY = ENV.fetch("CLARITY_KEY", nil)
 
   before_action :set_sentry_account_context
   before_action :set_sentry_context
