@@ -1,23 +1,11 @@
 services:
-  db:
-    image: postgres:15
-    restart: unless-stopped
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./db/postgres:/docker-entrypoint-initdb.d
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ats_production
-    ports:
-      - "5432:5432"
-
   web:
     build:
       context: .
       dockerfile: Dockerfile
       args:
         RAILS_ENV: production
+    network_mode: host
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails db:prepare && bundle exec rails s -b '0.0.0.0'"
     volumes:
       - .:/rails
@@ -25,17 +13,14 @@ services:
       - bundle:/usr/local/bundle
     ports:
       - "3000:3000"
-    depends_on:
-      - db
     environment:
-      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      SECRET_KEY_BASE: 462d54c7b15dcc1924e797d0b28e6d
       RAILS_ENV: production
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/ats_production
+      DATABASE_URL: ${DATABASE_URL}
       ASSUME_SSL: false
       FORCE_SSL: false
     stdin_open: true
     tty: true
 
 volumes:
-  postgres_data:
   bundle:
