@@ -10,7 +10,6 @@ export default class extends Controller {
     if (this.hasLazyLoadFormUrlValue) {
       $("#turbo_modal_window").attr("src", this.lazyLoadFormUrlValue);
     }
-    this.activateSelectpicker($(this.element));
   }
 
   changeStatusFormTargetConnected(element) {
@@ -37,12 +36,5 @@ export default class extends Controller {
         }
       },
     );
-  }
-
-  activateSelectpicker($elem) {
-    $elem.find(".selectpicker").selectpicker({
-      liveSearch: true,
-      style: "btn-outline-light selectpicker-button",
-    });
   }
 }

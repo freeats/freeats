@@ -4,14 +4,14 @@ run-name: ${{ github.event.workflow_run.head_commit.message }}
 on:
   workflow_run:
     workflows: ["Build and test"]
-    branches: [master]
+    branches: [main]
     types: [completed]
   workflow_dispatch:
     inputs:
       branch:
         description: Branch to deploy
         required: true
-        default: master
+        default: main
       commit:
         description: "Commit to deploy, e.g. HEAD^"
 
@@ -35,6 +35,7 @@ jobs:
       - name: Push to Dokku
         uses: dokku/github-action@master
         with:
-          git_remote_url: "ssh://dokku@${{ vars.DOKKU_HOST }}:22/${{ github.event.repository.name }}"
+          branch: main
+          git_remote_url: "ssh://dokku@${{ vars.DOKKU_HOST }}:22/ats"
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           git_push_flags: --force

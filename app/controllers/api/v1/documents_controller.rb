@@ -18,7 +18,7 @@ class API::V1::DocumentsController < AuthorizedController
         case add_resume(candidate, file)
         in Success(file)
           render json: { url: candidate.url }, status: :ok
-        in Failure[:validation_failed, e]
+        in Failure[:file_invalid, e]
           render json: { message: error_message(e) }, status: :unprocessable_entity
         end
       in Failure[:candidate_invalid, e]

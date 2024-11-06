@@ -7,7 +7,6 @@ class Candidates::Add < ApplicationOperation
   option :params, Types::Strict::Hash.schema(
     avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
     remove_avatar?: Types::Strict::String,
-    file?: Types::Instance(ActionDispatch::Http::UploadedFile),
     cover_letter?: Types::Strict::String,
     file_id_to_remove?: Types::Strict::String,
     file_id_to_change_cv_status?: Types::Strict::String,
@@ -53,8 +52,7 @@ class Candidates::Add < ApplicationOperation
     candidate = Candidate.new
     old_values = candidate.attributes.deep_symbolize_keys
 
-    file = params[:file]
-    prepared_params = prepare_params(params: params.except(:file), actor_account:)
+    prepared_params = prepare_params(params:, actor_account:)
     candidate.assign_attributes(prepared_params)
 
     candidate.recruiter_id ||= actor_account&.member&.id
@@ -82,14 +80,6 @@ class Candidates::Add < ApplicationOperation
           }
       ).call
 
-      if file
-        yield Candidates::UploadFile.new(
-          candidate:,
-          actor_account:,
-          file:,
-          cv: true
-        ).call
-      end
       add_changed_events(candidate:, actor_account:, old_values:)
     end
 
