@@ -6,7 +6,7 @@ services:
       args:
         RAILS_ENV: production
     network_mode: host
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails db:prepare && bundle exec rails s -b '0.0.0.0'"
     volumes:
       - .:/rails
       - /rails/public/assets # To prevent deleting precompiled assets.

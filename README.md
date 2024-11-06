@@ -1,8 +1,6 @@
 # Toughbyte FreeATS
 
-## Getting started
-
-### Docker
+## Quick start
 
 1. Install [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/)
    and make sure the Docker server is running by using the command
@@ -13,58 +11,52 @@
 
 2. Download the repository, you can do this via git or by downloading the zip file.
 
-3. Decide what database (containerized or external) you will use.\
-   This app currently supports only PostgreSQL.\
-   Use docker-compose file `app_with_containerized_db.yml` if you want to create a containerized database.\
-   Use docker-compose file `app_with_external_db.yml` if you want to use your own database.
-
-4. Navigate to the project directory and build the Docker services:
-
-   - For containerized database:
-
-     ```shell
-     docker compose -f app_with_containerized_db.yml build
-     docker compose -f app_with_containerized_db.yml run --rm web bundle exec rake db:create db:migrate
-     ```
-
-   - For external database:
-
-     ```shell
-     DATABASE_URL=<database_url> docker compose -f app_with_external_db.yml build
-     DATABASE_URL=<database_url> docker compose -f app_with_external_db.yml run --rm web bundle exec rake db:migrate
-     ```
-
-5. To start the server, run the following command:
-
-   - For containerized database:
-
-     ```shell
-     docker compose -f app_with_containerized_db.yml up -d
-     ```
-
-   - For external database:
-
-     ```shell
-     DATABASE_URL=<database_url> docker compose -f app_with_external_db.yml up -d
-     ```
-
-6. Open `http://<your_server_ip>:3000/register` and create an account.
-
-7. To stop the running containers, use the following command:
+3. Navigate to the project directory and start the application:
 
    ```shell
-   docker compose -f <docker_compose_file> stop
+   docker compose up -d
    ```
 
-8. To remove the created images, containers and volumes, use the following commands:
+4. Open `http://<your_server_ip>:3000/register` and create an account.
+
+5. To stop the running containers, use the following command:
 
    ```shell
-   docker compose -f <docker_compose_file> down --volumes
+   docker compose stop
+   ```
+
+6. To remove the created images, containers and volumes, use the following commands:
+
+   ```shell
+   docker compose down --volumes
    docker rmi freeats-web
-   docker rmi postgres:15 # if you use containerized database.
+   docker rmi postgres:15
    ```
 
-### Troubleshooting
+## Run the application with your own database
+
+This app currently supports only PostgreSQL. You must provide the database URL.
+
+1. Navigate to the project directory and start the application:
+
+   ```shell
+   DATABASE_URL=<database_url> docker compose -f app_with_external_db.yml up -d
+   ```
+
+2. To stop the running containers, use the following command:
+
+   ```shell
+   docker compose -f app_with_external_db.yml stop
+   ```
+
+3. To remove the created images, containers and volumes, use the following commands:
+
+   ```shell
+   docker compose -f app_with_external_db.yml down --volumes
+   docker rmi freeats-web
+   ```
+
+## Troubleshooting
 
 - If you have an unstable internet connection, there may be errors.
   If this happens, restart the command that failed.
