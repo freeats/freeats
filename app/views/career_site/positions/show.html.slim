@@ -10,9 +10,10 @@
   .col-12.col-md-10
     .col
       h2 = @position.name
+    - if @position.open?
+      .col
+        = @position.location&.short_name
   - if @position.open?
-    .col
-      = @position.location&.short_name
     .col-12.col-md-auto.align-items-center.d-flex
       = render ButtonLinkComponent.new( \
           "#full_name",
