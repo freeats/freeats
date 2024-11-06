@@ -3,6 +3,8 @@
 class ApplicationController < ActionController::Base
   include ErrorHandler
 
+  CLARIFY_KEY = ENV.fetch("CLARIFY_KEY", nil)
+
   before_action :set_sentry_account_context
   before_action :set_sentry_context
   before_action :set_selector_id_for_page
