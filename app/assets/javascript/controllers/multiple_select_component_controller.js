@@ -7,11 +7,7 @@ import TomSelect from "tom-select/dist/js/tom-select.complete.js";
 export default class extends SelectComponentController {
   static targets = ["select"];
 
-  static values = {
-    buttonGroupSize: String,
-    searchUrl: String,
-    instantSubmit: Boolean,
-  };
+  static values = { buttonGroupSize: String, searchUrl: String, instantSubmit: Boolean };
 
   selectTargetConnected(target) {
     // The preloaded options are used to set the initial state of the selectize instance.

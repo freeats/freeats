@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require "rails_admin/config/actions/deactivate_member"
-
-RailsAdmin::Config::Actions.register(RailsAdmin::Config::Actions::DeactivateMember)
-
 RailsAdmin.config do |config|
   config.asset_source = :sprockets
 
@@ -42,8 +38,6 @@ RailsAdmin.config do |config|
     edit
     delete
     show_in_app
-
-    deactivate_member
 
     ## With an audit adapter, you can add:
     # history_index
