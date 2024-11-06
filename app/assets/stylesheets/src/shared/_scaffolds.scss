@@ -45,7 +45,8 @@ body {
 main.container-fluid,
 footer .container-fluid {
   padding-top: 24px;
-  padding-bottom: 48px;
+  padding-bottom: 32px;
+  color: var(--tblr-gray-500);
 }
 
 [class*="container"] {
