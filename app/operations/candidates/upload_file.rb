@@ -31,7 +31,7 @@ class Candidates::UploadFile < ApplicationOperation
     in Success(_)
       Success(candidate.files.last)
     in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:validation_failed, e.to_s]
+      Failure[:file_invalid, e.to_s]
     end
   end
 end

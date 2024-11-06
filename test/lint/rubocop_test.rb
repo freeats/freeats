@@ -6,7 +6,7 @@ class RubocopTest < ActiveSupport::TestCase
   test "check all files with rubocop" do
     next if ENV["CI"].present?
 
-    modified = `git diff --name-only origin/master '*.rb' '*.rake'`
+    modified = `git diff --name-only origin/main '*.rb' '*.rake'`
     untracked = `git ls-files --others --exclude-standard --exclude='vendor/**/*' '*.rb' '*.rake'`
     excluded = %w[db/data_schema.rb] + Dir.glob("bin/*") +
                Dir.glob("vendor/**/*") + Dir.glob("node_modules/**/*")

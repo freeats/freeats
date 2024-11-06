@@ -57,6 +57,45 @@ class Candidates::ApplyTest < ActionDispatch::IntegrationTest
     assert_equal task.description, ""
   end
 
+  test "apply should not create candidate, placement and task when file is not uploaded" do
+    ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
+    position = positions(:ruby_position)
+    tempfile = fixture_file_upload("empty.pdf", "application/pdf")
+    file =
+      ActionDispatch::Http::UploadedFile.new(
+        {
+          filename: "empty.pdf",
+          type: "application/pdf",
+          tempfile:
+        }
+      )
+
+    candidate_params = { full_name: "John Smith", email: "KdQ5j@example.com", file: }
+
+    upload_file_mock = Minitest::Mock.new
+    upload_file_mock.expect(:call, Failure[:file_invalid, "File is invalid"])
+
+    assert_no_difference [
+      "Event.where(type: 'active_storage_attachment_added').count",
+      "Event.where(type: 'candidate_changed', changed_field: 'cv').count",
+      "Candidate.count",
+      "Placement.count",
+      "Task.count"
+    ] do
+      Candidates::UploadFile.stub(:new, ->(_params) { upload_file_mock }) do
+        result = Candidates::Apply.new(
+          params: candidate_params,
+          position_id: position.id,
+          actor_account: nil
+        ).call
+
+        assert_equal result, Failure[:file_invalid, "File is invalid"]
+      end
+    end
+
+    upload_file_mock.verify
+  end
+
   test "apply should not create candidate, placement and task and assign recruiter " \
        "if email address is invalid" do
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)

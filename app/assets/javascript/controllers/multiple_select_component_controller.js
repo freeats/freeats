@@ -6,11 +6,7 @@ import { arraysEqual, requestSubmitPolyfilled } from "../src/shared/input_utils"
 export default class extends SelectComponentController {
   static targets = ["select"];
 
-  static values = {
-    buttonGroupSize: String,
-    searchUrl: String,
-    instantSubmit: Boolean,
-  };
+  static values = { buttonGroupSize: String, searchUrl: String, instantSubmit: Boolean };
 
   selectTargetConnected(target) {
     // The preloaded options are used to set the initial state of the selectize instance.

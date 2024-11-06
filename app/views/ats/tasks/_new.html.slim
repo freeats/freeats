@@ -2,7 +2,6 @@
 / form_options:,
 / modal_size:,
 / assignee_options:,
-/ watchers_options:,
 / default_assignee:,
 / default_watchers:,
 / current_member:,
@@ -11,7 +10,14 @@
 / hidden_fields:
 /)
 
-- taskable ||= nil
+ruby:
+  taskable ||= nil
+
+  composed_assignee_options = ats_task_assignee_options(assignee_options:, selected_assignee_id: default_assignee)
+  selected_watchers = [*default_watchers, default_assignee, current_member.id]
+  composed_watchers_options =
+    ats_task_watchers_options(assignee_options:, selected: selected_watchers, disabled: [default_assignee])
+  repeat_interval_options = ats_task_repeat_interval_options(selected: "never")
 
 - content_for :title
   - if taskable
@@ -21,7 +27,8 @@
 
 - content_for :body
   .container [data-controller="turbo-modal-tasks"
-      data-turbo-modal-tasks-current-member-value=current_member.id]
+              data-turbo-modal-tasks-current-member-value=current_member.id
+              data-turbo-modal-tasks-default-watchers-value=default_watchers]
     / First row
     .hstack.gap-3
       / Title edit
@@ -38,22 +45,21 @@
       = render LabeledComponent.new(class: "flex-fill col-12 col-lg-6",
                                     left_layout_class: "col-lg-3", right_layout_class: "col-lg-9") do |c|
         - c.with_label(t("core.assignee"), for_field: "task[assignee_id]", color_class: "text-gray-600")
-        = select_tag "task[assignee_id]", options_for_select(assignee_options, default_assignee),
-                      class: "form-control selectpicker flex-fill",
-                      data: { live_search: true,
-                              turbo_modal_tasks_target: "selectAssignee selectpicker" }
+        = render SingleSelectComponent.new( \
+                   "task[assignee_id]",
+                   include_blank: t("core.unassign"),
+                   local: { options: composed_assignee_options },
+                   data: { deferred_selectize_turbo_modal_tasks_target: "selectAssigneeInNewTask" } \
+                 )
       / Watchers
       = render LabeledComponent.new(class: "flex-fill col-12 col-lg-6",
                                     left_layout_class: "col-lg-3", right_layout_class: "col-lg-9") do |c|
         - c.with_label(t("core.watchers"), for_field: "task[watcher_ids]", color_class: "text-gray-600")
-        = select_tag "task[watcher_ids]",
-                      options_for_select(watchers_options,
-                                        { selected: [*default_watchers, default_assignee, current_member.id],
-                                        disabled: default_assignee }),
-                      class: "form-control selectpicker",
-                      multiple: true,
-                      data: { live_search: true,
-                              turbo_modal_tasks_target: "selectPickerWatchers selectpicker" }
+        = render MultipleSelectComponent.new( \
+                   "task[watcher_ids]",
+                   local: { options: composed_watchers_options },
+                   data: { deferred_selectize_turbo_modal_tasks_target: "selectWatchersInNewTask" } \
+                 )
     / Third row
     .d-flex.flex-wrap.mt-lg-3.column-gap-4
       / Due date
@@ -71,20 +77,17 @@
       = render LabeledComponent.new(class: "flex-fill col-12 col-lg-6",
                                     left_layout_class: "col-lg-3", right_layout_class: "col-lg-9") do |c|
         - c.with_label(t("tasks.repeat"), for_field: "task[repeat_interval]", color_class: "text-gray-600")
-        = select_tag "task[repeat_interval]",
-                      options_for_select(Task.repeat_intervals.transform_keys(&:humanize),
-                                        { selected: :never }),
-                      class: "form-control selectpicker",
-                      data: { turbo_modal_tasks_target: "selectpicker" }
+        = render SingleSelectComponent.new( \
+                   "task[repeat_interval]",
+                   required: true,
+                   local: { options: repeat_interval_options },
+                 )
     / Fourth row
     .d-flex.flex-wrap.mt-lg-3.column-gap-4
       = render LabeledComponent.new(class: "vstack gap-2") do |c|
         - c.with_label(t("tasks.description"), style: "height: 32px;",
                        for_field: "task[description]", color_class: "text-gray-600")
         = text_area_tag "task[description]", "", rows: 4, class: "form-control overflow-auto"
-
-    = hidden_field_tag "task[default_watchers]", default_watchers,
-                       data: { "turbo-modal-tasks-target" => "defaultWatchers" }
 
 - content_for :footer
   = render ButtonComponent.new(variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
