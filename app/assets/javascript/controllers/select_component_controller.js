@@ -83,7 +83,7 @@ export default class SelectComponentController extends Controller {
         return;
       }
 
-      cleanOptions(target.selectize);
+      cleanOptions(target.tomselect);
 
       let finalUrl = url.replace("QUERY", encodeURIComponent(q));
       if (type) finalUrl += `&type=${type}`;
@@ -114,11 +114,11 @@ export default class SelectComponentController extends Controller {
   }
 
   // Remove old not selected options.
-  #cleanOptions(selectize) {
-    Object.values(selectize.options)
+  #cleanOptions(tomselect) {
+    Object.values(tomselect.options)
       .forEach((option) => {
         const value = option.value.toString();
-        if (!selectize.items.includes(value)) selectize.removeOption(value);
+        if (!tomselect.items.includes(value)) tomselect.removeOption(value);
       });
   }
 
