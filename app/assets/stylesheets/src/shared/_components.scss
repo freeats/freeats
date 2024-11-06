@@ -70,11 +70,11 @@
   }
 
   &-disabled {
-    background-color: var(--tblr-gray-200);
+    background-color: var(--tblr-bg-surface-secondary);
   }
 
   &-disabled:focus {
-    background-color: var(--tblr-gray-200);
+    background-color: var(--tblr-bg-surface-secondary);
   }
 }
 
