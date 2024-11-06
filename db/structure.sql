@@ -1155,11 +1155,11 @@ ALTER SEQUENCE public.candidates_id_seq OWNED BY public.candidates.id;
 
 CREATE TABLE public.disqualify_reasons (
     id bigint NOT NULL,
-    title character varying,
+    title character varying DEFAULT ''::character varying NOT NULL,
     description character varying DEFAULT ''::character varying NOT NULL,
+    tenant_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1615,7 +1615,8 @@ CREATE TABLE public.placements (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     tenant_id bigint,
-    external_source_id bigint
+    external_source_id bigint,
+    disqualify_reasons_id bigint
 );
 
 
@@ -3439,17 +3440,10 @@ CREATE INDEX index_candidates_on_tenant_id ON public.candidates USING btree (ten
 
 
 --
--- Name: index_disqualify_reasons_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_disqualify_reasons_on_tenant_id_and_title; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_disqualify_reasons_on_tenant_id ON public.disqualify_reasons USING btree (tenant_id);
-
-
---
--- Name: index_disqualify_reasons_on_title_and_tenant_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_disqualify_reasons_on_title_and_tenant_id ON public.disqualify_reasons USING btree (title, tenant_id);
+CREATE UNIQUE INDEX index_disqualify_reasons_on_tenant_id_and_title ON public.disqualify_reasons USING btree (tenant_id, title);
 
 
 --
@@ -3800,6 +3794,13 @@ CREATE INDEX index_notes_on_tenant_id ON public.notes USING btree (tenant_id);
 --
 
 CREATE INDEX index_placements_on_candidate_id ON public.placements USING btree (candidate_id);
+
+
+--
+-- Name: index_placements_on_disqualify_reasons_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_placements_on_disqualify_reasons_id ON public.placements USING btree (disqualify_reasons_id);
 
 
 --
@@ -4447,6 +4448,14 @@ ALTER TABLE ONLY public.candidate_alternative_names
 
 ALTER TABLE ONLY public.scorecard_templates
     ADD CONSTRAINT fk_rails_8bda10f867 FOREIGN KEY (position_stage_id) REFERENCES public.position_stages(id);
+
+
+--
+-- Name: placements fk_rails_8ca2e6b867; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.placements
+    ADD CONSTRAINT fk_rails_8ca2e6b867 FOREIGN KEY (disqualify_reasons_id) REFERENCES public.disqualify_reasons(id);
 
 
 --
