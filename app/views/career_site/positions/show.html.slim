@@ -1,5 +1,5 @@
 - content_for :title do
-  = "#{@position.name} at #{@company_name}"
+  = t("career_site.positions.position_title", company_name: @company_name, position_name: @position.name)
 
 .row
   span#back_on_all_positions
