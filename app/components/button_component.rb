@@ -28,7 +28,7 @@ class ButtonComponent < ApplicationComponent
   VARIANT_CLASSES = {
     primary: "btn-primary",
     secondary: "btn-outline-primary",
-    cancel: "btn-light border",
+    cancel: "",
     danger: "btn-danger",
     danger_secondary: "btn-outline-danger",
     custom: ""

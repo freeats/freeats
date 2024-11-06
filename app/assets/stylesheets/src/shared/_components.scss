@@ -2,6 +2,11 @@
 .btn {
   --tblr-btn-line-height: 1.5;
 
+  &:disabled {
+    border-color: var(--tblr-btn-border-color);
+    background-color: var(--tblr-btn-bg);
+  }
+
   &-tiny {
     --tblr-btn-font-size: 12px;
     --tblr-btn-padding-x: 8px;
@@ -268,25 +273,12 @@
 }
 
 .icon-button-component {
-  @extend .btn, .btn-light;
+  @extend .btn;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
   --tblr-box-shadow-input: none;
-
-  &.default {
-    @extend .border;
-
-    &:hover {
-      color: black;
-      background-color: var(--bs-btn-hover-bg);
-    }
-
-    &:active {
-      background-color: var(--bs-btn-active-bg);
-    }
-  }
 
   &.ghost {
     border: 1px solid transparent;
