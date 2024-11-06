@@ -6,56 +6,77 @@ ruby:
 / DESKTOP
 - status_labels["qualified"] = capture
   | Qualified
-  span.badge.status-counter.ms-2 [
-      class=(params[:pipeline_tab].blank? || qualified ? "bg-light text-secondary" : "bg-secondary")]
+  span.badge.status-counter [
+      class=(params[:pipeline_tab].blank? || qualified ? "bg-light text-secondary" : "")]
     #turbo_position_pipeline_qualified_status_counter
       = @qualified_count
 - status_labels["reserved"] = capture
   | Reserved
-  span.badge.status-counter.ms-2 [
-      class=(params[:pipeline_tab] == "reserved" ? "bg-light text-secondary" : "bg-secondary")]
+  span.badge.status-counter [
+      class=(params[:pipeline_tab] == "reserved" ? "bg-light text-secondary" : "")]
     #turbo_position_pipeline_reserved_status_counter
       = @reserved_count
 - status_labels["disqualified"] = capture
   | Disqualified
-  span.badge.status-counter.ms-2 [
-      class=(params[:pipeline_tab] == "disqualified" ? "bg-light text-secondary" : "bg-secondary")]
+  span.badge.status-counter [
+      class=(params[:pipeline_tab] == "disqualified" ? "bg-light text-secondary" : "")]
     #turbo_position_pipeline_disqualified_status_counter
       = @disqualified_count
 / MOBILE
 - mobile_status_labels["qualified"] = capture
   | Qualified
-  span.badge.status-counter.ms-2 class="bg-secondary"
+  span.badge.status-counter
     #turbo_position_pipeline_qualified_mobile_status_counter
       = @qualified_count
 - mobile_status_labels["reserved"] = capture
   | Reserved
-  span.badge.status-counter.ms-2 class="bg-secondary"
+  span.badge.status-counter
     #turbo_position_pipeline_reserved_mobile_status_counter
       = @reserved_count
 - mobile_status_labels["disqualified"] = capture
   | Disqualified
-  span.badge.status-counter.ms-2 class="bg-secondary"
+  span.badge.status-counter
     #turbo_position_pipeline_disqualified_mobile_status_counter
       = @disqualified_count
 
 = render "ats/positions/profile"
   #pipeline-placements.mt-3
     / STATUS NAVIGATION
-    .row.g-3.align-items-center
+    .row.align-items-center.row-gap-3
       .col-auto
         / DESKTOP
-        .btn-group.d-none.d-md-block aria-label="Candidate status" role="group"
-          a.btn [class=(params[:pipeline_tab].blank? || qualified ? "btn-secondary" : "btn-light")
-                 href=tab_ats_position_path(@position.id, :pipeline, assigned_only: params[:assigned_only])]
+        .btn-group.shadow-none.d-none.d-md-block aria-label="Candidate status" role="group"
+          = render ButtonLinkComponent.new( \
+                     tab_ats_position_path( \
+                       @position.id,
+                       :pipeline,
+                       assigned_only: params[:assigned_only],
+                     ),
+                     variant: :cancel,
+                     class: ("active" if params[:pipeline_tab].blank?),
+                   )
             = status_labels["qualified"]
-          a.btn [class=(params[:pipeline_tab] == "reserved" ? "btn-secondary" : "btn-light")
-                 href="#{tab_ats_position_path(
-                   @position.id, :pipeline, pipeline_tab: "reserved", assigned_only: params[:assigned_only])}"]
+          = render ButtonLinkComponent.new( \
+                     tab_ats_position_path( \
+                       @position.id,
+                       :pipeline,
+                       pipeline_tab: :reserved,
+                       assigned_only: params[:assigned_only],
+                     ),
+                     variant: :cancel,
+                     class: ("active" if params[:pipeline_tab] == "reserved"),
+                   )
             = status_labels["reserved"]
-          a.btn [class=(params[:pipeline_tab] == "disqualified" ? "btn-secondary" : "btn-light")
-                 href="#{tab_ats_position_path(
-                   @position.id, :pipeline, pipeline_tab: "disqualified", assigned_only: params[:assigned_only])}"]
+          = render ButtonLinkComponent.new( \
+                     tab_ats_position_path( \
+                       @position.id,
+                       :pipeline,
+                       pipeline_tab: :disqualified,
+                       assigned_only: params[:assigned_only],
+                     ),
+                     variant: :cancel,
+                     class: ("active" if params[:pipeline_tab] == "disqualified"),
+                   )
             = status_labels["disqualified"]
         / MOBILE
         button.btn.btn-secondary.w-100.d-md-none.dropdown-toggle [
@@ -79,7 +100,7 @@ ruby:
 
       - if allowed_to?(:assign_only?)
         .col-sm-auto.ms-auto
-          = form_tag tab_ats_position_path(@position.id, :pipeline), method: :get, class: "form-check"
+          = form_tag tab_ats_position_path(@position.id, :pipeline), method: :get, class: "form-check mb-0"
             - if params[:pipeline_tab]
               = hidden_field_tag :pipeline_tab, params[:pipeline_tab]
             = check_box_tag :assigned_only, "true", params[:assigned_only], class: "form-check-input"
