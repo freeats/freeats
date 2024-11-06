@@ -1,6 +1,7 @@
 import SelectComponentController from "./select_component_controller";
 import $ from "jquery";
 import "selectize/dist/js/selectize";
+import TomSelect from "tom-select/dist/js/tom-select.complete.js";
 
 export default class extends SelectComponentController {
   static targets = ["select"];
@@ -26,7 +27,8 @@ export default class extends SelectComponentController {
       );
     }
 
-    const plugins = ["auto_position"];
+    // const plugins = ["auto_position"]; did not exist
+    const plugins = [];
     // Do not show the remove button if the select field is readonly or disabled.
     const { attributes } = target;
     if (!attributes.readonly && !attributes.disabled) {
@@ -35,17 +37,17 @@ export default class extends SelectComponentController {
 
     this.purgeDeadSelectize(target);
 
-    $(target).selectize({
+    new TomSelect(target, {
       plugins,
       selectOnTab: false,
       create: this.createNewOptionValue,
       createOnBlur: this.createNewOptionValue,
-      showArrow: true,
+      // showArrow: true, did not exist
       ...preloadedOptions,
       ...remoteSearchParams,
     });
 
-    this.applyCommonFunctions(target, this.searchUrlValue);
+    // this.applyCommonFunctions(target, this.searchUrlValue);
   }
 
   selectTargetDisconnected(target) {

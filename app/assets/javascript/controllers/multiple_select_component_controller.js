@@ -2,6 +2,7 @@ import SelectComponentController from "./select_component_controller";
 import $ from "jquery";
 import "selectize/dist/js/selectize";
 import { arraysEqual, requestSubmitPolyfilled } from "../src/shared/input_utils";
+import TomSelect from "tom-select/dist/js/tom-select.complete.js";
 
 export default class extends SelectComponentController {
   static targets = ["select"];
@@ -31,30 +32,30 @@ export default class extends SelectComponentController {
       );
     }
 
-    this.purgeDeadSelectize(target);
+    // this.purgeDeadSelectize(target);
 
-    $(target).selectize({
-      plugins: {
-        deselect_options_via_dropdown: {},
-        auto_position: {},
-        dropdown_buttons: {
-          buttonsClass: "btn btn-outline-primary",
-          buttonGroupSize: this.buttonGroupSizeValue,
-        },
-        handle_disabled_options: {},
-      },
+    new TomSelect(target, {
+      // plugins: {
+      //   deselect_options_via_dropdown: {},
+      //   auto_position: {},
+      //   dropdown_buttons: {
+      //     buttonsClass: "btn btn-outline-primary",
+      //     buttonGroupSize: this.buttonGroupSizeValue,
+      //   },
+      //   handle_disabled_options: {},
+      // }, all plugins do not exist
       searchField: ["text", "value"],
       selectOnTab: false,
-      showArrow: true,
+      // showArrow: true, do not exist
       ...preloadedOptions,
       ...remoteSearchParams,
     });
 
-    this.allowCheckmarkForDisabledOption(target.selectize);
+    // this.allowCheckmarkForDisabledOption(target.selectize);
 
-    if (this.instantSubmitValue) this.#setupInstantSubmit(target);
+    // if (this.instantSubmitValue) this.#setupInstantSubmit(target);
 
-    this.applyCommonFunctions(target, this.searchUrlValue);
+    // this.applyCommonFunctions(target, this.searchUrlValue);
   }
 
   selectTargetDisconnected(target) {

@@ -12,6 +12,7 @@ class PillSelectComponent < SelectComponent
       disabled:,
       readonly:,
       "data-pill-select-component-target": "select",
+      class: "form-select", # unify with additional options
       **additional_options
     }
 

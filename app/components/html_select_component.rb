@@ -28,6 +28,7 @@ class HtmlSelectComponent < SelectComponent
       readonly:,
       required:,
       "data-html-select-component-target": "select",
+      class: "form-select", # unify with additional options
       **additional_options
     }
 

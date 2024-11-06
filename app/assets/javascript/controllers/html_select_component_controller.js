@@ -2,6 +2,7 @@ import SelectComponentController from "./select_component_controller";
 import $ from "jquery";
 import "selectize/dist/js/selectize";
 import { disableQuickSearchListeners, enableQuickSearchListeners } from "../src/lib/quick_search";
+import TomSelect from "tom-select/dist/js/tom-select.complete.js";
 
 export default class extends SelectComponentController {
   static targets = ["select"];
@@ -46,11 +47,11 @@ export default class extends SelectComponentController {
     // Allow to render the selected option as rich text or as plain text.
     const renderItem = this.itemAsRichTextValue ? "html" : "label";
 
-    this.purgeDeadSelectize(target);
+    // this.purgeDeadSelectize(target);
 
-    $(target).selectize({
-      plugins: ["auto_position"],
-      showArrow: true,
+    new TomSelect(target, {
+      // plugins: ["auto_position"], did not exist
+      // showArrow: true, did not exist
       selectOnTab: false,
       searchField: "html",
       dropdownParent: this.dropdownParentValue,
@@ -65,11 +66,11 @@ export default class extends SelectComponentController {
       },
     });
 
-    if (this.typeValue === "quick_search") {
-      enableQuickSearchListeners(document, target.selectize);
-    }
+    // if (this.typeValue === "quick_search") {
+    //   enableQuickSearchListeners(document, target.selectize);
+    // }
 
-    this.applyCommonFunctions(target, this.searchUrlValue);
+    // this.applyCommonFunctions(target, this.searchUrlValue);
   }
 
   selectTargetDisconnected(target) {

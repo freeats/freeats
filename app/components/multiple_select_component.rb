@@ -14,6 +14,7 @@ class MultipleSelectComponent < SelectComponent
       required:,
       multiple: true,
       "data-multiple-select-component-target": "select",
+      class: "form-select", # unify with additional options
       **additional_options
     }
 

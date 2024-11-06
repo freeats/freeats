@@ -11,6 +11,7 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 @import "../src/shared/selectize";
 @import "../src/shared/components";
 @import "../src/lookbook/scaffolds";
+@import "tom-select/dist/css/tom-select.bootstrap5";
 
 body {
   padding: 1rem;
