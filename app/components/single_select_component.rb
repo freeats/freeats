@@ -12,6 +12,7 @@ class SingleSelectComponent < SelectComponent
       readonly:,
       required:,
       "data-single-select-component-target": "select",
+      class: "form-select", # unify with additional options
       **additional_options
     }
 

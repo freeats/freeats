@@ -1,82 +1,82 @@
-// In order to override imported css file, all values should have !important flag.
-// So far I don't know how to import scss file, see
-// https://github.com/selectize/selectize.js/issues/1614.
-@import "selectize/dist/css/selectize.bootstrap5";
+// // In order to override imported css file, all values should have !important flag.
+// // So far I don't know how to import scss file, see
+// // https://github.com/selectize/selectize.js/issues/1614.
+// @import "selectize/dist/css/selectize.bootstrap5";
 
-.selectize-input {
-  input[placeholder] {
-    width: inherit !important;
-  }
-}
+// .selectize-input {
+//   input[placeholder] {
+//     width: inherit !important;
+//   }
+// }
 
-.select-in-applicant-profile {
-  .selectize-input,
-  .filter-option-inner {
-    min-height: 40px !important;
-    line-height: 1.5 !important;
-  }
-  &.selectize-control .selectize-input {
-    padding: 7px 14px;
-    border-radius: 0.25rem;
-  }
-}
+// .select-in-applicant-profile {
+//   .selectize-input,
+//   .filter-option-inner {
+//     min-height: 40px !important;
+//     line-height: 1.5 !important;
+//   }
+//   &.selectize-control .selectize-input {
+//     padding: 7px 14px;
+//     border-radius: 0.25rem;
+//   }
+// }
 
-.selectize-control > .selectize-input {
-  cursor: text !important;
-}
+// .selectize-control > .selectize-input {
+//   cursor: text !important;
+// }
 
-.selectize-dropdown {
-  .create,
-  .no-results,
-  .optgroup-header,
-  .option {
-    padding: 6px 0.75rem;
-  }
-}
+// .selectize-dropdown {
+//   .create,
+//   .no-results,
+//   .optgroup-header,
+//   .option {
+//     padding: 6px 0.75rem;
+//   }
+// }
 
-.loading-spinner {
-  @extend .spinner-border;
-  @extend .spinner-border-sm;
-  content: " ";
-  -moz-transition: opacity 0.2s;
-  -webkit-transition: opacity 0.2s;
-  transition: opacity 0.2s;
-  z-index: 2;
-  opacity: 0;
-  animation: none;
-  -moz-animation: none;
-  -webkit-animation: none;
-}
+// .loading-spinner {
+//   @extend .spinner-border;
+//   @extend .spinner-border-sm;
+//   content: " ";
+//   -moz-transition: opacity 0.2s;
+//   -webkit-transition: opacity 0.2s;
+//   transition: opacity 0.2s;
+//   z-index: 2;
+//   opacity: 0;
+//   animation: none;
+//   -moz-animation: none;
+//   -webkit-animation: none;
+// }
 
-.loading-spinner-visible > .selectize-input::before {
-  opacity: 1;
-  animation: 1s linear infinite spinner-border;
-  -moz-animation: 1s linear infinite spinner-border;
-  -webkit-animation: 1s linear infinite spinner-border;
-}
+// .loading-spinner-visible > .selectize-input::before {
+//   opacity: 1;
+//   animation: 1s linear infinite spinner-border;
+//   -moz-animation: 1s linear infinite spinner-border;
+//   -webkit-animation: 1s linear infinite spinner-border;
+// }
 
-.selectize-input.dropdown-active::before {
-  left: auto;
-}
+// .selectize-input.dropdown-active::before {
+//   left: auto;
+// }
 
-.selectize-control > .selectize-input::before {
-  @extend .loading-spinner;
-  display: block;
-  position: absolute;
-  top: 50%;
-  right: 0.5rem;
-  margin-top: -0.5rem;
-}
+// .selectize-control > .selectize-input::before {
+//   @extend .loading-spinner;
+//   display: block;
+//   position: absolute;
+//   top: 50%;
+//   right: 0.5rem;
+//   margin-top: -0.5rem;
+// }
 
-.selectize-control.loading {
-  @extend .loading-spinner-visible;
-}
+// .selectize-control.loading {
+//   @extend .loading-spinner-visible;
+// }
 
-.selectize-control.multi .selectize-input > div {
-  padding: 0.0625rem 0.75rem;
-}
+// .selectize-control.multi .selectize-input > div {
+//   padding: 0.0625rem 0.75rem;
+// }
 
-.selectize-control.plugin-remove_button .item .remove {
-  margin-left: 0.1875rem;
-  margin-right: 0.4375rem;
-}
+// .selectize-control.plugin-remove_button .item .remove {
+//   margin-left: 0.1875rem;
+//   margin-right: 0.4375rem;
+// }

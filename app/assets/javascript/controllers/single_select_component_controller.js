@@ -1,5 +1,5 @@
 import SelectComponentController from "./select_component_controller";
-import "selectize/dist/js/selectize";
+import TomSelect from "tom-select/dist/js/tom-select.complete.js";
 import $ from "jquery";
 
 export default class extends SelectComponentController {
@@ -30,29 +30,29 @@ export default class extends SelectComponentController {
       );
     }
 
-    this.purgeDeadSelectize(target);
+    // this.purgeDeadSelectize(target);
 
-    $(target).selectize({
-      plugins: ["auto_position"],
+    new TomSelect(target, {
+      // plugins: ["auto_position"], do not exist
       allowEmptyOption: this.allowEmptyOptionValue,
       selectOnTab: false,
       searchField: ["text", "value"],
-      showArrow: true,
+      // showArrow: true, do not exist
       dropdownParent: this.dropdownParentValue,
       ...preloadedOptions,
-      ...remoteSearchParams,
+      ...remoteSearchParams, // did not work remote search
     });
 
-    this.allowCheckmarkForDisabledOption(target.selectize);
+    // this.allowCheckmarkForDisabledOption(target.selectize);
 
     // Add a $gray-600 color for the empty option (with no value).
-    target.selectize.on("item_add", (value, item) => {
-      if (value !== "") return;
+    // target.selectize.on("item_add", (value, item) => {
+    //   if (value !== "") return;
 
-      item[0].style = "color: #6c757d !important";
-    });
+    //   item[0].style = "color: #6c757d !important";
+    // });
 
-    this.applyCommonFunctions(target, this.searchUrlValue);
+    // this.applyCommonFunctions(target, this.searchUrlValue);
   }
 
   selectTargetDisconnected(target) {

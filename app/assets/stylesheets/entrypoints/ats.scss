@@ -18,6 +18,7 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 @import "../src/shared/common";
 @import "../src/shared/selectize";
 @import "../src/shared/trix";
+@import "tom-select/dist/css/tom-select.bootstrap5";
 
 @import "../src/ats/main";
 @import "../src/ats/positions";
