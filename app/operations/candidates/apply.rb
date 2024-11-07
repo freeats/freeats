@@ -5,9 +5,9 @@ class Candidates::Apply < ApplicationOperation
 
   option :actor_account, Types::Instance(Account).optional
   option :params, Types::Strict::Hash.schema(
+    email: Types::Strict::String,
     file: Types::Instance(ActionDispatch::Http::UploadedFile),
-    full_name: Types::Strict::String,
-    email: Types::Strict::String
+    full_name: Types::Strict::String
   )
   option :position_id, Types::Coercible::Integer
 

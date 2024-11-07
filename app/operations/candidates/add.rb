@@ -5,31 +5,15 @@ class Candidates::Add < ApplicationOperation
 
   option :actor_account, Types::Instance(Account).optional
   option :params, Types::Strict::Hash.schema(
-    avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
-    remove_avatar?: Types::Strict::String,
-    cover_letter?: Types::Strict::String,
-    file_id_to_remove?: Types::Strict::String,
-    file_id_to_change_cv_status?: Types::Strict::String,
-    location_id?: Types::Strict::String,
-    full_name?: Types::Strict::String,
-    company?: Types::Strict::String,
-    blacklisted?: Types::Strict::String,
-    headline?: Types::Strict::String,
-    telegram?: Types::Strict::String,
-    recruiter_id?: Types::Coercible::String,
-    skype?: Types::Strict::String,
-    source?: Types::Strict::String,
-    links?: Types::Strict::Array.of(
-      Types::Strict::Hash.schema(
-        url: Types::Strict::String,
-        status: Types::Strict::String
-      ).optional
-    ),
     alternative_names?: Types::Strict::Array.of(
       Types::Strict::Hash.schema(
         name: Types::Strict::String
       ).optional
     ),
+    avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
+    blacklisted?: Types::Strict::String,
+    company?: Types::Strict::String,
+    cover_letter?: Types::Strict::String,
     emails?: Types::Strict::Array.of(
       Types::Strict::Hash.schema(
         address: Types::Strict::String,
@@ -39,6 +23,17 @@ class Candidates::Add < ApplicationOperation
         type: Types::Strict::String
       ).optional
     ),
+    file_id_to_change_cv_status?: Types::Strict::String,
+    file_id_to_remove?: Types::Strict::String,
+    full_name?: Types::Strict::String,
+    headline?: Types::Strict::String,
+    links?: Types::Strict::Array.of(
+      Types::Strict::Hash.schema(
+        url: Types::Strict::String,
+        status: Types::Strict::String
+      ).optional
+    ),
+    location_id?: Types::Strict::String,
     phones?: Types::Strict::Array.of(
       Types::Strict::Hash.schema(
         phone: Types::Strict::String,
@@ -46,7 +41,12 @@ class Candidates::Add < ApplicationOperation
         source: Types::Strict::String,
         type: Types::Strict::String
       ).optional
-    )
+    ),
+    recruiter_id?: Types::Coercible::String,
+    remove_avatar?: Types::Strict::String,
+    skype?: Types::Strict::String,
+    source?: Types::Strict::String,
+    telegram?: Types::Strict::String
   )
 
   def call
