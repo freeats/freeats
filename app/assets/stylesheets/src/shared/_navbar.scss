@@ -48,13 +48,8 @@ body {
       white-space: nowrap;
       padding: var(--tblr-dropdown-item-padding-y) var(--tblr-dropdown-item-padding-x);
 
-      &.active {
-        a {
-          color: var(--tblr-primary);
-        }
-        &:after {
-          content: none;
-        }
+      &.active:after {
+        content: none;
       }
     }
   }
