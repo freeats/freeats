@@ -1,8 +1,5 @@
-ruby:
-  is_ats_settings = request.fullpath.eql?("/ats/settings")
-
-- avatar_dropdown = capture do
-    li.nav-item.settings-nav class=("active" if is_ats_settings)
+- avatar_dropdown_elements = capture do
+    li.nav-item class=("active" if request.fullpath.eql?("/ats/settings"))
       = link_to t("core.settings"), ats_settings_path, class: "nav-link"
     li.nav-item
       = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "nav-link",
@@ -43,7 +40,7 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.gap-3
       .mt-1.d-lg-none
         ul.navbar-nav.gap-1
           li.dropdown-divider.my-2 role="separator"
-          = avatar_dropdown
+          = avatar_dropdown_elements
 
     / Quick search
     - if allowed_to?(:index?, with: ATS::QuickSearchPolicy)
@@ -67,5 +64,5 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.gap-3
                               data-bs-toggle="dropdown" role="button" type="button"]
         = picture_avatar_icon current_account.avatar, {},
                               alt: t("user_accounts.your_photo")
-      ul.dropdown-menu.dropdown-menu-end
-        = avatar_dropdown
+      ul.dropdown-menu.dropdown-menu-end.avatar-dropdown
+        = avatar_dropdown_elements

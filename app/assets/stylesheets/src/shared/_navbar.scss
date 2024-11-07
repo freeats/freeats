@@ -41,12 +41,21 @@ body {
   }
 
   // Styles for the avatar dropdown menu.
-  .settings-nav.active {
-    a {
-      color: var(--tblr-primary);
-    }
-    &:after {
-      content: none;
+  .avatar-dropdown {
+    min-width: 100%;
+
+    .nav-item {
+      white-space: nowrap;
+      padding: var(--tblr-dropdown-item-padding-y) var(--tblr-dropdown-item-padding-x);
+
+      &.active {
+        a {
+          color: var(--tblr-primary);
+        }
+        &:after {
+          content: none;
+        }
+      }
     }
   }
 }
