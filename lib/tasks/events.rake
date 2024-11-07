@@ -7,9 +7,12 @@ namespace :events do
     Event
       .where(type: "placement_changed")
       .where(changed_field: "status")
-      .where("changed_to::text NOT IN ('\"qualified\"', '\"reserved\"') OR " \
-             "changed_from::text NOT IN ('\"qualified\"', '\"reserved\"')")
-      .where("changed_to::text != '\"disqualified\"' AND changed_from::text != '\"disqualified\"'")
+      .where(
+        <<~SQL
+          changed_to::text NOT IN ('"qualified"', '"reserved"', '"disqualified"') OR
+          changed_from::text NOT IN ('"qualified"', '"reserved"', '"disqualified"')
+        SQL
+      )
       .find_each do |event|
         update_params = {}
         unless event.changed_to.in?(%w[qualified reserved])
