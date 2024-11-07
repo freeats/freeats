@@ -68,6 +68,14 @@
     padding: 7px 14px;
     font-size: 16px;
   }
+
+  &-disabled {
+    background-color: var(--tblr-bg-surface-secondary);
+  }
+
+  &-disabled:focus {
+    background-color: var(--tblr-bg-surface-secondary);
+  }
 }
 
 // LabelComponent styles
