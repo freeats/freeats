@@ -1,5 +1,5 @@
 ruby:
-  is_ats_profile = request.fullpath.eql?("/ats/profile")
+  is_ats_settings = request.fullpath.eql?("/ats/settings")
 
 nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.gap-3
   - if rodauth.logged_in? && current_account.member?
@@ -36,7 +36,7 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.gap-3
       .mt-1.d-lg-none
         ul.navbar-nav.gap-1
           li.dropdown-divider.my-2 role="separator"
-          li.nav-item class=("active" if is_ats_profile)
+          li.nav-item.settings-nav class=("active" if is_ats_settings)
             = link_to t("core.settings"), ats_settings_path, class: "nav-link"
           li.nav-item
             = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "dropdown-item",
@@ -65,7 +65,7 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.gap-3
         = picture_avatar_icon current_account.avatar, {},
                               alt: t("user_accounts.your_photo")
       ul.dropdown-menu.dropdown-menu-end
-        li.nav-item class=("active" if is_ats_profile)
+        li.nav-item.settings-nav class=("active" if is_ats_settings)
           = link_to t("core.settings"), ats_settings_path, class: "dropdown-item"
         li.nav-item
           = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "dropdown-item",

@@ -17,13 +17,32 @@ body {
 .navbar {
   --tblr-navbar-padding-x: 1.5rem;
 
+  &.header .navbar-toggler {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
   .navbar-nav .nav-link .badge {
     position: inherit;
     transform: none;
   }
-}
 
-nav.header .navbar-toggler {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  // Styles for the navbar dropdown menu.
+  @media (max-width: 992px) {
+    .nav-item.active {
+      .nav-link {
+        color: var(--tblr-primary);
+      }
+    }
+  }
+
+  // Styles for the avatar dropdown menu.
+  .settings-nav.active {
+    a {
+      color: var(--tblr-primary);
+    }
+    &:after {
+      content: none;
+    }
+  }
 }
