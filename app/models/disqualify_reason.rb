@@ -5,5 +5,5 @@ class DisqualifyReason < ApplicationRecord
 
   has_many :placements, dependent: :restrict_with_exception
 
-  validates :title, presence: true, uniqueness: true
+  validates :title, presence: true, uniqueness: { scope: :tenant_id }
 end
