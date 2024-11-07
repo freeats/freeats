@@ -14,7 +14,7 @@ namespace :events do
         update_params = {}
         unless event.changed_to.in?(%w[qualified reserved])
           update_params[:changed_to] = "disqualified"
-          update_params[:properties] = { title: event.changed_to }
+          update_params[:properties] = { reason: event.changed_to.humanize }
         end
         unless event.changed_from.in?(%w[qualified reserved])
           update_params[:changed_from] = "disqualified"

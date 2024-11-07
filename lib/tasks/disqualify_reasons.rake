@@ -23,7 +23,7 @@ namespace :disqualify_reasons do
         if DisqualifyReason.find_by(tenant_id:, title:).blank?
           DisqualifyReason.create!(
             tenant_id:,
-            title:,
+            title: title.humanize,
             description: I18n.t("candidates.disqualification.disqualify_statuses.#{title}")
           )
         end
