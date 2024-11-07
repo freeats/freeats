@@ -10,5 +10,5 @@ div
     - else
       span class=classes
         = render IconComponent.new(:user)
-    - if !is_form && !candidate.blacklisted
+    - if !is_form && candidate.blacklisted
         .profile-avatar-overlay.alert-danger Blacklisted
