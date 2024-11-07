@@ -6,6 +6,7 @@ namespace :events do
 
     Event
       .where(type: "placement_changed")
+      .where(changed_field: "status")
       .where("changed_to::text NOT IN ('qualified', 'reserved') OR " \
              "changed_from::text NOT IN ('qualified', 'reserved')")
       .where("changed_to::text != '\"disqualified\"' AND changed_from::text != '\"disqualified\"'")
