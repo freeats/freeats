@@ -126,7 +126,7 @@ module CandidatesHelper
       when "disqualified"
         <<~TEXT
           disqualified the candidate on #{position_link}
-          with reason <b>#{event.properties[:title].humanize}</b>
+          with reason <b>#{event.properties["title"].humanize}</b>
         TEXT
       end
     when "stage"
