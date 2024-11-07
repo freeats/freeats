@@ -20,14 +20,16 @@ namespace :disqualify_reasons do
 
     tenant_with_reasons_titles.each_pair do |tenant_id, titles|
       titles.each do |title|
-        DisqualifyReason.create!(
-          tenant_id:,
-          title:,
-          description: I18n.t("candidates.disqualification.disqualify_statuses.#{title}")
-        )
+        if DisqualifyReason.find_by(tenant_id:, title:).blank?
+          DisqualifyReason.create!(
+            tenant_id:,
+            title:,
+            description: I18n.t("candidates.disqualification.disqualify_statuses.#{title}")
+          )
+        end
       rescue StandardError => e
         Log.error(
-          "DisqualifyReason for tenant#{tenant_id} and title #{title} failed with #{e.inspect}."
+          "DisqualifyReason for tenant #{tenant_id} and title #{title} failed with #{e.inspect}."
         )
       end
     end
