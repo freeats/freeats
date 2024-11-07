@@ -155,6 +155,6 @@ Rails.application.routes.draw do
   end
 
   get "sites/:tenant_slug", to: "career_site/positions#index", as: "career_site_positions"
-  post "sites/:tenant_slug/positions/:position_id/apply", to: "career_site/positions#apply", as: "apply_career_site_position"
   get "sites/:tenant_slug/positions/:id", to: "career_site/positions#show", as: "career_site_position"
+  post "sites/:tenant_slug/positions/:position_id/apply", to: "career_site/positions#apply", as: "apply_career_site_position"
 end
