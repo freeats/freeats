@@ -27,6 +27,10 @@ body {
     transform: none;
   }
 
+  .dropdown-divider {
+    border-top: 1px solid #DCE1E7;
+  }
+
   // Styles for the navbar dropdown menu.
   @media (max-width: 992px) {
     .nav-item.active {
