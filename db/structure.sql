@@ -1155,7 +1155,7 @@ ALTER SEQUENCE public.candidates_id_seq OWNED BY public.candidates.id;
 
 CREATE TABLE public.disqualify_reasons (
     id bigint NOT NULL,
-    title character varying DEFAULT ''::character varying NOT NULL,
+    title character varying NOT NULL,
     description character varying DEFAULT ''::character varying NOT NULL,
     tenant_id bigint,
     created_at timestamp(6) without time zone NOT NULL,

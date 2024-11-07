@@ -3,7 +3,7 @@
 class CreateDisqualifyReasons < ActiveRecord::Migration[7.1]
   def change
     create_table :disqualify_reasons do |t|
-      t.string :title, null: false, default: ""
+      t.string :title, null: false
       t.string :description, null: false, default: ""
       t.belongs_to :tenant, index: false
 
