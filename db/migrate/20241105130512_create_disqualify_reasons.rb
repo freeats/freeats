@@ -12,6 +12,6 @@ class CreateDisqualifyReasons < ActiveRecord::Migration[7.1]
 
     add_index :disqualify_reasons, %i[tenant_id title], unique: true
 
-    add_reference :placements, :disqualify_reasons, foreign_key: true
+    add_reference :placements, :disqualify_reason, foreign_key: true
   end
 end

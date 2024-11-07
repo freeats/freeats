@@ -1616,7 +1616,7 @@ CREATE TABLE public.placements (
     updated_at timestamp(6) without time zone NOT NULL,
     tenant_id bigint,
     external_source_id bigint,
-    disqualify_reasons_id bigint
+    disqualify_reason_id bigint
 );
 
 
@@ -3797,10 +3797,10 @@ CREATE INDEX index_placements_on_candidate_id ON public.placements USING btree (
 
 
 --
--- Name: index_placements_on_disqualify_reasons_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_placements_on_disqualify_reason_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_placements_on_disqualify_reasons_id ON public.placements USING btree (disqualify_reasons_id);
+CREATE INDEX index_placements_on_disqualify_reason_id ON public.placements USING btree (disqualify_reason_id);
 
 
 --
@@ -4451,14 +4451,6 @@ ALTER TABLE ONLY public.scorecard_templates
 
 
 --
--- Name: placements fk_rails_8ca2e6b867; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.placements
-    ADD CONSTRAINT fk_rails_8ca2e6b867 FOREIGN KEY (disqualify_reasons_id) REFERENCES public.disqualify_reasons(id);
-
-
---
 -- Name: active_storage_variant_records fk_rails_993965df05; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4544,6 +4536,14 @@ ALTER TABLE ONLY public.placements
 
 ALTER TABLE ONLY public.account_password_reset_keys
     ADD CONSTRAINT fk_rails_ccaeb37cea FOREIGN KEY (id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: placements fk_rails_cdf26a9eb3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.placements
+    ADD CONSTRAINT fk_rails_cdf26a9eb3 FOREIGN KEY (disqualify_reason_id) REFERENCES public.disqualify_reasons(id);
 
 
 --
