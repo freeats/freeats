@@ -126,7 +126,12 @@ module CandidatesHelper
       when "disqualified"
         <<~TEXT
           disqualified the candidate on #{position_link}
-          with reason <b>#{event.properties['title'].humanize}</b>
+          with reason <b>#{event.properties['reason']}</b>
+        TEXT
+      else # TODO: remove this branch after placement_status update.
+        <<~TEXT
+          disqualified the candidate on #{position_link}
+          with reason <b>#{event.changed_to.humanize}</b>
         TEXT
       end
     when "stage"
