@@ -12,6 +12,10 @@ class Candidates::Apply < ApplicationOperation
   option :position_id, Types::Coercible::Integer
 
   def call
+    position = Position.find(position_id)
+    recruiter = position.recruiter
+    return Failure(:no_active_recruiter) if recruiter.blank? || recruiter.inactive?
+
     candidate_email_addresses =
       [{
         address: params[:email],
@@ -20,12 +24,10 @@ class Candidates::Apply < ApplicationOperation
         type: "personal",
         created_via: "applied"
       }]
-    candidate_params = { full_name: params[:full_name], emails: candidate_email_addresses }
+    candidate_params =
+      { full_name: params[:full_name], emails: candidate_email_addresses,
+        recruiter_id: recruiter.id }
     file = params[:file]
-
-    position = Position.find(position_id)
-    recruiter = position.recruiter
-    return Failure(:no_active_recruiter) if recruiter.blank? || recruiter.inactive?
 
     candidate = Candidate.transaction do
       candidate = yield Candidates::Add.new(params: candidate_params, actor_account:).call
@@ -36,12 +38,6 @@ class Candidates::Apply < ApplicationOperation
       ).call
 
       yield Placements::ChangeStage.new(new_stage: "Replied", placement:, actor_account:).call
-
-      yield Candidates::Change.new(
-        candidate:,
-        actor_account:,
-        params: { recruiter_id: recruiter.id }
-      ).call
 
       yield Tasks::Add.new(
         actor_account:,

@@ -16,6 +16,7 @@ class Candidates::Add < ApplicationOperation
     blacklisted?: Types::Strict::String,
     headline?: Types::Strict::String,
     telegram?: Types::Strict::String,
+    recruiter_id?: Types::Coercible::String,
     skype?: Types::Strict::String,
     source?: Types::Strict::String,
     links?: Types::Strict::Array.of(
