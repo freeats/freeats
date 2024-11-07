@@ -1,5 +1,4 @@
 import { Controller } from "@hotwired/stimulus";
-import { initBootstrapSelect } from "../src/shared/bootstrap_select";
 
 export default class extends Controller {
   static targets = [
@@ -15,7 +14,6 @@ export default class extends Controller {
       newUrl.pathname = newUrl.pathname.replace(/\/(new|\d+)$/, "");
       window.history.replaceState({}, null, newUrl);
     });
-    initBootstrapSelect();
   }
 
   selectAssigneeInNewTaskTargetConnected(target) {

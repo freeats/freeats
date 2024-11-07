@@ -1,6 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
 import $ from "jquery";
-import "selectize/dist/js/selectize";
 
 export default class extends Controller {
   static targets = ["button", "select", "form"];

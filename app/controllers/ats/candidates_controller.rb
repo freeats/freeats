@@ -226,8 +226,6 @@ class ATS::CandidatesController < AuthorizedController
                   notice: t("candidates.candidate_created")
     in Failure[:candidate_invalid, candidate]
       redirect_to ats_candidates_path, alert: candidate.errors.full_messages
-    in Failure[:validation_failed, e]
-      redirect_to ats_candidates_path, alert: e
     end
   end
 
@@ -426,7 +424,7 @@ class ATS::CandidatesController < AuthorizedController
     ).call
     in Success(file)
       redirect_to tab_ats_candidate_path(@candidate, :files)
-    in Failure[:validation_failed, e]
+    in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
     end
   end
@@ -440,7 +438,7 @@ class ATS::CandidatesController < AuthorizedController
     ).call
     in Success(file)
       redirect_to tab_ats_candidate_path(@candidate, :info)
-    in Failure[:validation_failed, e]
+    in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
     end
   end
@@ -455,7 +453,7 @@ class ATS::CandidatesController < AuthorizedController
     ).call
     in Success()
       render_candidate_files(@candidate)
-    in Failure[:validation_failed, e]
+    in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
     end
   end
@@ -470,7 +468,7 @@ class ATS::CandidatesController < AuthorizedController
     ).call
     in Success()
       redirect_to tab_ats_candidate_path(@candidate, :info)
-    in Failure[:validation_failed, e]
+    in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
     end
   end
