@@ -21,7 +21,13 @@ module CandidatesHelper
     text <<
       case event.type
       when "candidate_added"
-        "added the candidate"
+        if event.properties["method"] == "manual"
+          "added the candidate manually"
+        elsif event.properties["method"] == "api"
+          "added the candidate using extension"
+        else
+          "added the candidate"
+        end
       when "candidate_changed"
         to = event.changed_to
         from = event.changed_from

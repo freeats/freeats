@@ -4,6 +4,7 @@ class Candidates::Add < ApplicationOperation
   include Dry::Monads[:do, :result]
 
   option :actor_account, Types::Instance(Account).optional
+  option :method, Types::Strict::String, default: -> { "manual" }
   option :params, Types::Strict::Hash.schema(
     alternative_names?: Types::Strict::Array.of(
       Types::Strict::Hash.schema(
@@ -67,6 +68,7 @@ class Candidates::Add < ApplicationOperation
           {
             type: :candidate_added,
             eventable: candidate,
+            properties: { method: },
             actor_account:
           }
       ).call

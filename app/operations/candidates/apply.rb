@@ -4,6 +4,7 @@ class Candidates::Apply < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
   option :actor_account, Types::Instance(Account).optional
+  option :method, Types::Strict::String, default: -> { "manual" }
   option :params, Types::Strict::Hash.schema(
     email: Types::Strict::String,
     file: Types::Instance(ActionDispatch::Http::UploadedFile),
@@ -30,7 +31,8 @@ class Candidates::Apply < ApplicationOperation
     file = params[:file]
 
     candidate = Candidate.transaction do
-      candidate = yield Candidates::Add.new(params: candidate_params, actor_account:).call
+      candidate =
+        yield Candidates::Add.new(params: candidate_params, actor_account:, method:).call
 
       placement = yield Placements::Add.new(
         params: { candidate_id: candidate.id, position_id: },
