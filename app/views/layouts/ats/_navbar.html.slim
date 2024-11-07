@@ -12,28 +12,22 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.gap-3
     #navbarNav.collapse.navbar-collapse.gap-lg-2.order-5.order-lg-1
       ul.navbar-nav.text-nowrap.gap-1.gap-lg-0.mb-1.mb-lg-0
         - if allowed_to?(:index?, with: ATS::DashboardPolicy)
-          li.nav-item
-            = link_to t("core.dashboard"), root_path,
-                      class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
+          li.nav-item class=("active" if @nav_item == :dashboard)
+            = link_to t("core.dashboard"), root_path, class: "nav-link"
         - if allowed_to?(:index?, with: ATS::TaskPolicy)
-          li.nav-item
-            = link_to ats_tasks_path,
-              class: "nav-link#{' nav-link-selected' if @nav_item == :tasks} d-inline-flex align-items-center " \
-                     "gap-1 pt-md-2"
+          li.nav-item class=("active" if @nav_item == :tasks)
+            = link_to ats_tasks_path, class: "nav-link d-inline-flex align-items-center gap-1 pt-md-2"
               = t("core.tasks")
               = render partial: "ats/tasks/navbar_counter", locals: { pending_tasks_count: @pending_tasks_count }
         - if allowed_to?(:index?, with: ATS::CandidatePolicy)
-          li.nav-item
-            = link_to t("core.candidates"), ats_candidates_path,
-                      class: "nav-link#{' nav-link-selected' if @nav_item == :candidates}"
+          li.nav-item class=("active" if @nav_item == :candidates)
+            = link_to t("core.candidates"), ats_candidates_path, class: "nav-link"
         - if allowed_to?(:index?, with: ATS::PositionPolicy)
-          li.nav-item
-            = link_to t("core.positions"), ats_positions_path,
-                      class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
+          li.nav-item class=("active" if @nav_item == :positions)
+            = link_to t("core.positions"), ats_positions_path, class: "nav-link"
         - if allowed_to?(:index?, with: ATS::PositionPolicy)
-          li.nav-item
-            = link_to t("core.team"), ats_team_path,
-                      class: "nav-link#{' nav-link-selected' if @nav_item == :team}"
+          li.nav-item class=("active" if @nav_item == :team)
+            = link_to t("core.team"), ats_team_path, class: "nav-link"
 
       / Necessary to place the profile button on the right side of the navbar.
       .flex-fill
@@ -42,9 +36,8 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.gap-3
       .mt-1.d-lg-none
         ul.navbar-nav.gap-1
           li.dropdown-divider.my-2 role="separator"
-          li.nav-item
-            = link_to t("core.settings"), ats_settings_path,
-                      class: "nav-link #{'nav-link-selected' if is_ats_profile}"
+          li.nav-item class=("active" if is_ats_profile)
+            = link_to t("core.settings"), ats_settings_path, class: "nav-link"
           li.nav-item
             = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "dropdown-item",
                         form_class: "pt-2", form: { data: { turbo: false } }
@@ -72,8 +65,8 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.gap-3
         = picture_avatar_icon current_account.avatar, {},
                               alt: t("user_accounts.your_photo")
       ul.dropdown-menu.dropdown-menu-end
-        li = link_to t("core.settings"), ats_settings_path,
-                     class: "dropdown-item #{'nav-link-selected' if is_ats_profile}"
-        li
+        li.nav-item class=("active" if is_ats_profile)
+          = link_to t("core.settings"), ats_settings_path, class: "dropdown-item"
+        li.nav-item
           = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "dropdown-item",
                       form_class: "dropdown-item", form: { data: { turbo: false } }
