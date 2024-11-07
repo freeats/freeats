@@ -15,7 +15,8 @@ body {
   min-height: calc(100% - #{$footer-min-height});
 }
 
-#back_on_all_positions {
+a,
+a:visited:not(.btn, .icon-button-component, .nav-link, .dropdown-item, .badge) {
   color: $blue-500;
 }
 
