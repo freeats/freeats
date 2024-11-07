@@ -2,11 +2,13 @@ en:
   career_site:
     footer_text: Career site by FreeATS
     positions:
-      all_positions: All positions at %{name}
+      all_positions: All positions at %{company_name}
       apply_button: Apply
-      description: Description
       closed_alert: This position is no longer active.
-      open_positions_header: Open positions at %{name}
+      description: Description
+      open_positions_header: Open positions at %{company_name}
+      position_title: "%{position_name} at %{company_name}"
+      positions_title: Positions at %{company_name}
       submit_application: Submit application
       successfully_applied: Thank you for applying to the %{position_name} position. We will get back to you as soon as possible.
       view_all: View all positions
