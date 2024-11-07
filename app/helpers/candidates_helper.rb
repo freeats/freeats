@@ -123,10 +123,10 @@ module CandidatesHelper
         "requalified the candidate on #{position_link}"
       when "reserved"
         "reserved the candidate on #{position_link}"
-      else
+      when "disqualified"
         <<~TEXT
           disqualified the candidate on #{position_link}
-          with reason <b>#{event.changed_to.humanize}</b>
+          with reason <b>#{event.properties[:title].humanize}</b>
         TEXT
       end
     when "stage"
