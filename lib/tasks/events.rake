@@ -7,8 +7,8 @@ namespace :events do
     Event
       .where(type: "placement_changed")
       .where(changed_field: "status")
-      .where("changed_to::text NOT IN ('qualified', 'reserved') OR " \
-             "changed_from::text NOT IN ('qualified', 'reserved')")
+      .where("changed_to::text NOT IN ('\"qualified\"', '\"reserved\"') OR " \
+             "changed_from::text NOT IN ('\"qualified\"', '\"reserved\"')")
       .where("changed_to::text != '\"disqualified\"' AND changed_from::text != '\"disqualified\"'")
       .find_each do |event|
         update_params = {}
@@ -21,6 +21,10 @@ namespace :events do
         end
 
         event.update!(update_params)
+      rescue StandardError => e
+        Log.error(
+          "Event #{event.id} update failed with #{e.inspect}."
+        )
       end
 
     Log.info("Done.")
