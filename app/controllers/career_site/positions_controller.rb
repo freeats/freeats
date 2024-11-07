@@ -23,7 +23,6 @@ class CareerSite::PositionsController < ApplicationController
     set_current_tenant(current_tenant)
 
     @positions = Position.open
-    @company_name = current_tenant.name
     @custom_styles = process_scss(current_tenant.public_styles)
   end
 
@@ -64,7 +63,6 @@ class CareerSite::PositionsController < ApplicationController
       return
     end
 
-    @company_name = current_tenant.name
     @custom_styles = process_scss(current_tenant.public_styles)
   end
 
