@@ -16,4 +16,9 @@ body {
 
 .navbar {
   --tblr-navbar-padding-x: 1.5rem;
+
+  .navbar-nav .nav-link .badge {
+    position: inherit;
+    transform: none;
+  }
 }
