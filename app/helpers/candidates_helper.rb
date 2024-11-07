@@ -16,7 +16,12 @@ module CandidatesHelper
   def candidate_display_activity(event)
     actor_account_name = compose_actor_account_name(event)
 
-    text = [actor_account_name]
+    text =
+      if event.type == "placement_added" && event.properties["self_applied"] == true
+        ["Candidate"]
+      else
+        [actor_account_name]
+      end
 
     text <<
       case event.type
@@ -72,7 +77,11 @@ module CandidatesHelper
         "removed a note"
       when "placement_added"
         position = event.eventable.position
-        "assigned the candidate to #{link_to(position.name, ats_position_path(position))}"
+        if event.properties["self_applied"] == true
+          "applied to #{link_to(position.name, ats_position_path(position))}"
+        else
+          "assigned the candidate to #{link_to(position.name, ats_position_path(position))}"
+        end
       when "placement_changed"
         placement_changed_text(event)
       when "placement_removed"
