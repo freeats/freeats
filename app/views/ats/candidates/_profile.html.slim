@@ -51,7 +51,7 @@
       | &nbsp;
       span.badge = @candidate.files.size
 
-  ul.nav.nav-tabs.d-none.d-md-flex.card-header-tabs
+  ul.nav.nav-tabs.d-none.d-md-flex
     - if allowed_to?(:show_info?, @candidate)
       li.nav-item
         = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
