@@ -1,11 +1,11 @@
 - content_for :title do
-  = "#{@position.name} at #{@company_name}"
+  = t("career_site.positions.position_title", company_name: @current_tenant.name, position_name: @position.name)
 
 .row
   span#back_on_all_positions
     = link_to career_site_positions_path do
       = render IconComponent.new(:chevron_left, size: :medium, class: "me-1")
-      = t("career_site.positions.all_positions", name: @company_name)
+      = t("career_site.positions.all_positions", company_name: @current_tenant.name)
 .row#position_heading.mt-3.gap-3.justify-content-between
   .col-12.col-md-10
     .col

@@ -63,7 +63,6 @@ class CareerSite::PositionsController < ApplicationController
       return
     end
 
-    @company_name = current_tenant.name
     @custom_styles = process_scss(current_tenant.public_styles)
   end
 
