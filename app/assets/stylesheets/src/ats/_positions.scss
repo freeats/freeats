@@ -40,15 +40,8 @@
     .card {
       position: relative;
       .card-avatar {
-        width: 64px;
-        height: 64px;
-        .avatar {
-          --tblr-avatar-icon-size: 2.5rem;
-        }
-        img {
-          width: 100%;
-          height: auto;
-        }
+        width: 4rem;
+        height: 4rem;
       }
 
       .card-triangle {
