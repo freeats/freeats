@@ -96,22 +96,28 @@ class PlacementTest < ActiveSupport::TestCase
     end
   end
 
-  test "should change status and create event" do
+  test "should change status and create event and disqualify_reason" do
     placement = placements(:sam_golang_sourced)
     actor_account = accounts(:admin_account)
     old_status = placement.status
-    new_status = "overqualified"
+    new_status = "team_fit"
 
     assert_not_equal old_status, new_status
 
-    assert_difference "Event.count" => 1 do
+    assert_difference ["Event.count", "DisqualifyReason.count"] do
       placement = Placements::ChangeStatus.new(
         new_status:,
         placement:,
         actor_account:
       ).call.value!
 
-      assert_equal placement.status, new_status
+      assert_equal placement.status, "disqualified"
+
+      reason = DisqualifyReason.last
+
+      assert_equal reason.title, "Team fit"
+      assert_equal reason.description,
+                   I18n.t("candidates.disqualification.disqualify_statuses.#{new_status}")
 
       event = Event.last
 
