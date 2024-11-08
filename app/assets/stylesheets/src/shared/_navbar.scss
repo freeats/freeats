@@ -27,7 +27,7 @@ body {
     transform: none;
   }
 
-  @media (max-width: 992px) {
+  @include media-breakpoint-down(lg) {
     .nav-item.active {
       .nav-link {
         color: var(--tblr-primary);
