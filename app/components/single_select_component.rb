@@ -43,7 +43,7 @@ class SingleSelectComponent < SelectComponent
 
   def stimulus_controller_options
     options = { data: { controller: "single-select-component",
-                        single_select_component_with_chevron_value: local ? true : false } }
+                        single_select_component_with_chevron_value: local? } }
     options[:data].merge!(remote_options) if remote
     options[:data].merge!(allow_empty_option) if include_blank.present?
     options[:data].merge!(set_body_as_dropdown_parent) if anchor_dropdown_to_body.present?

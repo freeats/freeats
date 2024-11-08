@@ -102,4 +102,8 @@ class SelectComponent < ApplicationComponent
 
     id_prefix + id_suffix
   end
+
+  def local?
+    local.present?
+  end
 end
