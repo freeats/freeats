@@ -88,7 +88,9 @@ class ATS::CandidatesGrid
     :status,
     :enum,
     select: lambda {
-      [%w[Qualified qualified], %w[Disqualified disqualified], %w[Reserved reserved]] +
+      mandatory_statuses_for_select =
+        [%w[Qualified qualified], %w[Disqualified disqualified], %w[Reserved reserved]]
+      mandatory_statuses_for_select +
       DisqualifyReason.pluck(:title).map { [_1, _1.parameterize.underscore] }
     },
     include_blank: I18n.t("core.status"),
@@ -164,7 +166,7 @@ class ATS::CandidatesGrid
     :position_stage,
     header: "#{I18n.t('core.position')} - #{I18n.t('core.stage')}",
     preload: {
-      placements: %i[position position_stage]
+      placements: %i[position position_stage disqualify_reason]
     },
     html: true
   ) do |model|

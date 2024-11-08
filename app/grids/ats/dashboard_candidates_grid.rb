@@ -36,7 +36,7 @@ class ATS::DashboardCandidatesGrid
     :position_stage,
     header: "#{I18n.t('core.position')} - #{I18n.t('core.stage')}",
     preload: {
-      placements: %i[position position_stage]
+      placements: %i[position position_stage disqualify_reason]
     },
     html: true
   ) do |model|
