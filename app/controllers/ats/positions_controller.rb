@@ -326,6 +326,7 @@ class ATS::PositionsController < AuthorizedController
       .includes(:account)
       .where.not(id: @position.recruiter_id)
       .where(access_level: Position::COLLABORATORS_ACCESS_LEVEL)
+      .order("accounts.name")
       .map do |member|
         {
           text: member.account.name,
@@ -338,6 +339,7 @@ class ATS::PositionsController < AuthorizedController
       Member
       .includes(:account)
       .where(access_level: Position::HIRING_MANAGERS_ACCESS_LEVEL)
+      .order("accounts.name")
       .map do |member|
         {
           text: member.account.name,
@@ -350,6 +352,7 @@ class ATS::PositionsController < AuthorizedController
       Member
       .includes(:account)
       .where(access_level: Position::INTERVIEWERS_ACCESS_LEVEL)
+      .order("accounts.name")
       .map do |member|
         {
           text: member.account.name,
