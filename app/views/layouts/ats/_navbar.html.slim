@@ -5,7 +5,7 @@
       = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "nav-link",
                   form: { data: { turbo: false } }
 
-nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.gap-3
+nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.column-gap-3
   - if rodauth.logged_in? && current_account.member?
     / Mobile burger menu button
     button.navbar-toggler.px-1.order-2 [aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
