@@ -18,5 +18,5 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym("FreeATS")
   inflect.acronym("API")
   inflect.acronym("CV")
-  inflect.plural("is", "are")
+  inflect.irregular("is", "are")
 end
