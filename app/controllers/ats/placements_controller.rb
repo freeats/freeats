@@ -102,8 +102,8 @@ class ATS::PlacementsController < AuthorizedController
       else
         render_placements_panel(placement)
       end
-    in Failure[:placement_invalid, error]
-      render_error error
+    in Failure[:placement_invalid, _error] | Failure[:disqualify_reason_invalid, _error]
+      render_error _error
     end
   end
 

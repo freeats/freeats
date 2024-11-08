@@ -12,8 +12,6 @@ class Placements::ChangeStatus < ApplicationOperation
 
     return Success(placement) if old_status == new_status
 
-    placement.status = new_status
-
     placement_changed_params = {
       actor_account:,
       type: :placement_changed,
@@ -23,7 +21,19 @@ class Placements::ChangeStatus < ApplicationOperation
       changed_to: new_status
     }
 
+    if (add_disqualify_reason = %w[qualified reserved].exclude?(new_status))
+      placement.status = "disqualified"
+      placement_changed_params[:properties] = { reason: new_status.humanize }
+    else
+      placement.status = new_status
+      placement.disqualify_reason_id = nil
+    end
+
     ActiveRecord::Base.transaction do
+      if add_disqualify_reason
+        disqualify_reason = yield find_or_create_disqualify_reason(new_status)
+        placement.disqualify_reason_id = disqualify_reason.id
+      end
       yield save_placement(placement)
       yield Events::Add.new(params: placement_changed_params).call
     end
@@ -39,5 +49,22 @@ class Placements::ChangeStatus < ApplicationOperation
     Success()
   rescue ActiveRecord::RecordInvalid => e
     Failure[:placement_invalid, placement.errors.full_messages.presence || e.to_s]
+  end
+
+  def find_or_create_disqualify_reason(reason)
+    disqualify_reason = DisqualifyReason.find_by(title: reason.humanize)
+
+    return Success(disqualify_reason) if disqualify_reason.present?
+
+    disqualify_reason =
+      DisqualifyReason.new(
+        title: reason.humanize,
+        description: I18n.t("candidates.disqualification.disqualify_statuses.#{reason}")
+      )
+    disqualify_reason.save!
+
+    Success(disqualify_reason)
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:disqualify_reason_invalid, disqualify_reason.errors.full_messages.presence || e.to_s]
   end
 end
