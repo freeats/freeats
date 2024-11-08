@@ -88,8 +88,8 @@ class ATS::CandidatesGrid
     :status,
     :enum,
     select: lambda {
-      Placement.statuses.map { |k, v| [k.humanize, v] }
-                        .insert(1, %w[Disqualified disqualified])
+      [%w[Qualified qualified], %w[Disqualified disqualified], %w[Reserved reserved]] +
+      DisqualifyReason.pluck(:title).map { [_1, _1.parameterize.underscore] }
     },
     include_blank: I18n.t("core.status"),
     placeholder: I18n.t("core.status")
@@ -97,10 +97,17 @@ class ATS::CandidatesGrid
     query =
       if status == "disqualified"
         where.not(placements: { status: %w[reserved qualified] })
-      else
+      elsif status.in?(%w[qualified reserved])
         where(placements: { status: })
+      else
+        where(placements: { disqualify_reasons: { title: status.humanize } })
       end
-    query.joins(:placements).distinct
+
+    query
+      .joins(:placements)
+      .joins("LEFT JOIN disqualify_reasons " \
+             "ON placements.disqualify_reason_id = disqualify_reasons.id")
+      .distinct
   end
 
   filter(
