@@ -29,7 +29,7 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.gap-3
         - if allowed_to?(:index?, with: ATS::PositionPolicy)
           li.nav-item class=("active" if @nav_item == :positions)
             = link_to t("core.positions"), ats_positions_path, class: "nav-link"
-        - if allowed_to?(:index?, with: ATS::PositionPolicy)
+        - if allowed_to?(:index?, with: ATS::MemberPolicy)
           li.nav-item class=("active" if @nav_item == :team)
             = link_to t("core.team"), ats_team_path, class: "nav-link"
 
