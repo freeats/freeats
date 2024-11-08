@@ -33,19 +33,7 @@ class Placement < ApplicationRecord
   enum status: %i[
     qualified
     reserved
-    availability
-    location
-    no_reply
-    not_interested
-    other_offer
-    overpriced
-    overqualified
-    position_closed
-    remote_only
-    team_fit
-    underqualified
-    workload
-    other
+    disqualified
   ].index_with(&:to_s)
 
   validate :position_stage_must_be_present_in_position
@@ -66,10 +54,6 @@ class Placement < ApplicationRecord
       SQL
     )
   }
-
-  def disqualified?
-    %w[qualified reserved].exclude?(status)
-  end
 
   def sourced?
     position_stage.name == "Sourced"
