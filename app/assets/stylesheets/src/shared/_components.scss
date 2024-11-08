@@ -222,7 +222,7 @@
   }
 
   &.pill {
-    .items {
+    .items:has(.item) {
       display: flex;
       flex-wrap: wrap;
       gap: 4px;

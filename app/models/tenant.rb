@@ -10,6 +10,16 @@ class Tenant < ApplicationRecord
 
   validate :all_active_positions_have_recruiter_when_career_site_enabled
 
+  def create_mandatory_disqualify_reasons
+    %w[no_reply position_closed].each do |title|
+      DisqualifyReason.create!(
+        tenant_id: id,
+        title: title.humanize,
+        description: I18n.t("candidates.disqualification.disqualify_statuses.#{title}")
+      )
+    end
+  end
+
   private
 
   def all_active_positions_have_recruiter_when_career_site_enabled
