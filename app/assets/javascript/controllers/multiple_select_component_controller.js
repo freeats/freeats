@@ -6,7 +6,12 @@ import { arraysEqual, requestSubmitPolyfilled } from "../src/shared/input_utils"
 export default class extends SelectComponentController {
   static targets = ["select"];
 
-  static values = { buttonGroupSize: String, searchUrl: String, instantSubmit: Boolean };
+  static values = {
+    buttonGroupSize: String,
+    searchUrl: String,
+    instantSubmit: Boolean,
+    withChevron: Boolean,
+  };
 
   selectTargetConnected(target) {
     // The preloaded options are used to set the initial state of the selectize instance.
@@ -41,7 +46,7 @@ export default class extends SelectComponentController {
       },
       searchField: ["text", "value"],
       selectOnTab: false,
-      showArrow: true,
+      showArrow: this.withChevronValue,
       ...preloadedOptions,
       ...remoteSearchParams,
     });

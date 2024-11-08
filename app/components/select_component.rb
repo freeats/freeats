@@ -69,7 +69,7 @@ class SelectComponent < ApplicationComponent
   private
 
   def component_classes
-    ["select-component", SIZE_CLASSES[size], ("with-chevron" if local)]
+    ["select-component", SIZE_CLASSES[size]]
   end
 
   def compose_options_for_select
