@@ -15,7 +15,7 @@ sam_golang_sourced:
   candidate: sam
   position_stage: golang_position_sourced
   status: disqualified
-  disqualify_reason: sam_golang_sourced_no_reply
+  disqualify_reason: no_reply_toughbyte
   tenant: toughbyte_tenant
 
 sam_golang_replied:
