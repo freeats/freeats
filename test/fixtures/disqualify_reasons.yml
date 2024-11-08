@@ -1,0 +1,4 @@
+sam_golang_sourced_no_reply:
+  title: No reply
+  description: The candidate didn't reply to the first message or stopped replying afterwards.
+  tenant: toughbyte_tenant
