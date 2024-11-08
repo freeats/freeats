@@ -28,6 +28,7 @@ class Placement < ApplicationRecord
   belongs_to :position
   belongs_to :position_stage
   belongs_to :candidate
+  belongs_to :disqualify_reason, optional: true
 
   enum status: %i[
     qualified

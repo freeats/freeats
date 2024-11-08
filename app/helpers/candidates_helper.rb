@@ -123,7 +123,12 @@ module CandidatesHelper
         "requalified the candidate on #{position_link}"
       when "reserved"
         "reserved the candidate on #{position_link}"
-      else
+      when "disqualified"
+        <<~TEXT
+          disqualified the candidate on #{position_link}
+          with reason <b>#{event.properties['reason']}</b>
+        TEXT
+      else # TODO: remove this branch after placement_status update.
         <<~TEXT
           disqualified the candidate on #{position_link}
           with reason <b>#{event.changed_to.humanize}</b>
