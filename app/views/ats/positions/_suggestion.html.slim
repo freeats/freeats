@@ -16,11 +16,11 @@
                  aria: { expanded: false, haspopup: true },
                )
       ul.dropdown-menu.dropdown-menu-end
-        - Placement::MANUAL_DISQUALIFY_STATUSES.each do |status|
+        - DisqualifyReason.pluck(:title).each do |status|
           ruby:
             tooltip_hash = {
               data: { bs_toggle: "tooltip", bs_placement: "left" },
-              title: t("candidates.disqualification.disqualify_statuses.#{status}")
+              title: t("candidates.disqualification.disqualify_statuses.#{status.parameterize.underscore}")
             }
           li = form_with url: ats_candidate_placements_path(candidate_id, position_id: suggestion.id) do |form|
             = form.button({ class: "dropdown-item", name: "suggestion_disqualify_reason",

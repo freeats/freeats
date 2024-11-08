@@ -34,7 +34,7 @@
                data: { bs_toggle: :tooltip, bs_title: "Disqualify", bs_placement: "bottom" },
              )
   ul.dropdown-menu.dropdown-menu-end
-    - Placement::MANUAL_DISQUALIFY_STATUSES.each do |status|
+    - DisqualifyReason.pluck(:title).each do |status|
       li
         = form_with url: change_status_ats_placement_path(placement, position_pipeline_card:) do |form|
           ruby:
@@ -52,7 +52,7 @@
               else
                 {
                   data: { bs_toggle: "tooltip", bs_placement: "left" },
-                  title: t("candidates.disqualification.disqualify_statuses.#{status}")
+                  title: t("candidates.disqualification.disqualify_statuses.#{status.parameterize.underscore}")
                 }
               end
           = tag.div(**(tooltip_hash || {})) do

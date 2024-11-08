@@ -1,7 +1,7 @@
 ruby:
   tooltip_text =
     StringIO.open do |s|
-      s << "Disqualify reason: #{placement.status.humanize} <br>" if placement.disqualified?
+      s << "Disqualify reason: #{placement.disqualify_reason.title} <br>" if placement.disqualified?
       s << t("core.last_activity_time",
              time: short_time_ago_in_words(placement.last_modification_event.performed_at))
       sanitize(s.string)

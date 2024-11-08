@@ -3,9 +3,6 @@
 class Placement < ApplicationRecord
   acts_as_tenant(:tenant)
 
-  MANUAL_DISQUALIFY_STATUSES =
-    %w[availability team_fit remote_only location no_reply not_interested workload other_offer
-       overpriced overqualified underqualified position_closed other].freeze
   has_many :events, as: :eventable, dependent: :destroy
   has_many :scorecards, dependent: :destroy
 
