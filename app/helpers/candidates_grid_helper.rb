@@ -21,7 +21,12 @@ module CandidatesGridHelper
               [render(IconComponent.new(:clock, size: :tiny)), placement.status.humanize],
               " "
             )
-          else
+          when "disqualified"
+            safe_join(
+              [render(IconComponent.new(:ban, size: :tiny)), placement.disqualify_reason.title],
+              " "
+            )
+          else # TODO: remove this branch after updating placement_status enum
             safe_join(
               [render(IconComponent.new(:ban, size: :tiny)), placement.status.humanize],
               " "
