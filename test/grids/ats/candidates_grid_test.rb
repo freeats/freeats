@@ -190,7 +190,8 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
   test "status filter should return only disqualified candidates for disqualified " \
        "option and only reserved candidates for reserved option" do
     disqualified_placement = placements(:jake_golang_sourced)
-    disqualified_placement.update!(status: :availability)
+    availability_reason = disqualify_reasons(:availability_toughbyte)
+    disqualified_placement.update!(status: :disqualified, disqualify_reason: availability_reason)
     reserved_placement = placements(:john_ruby_replied)
     reserved_placement.update!(status: :reserved)
 
