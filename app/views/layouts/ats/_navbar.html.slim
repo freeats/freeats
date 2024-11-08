@@ -2,8 +2,7 @@
     li.nav-item class=("active" if request.fullpath.eql?("/ats/settings"))
       = link_to t("core.settings"), ats_settings_path, class: "nav-link"
     li.nav-item
-      = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "nav-link",
-                  form: { data: { turbo: false } }
+      = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "nav-link"
 
 nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.column-gap-3
   - if rodauth.logged_in? && current_account.member?
