@@ -31,7 +31,6 @@ body {
     border-top: 1px solid #DCE1E7;
   }
 
-  // Styles for the navbar dropdown menu.
   @media (max-width: 992px) {
     .nav-item.active {
       .nav-link {
@@ -40,8 +39,7 @@ body {
     }
   }
 
-  // Styles for the avatar dropdown menu.
-  .avatar-dropdown {
+  .account-icon-dropdown {
     min-width: 100%;
 
     .nav-item {
@@ -51,6 +49,12 @@ body {
       &.active:after {
         content: none;
       }
+    }
+  }
+
+  @media (min-width: 992px) {
+    #accountIconNav {
+      display: none !important;
     }
   }
 }
