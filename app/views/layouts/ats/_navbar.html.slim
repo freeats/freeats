@@ -20,7 +20,7 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.gap-3
             = link_to t("core.dashboard"), root_path, class: "nav-link"
         - if allowed_to?(:index?, with: ATS::TaskPolicy)
           li.nav-item class=("active" if @nav_item == :tasks)
-            = link_to ats_tasks_path, class: "nav-link d-inline-flex align-items-center gap-1 pt-md-2"
+            = link_to ats_tasks_path, class: "nav-link gap-1 pt-md-2 justify-content-between"
               = t("core.tasks")
               = render partial: "ats/tasks/navbar_counter", locals: { pending_tasks_count: @pending_tasks_count }
         - if allowed_to?(:index?, with: ATS::CandidatePolicy)
