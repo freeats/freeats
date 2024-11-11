@@ -34,6 +34,7 @@ class Placement < ApplicationRecord
   ].index_with(&:to_s)
 
   validate :position_stage_must_be_present_in_position
+  validate :only_disqualified_placements_have_disqualify_reason
 
   scope :join_last_placement_added_or_changed_event, lambda {
     joins(
@@ -82,5 +83,13 @@ class Placement < ApplicationRecord
     return if position.stages.include?(position_stage)
 
     errors.add(:position_stage, "must be present in position")
+  end
+
+  def only_disqualified_placements_have_disqualify_reason
+    if status == "disqualified" && disqualify_reason.blank?
+      errors.add(:base, "Disqualified placement must have a disqualification reason")
+    elsif status != "disqualified" && disqualify_reason.present?
+      errors.add(:base, "Not disqualified placement must not have a disqualification reason")
+    end
   end
 end
