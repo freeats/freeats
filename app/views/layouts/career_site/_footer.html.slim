@@ -1,4 +1,12 @@
 footer.pt-2.px-4
   .container.container-small
-    .text-center.text-md-start
-      = t("career_site.footer_text")
+    .row.row-gap-3
+      .col-12.col-md-6.text-center.text-md-start
+        = t("career_site.footer_text")
+      .col-12.col-md-6.d-flex.justify-content-center.justify-content-md-end
+        - if CareerSite::PositionsController::TOS_LINK.present?
+          = link_to t("career_site.tos_link"), CareerSite::PositionsController::TOS_LINK
+        - if CareerSite::PositionsController::TOS_LINK.present? && CareerSite::PositionsController::PRIVACY_LINK.present?
+          .mx-2 ·
+        - if CareerSite::PositionsController::PRIVACY_LINK.present?
+          = link_to t("career_site.privacy_link"), CareerSite::PositionsController::PRIVACY_LINK
