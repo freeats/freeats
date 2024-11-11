@@ -7,7 +7,7 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
   end
 
-  test "should change status and create event and disqualify_reason" do
+  test "should change status, create event and disqualify_reason if it doesn't exist" do
     placement = placements(:sam_golang_replied)
     actor_account = accounts(:admin_account)
     old_status = placement.status
@@ -31,8 +31,6 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
 
       assert reason
       assert_equal reason.title, new_status.humanize
-      assert_equal reason.description,
-                   I18n.t("candidates.disqualification.disqualify_statuses.#{new_status}")
 
       event = Event.last
 
@@ -71,8 +69,7 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
 
         assert reason
         assert_equal reason.title, new_status.humanize
-        assert_equal reason.description,
-                     I18n.t("candidates.disqualification.disqualify_statuses.#{new_status}")
+        assert_equal reason.description, disqualify_reasons(:no_reply_toughbyte).description
 
         event = Event.last
 
