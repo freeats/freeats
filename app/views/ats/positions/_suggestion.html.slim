@@ -17,7 +17,7 @@
                   aria: { expanded: false, haspopup: true },
                 )
         ul.dropdown-menu.dropdown-menu-end
-          - DisqualifyReason.each do |reason|
+          - DisqualifyReason.find_each do |reason|
             ruby:
               tooltip_hash = {
                 data: { bs_toggle: "tooltip", bs_placement: "left" },
