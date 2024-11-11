@@ -109,9 +109,6 @@
     --tblr-btn-padding-y: 4px;
   }
 
-  // variable that did not exists in tabler but used by selectize.
-  --bs-border-color-translucent: var(--tblr-border-color);
-
   .selectize-input {
     border-radius: 4px !important;
     vertical-align: middle; // Fix the height of the component.
@@ -276,31 +273,35 @@
 // In this case we moved the dropdown styles out of the `.select-component` class.
 .selectize-dropdown {
   border-radius: 4px;
+  border: 1px solid rgba(4, 32, 69, 0.1);
   box-shadow: none !important;
-  color: $gray-900;
+  color: var(--tblr-gray-800);
 
   .selected {
     background-color: white;
-    color: $gray-900;
 
     // not disabled options.
     &[data-selectable] {
-      background-color: $blue-500;
-      color: white;
+      background-color: rgba(var(--tblr-blue-rgb), 0.04);
+      color: var(--tblr-blue);
     }
   }
 
   .option {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     font-size: var(--select_component_font_size);
 
     &.active[data-selectable] {
-      background-color: $gray-200;
-      color: $gray-900;
+      background-color: rgba(var(--tblr-gray-500-rgb), 0.08);
+      color: var(--tblr-gray-800);
     }
   }
 
   .selectize-dropdown-content {
     max-height: 200px;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
   }
 
   .selectize-dropdown-emptyoptionlabel {
