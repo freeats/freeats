@@ -59,7 +59,8 @@ class HtmlSelectComponent < SelectComponent
 
   def stimulus_controller_options
     options = { data: { controller: "html-select-component",
-                        html_select_component_item_as_rich_text_value: item_as_rich_text } }
+                        html_select_component_item_as_rich_text_value: item_as_rich_text,
+                        html_select_component_with_chevron_value: local? } }
     options[:data].merge!(set_body_as_dropdown_parent) if anchor_dropdown_to_body.present?
 
     if local
