@@ -108,8 +108,8 @@ en:
     address: Address
     advancement:
       good_candidate: Good candidate
-      irrelevant: Completely irrelevant
-      might_be_irrelevant: Might be irrelevant
+      irrelevant_candidate: Completely irrelevant
+      relevant_candidate: Might be irrelevant
       perfect_candidate: Perfect candidate
     alternative_name: Alternative name
     blacklisted: Blacklisted
