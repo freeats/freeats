@@ -93,7 +93,7 @@ class CareerSite::PositionsController < ApplicationController
       end
 
       if RecaptchaV3::ENABLED && !Recaptcha::ENABLED
-        render_error t("career_site.recaptcha_error"), status: :unprocessable_entity
+        render_error t("recaptcha.error"), status: :unprocessable_entity
         return
       end
     end
@@ -101,7 +101,7 @@ class CareerSite::PositionsController < ApplicationController
     if recaptcha_v2_modal_was_shown && !helpers.public_recaptcha_v2_verified?(
       recaptcha_v2_response: params["g-recaptcha-response"]
     )
-      render_error t("career_site.recaptcha_error"), status: :unprocessable_entity
+      render_error t("recaptcha.error"), status: :unprocessable_entity
       return
     end
 
