@@ -31,7 +31,7 @@ class Placements::ChangeStatus < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       if add_disqualify_reason
-        disqualify_reason = yield find_or_create_disqualify_reason(new_status)
+        disqualify_reason = yield find_disqualify_reason(new_status)
         placement.disqualify_reason_id = disqualify_reason.id
       end
       yield save_placement(placement)
@@ -51,20 +51,11 @@ class Placements::ChangeStatus < ApplicationOperation
     Failure[:placement_invalid, placement.errors.full_messages.presence || e.to_s]
   end
 
-  def find_or_create_disqualify_reason(reason)
+  def find_disqualify_reason(reason)
     disqualify_reason = DisqualifyReason.find_by(title: reason.humanize)
 
     return Success(disqualify_reason) if disqualify_reason.present?
 
-    disqualify_reason =
-      DisqualifyReason.new(
-        title: reason.humanize,
-        description: reason
-      )
-    disqualify_reason.save!
-
-    Success(disqualify_reason)
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:disqualify_reason_invalid, disqualify_reason.errors.full_messages.presence || e.to_s]
+    Failure[:disqualify_reason_invalid, I18n.t("placements.reason_not_found")]
   end
 end
