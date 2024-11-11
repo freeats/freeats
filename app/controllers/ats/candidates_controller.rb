@@ -191,7 +191,7 @@ class ATS::CandidatesController < AuthorizedController
             @all_activities
             .includes(
               :stage_to,
-              eventable: [:position, :email_message, { placement: :position }],
+              eventable: [:position, { placement: :position }],
               actor_account: :member,
               assigned_member: :account,
               unassigned_member: :account
