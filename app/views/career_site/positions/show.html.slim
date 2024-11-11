@@ -35,7 +35,7 @@
         = sanitize @position.description.body&.to_html
   hr.my-4
   #application_form
-    h2.mb-3 Apply for this job
+    h2.mb-3 = t("career_site.positions.apply_position")
     = form_with url: apply_career_site_position_path( \
                        tenant_slug: @current_tenant.slug,
                        position_id: @position.id),
