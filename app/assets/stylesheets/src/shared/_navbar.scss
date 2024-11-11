@@ -16,4 +16,35 @@ body {
 
 .navbar {
   --tblr-navbar-padding-x: 1.5rem;
+
+  &.header .navbar-toggler {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .navbar-nav .nav-link .badge {
+    position: inherit;
+    transform: none;
+  }
+
+  @include media-breakpoint-down(lg) {
+    .nav-item.active {
+      .nav-link {
+        color: var(--tblr-primary);
+      }
+    }
+  }
+
+  .account-icon-dropdown {
+    min-width: 100%;
+
+    .nav-item {
+      white-space: nowrap;
+      padding: var(--tblr-dropdown-item-padding-y) var(--tblr-dropdown-item-padding-x);
+
+      &.active:after {
+        content: none;
+      }
+    }
+  }
 }
