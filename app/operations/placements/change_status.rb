@@ -59,7 +59,7 @@ class Placements::ChangeStatus < ApplicationOperation
     disqualify_reason =
       DisqualifyReason.new(
         title: reason.humanize,
-        description: I18n.t("candidates.disqualification.disqualify_statuses.#{reason}")
+        description: reason.description
       )
     disqualify_reason.save!
 
