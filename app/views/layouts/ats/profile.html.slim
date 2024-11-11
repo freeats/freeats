@@ -5,13 +5,13 @@
       section#header.row
         = yield :header
 
-      - if content_for?(:tab_list)
-        section#tab-list.mt-2
+      .card
+        section#tab-list.card-header.mt-2
           = yield :tab_list
 
-      section#tab-content.tab-content
-        .tab-pane.active
-          = yield
+        section#tab-content.card-body.tab-content
+          .tab-pane.active
+            = yield
 
     .col-12.col-lg-5.col-xl-4.mt-4.mt-lg-0
       section#side-info
