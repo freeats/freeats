@@ -54,3 +54,16 @@
   border-bottom-left-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
 }
+
+.card-with-tabs {
+  background-color: transparent;
+  border: none;
+
+  .nav-link.active {
+    background-color: transparent;
+  }
+}
+
+.card.card-with-tabs > .card-body {
+  padding: 0;
+}
