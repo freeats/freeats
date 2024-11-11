@@ -23,6 +23,15 @@ class UpdatePlacementStatuses < ActiveRecord::Migration[7.1]
         'other'
       );
 
+      UPDATE placements
+        SET disqualify_reason_id = (
+          SELECT id
+            FROM disqualify_reasons
+            WHERE disqualify_reasons.title ILIKE replace(placements.status::text, '_', ' ')
+            AND placements.tenant_id = disqualify_reasons.tenant_id
+            LIMIT 1
+        );
+
       ALTER TABLE placements
         ALTER COLUMN status DROP DEFAULT,
         ALTER COLUMN status TYPE placement_status_new
