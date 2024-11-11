@@ -7,18 +7,18 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
   end
 
-  test "should change status, create event and disqualify_reason if it doesn't exist" do
+  test "should change status, create event and assign disqualify_reason" do
     placement = placements(:sam_golang_replied)
     actor_account = accounts(:admin_account)
     old_status = placement.status
-    new_status = "team_fit"
+    new_status = "no_reply"
 
-    assert_not DisqualifyReason.find_by(title: new_status.humanize)
+    assert DisqualifyReason.find_by(title: new_status.humanize)
     assert_equal placement.status, "qualified"
     assert_not placement.disqualify_reason
     assert_not_equal old_status, new_status
 
-    assert_difference ["Event.count", "DisqualifyReason.count"] do
+    assert_difference "Event.count" do
       placement = Placements::ChangeStatus.new(
         new_status:,
         placement:,
@@ -31,6 +31,7 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
 
       assert reason
       assert_equal reason.title, new_status.humanize
+      assert_equal reason.description, disqualify_reasons(:no_reply_toughbyte).description
 
       event = Event.last
 
@@ -41,50 +42,11 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
       assert_equal event.changed_field, "status"
       assert_equal event.changed_from, old_status
       assert_equal event.changed_to, new_status
+      assert_equal event.properties["reason"], new_status.humanize
     end
   end
 
-  test "should change status, create event and not create disqualify_reason if it's already exists" do
-    placement = placements(:sam_golang_replied)
-    actor_account = accounts(:admin_account)
-    old_status = placement.status
-    new_status = "no_reply"
-
-    assert DisqualifyReason.find_by(title: new_status.humanize)
-    assert_equal placement.status, "qualified"
-    assert_not placement.disqualify_reason
-    assert_not_equal old_status, new_status
-
-    assert_difference "Event.count" do
-      assert_no_difference "DisqualifyReason.count" do
-        placement = Placements::ChangeStatus.new(
-          new_status:,
-          placement:,
-          actor_account:
-        ).call.value!
-
-        assert_equal placement.status, "disqualified"
-
-        reason = placement.disqualify_reason
-
-        assert reason
-        assert_equal reason.title, new_status.humanize
-        assert_equal reason.description, disqualify_reasons(:no_reply_toughbyte).description
-
-        event = Event.last
-
-        assert_equal event.actor_account_id, actor_account.id
-        assert_equal event.type, "placement_changed"
-        assert_equal event.eventable_id, placement.id
-        assert_equal event.eventable_type, "Placement"
-        assert_equal event.changed_field, "status"
-        assert_equal event.changed_from, old_status
-        assert_equal event.changed_to, new_status
-      end
-    end
-  end
-
-  test "should change status, create event and not create disqualify_reason " \
+  test "should change status, create event and not assign disqualify_reason " \
        "if status changed to reserved or qualified" do
     placement = placements(:sam_golang_replied)
     actor_account = accounts(:admin_account)
@@ -96,26 +58,59 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
     assert_not_equal old_status, new_status
 
     assert_difference "Event.count" do
-      assert_no_difference "DisqualifyReason.count" do
-        placement = Placements::ChangeStatus.new(
-          new_status:,
-          placement:,
-          actor_account:
-        ).call.value!
+      placement = Placements::ChangeStatus.new(
+        new_status:,
+        placement:,
+        actor_account:
+      ).call.value!
 
-        assert_equal placement.status, "reserved"
-        assert_not placement.disqualify_reason
+      assert_equal placement.status, "reserved"
+      assert_not placement.disqualify_reason
 
-        event = Event.last
+      event = Event.last
 
-        assert_equal event.actor_account_id, actor_account.id
-        assert_equal event.type, "placement_changed"
-        assert_equal event.eventable_id, placement.id
-        assert_equal event.eventable_type, "Placement"
-        assert_equal event.changed_field, "status"
-        assert_equal event.changed_from, old_status
-        assert_equal event.changed_to, new_status
-      end
+      assert_equal event.actor_account_id, actor_account.id
+      assert_equal event.type, "placement_changed"
+      assert_equal event.eventable_id, placement.id
+      assert_equal event.eventable_type, "Placement"
+      assert_equal event.changed_field, "status"
+      assert_equal event.changed_from, old_status
+      assert_equal event.changed_to, new_status
+      assert_empty event.properties
+    end
+  end
+
+  test "should change status, create event and unassign disqualify_reason " \
+       "if status changed from disqualified to qualified" do
+    placement = placements(:sam_golang_sourced)
+    actor_account = accounts(:admin_account)
+    old_status = placement.status
+    new_status = "qualified"
+
+    assert_equal placement.status, "disqualified"
+    assert placement.disqualify_reason
+    assert_not_equal old_status, new_status
+
+    assert_difference "Event.count" do
+      placement = Placements::ChangeStatus.new(
+        new_status:,
+        placement:,
+        actor_account:
+      ).call.value!
+
+      assert_equal placement.status, "qualified"
+      assert_not placement.disqualify_reason
+
+      event = Event.last
+
+      assert_equal event.actor_account_id, actor_account.id
+      assert_equal event.type, "placement_changed"
+      assert_equal event.eventable_id, placement.id
+      assert_equal event.eventable_type, "Placement"
+      assert_equal event.changed_field, "status"
+      assert_equal event.changed_from, old_status
+      assert_equal event.changed_to, new_status
+      assert_empty event.properties
     end
   end
 end
