@@ -11,11 +11,15 @@ class Tenant < ApplicationRecord
   validate :all_active_positions_have_recruiter_when_career_site_enabled
 
   def create_mandatory_disqualify_reasons
-    %w[no_reply position_closed].each do |title|
+    titles_with_descriptions = {
+      no_reply: "The candidate didn't reply to the first message or stopped replying afterwards.",
+      position_closed: "The position was closed."
+    }
+    titles_with_descriptions.each_pair do |title, description|
       DisqualifyReason.create!(
         tenant_id: id,
-        title: title.humanize,
-        description: I18n.t("candidates.disqualification.disqualify_statuses.#{title}")
+        title: title.to_s.humanize,
+        description:
       )
     end
   end
