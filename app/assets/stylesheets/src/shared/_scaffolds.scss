@@ -1,6 +1,12 @@
 $footer-min-height: 117px;
 $navbar-min-height: 53px;
 
+:root,
+:host {
+  --tblr-btn-box-shadow: none;
+  --tblr-box-shadow-input: none;
+}
+
 html,
 body {
   height: 100%;
