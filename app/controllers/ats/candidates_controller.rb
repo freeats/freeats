@@ -139,6 +139,15 @@ class ATS::CandidatesController < AuthorizedController
             .events
             .union(
               Event
+              .where(eventable_type: "EmailMessage")
+              .where(
+                eventable_id: EmailMessageAddress
+                .where(address: @candidate.all_emails)
+                .select(:email_message_id)
+              )
+            )
+            .union(
+              Event
               .where(eventable_type: "Placement")
               .where(eventable_id: @candidate.placements.ids)
             )

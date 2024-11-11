@@ -16,8 +16,12 @@ module CandidatesHelper
   def candidate_display_activity(event)
     actor_account_name = compose_actor_account_name(event)
 
-    text = [actor_account_name]
-
+    text =
+      if event.type == "email_received"
+        []
+      else
+        [actor_account_name]
+      end
     text <<
       case event.type
       when "candidate_added"
@@ -54,6 +58,22 @@ module CandidatesHelper
           unassigned \
           #{event_actor_account_name_for_assignment(event:, member: event.unassigned_member)} \
           as recruiter from the candidate
+        TEXT
+      when "email_received"
+        message = event.eventable
+        <<~TEXT
+          The candidate #{message.in_reply_to.present? ? 'replied to' : 'sent'} the email <b>
+          #{message.subject}</b> <blockquote class='activity-quote
+          'text-truncate'>#{
+          message.plain_body&.truncate(180)}</blockquote>
+        TEXT
+      when "email_sent"
+        message = event.eventable
+        <<~TEXT
+          #{message.in_reply_to.present? ? 'replied to' : 'sent'}
+          the email <b>#{message.subject}</b> <blockquote class='activity-quote
+          text-truncate'>#{
+          message.plain_body&.truncate(180)}</blockquote>
         TEXT
       when "active_storage_attachment_added"
         "added file <b>#{event.properties['name']}</b>"
