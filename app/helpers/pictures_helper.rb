@@ -5,8 +5,9 @@
 module PicturesHelper
   def picture_avatar_icon(attachment, opts = {})
     src_sym = :src
+    size = opts.delete(:size) || "sm"
 
-    opts[:class] = ["avatar", "avatar-sm", *opts.delete(:class)]
+    opts[:class] = ["avatar", "avatar-#{size}", *opts.delete(:class)]
 
     if (icon = attachment&.variant(:icon)).present?
       if (url = url_for(icon)).present?
