@@ -331,7 +331,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  --tblr-box-shadow-input: none;
 
   &.ghost {
     border: 1px solid transparent;
@@ -339,7 +338,6 @@
     color: $gray-600;
 
     &:hover {
-      --bs-btn-focus-box-shadow: 0 0 0 0 transparent;
       color: $gray-900;
     }
 
