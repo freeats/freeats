@@ -321,35 +321,34 @@ class ATS::PositionsController < AuthorizedController
   end
 
   def set_side_header_predefined_options
-    members_query =
+    alphabetically_ordered_members =
       Member
-      .includes(:account)
       .order("accounts.name")
 
     @options_for_collaborators =
-      members_query
+      alphabetically_ordered_members
       .where.not(id: @position.recruiter_id)
       .where(access_level: Position::COLLABORATORS_ACCESS_LEVEL)
       .map do |member|
-        predefined_option(member, :collaborator_ids)
+        compose_options_for_select(member, :collaborator_ids)
       end
 
     @options_for_hiring_managers =
-      members_query
+      alphabetically_ordered_members
       .where(access_level: Position::HIRING_MANAGERS_ACCESS_LEVEL)
       .map do |member|
-        predefined_option(member, :hiring_manager_ids)
+        compose_options_for_select(member, :hiring_manager_ids)
       end
 
     @options_for_interviewers =
-      members_query
+      alphabetically_ordered_members
       .where(access_level: Position::INTERVIEWERS_ACCESS_LEVEL)
       .map do |member|
-        predefined_option(member, :interviewer_ids)
+        compose_options_for_select(member, :interviewer_ids)
       end
   end
 
-  def predefined_option(member, field_name)
+  def compose_options_for_select(member, field_name)
     {
       text: member.account.name,
       value: member.id,
