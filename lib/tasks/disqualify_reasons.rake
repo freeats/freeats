@@ -9,12 +9,13 @@ namespace :disqualify_reasons do
          overpriced overqualified underqualified position_closed other].freeze
 
     Tenant.select(:id).find_each do |tenant|
-      disqualify_reasons.each do |title|
+      disqualify_reasons.each do |reason|
+        title = reason.humanize
         if DisqualifyReason.find_by(tenant_id: tenant.id, title:).blank?
           DisqualifyReason.create!(
             tenant_id: tenant.id,
-            title: title.humanize,
-            description: I18n.t("candidates.disqualification.disqualify_statuses.#{title}")
+            title:,
+            description: I18n.t("candidates.disqualification.disqualify_statuses.#{reason}")
           )
         end
       rescue StandardError => e
