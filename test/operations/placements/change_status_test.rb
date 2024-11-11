@@ -12,8 +12,9 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
     actor_account = accounts(:admin_account)
     old_status = placement.status
     new_status = "no_reply"
+    reason = DisqualifyReason.find_by(title: new_status.humanize)
 
-    assert DisqualifyReason.find_by(title: new_status.humanize)
+    assert reason
     assert_equal placement.status, "qualified"
     assert_not placement.disqualify_reason
     assert_not_equal old_status, new_status
@@ -27,9 +28,7 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
 
       assert_equal placement.status, "disqualified"
 
-      reason = placement.disqualify_reason
-
-      assert reason
+      assert_equal placement.disqualify_reason, reason
       assert_equal reason.title, new_status.humanize
       assert_equal reason.description, disqualify_reasons(:no_reply_toughbyte).description
 
@@ -52,7 +51,9 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
     actor_account = accounts(:admin_account)
     old_status = placement.status
     new_status = "reserved"
+    reason = DisqualifyReason.find_by(title: new_status.humanize)
 
+    assert_not reason
     assert_equal placement.status, "qualified"
     assert_not placement.disqualify_reason
     assert_not_equal old_status, new_status
