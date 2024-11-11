@@ -110,7 +110,7 @@
   }
 
   // variable that did not exists in tabler but used by selectize.
-  --bs-border-color-translucent: var(--tblr-border-color);
+  --bs-border-color-translucent: var(--tblr-border-color-translucent);
 
   .selectize-input {
     border-radius: 4px !important;
@@ -277,30 +277,33 @@
 .selectize-dropdown {
   border-radius: 4px;
   box-shadow: none !important;
-  color: $gray-900;
+  color: var(--tblr-gray-800);
 
   .selected {
     background-color: white;
-    color: $gray-900;
 
     // not disabled options.
     &[data-selectable] {
-      background-color: $blue-500;
-      color: white;
+      background-color: rgba(var(--tblr-blue-rgb), 0.04);
+      color: var(--tblr-blue);
     }
   }
 
   .option {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     font-size: var(--select_component_font_size);
 
     &.active[data-selectable] {
-      background-color: $gray-200;
-      color: $gray-900;
+      background-color: rgba(var(--tblr-gray-500-rgb), 0.08);
+      color: var(--tblr-gray-800);
     }
   }
 
   .selectize-dropdown-content {
     max-height: 200px;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
   }
 
   .selectize-dropdown-emptyoptionlabel {
