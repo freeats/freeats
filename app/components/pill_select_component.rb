@@ -41,7 +41,8 @@ class PillSelectComponent < SelectComponent
   private
 
   def stimulus_controller_options
-    options = { data: { controller: "pill-select-component" } }
+    options = { data: { controller: "pill-select-component",
+                        pill_select_component_with_chevron_value: local? } }
     options[:data].merge!(remote_options) if remote
     options[:data].merge!(create_new_option) if allow_create_new_option
     options
