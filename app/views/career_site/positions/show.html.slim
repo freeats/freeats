@@ -47,6 +47,7 @@
           form,
           method: :full_name,
           required: true,
+          size: :medium,
           placeholder: "Full name" \
         )
       = render TextInputComponent.new( \
@@ -54,6 +55,7 @@
           method: :email,
           required: true,
           type: :email,
+          size: :medium,
           pattern: EmailRegexp::HTML_EMAIL_PATTERN,
           placeholder: "Email" \
         )
