@@ -279,3 +279,17 @@ ivan_ivanov_candidate_added:
   eventable: ivan_ivanov (Candidate)
   performed_at: <%= 2.days.ago %>
   tenant: acme_tenant
+
+john_msg1_email_received:
+  type: :email_sent
+  actor_account: admin_account
+  eventable: john_msg1 (EmailMessage)
+  performed_at: <%= 2.day.ago %>
+  tenant: toughbyte_tenant
+
+john_msg2_email_received:
+  type: :email_received
+  actor_account: admin_account
+  eventable: john_msg2 (EmailMessage)
+  performed_at: <%= 1.day.ago %>
+  tenant: toughbyte_tenant
