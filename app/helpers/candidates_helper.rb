@@ -19,6 +19,8 @@ module CandidatesHelper
     text =
       if event.type == "placement_added" && event.properties["self_applied"] == true
         ["Candidate"]
+      elsif event.type == "email_received"
+        []
       else
         [actor_account_name]
       end
@@ -65,6 +67,22 @@ module CandidatesHelper
           unassigned \
           #{event_actor_account_name_for_assignment(event:, member: event.unassigned_member)} \
           as recruiter from the candidate
+        TEXT
+      when "email_received"
+        message = event.eventable
+        <<~TEXT
+          The candidate #{message.in_reply_to.present? ? 'replied to' : 'sent'} the email <b>
+          #{message.subject}</b> <blockquote class='activity-quote
+          'text-truncate'>#{
+          message.plain_body&.truncate(180)}</blockquote>
+        TEXT
+      when "email_sent"
+        message = event.eventable
+        <<~TEXT
+          #{message.in_reply_to.present? ? 'replied to' : 'sent'}
+          the email <b>#{message.subject}</b> <blockquote class='activity-quote
+          text-truncate'>#{
+          message.plain_body&.truncate(180)}</blockquote>
         TEXT
       when "active_storage_attachment_added"
         "added file <b>#{event.properties['name']}</b>"
