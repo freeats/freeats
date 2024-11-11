@@ -12,6 +12,7 @@ export default class extends SelectComponentController {
     itemAsRichText: Boolean,
     type: String,
     dropdownParent: String,
+    withChevron: Boolean,
   };
 
   selectTargetConnected(target) {
@@ -50,7 +51,7 @@ export default class extends SelectComponentController {
 
     $(target).selectize({
       plugins: ["auto_position"],
-      showArrow: true,
+      showArrow: this.withChevronValue,
       selectOnTab: false,
       searchField: "html",
       dropdownParent: this.dropdownParentValue,

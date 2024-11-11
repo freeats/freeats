@@ -9,6 +9,7 @@ export default class extends SelectComponentController {
     searchUrl: String,
     allowEmptyOption: Boolean,
     dropdownParent: String,
+    withChevron: Boolean,
   };
 
   selectTargetConnected(target) {
@@ -37,7 +38,7 @@ export default class extends SelectComponentController {
       allowEmptyOption: this.allowEmptyOptionValue,
       selectOnTab: false,
       searchField: ["text", "value"],
-      showArrow: true,
+      showArrow: this.withChevronValue,
       dropdownParent: this.dropdownParentValue,
       ...preloadedOptions,
       ...remoteSearchParams,
