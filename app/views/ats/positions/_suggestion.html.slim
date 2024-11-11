@@ -8,23 +8,25 @@
     .col
       = link_to suggestion.name, tab_ats_position_path(suggestion.id, :info)
     .col-auto.hstack.gap-2
-      = render IconButtonComponent.new( \
-                 :ban,
-                 type: :button,
-                 size: :tiny,
-                 data: { bs_toggle: :dropdown },
-                 aria: { expanded: false, haspopup: true },
-               )
-      ul.dropdown-menu.dropdown-menu-end
-        - Placement::MANUAL_DISQUALIFY_STATUSES.each do |status|
-          ruby:
-            tooltip_hash = {
-              data: { bs_toggle: "tooltip", bs_placement: "left" },
-              title: t("candidates.disqualification.disqualify_statuses.#{status}")
-            }
-          li = form_with url: ats_candidate_placements_path(candidate_id, position_id: suggestion.id) do |form|
-            = form.button({ class: "dropdown-item", name: "suggestion_disqualify_reason",
-                            value: status }.merge(tooltip_hash))
-              = status.humanize
-      = form_with url: ats_candidate_placements_path(candidate_id, position_id: suggestion.id)
+      span data-bs-toggle="tooltip" data-bs-title=t("candidates.disqualify")
+        = render IconButtonComponent.new( \
+                  :ban,
+                  type: :button,
+                  size: :tiny,
+                  data: { bs_toggle: :dropdown },
+                  aria: { expanded: false, haspopup: true },
+                )
+        ul.dropdown-menu.dropdown-menu-end
+          - Placement::MANUAL_DISQUALIFY_STATUSES.each do |status|
+            ruby:
+              tooltip_hash = {
+                data: { bs_toggle: "tooltip", bs_placement: "left" },
+                title: t("candidates.disqualification.disqualify_statuses.#{status}")
+              }
+            li = form_with url: ats_candidate_placements_path(candidate_id, position_id: suggestion.id) do |form|
+              = form.button({ class: "dropdown-item", name: "suggestion_disqualify_reason",
+                              value: status }.merge(tooltip_hash))
+                = status.humanize
+      = form_with url: ats_candidate_placements_path(candidate_id, position_id: suggestion.id),
+                       data: { "bs-toggle": "tooltip", "bs-title": t("core.add_button") }
         = render IconButtonComponent.new(:plus, size: :tiny)
