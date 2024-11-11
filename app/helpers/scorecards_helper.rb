@@ -7,7 +7,7 @@ module ScorecardsHelper
       relevant: [:mood_empty, "text-red-300"],
       good: [:mood_smile, "text-green-300"],
       perfect: [:mood_happy, "text-green"]
-    }[score&.to_sym]
+    }[score.to_sym]
 
     content_tag(:span, class: ["d-flex align-items-center gap-2", color]) do
       concat(render(IconComponent.new(icon, icon_type: :filled)))
