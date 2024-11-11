@@ -2,9 +2,9 @@
 
 #account_avatar.hstack.gap-2
   - if account.avatar.attached?
-    = image_tag account.avatar.variant(:medium), class: "avatar avatar-md-custom"
+    = image_tag account.avatar.variant(:medium), class: "avatar avatar-64px"
   - else
-    span.avatar.avatar-md-custom
+    span.avatar.avatar-64px
       = render IconComponent.new(:user)
 
   = form_with model: account,
