@@ -9,7 +9,7 @@
 .row#position_heading.mt-3.gap-3.justify-content-between
   .col-12.col-md-10
     .col
-      h2 = @position.name
+      h1 = @position.name
     - if @position.open?
       .col
         = @position.location&.short_name
