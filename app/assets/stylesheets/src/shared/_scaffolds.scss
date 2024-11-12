@@ -257,3 +257,15 @@ picture {
 svg {
   max-width: unset;
 }
+
+.nav-tabs {
+  --tblr-nav-tabs-link-active-bg: transparent;
+
+  .nav-item .nav-link.active {
+    border-bottom-color: var(--tblr-body-bg);
+  }
+}
+
+.modal-content .nav-item .nav-link.active {
+  border-bottom-color: var(--tblr-modal-bg);
+}
