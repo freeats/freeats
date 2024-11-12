@@ -10,6 +10,13 @@ body {
   padding-bottom: 48px;
 }
 
+.container-md-small {
+  @media (min-width: 768px) {
+    min-width: 320px;
+    max-width: 740px;
+  }
+}
+
 // place the footer at the bottom of the page
 .wrapper {
   min-height: calc(100% - #{$footer-min-height});
