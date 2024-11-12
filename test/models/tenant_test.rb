@@ -62,7 +62,7 @@ class TenantTest < ActiveSupport::TestCase
     assert_includes Tenant.models_with_tenant, "disqualify_reasons"
   end
 
-  test "destroy_with_all_references should destroy tenant and all associated models" do
+  test "cascade_destroy should destroy tenant and all associated models" do
     tenant = tenants(:toughbyte_tenant)
 
     assert_raises(ActiveRecord::InvalidForeignKey) do
