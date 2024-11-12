@@ -4,9 +4,6 @@ class CareerSite::PositionsController < ApplicationController
   include Dry::Monads[:result]
   set_current_tenant_through_filter
 
-  TOS_LINK = ENV.fetch("TOS_LINK", nil)
-  PRIVACY_LINK = ENV.fetch("PRIVACY_LINK", nil)
-
   layout "career_site/application"
 
   before_action :set_cors_headers
