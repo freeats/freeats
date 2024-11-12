@@ -51,7 +51,7 @@
       | &nbsp;
       span.badge = @candidate.files.size
 
-  ul.nav.nav-tabs.d-none.d-md-flex.card-header-tabs
+  ul.nav.nav-tabs.d-none.d-md-flex
     - if allowed_to?(:show_info?, @candidate)
       li.nav-item
         = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
@@ -77,9 +77,10 @@
         = link_to tab_labels[:activities], tab_ats_candidate_path(@candidate, :activities),
                   class: "nav-link #{'active' if @active_tab == 'activities'}"
   .d-md-none.dropdown.w-100.profile-mobile-nav
-    button.btn.form-control.d-flex.align-items-center.text-dark.dropdown-toggle.w-100.px-3[
+    button.btn.form-control.dropdown-toggle.justify-content-between.w-100[
         id="dropdownNavLink" data-bs-toggle="dropdown"]
-      = tab_labels[@active_tab.to_sym]
+      span
+        = tab_labels[@active_tab.to_sym]
     ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
       - if allowed_to?(:show_info?, @candidate)
         li = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
