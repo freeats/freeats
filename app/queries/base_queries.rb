@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HubQueries
+class BaseQueries
   FILES_PATH = "app/queries"
   VARIABLE_PATTERN = "(?<!:)<prefix>\\w+\\b"
   PREFIX_PATTERN = /^-- prefix: (.+)$/
