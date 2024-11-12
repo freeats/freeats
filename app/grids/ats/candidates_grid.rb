@@ -88,18 +88,16 @@ class ATS::CandidatesGrid
     :status,
     :enum,
     select: lambda {
-      mandatory_statuses_for_select =
-        [%w[Qualified qualified], %w[Disqualified disqualified], %w[Reserved reserved]]
-      mandatory_statuses_for_select + DisqualifyReason.pluck(:title).map { [_1, _1] }
+      Placement.statuses.map { |k, v| [k.humanize, v] } + DisqualifyReason.pluck(:title, :id)
     },
     include_blank: I18n.t("core.status"),
     placeholder: I18n.t("core.status")
-  ) do |status|
+  ) do |status_or_reason_id|
     query =
-      if status.in?(%w[qualified reserved disqualified])
-        where(placements: { status: })
+      if status_or_reason_id.in?(%w[qualified reserved disqualified])
+        where(placements: { status: status_or_reason_id })
       else
-        where(placements: { disqualify_reasons: { title: status } })
+        where(placements: { disqualify_reasons: { id: status_or_reason_id } })
       end
 
     query
