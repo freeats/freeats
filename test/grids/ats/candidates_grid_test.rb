@@ -106,6 +106,7 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
     candidate_with_both_placements = candidates(:sam)
     golang_position = positions(:golang_position)
     ruby_position = positions(:ruby_position)
+    disqualify_reason = disqualify_reasons(:no_reply_toughbyte)
 
     grid_assets = ATS::CandidatesGrid.new.assets.to_a
 
@@ -145,7 +146,7 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
       ATS::CandidatesGrid.new(
         position: golang_position.id,
         stage: %w[Sourced Hired],
-        status: "no_reply"
+        status: disqualify_reason.id
       ).assets.to_a
 
     assert_not_includes grid_assets, candidate_without_placements

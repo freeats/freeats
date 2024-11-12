@@ -11,38 +11,35 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
     placement = placements(:sam_golang_replied)
     actor_account = accounts(:admin_account)
     old_status = placement.status
-    new_status = "no_reply"
-    reason = DisqualifyReason.find_by(title: new_status.humanize)
+    new_status = "disqualified"
+    reason = disqualify_reasons(:no_reply_toughbyte)
+    disqualify_reason_id = reason.id
 
-    assert reason
     assert_equal placement.status, "qualified"
     assert_not placement.disqualify_reason
-    assert_not_equal old_status, new_status
 
     assert_difference "Event.count" do
       placement = Placements::ChangeStatus.new(
         new_status:,
+        disqualify_reason_id:,
         placement:,
         actor_account:
       ).call.value!
-
-      assert_equal placement.status, "disqualified"
-
-      assert_equal placement.disqualify_reason, reason
-      assert_equal reason.title, new_status.humanize
-      assert_equal reason.description, disqualify_reasons(:no_reply_toughbyte).description
-
-      event = Event.last
-
-      assert_equal event.actor_account_id, actor_account.id
-      assert_equal event.type, "placement_changed"
-      assert_equal event.eventable_id, placement.id
-      assert_equal event.eventable_type, "Placement"
-      assert_equal event.changed_field, "status"
-      assert_equal event.changed_from, old_status
-      assert_equal event.changed_to, new_status
-      assert_equal event.properties["reason"], new_status.humanize
     end
+
+    assert_equal placement.status, "disqualified"
+    assert_equal placement.disqualify_reason, reason
+
+    event = Event.last
+
+    assert_equal event.actor_account_id, actor_account.id
+    assert_equal event.type, "placement_changed"
+    assert_equal event.eventable_id, placement.id
+    assert_equal event.eventable_type, "Placement"
+    assert_equal event.changed_field, "status"
+    assert_equal event.changed_from, old_status
+    assert_equal event.changed_to, new_status
+    assert_equal event.properties["reason"], reason.title
   end
 
   test "should change status, create event and not assign disqualify_reason " \
@@ -51,12 +48,9 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
     actor_account = accounts(:admin_account)
     old_status = placement.status
     new_status = "reserved"
-    reason = DisqualifyReason.find_by(title: new_status.humanize)
 
-    assert_not reason
     assert_equal placement.status, "qualified"
     assert_not placement.disqualify_reason
-    assert_not_equal old_status, new_status
 
     assert_difference "Event.count" do
       placement = Placements::ChangeStatus.new(
@@ -64,21 +58,21 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
         placement:,
         actor_account:
       ).call.value!
-
-      assert_equal placement.status, "reserved"
-      assert_not placement.disqualify_reason
-
-      event = Event.last
-
-      assert_equal event.actor_account_id, actor_account.id
-      assert_equal event.type, "placement_changed"
-      assert_equal event.eventable_id, placement.id
-      assert_equal event.eventable_type, "Placement"
-      assert_equal event.changed_field, "status"
-      assert_equal event.changed_from, old_status
-      assert_equal event.changed_to, new_status
-      assert_empty event.properties
     end
+
+    assert_equal placement.status, "reserved"
+    assert_not placement.disqualify_reason
+
+    event = Event.last
+
+    assert_equal event.actor_account_id, actor_account.id
+    assert_equal event.type, "placement_changed"
+    assert_equal event.eventable_id, placement.id
+    assert_equal event.eventable_type, "Placement"
+    assert_equal event.changed_field, "status"
+    assert_equal event.changed_from, old_status
+    assert_equal event.changed_to, new_status
+    assert_empty event.properties
   end
 
   test "should change status, create event and unassign disqualify_reason " \
@@ -90,7 +84,6 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
 
     assert_equal placement.status, "disqualified"
     assert placement.disqualify_reason
-    assert_not_equal old_status, new_status
 
     assert_difference "Event.count" do
       placement = Placements::ChangeStatus.new(
@@ -98,20 +91,20 @@ class Placement::ChangeStatusTest < ActiveSupport::TestCase
         placement:,
         actor_account:
       ).call.value!
-
-      assert_equal placement.status, "qualified"
-      assert_not placement.disqualify_reason
-
-      event = Event.last
-
-      assert_equal event.actor_account_id, actor_account.id
-      assert_equal event.type, "placement_changed"
-      assert_equal event.eventable_id, placement.id
-      assert_equal event.eventable_type, "Placement"
-      assert_equal event.changed_field, "status"
-      assert_equal event.changed_from, old_status
-      assert_equal event.changed_to, new_status
-      assert_empty event.properties
     end
+
+    assert_equal placement.status, "qualified"
+    assert_not placement.disqualify_reason
+
+    event = Event.last
+
+    assert_equal event.actor_account_id, actor_account.id
+    assert_equal event.type, "placement_changed"
+    assert_equal event.eventable_id, placement.id
+    assert_equal event.eventable_type, "Placement"
+    assert_equal event.changed_field, "status"
+    assert_equal event.changed_from, old_status
+    assert_equal event.changed_to, new_status
+    assert_empty event.properties
   end
 end
