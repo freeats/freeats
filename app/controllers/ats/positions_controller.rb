@@ -321,42 +321,39 @@ class ATS::PositionsController < AuthorizedController
   end
 
   def set_side_header_predefined_options
-    @options_for_collaborators =
+    alphabetically_ordered_members =
       Member
-      .includes(:account)
+      .order("accounts.name")
+
+    @options_for_collaborators =
+      alphabetically_ordered_members
       .where.not(id: @position.recruiter_id)
       .where(access_level: Position::COLLABORATORS_ACCESS_LEVEL)
       .map do |member|
-        {
-          text: member.account.name,
-          value: member.id,
-          selected: @position.collaborator_ids&.include?(member.id)
-        }
+        compose_options_for_select(member, :collaborator_ids)
       end
 
     @options_for_hiring_managers =
-      Member
-      .includes(:account)
+      alphabetically_ordered_members
       .where(access_level: Position::HIRING_MANAGERS_ACCESS_LEVEL)
       .map do |member|
-        {
-          text: member.account.name,
-          value: member.id,
-          selected: @position.hiring_manager_ids&.include?(member.id)
-        }
+        compose_options_for_select(member, :hiring_manager_ids)
       end
 
     @options_for_interviewers =
-      Member
-      .includes(:account)
+      alphabetically_ordered_members
       .where(access_level: Position::INTERVIEWERS_ACCESS_LEVEL)
       .map do |member|
-        {
-          text: member.account.name,
-          value: member.id,
-          selected: @position.interviewer_ids&.include?(member.id)
-        }
+        compose_options_for_select(member, :interviewer_ids)
       end
+  end
+
+  def compose_options_for_select(member, field_name)
+    {
+      text: member.account.name,
+      value: member.id,
+      selected: @position.public_send(field_name)&.include?(member.id)
+    }
   end
 
   def set_pipeline_variables
