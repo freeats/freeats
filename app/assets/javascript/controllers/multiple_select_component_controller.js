@@ -10,6 +10,7 @@ export default class extends SelectComponentController {
     buttonGroupSize: String,
     searchUrl: String,
     instantSubmit: Boolean,
+    withChevron: Boolean,
   };
 
   selectTargetConnected(target) {
@@ -45,7 +46,7 @@ export default class extends SelectComponentController {
       },
       searchField: ["text", "value"],
       selectOnTab: false,
-      showArrow: true,
+      showArrow: this.withChevronValue,
       ...preloadedOptions,
       ...remoteSearchParams,
     });

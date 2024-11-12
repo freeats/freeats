@@ -32,7 +32,7 @@ class Tenant < ApplicationRecord
     ActiveRecord::Base.connection.execute(query_to_find_all_tables_with_tenant_id).values.flatten
   end
 
-  def destroy_with_associations
+  def destroy_with_all_references
     models = Tenant.models_with_tenant.map { Object.const_get(_1.classify) }
     ActiveRecord::Base.transaction do
       models.each do |model|
@@ -43,6 +43,16 @@ class Tenant < ApplicationRecord
     end
   rescue ActiveRecord::RecordNotDestroyed, ActiveRecord::InvalidForeignKey => e
     errors.add(:base, e.message.to_s)
+  end
+
+  def create_mandatory_disqualify_reasons
+    %w[no_reply position_closed].each do |title|
+      DisqualifyReason.create!(
+        tenant_id: id,
+        title: title.humanize,
+        description: I18n.t("candidates.disqualification.disqualify_statuses.#{title}")
+      )
+    end
   end
 
   private

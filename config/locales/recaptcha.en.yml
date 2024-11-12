@@ -1,0 +1,7 @@
+en:
+  recaptcha:
+    error: ReCaptcha verification failed. Please try again.
+    privacy_message_html:
+      This site is protected by reCAPTCHA and the Google <a href='https://policies.google.com/privacy'
+      target='_blank'>privacy policy</a> and <a href='https://policies.google.com/terms'
+      target='_blank'>terms of service</a> apply.

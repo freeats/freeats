@@ -34,7 +34,7 @@ class Candidates::RemoveFile < ApplicationOperation
     in Success(_)
       Success()
     in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:validation_failed, e.to_s]
+      Failure[:file_invalid, e.to_s]
     end
   end
 end

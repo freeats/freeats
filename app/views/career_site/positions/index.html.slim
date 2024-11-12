@@ -1,5 +1,8 @@
-#positions.container.container-small
-  h1.mb-2 = t("career_site.positions.open_positions_header", name: @current_tenant.name)
+- content_for :title do
+  = t("career_site.positions.positions_title", company_name: @current_tenant.name)
+
+#positions
+  h1.mb-4 = t("career_site.positions.open_positions_header", company_name: @current_tenant.name)
   .list-group.gap-3 id="position-list" role="list"
     - @positions.each do |position|
       .list-group-item.custom-list-item.px-1 id="position_#{position.id}"

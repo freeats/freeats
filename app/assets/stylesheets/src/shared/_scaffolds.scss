@@ -298,18 +298,6 @@ button {
   }
 }
 
-.selectpicker-button {
-  border: 1px solid $gray-500;
-  background-color: unset;
-  color: unset;
-  &:hover,
-  &:active {
-    border: 1px solid $gray-500;
-    background-color: $gray-100;
-    color: unset;
-  }
-}
-
 .hidden {
   display: none; // does not include !important flag as bootstrap d-none class
 }

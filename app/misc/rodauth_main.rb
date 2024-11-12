@@ -52,6 +52,7 @@ module CreateAccount
           account.verified!
           Member.create!(account_id:, tenant_id:, access_level: :member)
         else
+          Tenant.find(tenant_id).create_mandatory_disqualify_reasons
           Member.create!(account_id:, tenant_id:, access_level: :admin)
           CandidateSource.create!(tenant_id:, name: "LinkedIn")
           # If mailer is not enabled, it's impossible to verify account via email.
