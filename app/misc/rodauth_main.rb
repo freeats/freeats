@@ -52,6 +52,7 @@ module CreateAccount
           Member.create!(account_id:, tenant_id:, access_level: :member)
         else
           tenant = Tenant.create!(name: param("company_name"))
+          tenant.create_mandatory_disqualify_reasons
           account = Account.find(account_id)
           account.update!(tenant_id: tenant.id)
           Member.create!(account_id:, tenant:, access_level: :admin)

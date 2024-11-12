@@ -48,7 +48,8 @@ class MultipleSelectComponent < SelectComponent
     options = { data: {
       controller: "multiple-select-component",
       multiple_select_component_button_group_size_value: BUTTON_GROUP_SIZE_CLASSES[size],
-      multiple_select_component_instant_submit_value: instant_submit
+      multiple_select_component_instant_submit_value: instant_submit,
+      multiple_select_component_with_chevron_value: local?
     } }
     options[:data].merge!(remote_options) if remote
     options

@@ -3,16 +3,11 @@
 # Use <picture> HTML element to show different versions of an image,
 # or when an image is combined with text in a view.
 module PicturesHelper
-  def picture_avatar_icon(attachment, helper_opts = {}, html_opts = {})
-    opts = html_opts
-    hopts = { lazy: false }.merge(helper_opts)
+  def picture_avatar_icon(attachment, opts = {})
     src_sym = :src
-    if hopts[:lazy]
-      opts = html_opts.merge(class: "lazy") { |_, old, new| "#{old} #{new}" }
-      src_sym = :"data-src"
-    end
+    size = opts.delete(:size) || "sm"
 
-    opts[:class] = ["avatar", "avatar-sm", *opts.delete(:class)]
+    opts[:class] = ["avatar", "avatar-#{size}", *opts.delete(:class)]
 
     if (icon = attachment&.variant(:icon)).present?
       if (url = url_for(icon)).present?

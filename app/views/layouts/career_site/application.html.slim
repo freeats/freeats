@@ -24,6 +24,13 @@ html
     = csrf_meta_tags
     = include_gon
     = stylesheet_link_tag "career_site", media: "all", "data-turbo-track": "reload"
+    - if ApplicationController::CLARITY_KEY.present?
+      javascript:
+        (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "#{ApplicationController::CLARITY_KEY}");
 
     - # rubocop:disable Rails/OutputSafety
     - if @custom_styles.present?
