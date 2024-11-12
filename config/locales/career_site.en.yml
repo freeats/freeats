@@ -8,6 +8,9 @@ en:
       closed_alert: This position is no longer active.
       description: Description
       open_positions_header: Open positions at %{company_name}
+      invalid_email_error: Not a valid email address.
+      invalid_file_error: The file can't be blank.
+      invalid_full_name_error: The full name can't be blank.
       position_title: "%{position_name} at %{company_name}"
       positions_title: Positions at %{company_name}
       submit_application: Submit application
