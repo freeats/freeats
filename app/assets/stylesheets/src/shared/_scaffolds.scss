@@ -1,6 +1,12 @@
 $footer-min-height: 117px;
 $navbar-min-height: 53px;
 
+:root,
+:host {
+  --tblr-btn-box-shadow: none;
+  --tblr-box-shadow-input: none;
+}
+
 html,
 body {
   height: 100%;
@@ -254,4 +260,16 @@ svg {
 
 .list-group {
   --tblr-list-group-item-padding-y: 0.75rem;
+}
+
+.nav-tabs {
+  --tblr-nav-tabs-link-active-bg: transparent;
+
+  .nav-item .nav-link.active {
+    border-bottom-color: var(--tblr-body-bg);
+  }
+}
+
+.modal-content .nav-item .nav-link.active {
+  border-bottom-color: var(--tblr-modal-bg);
 }
