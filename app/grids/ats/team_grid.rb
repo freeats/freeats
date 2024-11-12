@@ -31,7 +31,7 @@ class ATS::TeamGrid
   attr_accessor(:current_member)
 
   column(:avatar_image, html: true, header: "", order: false) do |model|
-    picture_avatar_icon model.avatar, {}
+    picture_avatar_icon model.avatar
   end
 
   column(:name, header: I18n.t("core.name"), order: false)
