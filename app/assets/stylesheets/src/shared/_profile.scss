@@ -28,12 +28,71 @@
   }
 }
 
-#notes,
-.notes-block {
+#notes {
   :target,
   .modal-note-active {
     box-shadow: 0px 0px 0px 4px #e4f1ff;
   }
+
+  &.task-notes {
+    .card,
+    .card-body,
+    .card-footer {
+      background-color: var(--tblr-modal-bg);
+    }
+
+    .list-group-item.note {
+      &:active,
+      &:hover,
+      &:focus {
+        background-color: var(--tblr-modal-bg);
+      }
+    }
+  }
+
+  &:not(.task-notes) {
+    .card,
+    .card-body,
+    .card-footer {
+      background-color: var(--tblr-body-bg);
+    }
+
+    .list-group-item.note {
+      &:active,
+      &:hover,
+      &:focus {
+        background-color: var(--tblr-body-bg);
+      }
+    }
+  }
+
+  .card {
+    border: 0;
+
+    .card-title {
+      margin-bottom: 0.5rem;
+    }
+
+    .card-body {
+      padding: 0;
+    }
+
+    .card-footer {
+      border-top: 0;
+      padding: 0.5rem 0 0 0;
+      text-align: end;
+    }
+  }
+
+  .list-group-item.note {
+    padding: 0 ;
+    border: 0;
+  }
+
+  .collapse .note {
+    padding-top: 0.5rem;
+  }
+
 }
 
 .profile-avatar-overlay {
