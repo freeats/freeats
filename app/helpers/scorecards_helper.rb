@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 module ScorecardsHelper
+  SCORE_STYLES = {
+    irrelevant: [:mood_sad, "text-red"],
+    relevant: [:mood_empty, "text-red-300"],
+    good: [:mood_smile, "text-green-300"],
+    perfect: [:mood_happy, "text-green"]
+  }.freeze
+
   def score_icon(score, with_text: false)
-    icon, color = {
-      irrelevant: [:mood_sad, "text-red"],
-      relevant: [:mood_empty, "text-red-300"],
-      good: [:mood_smile, "text-green-300"],
-      perfect: [:mood_happy, "text-green"]
-    }[score.to_sym]
+    icon, color = SCORE_STYLES[score.to_sym]
 
     content_tag(:span, class: ["d-flex align-items-center gap-2", color]) do
       concat(render(IconComponent.new(icon, icon_type: :filled)))

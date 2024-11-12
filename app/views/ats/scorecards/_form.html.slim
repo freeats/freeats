@@ -97,10 +97,7 @@ ruby:
       .d-flex
         label.d-flex.form-label data-bs-toggle="tooltip" data-bs-placement="top" title="This is required question" Score
       .form-selectgroup
-        - [%i[irrelevant mood_sad],
-           %i[relevant mood_empty],
-           %i[good mood_smile],
-           %i[perfect mood_happy]].each do |score, icon|
+        - ScorecardsHelper::SCORE_STYLES.each do |score, (icon, _)|
           .form-selectgroup-item
             = form.radio_button(:score, score, required: true, class: "form-selectgroup-input #{score}-score-input")
             = form.label("score_#{score}", class: "score-btn #{score}-score")
