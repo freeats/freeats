@@ -18,8 +18,7 @@ module ATS::MembersHelper
         concat(
           content_tag(
             :span,
-            class: "d-inline-flex align-items-center justify-content-center me-2",
-            style: "min-width: 32px; min-height: 32px;"
+            class: "d-inline-flex align-items-center justify-content-center me-2"
           ) do
             render(IconComponent.new(:ban, size: :medium))
           end

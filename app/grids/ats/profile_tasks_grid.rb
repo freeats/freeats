@@ -49,7 +49,9 @@ class ATS::ProfileTasksGrid
     :assignee,
     html: true,
     preload: { assignee: :account },
-    order: ->(scope) { scope.joins(assignee: :account).group("account.id").order("accounts.name") }
+    order: ->(scope) {
+             scope.left_outer_joins(assignee: :account).group("accounts.id").order("accounts.name")
+           }
   ) do |model|
     model.assignee&.account&.name
   end

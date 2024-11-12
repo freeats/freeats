@@ -5,7 +5,7 @@ import "selectize/dist/js/selectize";
 export default class extends SelectComponentController {
   static targets = ["select"];
 
-  static values = { searchUrl: String, createNewOption: Boolean };
+  static values = { searchUrl: String, createNewOption: Boolean, withChevron: Boolean };
 
   selectTargetConnected(target) {
     // The preloaded options are used to set the initial state of the selectize instance.
@@ -40,7 +40,7 @@ export default class extends SelectComponentController {
       selectOnTab: false,
       create: this.createNewOptionValue,
       createOnBlur: this.createNewOptionValue,
-      showArrow: true,
+      showArrow: this.withChevronValue,
       ...preloadedOptions,
       ...remoteSearchParams,
     });

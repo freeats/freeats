@@ -55,6 +55,28 @@
   border-bottom-right-radius: 0.25rem;
 }
 
+.placement-buttons {
+  .btn-group {
+    &:first-child {
+      button {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+    }
+    &:nth-child(2):not(:last-child) {
+      button {
+        border-radius: 0px;
+      }
+    }
+    &:last-child {
+      button {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+      }
+    }
+  }
+}
+
 #scorecard-form {
   .score-btn {
     @extend .form-selectgroup-label, .py-1, .px-2;

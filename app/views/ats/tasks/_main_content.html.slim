@@ -114,7 +114,7 @@ ruby:
       = label_tag :added_by, t("core.added_by"), class: ["col col-sm-4", label_classes]
       .col.col-sm-8.col-lg-9.hstack.gap-2
         - if added_by_account.present?
-          = picture_avatar_icon added_by_account.avatar, {}
+          = picture_avatar_icon added_by_account.avatar
           = added_by_account.name
         - else
           = inline_svg_tag "ats-icon.svg", class: "avatar avatar-sm toughbyte-black"
