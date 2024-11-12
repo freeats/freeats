@@ -32,7 +32,7 @@ class Tenant < ApplicationRecord
     ActiveRecord::Base.connection.execute(query_to_find_all_tables_with_tenant_id).values.flatten
   end
 
-  def destroy_with_fk_references
+  def cascade_destroy
     models = Tenant.models_with_tenant.map { Object.const_get(_1.classify) }
     ActiveRecord::Base.transaction do
       models.each do |model|

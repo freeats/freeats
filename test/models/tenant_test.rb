@@ -70,7 +70,7 @@ class TenantTest < ActiveSupport::TestCase
     end
 
     assert_nothing_raised do
-      tenant.destroy_with_fk_references
+      tenant.cascade_destroy
     end
   end
 end
