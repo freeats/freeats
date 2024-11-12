@@ -5,9 +5,9 @@ footer.pt-2.px-4
         = link_to t("career_site.footer_text"), "https://www.freeats.com/", target: "_blank"
       .col-12.col-md-6.d-flex.justify-content-center.justify-content-md-end
         - if CareerSite::PositionsController::TOS_LINK.present?
-          = link_to t("career_site.tos_link"), CareerSite::PositionsController::TOS_LINK
+          = link_to t("career_site.tos_link"), CareerSite::PositionsController::TOS_LINK, target: "_blank"
         - if CareerSite::PositionsController::TOS_LINK.present? && \
              CareerSite::PositionsController::PRIVACY_LINK.present?
           .mx-2 ·
         - if CareerSite::PositionsController::PRIVACY_LINK.present?
-          = link_to t("career_site.privacy_link"), CareerSite::PositionsController::PRIVACY_LINK
+          = link_to t("career_site.privacy_link"), CareerSite::PositionsController::PRIVACY_LINK, target: "_blank"
