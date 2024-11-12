@@ -243,9 +243,14 @@
     .item {
       padding-top: 0 !important;
       padding-bottom: 0 !important;
-      background-color: $gray-200 !important;
       margin: 0rem !important;
       border-radius: 4px !important;
+
+      // Tabler badge styles
+      background: var(--tblr-bg-surface-secondary) !important;
+      border: 1px solid var(--tblr-gray-200) !important;
+      color: var(--tblr-gray-500) !important;
+      font-weight: var(--tblr-font-weight-bold);
 
       .remove {
         border: none !important;
