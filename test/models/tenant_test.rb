@@ -35,7 +35,7 @@ class TenantTest < ActiveSupport::TestCase
   end
 
   test "models_with_tenant should return table names of all models, associated with tenant" do
-    assert_equal Tenant.models_with_tenant.count, 23
+    assert_equal Tenant.models_with_tenant.count, 24
     assert_includes Tenant.models_with_tenant, "candidates"
     assert_includes Tenant.models_with_tenant, "positions"
     assert_includes Tenant.models_with_tenant, "scorecards"
@@ -59,9 +59,10 @@ class TenantTest < ActiveSupport::TestCase
     assert_includes Tenant.models_with_tenant, "candidate_phones"
     assert_includes Tenant.models_with_tenant, "members"
     assert_includes Tenant.models_with_tenant, "candidate_alternative_names"
+    assert_includes Tenant.models_with_tenant, "disqualify_reasons"
   end
 
-  test "destroy_with_associations should destroy tenant and all associated models" do
+  test "destroy_with_all_references should destroy tenant and all associated models" do
     tenant = tenants(:toughbyte_tenant)
 
     assert_raises(ActiveRecord::InvalidForeignKey) do
@@ -69,7 +70,7 @@ class TenantTest < ActiveSupport::TestCase
     end
 
     assert_nothing_raised do
-      tenant.destroy_with_associations
+      tenant.destroy_with_fk_references
     end
   end
 end
