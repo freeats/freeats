@@ -24,6 +24,7 @@ html
     = csrf_meta_tags
     = include_gon
     = stylesheet_link_tag "career_site", media: "all", "data-turbo-track": "reload"
+    = javascript_include_tag "career_site", "data-turbo-track": "reload"
     - if ApplicationController::CLARITY_KEY.present?
       javascript:
         (function(c,l,a,r,i,t,y){
