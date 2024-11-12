@@ -2,7 +2,7 @@ footer.pt-2.px-4
   .container-fluid.container-md.container-small
     .row.row-gap-3
       .col-12.col-md-6.text-center.text-md-start
-        = t("career_site.footer_text")
+        = link_to t("career_site.footer_text"), "https://www.freeats.com/", target: "_blank"
       .col-12.col-md-6.d-flex.justify-content-center.justify-content-md-end
         - if CareerSite::PositionsController::TOS_LINK.present?
           = link_to t("career_site.tos_link"), CareerSite::PositionsController::TOS_LINK
