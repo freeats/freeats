@@ -90,19 +90,16 @@ class ATS::CandidatesGrid
     select: lambda {
       mandatory_statuses_for_select =
         [%w[Qualified qualified], %w[Disqualified disqualified], %w[Reserved reserved]]
-      mandatory_statuses_for_select +
-      DisqualifyReason.pluck(:title).map { [_1, _1.parameterize.underscore] }
+      mandatory_statuses_for_select + DisqualifyReason.pluck(:title).map { [_1, _1] }
     },
     include_blank: I18n.t("core.status"),
     placeholder: I18n.t("core.status")
   ) do |status|
     query =
-      if status == "disqualified"
-        where.not(placements: { status: %w[reserved qualified] })
-      elsif status.in?(%w[qualified reserved])
+      if status.in?(%w[qualified reserved disqualified])
         where(placements: { status: })
       else
-        where(placements: { disqualify_reasons: { title: status.humanize } })
+        where(placements: { disqualify_reasons: { title: status } })
       end
 
     query
