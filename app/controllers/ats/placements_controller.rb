@@ -93,6 +93,7 @@ class ATS::PlacementsController < AuthorizedController
 
     case Placements::ChangeStatus.new(
       new_status:,
+      disqualify_reason_id: params["disqualify_reason_id"],
       placement: @placement,
       actor_account: current_account
     ).call

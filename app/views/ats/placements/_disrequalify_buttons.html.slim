@@ -56,5 +56,6 @@
                 }
               end
           = tag.div(**(tooltip_hash || {})) do
-            = form.button({ class: "dropdown-item", name: "status", value: reason.title }.merge(button_attr || {})) do
+            = form.hidden_field :disqualify_reason_id, value: reason.id
+            = form.button({ class: "dropdown-item", name: "status", value: "disqualified" }.merge(button_attr || {})) do
               = reason.title

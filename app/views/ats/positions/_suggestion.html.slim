@@ -24,8 +24,9 @@
                 title: reason.description
               }
             li = form_with url: ats_candidate_placements_path(candidate_id, position_id: suggestion.id) do |form|
+              = form.hidden_field :disqualify_reason_id, value: reason.id
               = form.button({ class: "dropdown-item", name: "suggestion_disqualify_reason",
-                              value: reason.title }.merge(tooltip_hash))
+                              value: "disqualified" }.merge(tooltip_hash))
                 = reason.title
       = form_with url: ats_candidate_placements_path(candidate_id, position_id: suggestion.id),
                        data: { "bs-toggle": "tooltip", "bs-title": t("core.add_button") }
