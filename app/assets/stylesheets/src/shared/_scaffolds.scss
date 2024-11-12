@@ -258,12 +258,12 @@ svg {
   .nav-item .nav-link.active {
     border-bottom-color: var(--tblr-body-bg);
     // To hide the border-bottom from the `nav-tabs`
-    // border-bottom-width: 2px;
+    border-bottom-width: 2px;
   }
 }
 
 .modal-content .nav-item .nav-link.active {
   border-bottom-color: var(--tblr-modal-bg);
   // To hide the border-bottom from the `nav-tabs`
-  // border-bottom-width: 2px;
+  border-bottom-width: 2px;
 }
