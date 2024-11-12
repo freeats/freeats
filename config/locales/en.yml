@@ -147,6 +147,7 @@ en:
         underqualified: The candidate didn't have the required skills or level of
           experience needed.
         workload: The candidate's availability didn't match with position requirements.
+      reason_not_found: Disqualification reason has not been found.
     disqualify: Disqualify
     download_file: download file
     emails: Emails
