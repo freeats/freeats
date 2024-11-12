@@ -137,7 +137,7 @@ class ATS::CandidatesGrid
     link_to(
       tab_ats_candidate_path(model.id, :info)
     ) do
-      picture_avatar_icon model.avatar, {}
+      picture_avatar_icon model.avatar
     end
   end
 
