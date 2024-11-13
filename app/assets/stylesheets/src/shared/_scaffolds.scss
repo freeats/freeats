@@ -12,6 +12,8 @@ $navbar-min-height: 53px;
 :host {
   --tblr-btn-box-shadow: none;
   --tblr-box-shadow-input: none;
+  --tblr-body-line-height: 1.5;
+  --tblr-line-height-h2: 1.2;
 }
 
 .text-green-300 {
@@ -26,10 +28,6 @@ html,
 body {
   height: 100%;
   min-width: 320px;
-}
-
-body {
-  --tblr-body-line-height: 1.5;
 }
 
 // place the footer at the bottom of the page
