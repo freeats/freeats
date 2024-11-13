@@ -2,6 +2,17 @@ body {
   padding-top: 0rem;
 }
 
+h1,
+h2,
+span,
+div {
+  color: var(--tblr-gray-800);
+}
+
+hr {
+  border-color: var(--tblr-border-color);
+}
+
 .container-small {
   min-width: 320px;
   max-width: 740px;
@@ -25,8 +36,9 @@ footer .container-fluid {
   min-height: calc(100% - #{$footer-min-height});
 }
 
-#back_on_all_positions {
-  color: $blue-500;
+#back_on_all_positions a,
+a div {
+  color: var(--tblr-primary);
 }
 
 footer {
@@ -35,9 +47,9 @@ footer {
   a,
   span,
   div {
-    color: $gray-600;
+    color: var(--tblr-secondary);
     &:visited:not(.btn, .nav-link, .dropdown-item, .badge) {
-      color: $gray-600;
+      color: var(--tblr-secondary);
     }
   }
 }
@@ -58,7 +70,7 @@ footer {
   border-left: none;
   border-right: none;
   border-top: none;
-  border-bottom: 1px solid $gray-500;
+  border-bottom: 1px solid var(--tblr-border-color);
   border-radius: 0;
 }
 
@@ -75,7 +87,7 @@ footer {
 
 .position_location {
   text-decoration: none;
-  color: var(--tblr-body-color);
+  color: var(--tblr-gray-800);
 }
 
 .position_location:hover {
