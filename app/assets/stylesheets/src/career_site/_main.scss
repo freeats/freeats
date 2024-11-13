@@ -5,9 +5,6 @@ body {
 .container-small {
   min-width: 320px;
   max-width: 740px;
-
-  padding-top: 24px;
-  padding-bottom: 48px;
 }
 
 .container-md-small {
@@ -15,6 +12,12 @@ body {
     min-width: 320px;
     max-width: 740px;
   }
+}
+
+main.container,
+footer .container-fluid {
+  padding-top: 32px;
+  padding-bottom: 48px;
 }
 
 // place the footer at the bottom of the page
@@ -27,7 +30,7 @@ body {
 }
 
 footer {
-  height: $footer-min-height;
+  min-height: $footer-min-height;
 
   a,
   span,
