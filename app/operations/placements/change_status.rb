@@ -13,12 +13,6 @@ class Placements::ChangeStatus < ApplicationOperation
 
     return Success(placement) if old_status == new_status
 
-    disqualify_reason = DisqualifyReason.find_by(id: disqualify_reason_id)
-    if new_status == "disqualified" && disqualify_reason.blank?
-      return Failure[:disqualify_reason_invalid,
-                     I18n.t("candidates.disqualification.reason_not_found")]
-    end
-
     placement_changed_params = {
       actor_account:,
       type: :placement_changed,
@@ -28,14 +22,19 @@ class Placements::ChangeStatus < ApplicationOperation
       changed_to: new_status
     }
 
-    placement.status = new_status
-
     if new_status == "disqualified"
+      disqualify_reason = DisqualifyReason.find_by(id: disqualify_reason_id)
+      if disqualify_reason.blank?
+        return Failure[:disqualify_reason_invalid,
+                       I18n.t("candidates.disqualification.reason_not_found")]
+      end
       placement_changed_params[:properties] = { reason: disqualify_reason.title }
       placement.disqualify_reason_id = disqualify_reason.id
     else
       placement.disqualify_reason_id = nil
     end
+
+    placement.status = new_status
 
     ActiveRecord::Base.transaction do
       yield save_placement(placement)
