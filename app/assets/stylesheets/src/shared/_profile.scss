@@ -29,9 +29,13 @@
 }
 
 #notes {
+  :target {
+    background-color: var(--tblr-blue-lt) !important;
+  }
+
   :target,
   .modal-note-active {
-    box-shadow: 0px 0px 0px 4px #e4f1ff;
+    box-shadow: 0px 0px 0px 4px var(--tblr-blue-lt) !important;
   }
 
   &.task-notes {
@@ -40,7 +44,7 @@
     .card-footer,
     .thread-collapse-button,
     .list-group-item.note {
-      background-color: var(--tblr-modal-bg) !important;
+      background-color: var(--tblr-modal-bg);
     }
   }
 
@@ -50,13 +54,8 @@
     .card-footer,
     .thread-collapse-button,
     .list-group-item.note {
-      background-color: var(--tblr-body-bg) !important;
+      background-color: var(--tblr-body-bg);
     }
-  }
-
-  .thread-collapse-button {
-    border: 0 !important;
-    box-shadow: none !important;
   }
 
   .private-thread .list-group {
@@ -65,10 +64,16 @@
     .card-footer,
     .thread-collapse-button,
     .list-group-item.note {
-      background-color: lightgoldenrodyellow !important;
-      box-shadow: 0px 0px 0px 4px lightgoldenrodyellow !important;
+      background-color: lightgoldenrodyellow;
+      box-shadow: 0px 0px 0px 4px lightgoldenrodyellow;
     }
   }
+
+  .thread-collapse-button {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
 
   .card {
     border: 0;
