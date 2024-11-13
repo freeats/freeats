@@ -22,7 +22,7 @@ ruby:
 / TODO: implement storing not saved scorecard data in local storage
 / Hub has callbacks on `evaluation-form` class.
 / https://github.com/toughbyte/ats/issues/480
-= form_with model: scorecard, url: submit_path, local: true,
+= form_with model: scorecard, url: submit_path, local: true, id: "scorecard-form",
             html: { class: "form evaluation-form" }, data: { turbo: false } do |form|
   = form.hidden_field :position_stage_id, value: scorecard.position_stage_id
   = form.hidden_field :placement_id, value: scorecard.placement_id
@@ -90,41 +90,30 @@ ruby:
                               rows: 2,
                               placeholder: ""
 
-  .profile-card
-    .card
-      .card-header
-        span.card-title Summary
-      .card-body
-        span data-bs-toggle="tooltip" data-bs-placement="top" title="This is required question" Score
-        .row.g-1
-          .col-auto
-            = form.radio_button(:score, :irrelevant, required: true, class: "btn-check")
-            = form.label(:score_irrelevant, class: "btn btn-sm btn-outline-danger")
-              = render IconComponent.new(:mood_sad, icon_type: :filled)
-              | <br>Completely<br>irrelevant
-          .col-auto
-            = form.radio_button(:score, :relevant, required: true, class: "btn-check")
-            = form.label(:score_relevant, class: "btn btn-sm btn-outline-warning")
-              = render IconComponent.new(:mood_empty, icon_type: :filled)
-              | <br>Might be<br>irrelevant
-          .col-auto
-            = form.radio_button(:score, :good, required: true, class: "btn-check")
-            = form.label(:score_good, class: "btn btn-sm btn-outline-success")
-              = render IconComponent.new(:mood_smile, icon_type: :filled)
-              | <br>Good<br>candidate
-          .col-auto
-            = form.radio_button(:score, :perfect, required: true, class: "btn-check")
-            = form.label(:score_perfect, class: "btn btn-sm btn-outline-info")
-              = render IconComponent.new(:mood_happy, icon_type: :filled)
-              | <br>Perfect<br>candidate
-        .mt-3
-            | Open-ended feedback
-        .card
-          .card-body
-            = trix_editor form,
-                          :summary,
-                          placeholder: "",
-                          value: scorecard.summary
+  .card
+    .card-header
+      span.card-title Summary
+    .card-body
+      .d-flex
+        label.d-flex.form-label data-bs-toggle="tooltip" data-bs-placement="top" title="This is required question" Score
+      .form-selectgroup
+        - ScorecardsHelper::SCORE_STYLES.each do |score, (icon, _)|
+          .form-selectgroup-item
+            = form.radio_button(:score, score, required: true, class: "form-selectgroup-input #{score}-score-input")
+            = form.label("score_#{score}", class: "score-btn #{score}-score")
+              = render IconComponent.new(icon, icon_type: :filled, class: "mb-2")
+              // This is done so, to reuse existing locales for the scores text
+              br
+              = sanitize t("candidates.advancement.#{score}_candidate").split.insert(-2, "<br>").join(" ")
+
+      .mt-3.form-label
+          | Open-ended feedback
+      .card
+        .card-body
+          = trix_editor form,
+                        :summary,
+                        placeholder: "",
+                        value: scorecard.summary
   .card-submit.hstack.gap-2.mt-4
     = render ButtonComponent.new
       | Save

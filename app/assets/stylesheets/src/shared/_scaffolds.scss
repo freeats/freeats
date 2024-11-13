@@ -2,9 +2,24 @@ $footer-min-height: 117px;
 $navbar-min-height: 53px;
 
 :root,
+:host,
+[data-bs-theme="light"] {
+  --tblr-red-300: #{$red-300};
+  --tblr-green-300: #{$green-300};
+}
+
+:root,
 :host {
   --tblr-btn-box-shadow: none;
   --tblr-box-shadow-input: none;
+}
+
+.text-green-300 {
+  color: var(--tblr-green-300);
+}
+
+.text-red-300 {
+  color: var(--tblr-red-300);
 }
 
 html,
