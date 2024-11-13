@@ -16,6 +16,7 @@ module CandidatesHelper
   def candidate_display_activity(event)
     actor_account_name = compose_actor_account_name(event)
 
+    # rubocop:disable Layout/IndentationWidth
     text =
       case event.type
       when "candidate_added"
@@ -160,7 +161,7 @@ module CandidatesHelper
         end
         return
       end
-
+    # rubocop:enable Layout/IndentationWidth
     left_datetime_element = tag.span(class: "fw-light me-2") do
       event.performed_at.to_fs(:datetime)
     end
