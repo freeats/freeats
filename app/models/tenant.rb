@@ -10,7 +10,7 @@ class Tenant < ApplicationRecord
 
   validate :all_active_positions_have_recruiter_when_career_site_enabled
 
-  def self.models_with_tenant
+  def self.tables_with_tenant_id
     query_to_find_all_tables_with_tenant_id =
       <<~SQL
         SELECT t.table_name
