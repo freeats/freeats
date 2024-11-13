@@ -19,7 +19,7 @@
     "sass": "^1.71.1",
     "selectize": "git+https://github.com/toughbyte/selectize.js.git",
     "tributejs": "5.1.0",
-    "trix": "^2.0.10"
+    "trix": "^2.1.4"
   },
   "devDependencies": {
     "@eslint/compat": "^1.1.0",

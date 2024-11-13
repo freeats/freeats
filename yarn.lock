@@ -1668,10 +1668,10 @@ tributejs@5.1.0:
   resolved "https://registry.yarnpkg.com/tributejs/-/tributejs-5.1.0.tgz#cadfb2d46958b70d7540db70b3d269478dc89b9a"
   integrity sha512-ABoVJqkdQccDduEuXfh2Ur9m0kcUmh+T7kIy2U9jU5v5qRtKnVC0/CnvCkEHoFx3zYSUFZOtB09xz7OzdTxCRw==
 
-trix@^2.0.10:
-  version "2.0.10"
-  resolved "https://registry.yarnpkg.com/trix/-/trix-2.0.10.tgz#43f1ff7a94c42f708bd2bad3a2783147c0583698"
-  integrity sha512-a24w8rNVL+g9nDDdiDZwQVQ9AEWiXAmk9r0ZbwimczJi/xlaM+m0d6upAi0vysDNu0HsiYDFS1/VrR7HbX0Aig==
+trix@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/trix/-/trix-2.1.4.tgz#a2f1e37fec03c9050bc7ba1d56056e606389a46f"
+  integrity sha512-f0AGnqBV8J2qW+fCtVU71JmvzjcxnO5Xbbd6Cl2KrHVRpgXKDqNGTmDmQzNHWU7T2OgtwHwvNiN+OIf3Z3KmHQ==
 
 tsconfig-paths@^3.15.0:
   version "3.15.0"
