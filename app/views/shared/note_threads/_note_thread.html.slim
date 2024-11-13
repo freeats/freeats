@@ -16,7 +16,7 @@ ruby:
         .collapse [class="#{'show' if expanded}" id="other-thread-notes-thread-#{thread.id}"
             data-note-thread-target="collapsedNotes"]
           - thread_notes[1..].each do |thread_note|
-            .mt-2
+            .mt-3
               = render "shared/notes/note", note: thread_note,
                                             thread:,
                                             show_reply: expanded,
