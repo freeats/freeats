@@ -12,10 +12,11 @@ class PlacementTest < ActiveSupport::TestCase
   test "should not allow not disqualified placements to have disqualify_reason" do
     placement = placements(:sam_golang_replied)
 
+    assert_predicate placement, :valid?
     assert_not placement.disqualified?
     assert_not placement.disqualify_reason
 
-    placement.update(disqualify_reason: disqualify_reasons(:no_reply_toughbyte))
+    placement.disqualify_reason = disqualify_reasons(:no_reply_toughbyte)
 
     assert_not placement.valid?
     assert_includes placement.errors.full_messages,
@@ -25,10 +26,11 @@ class PlacementTest < ActiveSupport::TestCase
   test "should not allow disqualified placements to have blank disqualify_reason" do
     placement = placements(:sam_golang_sourced)
 
+    assert_predicate placement, :valid?
     assert_predicate placement, :disqualified?
     assert placement.disqualify_reason
 
-    placement.update(disqualify_reason_id: nil)
+    placement.disqualify_reason_id = nil
 
     assert_not placement.valid?
     assert_includes placement.errors.full_messages,
