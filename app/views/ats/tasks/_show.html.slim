@@ -52,8 +52,8 @@ ruby:
                           aria-controls="activities" aria-selected="false"]
                         = t("core.activities")
                   .tab-content
-                    .tab-pane.fade.show.active.notes-block id="notes-tab" role="tabpanel" aria-labelledby="notes-tab"
-                      #notes.row
+                    .tab-pane.fade.show.active id="notes-tab" role="tabpanel" aria-labelledby="notes-tab"
+                      #notes.task-notes.row
                         = render partial: "shared/profile/notes",
                                 locals: { \
                                   all_active_members:,
