@@ -97,14 +97,10 @@ class ATS::CandidatesGrid
       if status_or_reason_id.in?(%w[qualified reserved disqualified])
         where(placements: { status: status_or_reason_id })
       else
-        where(placements: { disqualify_reasons: { id: status_or_reason_id } })
+        where(placements: { disqualify_reason_id: status_or_reason_id })
       end
 
-    query
-      .joins(:placements)
-      .joins("LEFT JOIN disqualify_reasons " \
-             "ON placements.disqualify_reason_id = disqualify_reasons.id")
-      .distinct
+    query.joins(:placements).distinct
   end
 
   filter(
