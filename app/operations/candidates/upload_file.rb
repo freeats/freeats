@@ -7,6 +7,7 @@ class Candidates::UploadFile < ApplicationOperation
   option :actor_account, Types::Instance(Account).optional
   option :file, Types::Instance(ActionDispatch::Http::UploadedFile)
   option :cv, Types::Strict::Bool.optional, default: proc { false }
+  option :text_checksum, Types::Strict::String.optional
 
   def call
     result = Try[ActiveRecord::RecordInvalid] do

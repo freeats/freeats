@@ -52,6 +52,16 @@ module ActiveStorageAttachment
     end
   end
 
+  def store_text_checksum(text_checksum)
+    if attachment_information
+      AttachmentInformations::Change.new(attachment_information:,
+                                          params: { text_checksum: }).call
+    else
+      AttachmentInformations::Add.new(params: { active_storage_attachment_id: id,
+                                                text_checksum: }).call
+    end
+  end
+
   def cv?
     return false unless attachment_information
 

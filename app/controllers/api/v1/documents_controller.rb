@@ -11,6 +11,7 @@ class API::V1::DocumentsController < AuthorizedController
     params_hash = prepare_params(params)
     file = params_hash.delete(:cv)
     file.original_filename = "resume.pdf"
+    text_checksum = Digest::MD5.hexdigest(CVParser::Parser.parse_pdf(file.tempfile))
 
     ActiveRecord::Base.transaction do
       case create_or_update_candidate(params_hash, url)
