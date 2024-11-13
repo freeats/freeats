@@ -88,12 +88,13 @@ class ATS::PlacementsController < AuthorizedController
   def change_status
     old_status = @placement.status
     new_status = params.require(:status)
+    disqualify_reason_id = params[:disqualify_reason_id]
 
     position_pipeline_card = params[:position_pipeline_card] == "true"
 
     case Placements::ChangeStatus.new(
       new_status:,
-      disqualify_reason_id: params["disqualify_reason_id"],
+      disqualify_reason_id:,
       placement: @placement,
       actor_account: current_account
     ).call
