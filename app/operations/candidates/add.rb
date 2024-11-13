@@ -11,7 +11,6 @@ class Candidates::Add < ApplicationOperation
         name: Types::Strict::String
       ).optional
     ),
-    avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
     blacklisted?: Types::Strict::String,
     company?: Types::Strict::String,
     cover_letter?: Types::Strict::String,
@@ -24,8 +23,6 @@ class Candidates::Add < ApplicationOperation
         type: Types::Strict::String
       ).optional
     ),
-    file_id_to_change_cv_status?: Types::Strict::String,
-    file_id_to_remove?: Types::Strict::String,
     full_name?: Types::Strict::String,
     headline?: Types::Strict::String,
     links?: Types::Strict::Array.of(
