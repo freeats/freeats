@@ -17,7 +17,7 @@ module CandidatesHelper
     actor_account_name = compose_actor_account_name(event)
 
     text =
-      if event.type == "placement_added" && event.properties["self_applied"] == true
+      if event.type == "placement_added" && event.properties["applied"] == true
         ["Candidate"]
       elsif event.type == "email_received"
         []
@@ -95,7 +95,7 @@ module CandidatesHelper
         "removed a note"
       when "placement_added"
         position = event.eventable.position
-        if event.properties["self_applied"] == true
+        if event.properties["applied"] == true
           "applied to #{link_to(position.name, ats_position_path(position))}"
         else
           "assigned the candidate to #{link_to(position.name, ats_position_path(position))}"

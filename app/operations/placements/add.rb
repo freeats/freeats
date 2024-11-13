@@ -10,7 +10,7 @@ class Placements::Add < ApplicationOperation
   )
   option :create_duplicate_placement, Types::Strict::Bool, default: -> { false }
   option :actor_account, Types::Instance(Account).optional, optional: true
-  option :self_applied, Types::Strict::Bool, default: -> { false }
+  option :applied, Types::Strict::Bool, default: -> { false }
 
   def call
     placement = Placement.new(
@@ -64,7 +64,7 @@ class Placements::Add < ApplicationOperation
   end
 
   def add_event(placement:, actor_account:)
-    properties = self_applied ? { self_applied: } : {}
+    properties = applied ? { applied: } : {}
     placement_added_params = {
       actor_account:,
       type: :placement_added,

@@ -37,7 +37,7 @@ class Candidates::Apply < ApplicationOperation
       placement = yield Placements::Add.new(
         params: { candidate_id: candidate.id, position_id: },
         actor_account:,
-        self_applied: true
+        applied: true
       ).call
 
       yield Placements::ChangeStage.new(new_stage: "Replied", placement:, actor_account:).call
