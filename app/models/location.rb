@@ -34,7 +34,7 @@ class Location < ApplicationRecord
   validates :type, presence: true
 
   def self.search_by_name(name, types: self.types.keys, limit: 25)
-    HubQueries.location_search_by_name(
+    BaseQueries.location_search_by_name(
       name,
       types:,
       limit:
