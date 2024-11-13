@@ -15,10 +15,6 @@ body {
   min-height: calc(100% - #{$footer-min-height});
 }
 
-.grecaptcha-badge {
-  visibility: hidden !important;
-}
-
 #back_on_all_positions a,
 #application_form a {
   color: $blue-500;
@@ -58,14 +54,4 @@ footer {
 
 .list-group .custom-list-item:hover {
   background-color: $blue-100;
-}
-
-#recaptcha-modal {
-  .modal-content {
-    height: 13rem;
-    width: 40.57rem;
-  }
-  #rc-anchor-container {
-    width: inherit;
-  }
 }

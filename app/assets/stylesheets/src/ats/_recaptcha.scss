@@ -7,3 +7,9 @@
     width: inherit;
   }
 }
+
+.grecaptcha-badge {
+  // Do not use display: none; as it appears to disable the spam checking functionality.
+  // https://stackoverflow.com/questions/44543157/how-to-hide-the-google-invisible-recaptcha-badge
+  visibility: hidden !important;
+}

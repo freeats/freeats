@@ -85,7 +85,7 @@ class ATS::CandidatesController < AuthorizedController
             if @single_message
               EmailMessage.with_addresses.where(id: params[:email_message_id])
             else
-              result = HubQueries.last_messages_of_each_thread(
+              result = BaseQueries.last_messages_of_each_thread(
                 email_thread_ids:
                   EmailThread.get_threads_with_addresses(
                     email_address: candidate_emails
