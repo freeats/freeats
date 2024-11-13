@@ -417,7 +417,7 @@ GEM
       io-console (~> 0.5)
     request_store (1.6.0)
       rack (>= 1.4)
-    rexml (3.2.6)
+    rexml (3.3.9)
     rinku (2.0.6)
     roda (3.78.0)
       rack
