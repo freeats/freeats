@@ -99,7 +99,6 @@ class ATS::CandidatesGrid
       else
         where(placements: { disqualify_reason_id: status_or_reason_id })
       end
-
     query.joins(:placements).distinct
   end
 
