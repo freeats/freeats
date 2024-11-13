@@ -16,7 +16,6 @@ module CandidatesHelper
   def candidate_display_activity(event)
     actor_account_name = compose_actor_account_name(event)
 
-    # rubocop:disable Layout/IndentationWidth
     text =
       case event.type
       when "candidate_added"
@@ -92,7 +91,7 @@ module CandidatesHelper
       when "active_storage_attachment_added"
         [actor_account_name, "added file <b>#{event.properties['name']}</b>"]
       when "active_storage_attachment_removed"
-                [actor_account_name, "removed file <b>#{event.properties['name']}</b>"]
+        [actor_account_name, "removed file <b>#{event.properties['name']}</b>"]
       when "note_added"
         [
           actor_account_name,
@@ -100,7 +99,7 @@ module CandidatesHelper
           #{event.eventable&.text&.truncate(180)}</blockquote>"
         ]
       when "note_removed"
-                [actor_account_name, "removed a note"]
+        [actor_account_name, "removed a note"]
       when "placement_added"
         position = event.eventable.position
         activity_text =
@@ -161,7 +160,7 @@ module CandidatesHelper
         end
         return
       end
-    # rubocop:enable Layout/IndentationWidth
+
     left_datetime_element = tag.span(class: "fw-light me-2") do
       event.performed_at.to_fs(:datetime)
     end
