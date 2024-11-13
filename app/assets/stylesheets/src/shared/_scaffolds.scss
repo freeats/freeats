@@ -50,17 +50,6 @@ body {
   line-height: 1.5rem;
 }
 
-.form-control {
-  padding: 0.375rem 0.563rem;
-  @extend .font-medium;
-  text-overflow: ellipsis;
-
-  &:not(textarea):not(trix-editor) {
-    padding: 5px 9px;
-    height: 32px;
-  }
-}
-
 main.container-fluid,
 footer .container-fluid {
   padding-top: 24px;
