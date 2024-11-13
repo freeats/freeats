@@ -10,45 +10,54 @@
   = render "ats/positions/side_header"
 / TAB LIST
 - content_for :tab_list
+  ruby:
+    tab_labels = {
+      info: "Info",
+      pipeline: "Pipeline",
+      activities: "Activities"
+    }
+
+  - tab_labels[:tasks] = capture
+    | Tasks
+    = render partial: "ats/tasks/tab_counter", locals: { pending_tasks_count: @pending_tab_tasks_count }
+
   section#tab-list.mt-2
     ul.nav.nav-tabs role="tablist"
       .d-none.d-md-flex
         li.nav-item
-          = link_to_if @active_tab != "info", "Info", tab_ats_position_path(@position, :info),
+          = link_to_if @active_tab != "info", tab_labels[:info], tab_ats_position_path(@position, :info),
                        class: "nav-link"
             span.nav-link.active
-              | Info
+              = tab_labels[:info]
         li.nav-item
-          = link_to_if @active_tab != "pipeline", "Pipeline",
+          = link_to_if @active_tab != "pipeline", tab_labels[:pipeline],
                        tab_ats_position_path(@position, :pipeline), class: "nav-link"
             span.nav-link.active
-              | Pipeline
-        - tasks_tab_label = capture
-          | Tasks
-          = render partial: "ats/tasks/tab_counter", locals: { pending_tasks_count: @pending_tab_tasks_count }
+              = tab_labels[:pipeline]
         li.nav-item
-          = link_to_if @active_tab != "tasks", tasks_tab_label,
+          = link_to_if @active_tab != "tasks", tab_labels[:tasks],
                        tab_ats_position_path(@position, :tasks), class: "nav-link"
             span.nav-link.active
-              = tasks_tab_label
+              = tab_labels[:tasks]
         li.nav-item
-          = link_to_if @active_tab != "activities", "Activities",
+          = link_to_if @active_tab != "activities", tab_labels[:activities],
                        tab_ats_position_path(@position, :activities),
                        class: "nav-link"
             span.nav-link.active
-              | Activities
+              = tab_labels[:activities]
       .d-md-none.dropdown.w-100.profile-mobile-nav
-        button.btn.form-control.d-flex.align-items-center.text-dark.dropdown-toggle.w-100.px-3[
+        button.btn.form-control.dropdown-toggle.justify-content-between.w-100[
             id="dropdownNavLink" data-bs-toggle="dropdown"]
-          = @active_tab.humanize
+          span
+            = tab_labels[@active_tab.to_sym]
         ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
-          li = link_to "Info", tab_ats_position_path(@position, :info),
+          li = link_to tab_labels[:info], tab_ats_position_path(@position, :info),
                        class: "dropdown-item #{'active' if @active_tab == 'info'}"
-          li = link_to "Pipeline", tab_ats_position_path(@position, :pipeline),
+          li = link_to tab_labels[:pipeline], tab_ats_position_path(@position, :pipeline),
                        class: "dropdown-item #{'active' if @active_tab == 'pipeline'}"
-          li = link_to "Tasks", tab_ats_position_path(@position, :tasks),
+          li = link_to tab_labels[:tasks], tab_ats_position_path(@position, :tasks),
                        class: "dropdown-item #{'active' if @active_tab == 'tasks'}"
-          li = link_to "Activities", tab_ats_position_path(@position, :activities),
+          li = link_to tab_labels[:activities], tab_ats_position_path(@position, :activities),
                        class: "dropdown-item #{'active' if @active_tab == 'activities'}"
 / TAB LIST END
 

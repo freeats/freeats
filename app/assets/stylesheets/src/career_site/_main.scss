@@ -49,10 +49,27 @@ footer {
   border-right: none;
   border-top: none;
   border-bottom: 1px solid $gray-500;
+  border-radius: 0;
 }
 
 .list-group .custom-list-item:hover {
   background-color: $blue-100;
+  a {
+    text-decoration: none;
+  }
+}
+
+.position_name:hover {
+  text-decoration: underline;
+}
+
+.position_location {
+  text-decoration: none;
+  color: var(--tblr-body-color);
+}
+
+.position_location:hover {
+  text-decoration: none;
 }
 
 #recaptcha-modal {
