@@ -21,19 +21,19 @@ class Tenant < ApplicationRecord
         WHERE c.column_name = 'tenant_id'
           AND t.table_schema NOT IN ('information_schema', 'pg_catalog')
           AND t.table_type = 'BASE TABLE'
-        ORDER BY
-          CASE t.table_name
-          WHEN 'positions' THEN 0  -- positions should be destroyed before members
-          WHEN 'scorecards' THEN 1 -- scorecards should be destroyed before members
-          WHEN 'events' THEN 2 -- events should be destroyed before accounts
-          ELSE 3
-          END
       SQL
     ActiveRecord::Base.connection.execute(query_to_find_all_tables_with_tenant_id).values.flatten
   end
 
   def cascade_destroy
-    models = Tenant.models_with_tenant.map { Object.const_get(_1.classify) }
+    sorted_tables = Tenant.tables_with_tenant_id.sort_by do |table|
+      [
+        table == "positions" ? 0 : 1,  # positions should be destroyed before members
+        table == "scorecards" ? 0 : 1, # scorecards should be destroyed before members
+        table == "events" ? 0 : 1      # events should be destroyed before accounts
+      ]
+    end
+    models = sorted_tables.map { Object.const_get(_1.classify) }
     ActiveRecord::Base.transaction do
       models.each do |model|
         model.where(tenant_id: id).find_each(&:destroy!)
