@@ -37,32 +37,36 @@
   &.task-notes {
     .card,
     .card-body,
-    .card-footer {
-      background-color: var(--tblr-modal-bg);
-    }
-
+    .card-footer,
+    .thread-collapse-button,
     .list-group-item.note {
-      &:active,
-      &:hover,
-      &:focus {
-        background-color: var(--tblr-modal-bg);
-      }
+      background-color: var(--tblr-modal-bg) !important;
     }
   }
 
   &:not(.task-notes) {
     .card,
     .card-body,
-    .card-footer {
-      background-color: var(--tblr-body-bg);
-    }
-
+    .card-footer,
+    .thread-collapse-button,
     .list-group-item.note {
-      &:active,
-      &:hover,
-      &:focus {
-        background-color: var(--tblr-body-bg);
-      }
+      background-color: var(--tblr-body-bg) !important;
+    }
+  }
+
+  .thread-collapse-button {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .note-thread.private-thread .list-group{
+    .card,
+    .card-body,
+    .card-footer,
+    .thread-collapse-button,
+    .list-group-item.note {
+      background-color: lightgoldenrodyellow !important;
+      box-shadow: 0px 0px 0px 4px lightgoldenrodyellow !important;
     }
   }
 
@@ -71,6 +75,8 @@
 
     .card-title {
       margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
     }
 
     .card-body {
@@ -87,7 +93,6 @@
   .list-group-item.note {
     padding: 0;
     border: 0;
-    margin-top: 0.5rem;
   }
 }
 
