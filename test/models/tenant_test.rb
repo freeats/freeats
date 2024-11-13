@@ -34,32 +34,32 @@ class TenantTest < ActiveSupport::TestCase
     assert_predicate tenant, :valid?
   end
 
-  test "models_with_tenant should return table names of all models, associated with tenant" do
-    assert_equal Tenant.models_with_tenant.count, 24
-    assert_includes Tenant.models_with_tenant, "candidates"
-    assert_includes Tenant.models_with_tenant, "positions"
-    assert_includes Tenant.models_with_tenant, "scorecards"
-    assert_includes Tenant.models_with_tenant, "events"
-    assert_includes Tenant.models_with_tenant, "email_threads"
-    assert_includes Tenant.models_with_tenant, "candidate_email_addresses"
-    assert_includes Tenant.models_with_tenant, "candidate_links"
-    assert_includes Tenant.models_with_tenant, "candidate_sources"
-    assert_includes Tenant.models_with_tenant, "email_messages"
-    assert_includes Tenant.models_with_tenant, "accounts"
-    assert_includes Tenant.models_with_tenant, "email_message_addresses"
-    assert_includes Tenant.models_with_tenant, "placements"
-    assert_includes Tenant.models_with_tenant, "scorecard_questions"
-    assert_includes Tenant.models_with_tenant, "scorecard_template_questions"
-    assert_includes Tenant.models_with_tenant, "tasks"
-    assert_includes Tenant.models_with_tenant, "scorecard_templates"
-    assert_includes Tenant.models_with_tenant, "note_threads"
-    assert_includes Tenant.models_with_tenant, "notes"
-    assert_includes Tenant.models_with_tenant, "position_stages"
-    assert_includes Tenant.models_with_tenant, "access_tokens"
-    assert_includes Tenant.models_with_tenant, "candidate_phones"
-    assert_includes Tenant.models_with_tenant, "members"
-    assert_includes Tenant.models_with_tenant, "candidate_alternative_names"
-    assert_includes Tenant.models_with_tenant, "disqualify_reasons"
+  test "tables_with_tenant_id should return table names of all models, associated with tenant" do
+    assert_equal Tenant.tables_with_tenant_id.count, 24
+    assert_includes Tenant.tables_with_tenant_id, "candidates"
+    assert_includes Tenant.tables_with_tenant_id, "positions"
+    assert_includes Tenant.tables_with_tenant_id, "scorecards"
+    assert_includes Tenant.tables_with_tenant_id, "events"
+    assert_includes Tenant.tables_with_tenant_id, "email_threads"
+    assert_includes Tenant.tables_with_tenant_id, "candidate_email_addresses"
+    assert_includes Tenant.tables_with_tenant_id, "candidate_links"
+    assert_includes Tenant.tables_with_tenant_id, "candidate_sources"
+    assert_includes Tenant.tables_with_tenant_id, "email_messages"
+    assert_includes Tenant.tables_with_tenant_id, "accounts"
+    assert_includes Tenant.tables_with_tenant_id, "email_message_addresses"
+    assert_includes Tenant.tables_with_tenant_id, "placements"
+    assert_includes Tenant.tables_with_tenant_id, "scorecard_questions"
+    assert_includes Tenant.tables_with_tenant_id, "scorecard_template_questions"
+    assert_includes Tenant.tables_with_tenant_id, "tasks"
+    assert_includes Tenant.tables_with_tenant_id, "scorecard_templates"
+    assert_includes Tenant.tables_with_tenant_id, "note_threads"
+    assert_includes Tenant.tables_with_tenant_id, "notes"
+    assert_includes Tenant.tables_with_tenant_id, "position_stages"
+    assert_includes Tenant.tables_with_tenant_id, "access_tokens"
+    assert_includes Tenant.tables_with_tenant_id, "candidate_phones"
+    assert_includes Tenant.tables_with_tenant_id, "members"
+    assert_includes Tenant.tables_with_tenant_id, "candidate_alternative_names"
+    assert_includes Tenant.tables_with_tenant_id, "disqualify_reasons"
   end
 
   test "cascade_destroy should destroy tenant and all associated models" do
