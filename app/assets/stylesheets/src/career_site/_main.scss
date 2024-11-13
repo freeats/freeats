@@ -5,8 +5,18 @@ body {
 .container-small {
   min-width: 320px;
   max-width: 740px;
+}
 
-  padding-top: 24px;
+.container-md-small {
+  @media (min-width: 768px) {
+    min-width: 320px;
+    max-width: 740px;
+  }
+}
+
+main.container,
+footer .container-fluid {
+  padding-top: 32px;
   padding-bottom: 48px;
 }
 
@@ -20,7 +30,7 @@ body {
 }
 
 footer {
-  height: $footer-min-height;
+  min-height: $footer-min-height;
 
   a,
   span,
