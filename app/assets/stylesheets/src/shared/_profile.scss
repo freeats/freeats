@@ -76,3 +76,34 @@
     }
   }
 }
+
+#scorecard-form {
+  .score-btn {
+    @extend .form-selectgroup-label, .py-1, .px-2;
+  }
+
+  $scorecard:
+    irrelevant --tblr-red --tblr-red,
+    relevant --tblr-red-300 --tblr-red,
+    good --tblr-green-300 --tblr-green,
+    perfect --tblr-green --tblr-green;
+
+  @each $name, $bg-color, $border-color in $scorecard {
+    .#{$name}-score {
+      border-color: var($border-color) !important;
+      background-color: var(--tblr-white);
+      color: var(--tblr-body-color);
+      .icon {
+        color: var($bg-color);
+      }
+    }
+
+    .#{$name}-score-input:checked + .#{$name}-score {
+      background-color: var($bg-color);
+      color: var(--tblr-white);
+      .icon {
+        color: inherit;
+      }
+    }
+  }
+}

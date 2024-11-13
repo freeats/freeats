@@ -2,19 +2,32 @@ $footer-min-height: 117px;
 $navbar-min-height: 53px;
 
 :root,
+:host,
+[data-bs-theme="light"] {
+  --tblr-red-300: #{$red-300};
+  --tblr-green-300: #{$green-300};
+}
+
+:root,
 :host {
   --tblr-btn-box-shadow: none;
   --tblr-box-shadow-input: none;
+  --tblr-body-line-height: 1.5;
+  --tblr-line-height-h2: 1.2;
+}
+
+.text-green-300 {
+  color: var(--tblr-green-300);
+}
+
+.text-red-300 {
+  color: var(--tblr-red-300);
 }
 
 html,
 body {
   height: 100%;
   min-width: 320px;
-}
-
-body {
-  --tblr-body-line-height: 1.5;
 }
 
 // place the footer at the bottom of the page
@@ -35,17 +48,6 @@ body {
 .font-body {
   font-size: 1rem;
   line-height: 1.5rem;
-}
-
-.form-control {
-  padding: 0.375rem 0.563rem;
-  @extend .font-medium;
-  text-overflow: ellipsis;
-
-  &:not(textarea):not(trix-editor) {
-    padding: 5px 9px;
-    height: 32px;
-  }
 }
 
 main.container-fluid,
@@ -272,4 +274,8 @@ svg {
 
 .modal-content .nav-item .nav-link.active {
   border-bottom-color: var(--tblr-modal-bg);
+}
+
+.col-form-label-sm {
+  font-size: 0.875rem;
 }
