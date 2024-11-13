@@ -127,66 +127,27 @@ footer .container-fluid {
 }
 
 #files-table {
-  table-layout: fixed;
-  vertical-align: middle;
-
-  th {
-    width: auto;
-  }
-
-  th:first-child {
-    width: auto;
-  }
-
-  th:nth-child(2) {
-    width: 30%;
-  }
-
-  th:nth-child(3) {
-    width: 20%;
-  }
-
-  th:nth-child(4) {
-    width: 5.7rem;
-  }
-
-  th:last-child {
-    width: 5.7rem;
-  }
-
   .show-on-hover {
     display: none;
   }
 
   .hide-on-hover {
-    display: inline-block;
+    display: inline-flex;
   }
 
-  .files-table-cv-column:hover {
-    .show-on-hover {
-      display: inline-block;
-    }
-
-    .hide-on-hover {
-      display: none;
-    }
+  th:nth-child(4) {
+    width: 56px;
   }
 
   .files-table-cv-column {
-    font-size: 20px;
+    &:hover {
+      .show-on-hover {
+        display: inline-flex;
+      }
 
-    form,
-    button {
-      font-size: inherit;
-      padding: 0;
-    }
-
-    button:focus {
-      box-shadow: none;
-    }
-
-    .btn {
-      border-color: transparent;
+      .hide-on-hover {
+        display: none;
+      }
     }
   }
 }
