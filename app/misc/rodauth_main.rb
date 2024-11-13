@@ -47,7 +47,7 @@ module CreateAccount
       # Otherwise we register a new tenant and a new member.
       after_create_account do
         account = Account.find(account_id)
-        tenant_id = account.tenant.id
+        tenant_id = account.tenant_id
         if internal_request?
           account.verified!
           Member.create!(account_id:, tenant_id:, access_level: :member)
