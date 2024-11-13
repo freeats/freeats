@@ -30,6 +30,8 @@ class ATS::TasksController < AuthorizedController
   end
 
   def new
+    return new_modal if turbo_frame_request?
+
     set_tasks_grid
     @lazy_load_form_url = new_modal_ats_tasks_path
     render :index

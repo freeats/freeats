@@ -108,7 +108,7 @@ Rails.application.routes.draw do
       # Remove the below post paths after implementing turbo_modals for
       # the show task modal with get method.
       post :new_modal, on: :collection
-      post :show_modal, on: :member
+      # post :show_modal, on: :member
     end
 
     resources :quick_search, only: :index, controller: "quick_search"
