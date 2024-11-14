@@ -26,10 +26,14 @@ class ATS::PositionsController < AuthorizedController
                          update_card show_header edit_header update_header change_status]
   def index
     @positions_grid_params =
-      params[:ats_positions_grid]
-      &.to_unsafe_h
-      &.symbolize_keys
-      &.filter { |k, _v| ATS::PositionsGrid.datagrid_attributes.include?(k) } || {}
+      if params[:ats_positions_grid].present?
+        params[:ats_positions_grid]
+          .to_unsafe_h
+          .symbolize_keys
+          .filter { |k, _v| ATS::PositionsGrid.datagrid_attributes.include?(k) }
+      else
+        {}
+      end
     @positions_grid =
       ATS::PositionsGrid.new(@positions_grid_params.merge(current_account:)) do |scope|
         scope.order("color_code ASC")
@@ -108,7 +112,7 @@ class ATS::PositionsController < AuthorizedController
       redirect_to tab_ats_position_path(position, :info),
                   notice: t("positions.successfully_created"),
                   warning: warnings.presence
-    in Failure[:position_invalid, _error] | Failure[:position_stage_invalid, _error]
+    in Failure[:position_invalid, _error] | Failure[:position_stage_invalid, _error] # rubocop:disable Lint/UnderscorePrefixedVariableName
       render_error _error
     end
   end
@@ -193,7 +197,7 @@ class ATS::PositionsController < AuthorizedController
       end
 
     case result
-    in Failure[:position_invalid, _error] | Failure[:position_stage_invalid, _error]
+    in Failure[:position_invalid, _error] | Failure[:position_stage_invalid, _error] # rubocop:disable Lint/UnderscorePrefixedVariableName
       render_error _error, status: :unprocessable_entity
     in Success[_]
       render_turbo_stream(
