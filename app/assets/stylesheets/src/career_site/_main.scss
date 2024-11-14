@@ -25,7 +25,8 @@ footer .container-fluid {
   min-height: calc(100% - #{$footer-min-height});
 }
 
-#back_on_all_positions {
+#back_on_all_positions a,
+#application_form a {
   color: $blue-500;
 }
 
@@ -80,14 +81,4 @@ footer {
 
 .position_location:hover {
   text-decoration: none;
-}
-
-#recaptcha-modal {
-  .modal-content {
-    height: 13rem;
-    width: 40.57rem;
-  }
-  #rc-anchor-container {
-    width: inherit;
-  }
 }

@@ -278,7 +278,7 @@ ivan_ivanov_candidate_added:
   actor_account: admin_account
   eventable: ivan_ivanov (Candidate)
   performed_at: <%= 2.days.ago %>
-  tenant: acme_tenant
+  tenant: toughbyte_tenant
 
 john_msg1_email_received:
   type: :email_sent

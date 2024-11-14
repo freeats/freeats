@@ -547,7 +547,7 @@ CREATE TABLE public.accounts (
     linkedin_url character varying DEFAULT ''::character varying NOT NULL,
     calendar_url character varying DEFAULT ''::character varying NOT NULL,
     female boolean DEFAULT false NOT NULL,
-    tenant_id bigint,
+    tenant_id bigint NOT NULL,
     external_source_id bigint,
     password_hash character varying,
     status integer DEFAULT 1 NOT NULL
@@ -933,7 +933,7 @@ CREATE TABLE public.candidate_alternative_names (
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -974,7 +974,7 @@ CREATE TABLE public.candidate_email_addresses (
     added_at timestamp(6) without time zone DEFAULT clock_timestamp() NOT NULL,
     created_via public.candidate_contact_created_via DEFAULT 'manual'::public.candidate_contact_created_via NOT NULL,
     created_by_id bigint,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1011,7 +1011,7 @@ CREATE TABLE public.candidate_links (
     added_at timestamp(6) without time zone DEFAULT clock_timestamp() NOT NULL,
     created_via public.candidate_contact_created_via DEFAULT 'manual'::public.candidate_contact_created_via NOT NULL,
     created_by_id bigint,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1051,7 +1051,7 @@ CREATE TABLE public.candidate_phones (
     added_at timestamp(6) without time zone DEFAULT clock_timestamp() NOT NULL,
     created_via public.candidate_contact_created_via DEFAULT 'manual'::public.candidate_contact_created_via NOT NULL,
     created_by_id bigint,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1083,7 +1083,7 @@ CREATE TABLE public.candidate_sources (
     name character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1125,7 +1125,7 @@ CREATE TABLE public.candidates (
     telegram character varying DEFAULT ''::character varying NOT NULL,
     skype character varying DEFAULT ''::character varying NOT NULL,
     candidate_source_id bigint,
-    tenant_id bigint,
+    tenant_id bigint NOT NULL,
     external_source_id bigint
 );
 
@@ -1195,7 +1195,7 @@ CREATE TABLE public.email_message_addresses (
     name character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1237,7 +1237,7 @@ CREATE TABLE public.email_messages (
     "references" character varying[] DEFAULT '{}'::character varying[] NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1268,7 +1268,7 @@ CREATE TABLE public.email_threads (
     id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint,
+    tenant_id bigint NOT NULL,
     external_source_id bigint
 );
 
@@ -1309,7 +1309,7 @@ CREATE TABLE public.events (
     properties jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1487,7 +1487,7 @@ CREATE TABLE public.members (
     account_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint,
+    tenant_id bigint NOT NULL,
     refresh_token character varying DEFAULT ''::character varying NOT NULL,
     token character varying DEFAULT ''::character varying NOT NULL,
     last_email_synchronization_uid integer,
@@ -1545,7 +1545,7 @@ CREATE TABLE public.note_threads (
     hidden boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1579,7 +1579,7 @@ CREATE TABLE public.notes (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     member_id bigint NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1614,7 +1614,7 @@ CREATE TABLE public.placements (
     status public.placement_status DEFAULT 'qualified'::public.placement_status NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint,
+    tenant_id bigint NOT NULL,
     external_source_id bigint,
     disqualify_reason_id bigint
 );
@@ -1650,7 +1650,7 @@ CREATE TABLE public.position_stages (
     list_index integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint,
+    tenant_id bigint NOT NULL,
     external_source_id bigint,
     deleted boolean DEFAULT false NOT NULL
 );
@@ -1686,7 +1686,7 @@ CREATE TABLE public.positions (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     recruiter_id bigint,
-    tenant_id bigint,
+    tenant_id bigint NOT NULL,
     external_source_id bigint,
     location_id bigint,
     status public.position_status DEFAULT 'draft'::public.position_status NOT NULL,
@@ -1763,7 +1763,7 @@ CREATE TABLE public.scorecard_questions (
     list_index integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1797,7 +1797,7 @@ CREATE TABLE public.scorecard_template_questions (
     list_index integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1830,7 +1830,7 @@ CREATE TABLE public.scorecard_templates (
     title character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -1866,7 +1866,7 @@ CREATE TABLE public.scorecards (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     interviewer_id bigint NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -2274,7 +2274,7 @@ CREATE TABLE public.tasks (
     due_date date NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tenant_id bigint
+    tenant_id bigint NOT NULL
 );
 
 
@@ -4626,6 +4626,7 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20241105130512'),
+('20241102110106'),
 ('20241028124325'),
 ('20241024082345'),
 ('20241024082312'),
