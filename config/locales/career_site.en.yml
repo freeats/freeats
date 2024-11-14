@@ -13,3 +13,5 @@ en:
       submit_application: Submit application
       successfully_applied: Thank you for applying to the %{position_name} position. We will get back to you as soon as possible.
       view_all: View all positions
+    privacy_link: Privacy Policy
+    tos_link: Terms of Service
