@@ -49,6 +49,23 @@
   }
 }
 
+// The `-webkit` attributes are needed to support some older browsers
+.table-sort {
+  &:after {
+    -webkit-mask-image: $table-sort-bg-image;
+    mask-image: $table-sort-bg-image;
+  }
+
+  &.asc:after {
+    -webkit-mask-image: $table-sort-asc-bg-image;
+    mask-image: $table-sort-asc-bg-image;
+  }
+
+  &.desc:after {
+    -webkit-mask-image: $table-sort-desc-bg-image;
+    mask-image: $table-sort-desc-bg-image;
+  }
+}
 .grid-column-35 {
   min-width: 140px;
   width: 140px;

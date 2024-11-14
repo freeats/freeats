@@ -7,7 +7,7 @@ module PicturesHelper
     src_sym = :src
     size = opts.delete(:size) || "sm"
 
-    opts[:class] = ["avatar", "avatar-#{size}", *opts.delete(:class)]
+    opts[:class] = ["avatar", "avatar-#{size}", "flex-shrink-0", *opts.delete(:class)]
 
     if (icon = attachment&.variant(:icon)).present?
       if (url = url_for(icon)).present?
