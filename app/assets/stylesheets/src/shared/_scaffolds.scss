@@ -1,5 +1,6 @@
 $footer-min-height: 117px;
 $navbar-min-height: 56px;
+$visited-link-color: #044e92;
 
 html,
 body {
@@ -328,7 +329,7 @@ a {
     text-decoration: underline;
   }
   &:visited:not(.btn, .nav-link, .dropdown-item, .badge) {
-    color: $blue-600;
+    color: $visited-link-color;
   }
 }
 
