@@ -38,8 +38,13 @@ class ATS::TeamGrid
 
   column(:email, header: I18n.t("core.email"), order: false, &:email)
 
-  column(:account_status, header: I18n.t("user_accounts.status"), html: true,
-                          order: false) do |model, grid|
+  column(
+    :account_status,
+    header: I18n.t("user_accounts.status"),
+    html: true,
+    order: false,
+    class: "grid-column-35"
+  ) do |model, grid|
     change_access_level_button(model, grid.current_member)
   end
 
