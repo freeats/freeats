@@ -10,4 +10,6 @@
 
 .col-form-label-sm {
   font-size: 0.875rem;
+  padding-top: calc(0.25rem + var(--tblr-border-width));
+  padding-bottom: calc(0.25rem + var(--tblr-border-width));
 }

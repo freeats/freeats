@@ -132,7 +132,7 @@ ruby:
     .col-12 data-inline-edit-form-target="showView"
       / Description show
       .vstack.gap-2
-        .hstack.justify-content-between style="height: 32px;"
+        .hstack.justify-content-between
           = label_tag :description_show, t("tasks.description"), class: "col-form-label-sm text-gray-600"
           = render IconButtonComponent.new( \
                      :pencil,
@@ -151,7 +151,7 @@ ruby:
       .vstack.gap-2
         .hstack.gap-2
           = f.label :description, t("tasks.description"),
-                    class: "col-form-label-sm flex-grow-1", style: "height: 32px;"
+                    class: "col-form-label-sm flex-grow-1"
           = render ButtonComponent.new(data: { action: "inline-edit-form#hide",
                                                bs_toggle: "tooltip",
                                                bs_title: "Ctrl + Enter",
