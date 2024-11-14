@@ -4,9 +4,19 @@ body {
 
 .container-small {
   min-width: 320px;
-  max-width: 980px;
+  max-width: 740px;
+}
 
-  padding-top: 24px;
+.container-md-small {
+  @media (min-width: 768px) {
+    min-width: 320px;
+    max-width: 740px;
+  }
+}
+
+main.container,
+footer .container-fluid {
+  padding-top: 32px;
   padding-bottom: 48px;
 }
 
@@ -21,7 +31,7 @@ body {
 }
 
 footer {
-  height: $footer-min-height;
+  min-height: $footer-min-height;
 
   a,
   span,
@@ -50,8 +60,25 @@ footer {
   border-right: none;
   border-top: none;
   border-bottom: 1px solid $gray-500;
+  border-radius: 0;
 }
 
 .list-group .custom-list-item:hover {
   background-color: $blue-100;
+  a {
+    text-decoration: none;
+  }
+}
+
+.position_name:hover {
+  text-decoration: underline;
+}
+
+.position_location {
+  text-decoration: none;
+  color: var(--tblr-body-color);
+}
+
+.position_location:hover {
+  text-decoration: none;
 }

@@ -1,81 +1,5 @@
-.profile-button {
-  button {
-    padding: 0;
-    margin: 0;
-
-    &:after {
-      content: none;
-    }
-  }
-
-  .profile-avatar-thumbnail {
-    @extend .rounded-circle;
-    height: 2rem;
-    width: 2rem;
-    border: 1px solid $gray-900;
-    background-color: $white;
-  }
-
-  .dropdown-item {
-    font-size: 14px;
-  }
-  a.dropdown-item:visited {
-    color: $navbar-text;
-  }
-
-  input {
-    outline: none;
-  }
-}
-
-#header-edit {
-  .card-body {
-    @extend .py-md-2;
-  }
-  .header-edit-avatar-row {
-    .card-row {
-      @extend .mt-md-0;
-    }
-    .card-row-left-side {
-      @extend .py-md-0;
-    }
-  }
-}
-
 #profile {
-  @include media-breakpoint-down(xs) {
-    #tab-list {
-      .nav-tabs {
-        border-bottom: none;
-
-        .nav-link {
-          &.active {
-            color: $gray-900;
-          }
-        }
-      }
-    }
-  }
-
-  @include media-breakpoint-up(md) {
-    .col-md-profile {
-      flex: 0 0 150px;
-      max-width: 150px;
-      padding-right: 0;
-    }
-
-    #tab-list {
-      .nav-tabs {
-        border-bottom: 1px solid $gray-500;
-      }
-    }
-  }
-
-  .link-font {
-    font-size: 1.25rem;
-  }
   .links-row {
-    margin-top: -0.25rem;
     .linkedin-icon {
       color: $linkedin-blue;
     }
@@ -97,213 +21,153 @@
     .telegram-icon {
       color: $telegram-color;
     }
-    .apple-icon {
-      color: $apple-blue;
-    }
-    .play-icon {
-      color: $play-blue;
-    }
-    a,
-    span {
-      max-height: 1.5rem;
-      margin-top: 0.25rem;
-    }
-    img {
-      vertical-align: bottom;
-    }
-    i {
-      vertical-align: bottom;
-    }
-  }
-
-  .card {
-    border-color: $gray-500;
-
-    .card-title {
-      font-size: 1rem;
-    }
-
-    .card-header {
-      background-color: $gray-100;
-      border-bottom-color: $gray-500;
-      border-radius: 0.25rem 0.25rem 0 0;
-      padding: 0.75rem 1rem;
-    }
-
-    .card-body {
-      padding: 0.5rem 1rem;
-    }
-  }
-
-  .empty-card-templates {
-    .empty-card {
-      padding-top: 1.5rem;
-      padding-bottom: 1.5rem;
-      border: 1px solid #e1e4e8;
-      border-style: dashed;
-      background-color: inherit;
-      &:hover {
-        background-color: #f8f9fa;
-      }
-    }
-  }
-
-  .reassignment-button {
-    @include media-breakpoint-down(md) {
-      & > * {
-        max-width: 216px;
-      }
-    }
-  }
-
-  .full-width-reassignment-button {
-    .reassignment-button {
-      @include media-breakpoint-down(md) {
-        & > * {
-          max-width: 100% !important;
-        }
-      }
-    }
   }
 
   .accordion {
-    --bs-accordion-active-bg: #{$gray-100};
-  }
-
-  .private-thread {
-    background-color: lightgoldenrodyellow;
-    box-shadow: 0px 0px 0px 4px lightgoldenrodyellow;
-
-    .list-group-item {
-      background-color: inherit;
-    }
-    .btn-circle {
-      width: 26px;
-      height: 26px;
-      padding: 5px 0px;
-      border-radius: 50%;
-      text-align: center;
-      font-size: 12px;
-      line-height: 0.9rem;
-    }
+    --tblr-accordion-bg: #ffffff;
   }
 }
 
-.profile-avatar {
-  width: 150px;
-  height: 150px;
-  padding: 10px;
-  border-radius: 0.25rem;
-  border: 1px solid $gray-500;
-
-  position: relative;
-
-  img,
-  svg {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 95%;
-    height: 95%;
-    object-fit: contain;
-    margin: auto;
-  }
-
-  .alert-gray {
-    --bs-alert-bg: #{$gray-100};
-    --bs-alert-color: #{$gray-800};
-    --bs-alert-border-color: #{$gray-200};
-  }
-
-  .profile-avatar-overlay {
-    --overlay-bg-color: rgba(19, 19, 19, 0.92);
-
-    position: absolute;
-    height: 36px;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--bs-alert-bg, var(--overlay-bg-color));
-    color: var(--bs-alert-color, #fff);
-    @extend .font-small;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom-left-radius: 0.25rem;
-    border-bottom-right-radius: 0.25rem;
-
-    &::after {
-      border: 1px solid var(--bs-alert-border-color, var(--overlay-bg-color));
-      border-bottom-left-radius: 0.25rem;
-      border-bottom-right-radius: 0.25rem;
-      bottom: -1px;
-      content: "";
-      left: -1px;
-      position: absolute;
-      right: -1px;
-      top: -1px;
-    }
-  }
-}
-
-.empty-avatar-icon {
-  color: $gray-600;
-}
-
-.profile-avatar-edit {
-  width: 60px;
-  height: 60px;
-}
-
-#notes,
-.notes-block {
+#notes {
   :target {
-    background-color: #e4f1ff !important;
+    background-color: var(--tblr-blue-lt) !important;
   }
+
   :target,
   .modal-note-active {
-    background-color: #e4f1ff;
-    box-shadow: 0px 0px 0px 4px #e4f1ff;
+    box-shadow: 0px 0px 0px 4px var(--tblr-blue-lt) !important;
   }
+
+  &.task-notes {
+    .card,
+    .card-body,
+    .card-footer,
+    .thread-collapse-button,
+    .list-group-item.note {
+      background-color: var(--tblr-modal-bg);
+    }
+  }
+
+  &:not(.task-notes) {
+    .card,
+    .card-body,
+    .card-footer,
+    .thread-collapse-button,
+    .list-group-item.note {
+      background-color: var(--tblr-body-bg);
+    }
+  }
+
+  .private-thread .list-group {
+    .card,
+    .card-body,
+    .card-footer,
+    .thread-collapse-button,
+    .list-group-item.note {
+      background-color: var(--tblr-yellow-lt);
+      box-shadow: 0px 0px 0px 4px var(--tblr-yellow-lt);
+    }
+  }
+
+  .thread-collapse-button {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
   .card {
     border: 0;
-    border-radius: 0;
+
+    .card-title {
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
 
     .card-body {
-      padding: 0.1rem 0;
+      padding: 0;
     }
 
     .card-footer {
+      border-top: 0;
       padding: 0.5rem 0 0 0;
-      border-top: 0px;
-      background-color: inherit;
       text-align: end;
     }
   }
+
   .list-group-item.note {
     padding: 0;
     border: 0;
-    margin-top: 4px;
+  }
+}
+
+.profile-avatar-overlay {
+  --overlay-bg-color: rgba(19, 19, 19, 0.92);
+
+  position: absolute;
+  height: 36px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--tblr-alert-bg, var(--overlay-bg-color));
+  color: var(--tblr-alert-color, #fff);
+  @extend .font-small;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.placement-buttons {
+  .btn-group {
     &:first-child {
-      border-top: 0;
+      button {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+    }
+    &:nth-child(2):not(:last-child) {
+      button {
+        border-radius: 0px;
+      }
+    }
+    &:last-child {
+      button {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+      }
     }
   }
-  .list-group-scrollable {
-    height: 300px;
-    margin-bottom: 10px;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
-  p:last-child {
-    margin-bottom: 0;
+}
+
+#scorecard-form {
+  .score-btn {
+    @extend .form-selectgroup-label, .py-1, .px-2;
   }
 
-  button {
-    &:focus {
-      box-shadow: none;
+  $scorecard:
+    irrelevant --tblr-red --tblr-red,
+    relevant --tblr-red-300 --tblr-red,
+    good --tblr-green-300 --tblr-green,
+    perfect --tblr-green --tblr-green;
+
+  @each $name, $bg-color, $border-color in $scorecard {
+    .#{$name}-score {
+      border-color: var($border-color) !important;
+      background-color: var(--tblr-white);
+      color: var(--tblr-body-color);
+      .icon {
+        color: var($bg-color);
+      }
+    }
+
+    .#{$name}-score-input:checked + .#{$name}-score {
+      background-color: var($bg-color);
+      color: var(--tblr-white);
+      .icon {
+        color: inherit;
+      }
     }
   }
 }

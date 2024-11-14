@@ -2,13 +2,13 @@
 
 .card.mt-2.p-2.placement-partial [data-controller="pipeline-placements"
     data-placements-next-stage-column-id="#{placement.next_stage}-stage-placements"
-    data-pipeline-column-target="entityCard" id=dom_id(placement)]
+    data-pipeline-column-target="entityCard" id=dom_id(placement) ]
   - if current_member.id == placement.candidate.recruiter_id
     .card-triangle
 
   .d-flex.gap-3
-    .card-avatar.col-auto
-      = picture_avatar_icon placement.candidate.avatar, {}, class: "rounded"
+    .col-auto
+      = picture_avatar_icon placement.candidate.avatar, size: "64px"
     .card-right-container
       .d-flex.justify-content-between.flex-column.h-100.w-100
         .card-title.mb-0

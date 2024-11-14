@@ -7,15 +7,17 @@ Local variables:
 * options - passed options Hash
 %>
 <% if grid.html_columns(*options[:columns]).any? %>
-  <div class="table-responsive">
-    <%= content_tag :table, options[:html].merge({ class: "#{options[:html][:class]} table table-striped" }) do %>
-      <thead>
-        <%= datagrid_header(grid, **options) %>
-      </thead>
-      <tbody>
-        <%= datagrid_rows(grid, assets, **options) %>
-      </tbody>
-    <% end %>
+  <div class="card">
+    <div class="table-responsive">
+      <%= content_tag :table, class: "table card-table" do %>
+        <thead>
+          <%= datagrid_header(grid, **options) %>
+        </thead>
+        <tbody>
+          <%= datagrid_rows(grid, assets, **options) %>
+        </tbody>
+      <% end %>
+    </div>
   </div>
 <% else -%>
   <%= I18n.t("datagrid.table.no_columns").html_safe %>

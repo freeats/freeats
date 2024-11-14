@@ -1,7 +1,10 @@
-ruby:
-  is_ats_profile = request.fullpath.eql?("/ats/profile")
+- account_icon_dropdown_elements = capture do
+    li.nav-item class=("active" if request.fullpath.eql?("/ats/settings"))
+      = link_to t("core.settings"), ats_settings_path, class: "nav-link"
+    li.nav-item
+      = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "nav-link"
 
-nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
+nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.column-gap-3
   - if rodauth.logged_in? && current_account.member?
     / Mobile burger menu button
     button.navbar-toggler.px-1.order-2 [aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
@@ -12,28 +15,22 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
     #navbarNav.collapse.navbar-collapse.gap-lg-2.order-5.order-lg-1
       ul.navbar-nav.text-nowrap.gap-1.gap-lg-0.mb-1.mb-lg-0
         - if allowed_to?(:index?, with: ATS::DashboardPolicy)
-          li.nav-item
-            = link_to t("core.dashboard"), root_path,
-                      class: "nav-link#{' nav-link-selected' if @nav_item == :dashboard}"
+          li.nav-item class=("active" if @nav_item == :dashboard)
+            = link_to t("core.dashboard"), root_path, class: "nav-link"
         - if allowed_to?(:index?, with: ATS::TaskPolicy)
-          li.nav-item
-            = link_to ats_tasks_path,
-              class: "nav-link#{' nav-link-selected' if @nav_item == :tasks} d-inline-flex align-items-center " \
-                     "gap-2 pt-md-2"
+          li.nav-item class=("active" if @nav_item == :tasks)
+            = link_to ats_tasks_path, class: "nav-link gap-1 justify-content-between"
               = t("core.tasks")
               = render partial: "ats/tasks/navbar_counter", locals: { pending_tasks_count: @pending_tasks_count }
         - if allowed_to?(:index?, with: ATS::CandidatePolicy)
-          li.nav-item
-            = link_to t("core.candidates"), ats_candidates_path,
-                      class: "nav-link#{' nav-link-selected' if @nav_item == :candidates}"
+          li.nav-item class=("active" if @nav_item == :candidates)
+            = link_to t("core.candidates"), ats_candidates_path, class: "nav-link"
         - if allowed_to?(:index?, with: ATS::PositionPolicy)
-          li.nav-item
-            = link_to t("core.positions"), ats_positions_path,
-                      class: "nav-link#{' nav-link-selected' if @nav_item == :positions}"
-        - if allowed_to?(:index?, with: ATS::PositionPolicy)
-          li.nav-item
-            = link_to t("core.team"), ats_team_path,
-                      class: "nav-link#{' nav-link-selected' if @nav_item == :team}"
+          li.nav-item class=("active" if @nav_item == :positions)
+            = link_to t("core.positions"), ats_positions_path, class: "nav-link"
+        - if allowed_to?(:index?, with: ATS::MemberPolicy)
+          li.nav-item class=("active" if @nav_item == :team)
+            = link_to t("core.team"), ats_team_path, class: "nav-link"
 
       / Necessary to place the profile button on the right side of the navbar.
       .flex-fill
@@ -41,13 +38,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
       / Mobile
       .mt-1.d-lg-none
         ul.navbar-nav.gap-1
-          li.dropdown-divider.my-2 role="separator"
-          li.nav-item
-            = link_to t("core.settings"), ats_settings_path,
-                      class: "nav-link #{'nav-link-selected' if is_ats_profile}"
-          li.nav-item
-            = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "dropdown-item",
-                        form_class: "pt-2", form: { data: { turbo: false } }
+          hr.my-2 role="separator"
+          = account_icon_dropdown_elements
 
     / Quick search
     - if allowed_to?(:index?, with: ATS::QuickSearchPolicy)
@@ -62,19 +54,13 @@ nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.header.gap-2
                              type: :quick_search } \
                  )
 
-    / User icon
-    .dropdown.profile-button.order-4
-      = picture_avatar_icon current_account.avatar, {},
-                            class: "profile-avatar-thumbnail dropdown-toggle d-inline d-lg-none",
+    / Account icon
+    .dropdown.order-4
+      = picture_avatar_icon current_account.avatar,
+                            class: "d-inline-flex d-lg-none",
                             alt: t("user_accounts.your_photo")
-      button.dropdown-toggle.btn.d-none.d-lg-block [aria-expanded="false" aria-haspopup="true"
-                                                    data-bs-toggle="dropdown" role="button" type="button"]
-        = picture_avatar_icon current_account.avatar, {},
-                              class: "profile-avatar-thumbnail dropdown-toggle",
-                              alt: t("user_accounts.your_photo")
-      ul.dropdown-menu.dropdown-menu-end
-        li = link_to t("core.settings"), ats_settings_path,
-                     class: "dropdown-item #{'nav-link-selected' if is_ats_profile}"
-        li
-          = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "dropdown-item",
-                      form_class: "dropdown-item", form: { data: { turbo: false } }
+      span.d-none.d-lg-block [aria-expanded="false" aria-haspopup="true"
+                              data-bs-toggle="dropdown" role="button" type="button"]
+        = picture_avatar_icon current_account.avatar, alt: t("user_accounts.your_photo")
+      ul.dropdown-menu.dropdown-menu-end.account-icon-dropdown
+        = account_icon_dropdown_elements

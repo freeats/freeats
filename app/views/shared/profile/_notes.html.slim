@@ -36,7 +36,7 @@ ruby:
         = hidden_field_tag "render_time", Time.zone.now
       .card-body
         .card-title.d-flex.align-items-center
-          = picture_avatar_icon current_member.account.avatar, {}, class: "small-avatar-thumbnail"
+          = picture_avatar_icon current_member.account.avatar
           .ms-2 = current_member.account.name
 
         .card-text.p-0

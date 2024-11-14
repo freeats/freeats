@@ -17,11 +17,11 @@ class ATS::DashboardCandidatesGrid
   # Columns
   #
 
-  column(:avatar, html: true, header: "", order: false) do |model|
+  column(:avatar_image, html: true, header: "", order: false) do |model|
     link_to(
       tab_ats_candidate_path(model.id, :info)
     ) do
-      picture_avatar_icon model.avatar, {}, class: "small-avatar-thumbnail"
+      picture_avatar_icon model.avatar
     end
   end
 

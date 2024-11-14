@@ -133,14 +133,15 @@ class ATS::CandidatesGrid
   # Columns
   #
 
-  column(:avatar, html: true, order: false, header: "") do |model|
+  column(:avatar_image, html: true, order: false, header: "") do |model|
     link_to(
       tab_ats_candidate_path(model.id, :info)
     ) do
-      picture_avatar_icon model.avatar, {}, class: "small-avatar-thumbnail"
+      picture_avatar_icon model.avatar
     end
   end
 
+  # NOTE: there is a problem if candidate name is too long
   column(:name, html: true) do |model|
     link_to(
       model.full_name,

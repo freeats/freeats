@@ -33,4 +33,44 @@ class TenantTest < ActiveSupport::TestCase
 
     assert_predicate tenant, :valid?
   end
+
+  test "tables_with_tenant_id should return table names of all models, associated with tenant" do
+    assert_equal Tenant.tables_with_tenant_id.count, 24
+    assert_includes Tenant.tables_with_tenant_id, "candidates"
+    assert_includes Tenant.tables_with_tenant_id, "positions"
+    assert_includes Tenant.tables_with_tenant_id, "scorecards"
+    assert_includes Tenant.tables_with_tenant_id, "events"
+    assert_includes Tenant.tables_with_tenant_id, "email_threads"
+    assert_includes Tenant.tables_with_tenant_id, "candidate_email_addresses"
+    assert_includes Tenant.tables_with_tenant_id, "candidate_links"
+    assert_includes Tenant.tables_with_tenant_id, "candidate_sources"
+    assert_includes Tenant.tables_with_tenant_id, "email_messages"
+    assert_includes Tenant.tables_with_tenant_id, "accounts"
+    assert_includes Tenant.tables_with_tenant_id, "email_message_addresses"
+    assert_includes Tenant.tables_with_tenant_id, "placements"
+    assert_includes Tenant.tables_with_tenant_id, "scorecard_questions"
+    assert_includes Tenant.tables_with_tenant_id, "scorecard_template_questions"
+    assert_includes Tenant.tables_with_tenant_id, "tasks"
+    assert_includes Tenant.tables_with_tenant_id, "scorecard_templates"
+    assert_includes Tenant.tables_with_tenant_id, "note_threads"
+    assert_includes Tenant.tables_with_tenant_id, "notes"
+    assert_includes Tenant.tables_with_tenant_id, "position_stages"
+    assert_includes Tenant.tables_with_tenant_id, "access_tokens"
+    assert_includes Tenant.tables_with_tenant_id, "candidate_phones"
+    assert_includes Tenant.tables_with_tenant_id, "members"
+    assert_includes Tenant.tables_with_tenant_id, "candidate_alternative_names"
+    assert_includes Tenant.tables_with_tenant_id, "disqualify_reasons"
+  end
+
+  test "cascade_destroy should destroy tenant and all associated models" do
+    tenant = tenants(:toughbyte_tenant)
+
+    assert_raises(ActiveRecord::InvalidForeignKey) do
+      tenant.destroy!
+    end
+
+    assert_nothing_raised do
+      tenant.cascade_destroy
+    end
+  end
 end

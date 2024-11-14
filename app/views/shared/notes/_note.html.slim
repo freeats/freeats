@@ -3,7 +3,7 @@
 - is_last_note = note == thread.notes.max_by(&:created_at)
 
 li.list-group-item.note id="note-#{note.id}" data-controller="note-reactions"
-  .card-body.tab-content
+  .tab-content
     = render "shared/notes/note_show", note:, thread:, all_active_members:, hide_visibility_controls:
     /! REPLY
     - if is_last_note

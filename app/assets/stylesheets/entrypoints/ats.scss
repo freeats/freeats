@@ -4,10 +4,10 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 @import "jquery-ui/themes/base/theme";
 @import "jquery-ui/themes/base/datepicker";
 
-// Bootstrap
+// Tabler
+@import "@tabler/core/src/scss/tabler";
 @import "../src/shared/variables";
 @import "../src/shared/colors";
-@import "bootstrap/scss/bootstrap";
 @import "tributejs/dist/tribute";
 
 @import "../src/shared/scaffolds";
@@ -21,7 +21,6 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 
 @import "../src/ats/main";
 @import "../src/ats/positions";
-@import "../src/ats/candidates";
 @import "../src/ats/task";
 @import "../src/ats/quick_search";
 @import "../src/ats/recaptcha";

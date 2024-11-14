@@ -1,9 +1,9 @@
 /# locals: (candidate:)
 
 - candidate_content = capture do
-  .hstack.quick-search-suggestion.gap-2
-    .col-auto.ms-3.my-auto.small-avatar-thumbnail-wrapper
-      = picture_avatar_icon candidate.avatar, {}, class: "small-avatar-thumbnail"
+ .hstack.quick-search-suggestion.gap-2.px-3
+    .col-auto.hstack
+      = picture_avatar_icon candidate.avatar
     .col
       .row.g-0
         .col-12.text-truncate

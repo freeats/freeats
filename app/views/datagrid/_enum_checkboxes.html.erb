@@ -4,11 +4,22 @@
 Indent in this file may cause extra space to appear.
 You can add indent if whitespace doesn't matter for you
 %>
-<div class="d-flex align-items-center h-100 grid-checkbox">
+<div class="d-flex align-items-center h-100 grid-checkbox gap-2">
   <%- elements.each do |value, text, checked| -%>
     <%- id = [form.object_name, filter.name, value].join('_').underscore -%>
-      <div class="form-check form-check-inline">
-        <%= form.check_box(filter.name, options.merge({multiple: true, id: id, checked: checked, include_hidden: false, class: "form-check-input"}), value.to_s, nil) -%>
+      <div class="form-check mb-0">
+        <%= form.check_box(
+              filter.name,
+              options.merge({
+                multiple: true,
+                id:,
+                checked:,
+                include_hidden: false,
+                class: "form-check-input",
+              }),
+              value.to_s,
+              nil
+            ) -%>
         <%= form.label filter.name, options.merge(for: id).merge(class: "form-check-label") do -%>
           <%= text -%>
         <%- end -%>

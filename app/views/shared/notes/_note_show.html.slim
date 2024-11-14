@@ -12,7 +12,7 @@ ruby:
 = turbo_frame_tag dom_id(note, "turbo"), target: "_top"
   .tab-pane.note-show id="note-show-#{note.id}"
     .card-title.d-flex.align-items-center
-      = picture_avatar_icon note.member.account.avatar, {}, class: "small-avatar-thumbnail"
+      = picture_avatar_icon note.member.account.avatar
       .col
         .ms-2
           = note.member.account.name

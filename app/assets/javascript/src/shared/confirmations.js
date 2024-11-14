@@ -31,7 +31,7 @@ export function atsConfirm() {
       },
       cancel: {
         label: $atsConfirmBtn.data("btn-cancel-label") || "No",
-        className: $atsConfirmBtn.data("btn-cancel-class") || "btn-light border btn-small",
+        className: $atsConfirmBtn.data("btn-cancel-class") || "btn-small",
       },
     },
     callback(result) {

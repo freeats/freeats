@@ -19,10 +19,11 @@ ruby:
     / Checkbox and title show
     = form_with model: task, url: update_status_ats_task_path(task, grid:),
                 class: "turbo-instant-submit d-inline-block" do |f|
-      .task-large-checkbox class=("task-overdue-checkbox" if task.overdue?)
+      .w-4.h-4
         - checkbox_id = "#{dom_id(task)}-status"
         = f.check_box :status,
-                      { class: "form-check-input mt-0", id: checkbox_id },
+                      { class: ["form-check-input", "w-4", "h-4", "mt-0", *("border-danger" if task.overdue?)],
+                      id: checkbox_id },
                       "closed", "open"
         label.form-check-label for=checkbox_id
     .col data-controller="inline-edit-form"
@@ -114,10 +115,10 @@ ruby:
       = label_tag :added_by, t("core.added_by"), class: ["col col-sm-4", label_classes]
       .col.col-sm-8.col-lg-9.hstack.gap-2
         - if added_by_account.present?
-          = picture_avatar_icon added_by_account.avatar, {}, class: "small-avatar-thumbnail"
+          = picture_avatar_icon added_by_account.avatar
           = added_by_account.name
         - else
-          = inline_svg_tag "ats-icon.svg", class: "small-avatar-thumbnail"
+          = inline_svg_tag "ats-icon.svg", class: "avatar avatar-sm toughbyte-black"
           | FreeATS
 
     / Added on
@@ -131,7 +132,7 @@ ruby:
     .col-12 data-inline-edit-form-target="showView"
       / Description show
       .vstack.gap-2
-        .hstack.justify-content-between style="height: 32px;"
+        .hstack.justify-content-between
           = label_tag :description_show, t("tasks.description"), class: "col-form-label-sm text-gray-600"
           = render IconButtonComponent.new( \
                      :pencil,
@@ -150,7 +151,7 @@ ruby:
       .vstack.gap-2
         .hstack.gap-2
           = f.label :description, t("tasks.description"),
-                    class: "col-form-label-sm flex-grow-1", style: "height: 32px;"
+                    class: "col-form-label-sm flex-grow-1"
           = render ButtonComponent.new(data: { action: "inline-edit-form#hide",
                                                bs_toggle: "tooltip",
                                                bs_title: "Ctrl + Enter",

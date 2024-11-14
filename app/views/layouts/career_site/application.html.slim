@@ -43,8 +43,8 @@ html
       = javascript_include_tag "recaptcha"
       - onload = "&onload=onGrecaptchaLoad"
       script[defer="true" src="https://www.google.com/recaptcha/api.js?render=#{RecaptchaV3::SITE_KEY}#{onload}"]
-  body#career_site data-controller="alerts"
-    .wrapper.bg-white id=@page_id
+  body#career_site
+    .wrapper id=@page_id
       main.container.container-small
         = render partial: "shared/notification"
         = yield

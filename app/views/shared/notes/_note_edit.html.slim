@@ -8,7 +8,7 @@
                           notes_target: "noteForm", controller: "enter-turbo-submit" } do |form|
         = hidden_field_tag "render_time", render_time
         .card-title.d-flex.align-items-center
-          = picture_avatar_icon note.member.account.avatar, {}, class: "small-avatar-thumbnail"
+          = picture_avatar_icon note.member.account.avatar
           span.ms-2 = note.member.account.name
         = form.text_area(:text, class: "form-control note-textarea", rows: 4,
                          placeholder: t("notes.edit_placeholder"), required: true, id: "textarea-edit-#{note.id}",

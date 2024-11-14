@@ -1,25 +1,45 @@
 // ButtonComponent styles
 .btn {
-  &-light {
-    --bs-btn-color: var(--bs-gray-900);
+  --tblr-btn-line-height: 1.5;
+
+  &:disabled {
+    border-color: var(--tblr-btn-border-color);
+    background-color: var(--tblr-btn-bg);
   }
 
   &-tiny {
-    --bs-btn-font-size: 12px;
-    --bs-btn-padding-x: 8px;
-    --bs-btn-padding-y: 4px;
+    --tblr-btn-font-size: 12px;
+    --tblr-btn-padding-x: 8px;
+    --tblr-btn-padding-y: 4px;
+
+    .icon {
+      --tblr-btn-icon-size: 15px;
+    }
   }
 
   &-small {
-    --bs-btn-font-size: 14px;
-    --bs-btn-padding-x: 9px;
-    --bs-btn-padding-y: 4.5px;
+    --tblr-btn-font-size: 14px;
+    --tblr-btn-padding-x: 9px;
+    --tblr-btn-padding-y: 4.5px;
+
+    .icon {
+      --tblr-btn-icon-size: 17px;
+    }
   }
 
   &-medium {
-    --bs-btn-font-size: 16px;
-    --bs-btn-padding-x: 14px;
-    --bs-btn-padding-y: 7px;
+    --tblr-btn-font-size: 16px;
+    --tblr-btn-padding-x: 14px;
+    --tblr-btn-padding-y: 7px;
+
+    .icon {
+      --tblr-btn-icon-size: 20px;
+    }
+  }
+
+  .icon,
+  .avatar {
+    margin: unset;
   }
 }
 
@@ -27,27 +47,9 @@
 .text-input-component {
   &-default {
     border-radius: 4px;
-    border-color: $gray-500;
-  }
-
-  &-default::placeholder {
-    color: $gray-600;
-  }
-
-  &-default:focus {
-    border-color: tint-color($blue, 50%);
-  }
-
-  &-disabled {
-    background-color: $gray-200;
-  }
-
-  &-disabled:focus {
-    background-color: $gray-200;
   }
 
   &-subscript {
-    color: $gray-600;
     font-size: 14px;
     line-height: 1.5;
   }
@@ -65,6 +67,14 @@
   &-medium {
     padding: 7px 14px;
     font-size: 16px;
+  }
+
+  &-disabled {
+    background-color: var(--tblr-bg-surface-secondary);
+  }
+
+  &-disabled:focus {
+    background-color: var(--tblr-bg-surface-secondary);
   }
 }
 
@@ -94,14 +104,13 @@
   // Bootstrap 5 does not support the `btn-group-xs` size.
   // Used in case of a select component with the `dropdown_buttons` plugin for the `selectize` library.
   .btn-group-xs button {
-    --bs-btn-font-size: 12px;
-    --bs-btn-padding-x: 8px;
-    --bs-btn-padding-y: 4px;
+    --tblr-btn-font-size: 12px;
+    --tblr-btn-padding-x: 8px;
+    --tblr-btn-padding-y: 4px;
   }
 
   .selectize-input {
     border-radius: 4px !important;
-    border-color: $gray-500;
     vertical-align: middle; // Fix the height of the component.
 
     input::placeholder {
@@ -113,7 +122,7 @@
     }
 
     &.locked {
-      background-color: $gray-200 !important;
+      background-color: var(--tblr-bg-surface-secondary) !important;
       opacity: 1 !important;
     }
 
@@ -121,7 +130,7 @@
       cursor: default !important;
 
       .item {
-        color: $gray-600 !important;
+        color: var(--tblr-gray-500) !important;
       }
     }
 
@@ -131,7 +140,7 @@
     }
 
     .item {
-      color: $gray-900 !important;
+      color: var(--tblr-body-color) !important;
     }
   }
 
@@ -231,9 +240,14 @@
     .item {
       padding-top: 0 !important;
       padding-bottom: 0 !important;
-      background-color: $gray-200 !important;
       margin: 0rem !important;
       border-radius: 4px !important;
+
+      // Tabler badge styles
+      background: var(--tblr-bg-surface-secondary) !important;
+      border: 1px solid var(--tblr-gray-200) !important;
+      color: var(--tblr-gray-500) !important;
+      font-weight: var(--tblr-font-weight-bold);
 
       .remove {
         border: none !important;
@@ -261,63 +275,68 @@
 // The select component dropdown could be anchored to the page body.
 // In this case we moved the dropdown styles out of the `.select-component` class.
 .selectize-dropdown {
+  // variable that did not exists in tabler but used by selectize.
+  --bs-border-color-translucent: var(--tblr-border-color-translucent);
+
   border-radius: 4px;
   box-shadow: none !important;
-  color: $gray-900;
-  border-color: $gray-500;
+  color: var(--tblr-gray-800);
 
   .selected {
+    // disabled options.
     background-color: white;
-    color: $gray-900;
+    color: var(--tblr-gray-800);
 
     // not disabled options.
     &[data-selectable] {
-      background-color: $blue-500;
-      color: white;
+      background-color: rgba(var(--tblr-blue-rgb), 0.04);
+      color: var(--tblr-blue);
     }
   }
 
   .option {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     font-size: var(--select_component_font_size);
 
     &.active[data-selectable] {
-      background-color: $gray-200;
-      color: $gray-900;
+      background-color: rgba(var(--tblr-gray-500-rgb), 0.08);
+      color: var(--tblr-gray-800);
     }
   }
 
   .selectize-dropdown-content {
     max-height: 200px;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
   }
 
   .selectize-dropdown-emptyoptionlabel {
     text-align: left;
-    height: var(--select_component_min_height);
+  }
+}
+
+.icon-component {
+  $sizes:
+    tiny 15px,
+    small 17px,
+    medium 20px,
+    large 29px;
+
+  @each $name, $size in $sizes {
+    &.icon-component-#{$name} {
+      --tblr-icon-size: #{$size};
+      --tblr-btn-icon-size: #{$size};
+    }
   }
 }
 
 .icon-button-component {
-  @extend .btn, .btn-light;
+  @extend .btn;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
-
-  &.default {
-    border: 1px solid $gray-500;
-    background-color: $gray-100;
-    color: $gray-900;
-
-    &:hover {
-      color: black;
-      background-color: var(--bs-btn-hover-bg);
-    }
-
-    &:active {
-      background-color: var(--bs-btn-active-bg);
-    }
-  }
 
   &.ghost {
     border: 1px solid transparent;
@@ -325,7 +344,6 @@
     color: $gray-600;
 
     &:hover {
-      --bs-btn-focus-box-shadow: 0 0 0 0 transparent;
       color: $gray-900;
     }
 
@@ -340,15 +358,18 @@
     }
   }
 
-  &.icon-medium {
-    padding: 9px;
-  }
+  $sizes:
+    tiny 15px 5.5px,
+    small 17px 6.5px,
+    medium 20px 9px;
 
-  &.icon-small {
-    padding: 6.5px;
-  }
-
-  &.icon-tiny {
-    padding: 5.5px;
+  @each $name, $size, $padding in $sizes {
+    &.icon-#{$name} {
+      // size of the icon + padding * 2 (both side) + border width (each 1px)
+      $button-size: calc($size + ($padding * 2) + 2px);
+      width: $button-size;
+      height: $button-size;
+      padding: $padding;
+    }
   }
 }

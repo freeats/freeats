@@ -30,16 +30,21 @@ class ATS::TeamGrid
 
   attr_accessor(:current_member)
 
-  column(:avatar, html: true, header: "", order: false) do |model|
-    picture_avatar_icon model.avatar, {}, class: "small-avatar-thumbnail"
+  column(:avatar_image, html: true, header: "", order: false) do |model|
+    picture_avatar_icon model.avatar
   end
 
   column(:name, header: I18n.t("core.name"), order: false)
 
   column(:email, header: I18n.t("core.email"), order: false, &:email)
 
-  column(:account_status, header: I18n.t("user_accounts.status"), html: true,
-                          order: false) do |model, grid|
+  column(
+    :account_status,
+    header: I18n.t("user_accounts.status"),
+    html: true,
+    order: false,
+    class: "grid-column-35"
+  ) do |model, grid|
     change_access_level_button(model, grid.current_member)
   end
 
