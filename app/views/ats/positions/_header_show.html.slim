@@ -11,7 +11,7 @@
                      type: :button,
                      aria: { expanded: false, haspopup: true },
                      data: { bs_toggle: "dropdown" }) do |c|
-              - c.with_icon(:chevron_down, position: :right)
+              - c.with_icon(:chevron_down, size: c.size, position: :right)
               = @position.status.humanize
             ul.dropdown-menu.dropdown-menu-end
               - Position.statuses.except("draft", @position.status).each do |status|
@@ -40,7 +40,7 @@
     / BASE INFO
     .col-12.col-md
       h1.mb-0.d-flex.align-items-center.gap-2
-        = position_html_status_circle(@position, tooltip_placement: "top", icon_size: 29)
+        = position_html_status_circle(@position, tooltip_placement: "top", icon_size: :large)
         = @position.name
       - if @position.location_id?
         .mt-2.font-body

@@ -3,19 +3,19 @@
 class IconComponent < ApplicationComponent
   include TablerIcons
 
-  ICON_SIZES = {
-    tiny: 15,
-    small: 17,
-    medium: 20
+  ICON_SIZE_CLASS = {
+    tiny: "icon-component-tiny",
+    small: "icon-component-small",
+    medium: "icon-component-medium",
+    large: "icon-component-large"
   }.freeze
 
   param :icon_name, Types::Coercible::String
   option :icon_type,
          Types::Strict::Symbol.enum(:outline, :filled),
          default: -> { :outline }
-  option :color, Types::Strict::String.optional, optional: true
   option :size,
-         Types::Symbol.enum(*ICON_SIZES.keys) | Types::Strict::Integer,
+         Types::Symbol.enum(*ICON_SIZE_CLASS.keys),
          default: -> { :small }
 
   # The rescue block is needed to test the icon in the lookbook
@@ -23,8 +23,7 @@ class IconComponent < ApplicationComponent
     render_icon(
       icon_name,
       icon_type:,
-      size: icon_size,
-      color:,
+      class: icon_classes,
       stroke_width: 1.25,
       **additional_options
     )
@@ -34,7 +33,16 @@ class IconComponent < ApplicationComponent
 
   private
 
-  def icon_size
-    ICON_SIZES[size] || size
+  def icon_classes
+    [
+      "icon-component",
+      "flex-shrink-0",
+      icon_size_class,
+      *additional_options.delete(:class)
+    ]
+  end
+
+  def icon_size_class
+    ICON_SIZE_CLASS[size]
   end
 end

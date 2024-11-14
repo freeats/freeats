@@ -4,6 +4,7 @@ en:
     positions:
       all_positions: All positions at %{company_name}
       apply_button: Apply
+      apply_position: Apply for this position
       closed_alert: This position is no longer active.
       description: Description
       open_positions_header: Open positions at %{company_name}

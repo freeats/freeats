@@ -23,11 +23,18 @@ ruby:
 
 .reassignment-button data-controller=("reassignment-buttons select-field-instant-submit" if allowed_to_edit)
   - if allowed_to_edit
-    button.btn.btn-light.btn-sm.w-100.text-start.text-truncate [type="button"
-      data-reassignment-buttons-target="button" data-action="reassignment-buttons#showForm"
-      data-bs-toggle="tooltip" data-bs-title=tooltip_title]
+    = render ButtonComponent.new( \
+               variant: :cancel,
+               type: :button,
+               flex_content_position: :start,
+               class: "w-100",
+               data: { reassignment_buttons_target: "button",
+                       action: "reassignment-buttons#showForm",
+                       bs_toggle: :tooltip,
+                       bs_title: tooltip_title },
+             )
       - if currently_assigned_account.present?
-        = picture_avatar_icon currently_assigned_account.avatar, {}, class: "small-avatar-thumbnail me-1"
+        = picture_avatar_icon currently_assigned_account.avatar
         = currently_assigned_account.name
       - else
         = t("core.assign_button")
@@ -46,5 +53,5 @@ ruby:
       button.d-none type="submit" = t("core.hidden_save")
   - elsif currently_assigned_account.present?
     .w-100.text-start data-bs-toggle="tooltip" title=tooltip_title
-      = picture_avatar_icon currently_assigned_account.avatar, {}, class: "small-avatar-thumbnail me-1"
+      = picture_avatar_icon currently_assigned_account.avatar
       = currently_assigned_account.name

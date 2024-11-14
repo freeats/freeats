@@ -1,60 +1,65 @@
 /# locals: (all_files:, candidate:)
 
 #turbo_candidate_files
-  table#files-table.table.mt-3
-    thead
-      tr
-        th scope="col" = t("core.name")
-        th scope="col" = t("core.added_by")
-        th scope="col" = t("core.when")
-        th scope="col" style="width: 50px;" = t("candidates.cv")
-        - if allowed_to?(:delete_file?)
-          th scope="col"
-
-    tbody
-      - all_files.each do |file|
+  .card.mt-3.table-responsive
+    table#files-table.table.card-table.table-vcenter
+      thead
         tr
-          td.text-truncate
-            = link_to file.blob.filename, url_for(file), target: :_blank
-          td
-            - if file.added_event.actor_account_id?
-              = picture_avatar_icon file.added_event.actor_account.avatar, {}, class: "small-avatar-thumbnail"
-              =< file.added_event.actor_account.name
-            - else
-              | ATS
-          td
-            span data-bs-toggle="tooltip" title=file.added_event.performed_at.to_fs(:datetime_full)
-              => short_time_ago_in_words(file.added_event.performed_at)
-              | ago
-          td.files-table-cv-column
-            - if file.cv?
-              - if allowed_to?(:change_cv_status?)
-                = button_to change_cv_status_ats_candidate_path(candidate,
-                            candidate: { file_id_to_change_cv_status: file.id }),
-                            method: :patch, class: "btn" do
-                  span.clickable
-                    = render IconComponent.new(:circle_check, size: :medium, class: "hide-on-hover")
-                    = render IconComponent.new(:circle_x, size: :medium, class: "text-danger show-on-hover")
-              - else
-                = render IconComponent.new(:circle_check, size: :medium)
-            - elsif allowed_to?(:change_cv_status?)
-              = form_with url: change_cv_status_ats_candidate_path(candidate,
-                          candidate: { file_id_to_change_cv_status: file.id }),
-                          method: :patch
-                button.btn type="submit"
-                  span.clickable
-                    = render IconComponent.new(:circle_check, size: :medium, class: "text-success show-on-hover")
+          th scope="col" = t("core.name")
+          th scope="col" = t("core.added_by")
+          th scope="col" = t("core.when")
+          th scope="col" = t("candidates.cv")
           - if allowed_to?(:delete_file?)
-            td.text-end
-              = form_with url: delete_file_ats_candidate_path(candidate, candidate: { file_id_to_remove: file.id }),
-                          method: :delete
-                = render IconButtonComponent.new( \
-                           :trash,
-                           data: { \
-                             toggle: "ats-confirmation",
-                             title: t("candidates.delete_file"),
-                             btn_cancel_label: t("core.cancel_button"),
-                             btn_ok_label: t("core.delete_button"),
-                             btn_ok_class: "btn btn-danger btn-small",
-                           },
-                         )
+            th scope="col"
+
+      tbody
+        - all_files.each do |file|
+          tr
+            td
+              = link_to file.blob.filename, url_for(file), target: :_blank
+            td
+              .hstack.gap-1.text-nowrap
+                - if file.added_event.actor_account_id?
+                  = picture_avatar_icon file.added_event.actor_account.avatar, {}
+                  =< file.added_event.actor_account.name
+                - else
+                  | ATS
+            td
+              span.text-nowrap data-bs-toggle="tooltip" title=file.added_event.performed_at.to_fs(:datetime_full)
+                => short_time_ago_in_words(file.added_event.performed_at)
+                | ago
+            td.files-table-cv-column
+              - if file.cv?
+                - if allowed_to?(:change_cv_status?)
+                  = form_with url: change_cv_status_ats_candidate_path( \
+                                     candidate,
+                                     candidate: { file_id_to_change_cv_status: file.id },
+                                   ),
+                              method: :patch
+                    span.clickable
+                      = render IconButtonComponent.new(:circle_check, class: "hide-on-hover")
+                      = render IconButtonComponent.new(:circle_x, class: "text-danger show-on-hover")
+                - else
+                  = render IconComponent.new(:circle_check, size: :medium)
+              - elsif allowed_to?(:change_cv_status?)
+                = form_with url: change_cv_status_ats_candidate_path( \
+                                   candidate,
+                                   candidate: { file_id_to_change_cv_status: file.id },
+                                ),
+                            method: :patch
+                  span.clickable
+                    = render IconButtonComponent.new(:circle_check, class: "text-success show-on-hover")
+            - if allowed_to?(:delete_file?)
+              td.text-end
+                = form_with url: delete_file_ats_candidate_path(candidate, candidate: { file_id_to_remove: file.id }),
+                            method: :delete
+                  = render IconButtonComponent.new( \
+                             :trash,
+                             data: { \
+                               toggle: "ats-confirmation",
+                               title: t("candidates.delete_file"),
+                               btn_cancel_label: t("core.cancel_button"),
+                               btn_ok_label: t("core.delete_button"),
+                               btn_ok_class: "btn btn-danger btn-small",
+                             },
+                           )

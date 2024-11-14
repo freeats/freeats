@@ -1,14 +1,15 @@
 <%# Please don't convert this file to Slim %>
 
-<div class="order d-flex">
-  <%= link_to(
-      render(IconComponent.new(:arrow_up)),
-      datagrid_order_path(grid, column, false),
-      data: { turbo_frame: "_top" },
-      class: "asc") %>
-  <%= link_to(
-      render(IconComponent.new(:arrow_down)),
-      datagrid_order_path(grid, column, true),
-      data: { turbo_frame: "_top" },
-      class: "desc") %>
-</div>
+<% order_for_link = grid.ordered_by?(column) && grid.descending? %>
+
+<a class="table-sort <%= datagrid_column_classes(grid, column) %>"
+   href="<%= datagrid_order_path(grid, column, !order_for_link) %>">
+  <% if column.options[:tooltip].present? %>
+    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-boundary="window"
+          title="<%= column.options[:tooltip] %>">
+      <%= column.header %>
+    </span>
+  <% else %>
+    <%= column.header %>
+  <% end %>
+</a>

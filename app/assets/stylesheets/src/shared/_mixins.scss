@@ -5,7 +5,7 @@
   width: $width;
   height: $height;
   stroke-width: 1.25;
-  color: colors.$gray-900;
+  color: var(--tblr-colors-gray-900);
   background-size: contain;
   background-repeat: no-repeat;
 }

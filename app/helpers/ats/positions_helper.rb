@@ -125,7 +125,7 @@ module ATS::PositionsHelper
     tooltip_code = color_code
     color_code = -1 if (0..2).cover?(color_code)
     colors = {
-      -3 => "code-black",
+      -3 => "text-gray-600",
       -1 => "code-green",
       3 => "code-blue",
       6 => "code-black"
@@ -146,18 +146,20 @@ module ATS::PositionsHelper
       }
     )
 
-    render IconComponent.new(
-      :user,
-      icon_type: position.draft? ? :outline : :filled,
-      class: [colors[color_code], "flex-shrink-0"],
-      size: icon_size,
-      data: {
-        bs_toggle: :tooltip,
-        bs_title: tooltip,
-        bs_html: true,
-        bs_boundary: :viewport,
-        bs_placement: tooltip_placement
-      }
+    render(
+      IconComponent.new(
+        :user,
+        icon_type: position.draft? ? :outline : :filled,
+        class: [colors[color_code], "flex-shrink-0"],
+        size: icon_size,
+        data: {
+          bs_toggle: :tooltip,
+          bs_title: tooltip,
+          bs_html: true,
+          bs_boundary: :viewport,
+          bs_placement: tooltip_placement
+        }
+      )
     )
   end
 

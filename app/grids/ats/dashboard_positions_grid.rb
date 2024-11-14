@@ -26,7 +26,7 @@ class ATS::DashboardPositionsGrid
   #
 
   column(
-    :status,
+    :position_status,
     header: "",
     order: false,
     preload: :added_event,

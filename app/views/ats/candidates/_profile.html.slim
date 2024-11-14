@@ -36,22 +36,22 @@
     | Emails
     - if @email_count.positive?
       | &nbsp;
-      span.badge.bg-secondary = @email_count
+      span.badge = @email_count
 
   - tab_labels[:scorecards] = capture
     | Scorecards
     - if @scorecards_count.positive?
       | &nbsp;
-      span.badge.bg-secondary = @scorecards_count
+      span.badge = @scorecards_count
 
   - tab_labels[:files] = capture
     | Files
     - if @candidate.files.size > 1 && @candidate.cv.present? \
          || @candidate.files.size.positive? && @candidate.cv.blank?
       | &nbsp;
-      span.badge.bg-secondary = @candidate.files.size
+      span.badge = @candidate.files.size
 
-  ul.nav.d-none.d-md-flex
+  ul.nav.nav-tabs.d-none.d-md-flex
     - if allowed_to?(:show_info?, @candidate)
       li.nav-item
         = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
@@ -77,9 +77,10 @@
         = link_to tab_labels[:activities], tab_ats_candidate_path(@candidate, :activities),
                   class: "nav-link #{'active' if @active_tab == 'activities'}"
   .d-md-none.dropdown.w-100.profile-mobile-nav
-    button.btn.form-control.d-flex.align-items-center.text-dark.dropdown-toggle.w-100.px-3[
+    button.btn.form-control.dropdown-toggle.justify-content-between.w-100[
         id="dropdownNavLink" data-bs-toggle="dropdown"]
-      = tab_labels[@active_tab.to_sym]
+      span
+        = tab_labels[@active_tab.to_sym]
     ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
       - if allowed_to?(:show_info?, @candidate)
         li = link_to tab_labels[:info], tab_ats_candidate_path(@candidate, :info),
@@ -132,5 +133,4 @@
   #merge-candidates-modal
 
 / BODY BOTTOM END
-div id="#{@page_id}-#{@active_tab}"
-  = yield
+= yield

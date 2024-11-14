@@ -1,4 +1,12 @@
-footer.pt-2.px-4
-  .container.container-small
-    .text-center.text-md-start
-      = t("career_site.footer_text")
+footer
+  .container-fluid.container-md.container-md-small
+    .row.row-gap-3.text-center
+      .col-12.col-md-auto
+        = link_to t("career_site.footer_text"), "https://www.freeats.com/", target: "_blank"
+      .col-md-auto.ms-md-auto
+        ul.list-inline.list-inline-dots.mb-0
+          - if ApplicationController::TOS_LINK.present?
+            li.list-inline-item = link_to t("career_site.tos_link"), ApplicationController::TOS_LINK, target: "_blank"
+          - if ApplicationController::PRIVACY_LINK.present?
+            li.list-inline-item
+              = link_to t("career_site.privacy_link"), ApplicationController::PRIVACY_LINK, target: "_blank"

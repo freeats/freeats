@@ -42,7 +42,7 @@ ruby:
                       }
               .row.mt-3
                 .col-12
-                  ul.nav.nav-tabs rolw="tablist"
+                  ul.nav.nav-tabs role="tablist"
                     li.nav-item
                       a.nav-link.active [id="#{dom_id(task)}-notes" data-bs-toggle="tab" href="#notes-tab" role="tab"
                           aria-controls="notes" aria-selected="true"]
@@ -52,8 +52,8 @@ ruby:
                           aria-controls="activities" aria-selected="false"]
                         = t("core.activities")
                   .tab-content
-                    .tab-pane.fade.show.active.notes-block id="notes-tab" role="tabpanel" aria-labelledby="notes-tab"
-                      #notes.row
+                    .tab-pane.fade.show.active id="notes-tab" role="tabpanel" aria-labelledby="notes-tab"
+                      #notes.task-notes.row
                         = render partial: "shared/profile/notes",
                                 locals: { \
                                   all_active_members:,

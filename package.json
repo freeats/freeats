@@ -7,6 +7,7 @@
     "@nathanvda/cocoon": "^1.2.14",
     "@popperjs/core": "^2.11.2",
     "@rails/actiontext": "^7.1.3-2",
+    "@tabler/core": "^1.0.0-beta21",
     "@tabler/icons": "^3.20.0",
     "bootbox": "^6.0.0",
     "bootstrap": "^5.3.3",

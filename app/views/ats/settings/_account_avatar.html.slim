@@ -1,11 +1,11 @@
 /# locals: (account:)
 
 #account_avatar.hstack.gap-2
-  .profile-avatar.img-thumbnail.profile-avatar-edit
-    - if account.avatar.attached?
-      = image_tag account.avatar.variant(:medium)
-    - else
-      = render IconComponent.new(:user, class: "empty-avatar-icon")
+  - if account.avatar.attached?
+    = image_tag account.avatar.variant(:medium), class: "avatar avatar-64px"
+  - else
+    span.avatar.avatar-64px
+      = render IconComponent.new(:user)
 
   = form_with model: account,
               url: update_avatar_ats_settings_path,

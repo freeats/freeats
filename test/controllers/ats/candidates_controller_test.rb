@@ -844,7 +844,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     activities =
       Nokogiri::HTML(response.body)
-              .css("#ats-candidates-show-activities li")
+              .css("#activities li")
               .map { _1.at_css(":nth-child(2)").text.strip }
 
     reference_activities = [

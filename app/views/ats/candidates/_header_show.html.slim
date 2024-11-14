@@ -4,9 +4,9 @@ ruby:
   red_name = @candidate.blacklisted?
 
 - candidate_name = capture
-    h1.fw-bold.mb-0.text-break class=("text-danger" if red_name)
+    h1.mb-0.text-break class=("text-danger hstack gap-2" if red_name)
       - if red_name
-        = render IconComponent.new(:ban, size: :medium, class: "me-2")
+        = render IconComponent.new(:ban, size: :medium)
       = @candidate.full_name
       / - if duplicates_count.positive?
         = render IconButtonComponent.new( \

@@ -2,10 +2,10 @@
 
 $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 
-// Bootstrap
+// Tabler
 @import "../src/shared/variables";
 @import "../src/shared/colors";
-@import "bootstrap/scss/bootstrap";
+@import "@tabler/core/src/scss/tabler";
 
 // Custom component styles
 @import "../src/shared/selectize";
@@ -14,11 +14,4 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 
 body {
   padding: 1rem;
-}
-
-@include media-breakpoint-up(md) {
-  .col-md-profile {
-    flex: 0 0 137px;
-    max-width: 137px;
-  }
 }

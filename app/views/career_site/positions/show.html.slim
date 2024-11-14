@@ -9,7 +9,7 @@
 .row#position_heading.mt-3.gap-3.justify-content-between
   .col-12.col-md-10
     .col
-      h2 = @position.name
+      h1 = @position.name
     - if @position.open?
       .col
         = @position.location&.short_name
@@ -35,7 +35,7 @@
         = sanitize @position.description.body&.to_html
   hr.my-4
   #application_form
-    h2.mb-3 Apply for this job
+    h2.mb-3 = t("career_site.positions.apply_position")
     = form_with url: apply_career_site_position_path( \
                        tenant_slug: @current_tenant.slug,
                        position_id: @position.id),
@@ -47,6 +47,7 @@
           form,
           method: :full_name,
           required: true,
+          size: :medium,
           placeholder: "Full name" \
         )
       = render TextInputComponent.new( \
@@ -54,6 +55,7 @@
           method: :email,
           required: true,
           type: :email,
+          size: :medium,
           pattern: EmailRegexp::HTML_EMAIL_PATTERN,
           placeholder: "Email" \
         )
@@ -64,6 +66,6 @@
       = render ButtonComponent.new( \
           variant: :primary,
           size: :medium,
-          class: "flex-grow-1 flex-lg-grow-0 mt-2" \
+          class: "flex-grow-1 flex-md-grow-0 mt-2" \
         ).with_content(t("career_site.positions.submit_application"))
       .mt-2.font-small.text-gray-600 = t("recaptcha.privacy_message_html")

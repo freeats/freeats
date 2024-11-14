@@ -3,36 +3,29 @@
 # Use <picture> HTML element to show different versions of an image,
 # or when an image is combined with text in a view.
 module PicturesHelper
-  def picture_avatar_icon(attachment, helper_opts = {}, html_opts = {})
-    opts = html_opts
-    hopts = { lazy: false }.merge(helper_opts)
+  def picture_avatar_icon(attachment, opts = {})
     src_sym = :src
-    if hopts[:lazy]
-      opts = html_opts.merge(class: "lazy") { |_, old, new| "#{old} #{new}" }
-      src_sym = :"data-src"
-    end
+    size = opts.delete(:size) || "sm"
 
-    tag.picture do
-      if attachment && (icon = attachment.variant(:icon)).present?
-        if (url = url_for(icon)).present?
-          tag.img(src_sym => url, **opts)
-        else
-          render(
-            IconComponent.new(
-              :loader,
-              class: [*html_opts.delete(:class), "empty-avatar-icon"],
-              **html_opts
-            )
-          )
-        end
+    opts[:class] = ["avatar", "avatar-#{size}", "flex-shrink-0", *opts.delete(:class)]
+
+    if (icon = attachment&.variant(:icon)).present?
+      if (url = url_for(icon)).present?
+        tag.img(src_sym => url, **opts)
       else
-        render(
-          IconComponent.new(
-            :user,
-            class: [*html_opts.delete(:class), "empty-avatar-icon"],
-            **html_opts
-          )
-        )
+        content_tag(
+          :span,
+          **opts
+        ) do
+          render(IconComponent.new(:loader))
+        end
+      end
+    else
+      content_tag(
+        :span,
+        **opts
+      ) do
+        render(IconComponent.new(:user))
       end
     end
   end
