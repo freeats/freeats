@@ -95,6 +95,10 @@ class CareerSite::PositionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show should render position if career_site_enabled" do
+    # These ENV variables are needed to test the display of the footer on career site when they are defined.
+    # The functionality in the absence of these values ​​is checked in the index test.
+    ENV["PRIVACY_LINK"] = "example.com/privacy"
+    ENV["TERMS_LINK"] = "example.com/terms"
     position = positions(:ruby_position)
     tenant = position.tenant
     tenant_slug = tenant.slug
@@ -114,10 +118,18 @@ class CareerSite::PositionsControllerTest < ActionDispatch::IntegrationTest
     get career_site_position_path(tenant_slug:, id: position.slug)
 
     assert_response :success
+
+    ENV["PRIVACY_LINK"] = nil
+    ENV["TERMS_LINK"] = nil
   end
 
   test "index should render positions if career_site_enabled is true and host exists" do
     tenant = tenants(:toughbyte_tenant)
+
+    # Not defined in this test to test the footer when they are missing.
+    # The functionality in the presence of these values ​​is checked in the show test.
+    assert_nil  ENV.fetch("TERMS_LINK", nil)
+    assert_nil  ENV.fetch("PRIVACY_LINK", nil)
 
     get career_site_positions_path(tenant.slug)
 
