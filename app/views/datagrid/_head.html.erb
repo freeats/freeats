@@ -4,17 +4,20 @@
   <% grid.html_columns(*options[:columns]).each do |column| %>
     <th class="align-middle text-nowrap <%= datagrid_column_classes(grid, column) %>">
       <div class="d-flex">
-        <div class="pe-1 text-wrap">
-          <% if column.options[:tooltip].present? %>
-            <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-boundary="window"
-                  title="<%= column.options[:tooltip] %>">
+        <% if column.supports_order? && options[:order] %>
+          <%= datagrid_order_for(grid, column, options)%>
+        <% else %>
+          <div class="text-wrap">
+            <% if column.options[:tooltip].present? %>
+              <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-boundary="window"
+                    title="<%= column.options[:tooltip] %>">
+                <%= column.header %>
+              </span>
+            <% else %>
               <%= column.header %>
-            </span>
-          <% else %>
-            <%= column.header %>
-          <% end %>
-        </div>
-        <%= datagrid_order_for(grid, column, options) if column.supports_order? && options[:order]%>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </th>
   <% end %>
