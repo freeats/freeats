@@ -17,7 +17,7 @@ class API::V1::DocumentsController < AuthorizedController
       case create_or_update_candidate(params_hash, url)
       in Success(candidate)
         case add_resume(candidate, file, custom_metadata: { text_checksum: })
-        in Success(file)
+        in Success()
           render json: { url: candidate.url }, status: :ok
         in Failure[:file_invalid, e]
           render json: { message: error_message(e) }, status: :unprocessable_entity
@@ -61,6 +61,11 @@ class API::V1::DocumentsController < AuthorizedController
   end
 
   def add_resume(candidate, file, custom_metadata: {})
+    if (old_resume = candidate.cv).present? &&
+        old_resume.blob.custom_metadata[:text_checksum] == custom_metadata[:text_checksum]
+      return Success()
+    end
+
     Candidates::UploadFile.new(
       candidate:,
       actor_account: current_account,

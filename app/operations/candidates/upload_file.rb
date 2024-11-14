@@ -10,31 +10,26 @@ class Candidates::UploadFile < ApplicationOperation
   option :custom_metadata, Types::Strict::Hash.optional, default: proc { {} }
 
   def call
-    result = Try[ActiveRecord::RecordInvalid] do
-      ActiveRecord::Base.transaction do
-        attachment = candidate.files.attach(file).attachments.last
+    ActiveRecord::Base.transaction do
+      attachment = candidate.files.attach(file).attachments.last
 
-        attachment.blob.custom_metadata = custom_metadata
+      attachment.blob.custom_metadata = custom_metadata
 
-        Events::Add.new(
-          params:
-            {
-              type: :active_storage_attachment_added,
-              eventable: attachment,
-              properties: { name: file.original_filename },
-              actor_account:
-            }
-        ).call
+      Events::Add.new(
+        params:
+          {
+            type: :active_storage_attachment_added,
+            eventable: attachment,
+            properties: { name: file.original_filename },
+            actor_account:
+          }
+      ).call
 
-        attachment.change_cv_status(actor_account) if cv
-      end
-    end.to_result
-
-    case result
-    in Success(_)
-      Success(candidate.files.last)
-    in Failure[ActiveRecord::RecordInvalid => e]
-      Failure[:file_invalid, e.to_s]
+      attachment.change_cv_status(actor_account) if cv
     end
+
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:file_invalid, e.to_s]
   end
 end

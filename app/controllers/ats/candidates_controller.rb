@@ -431,7 +431,7 @@ class ATS::CandidatesController < AuthorizedController
       actor_account: current_account,
       file: candidate_params[:file]
     ).call
-    in Success(file)
+    in Success()
       redirect_to tab_ats_candidate_path(@candidate, :files)
     in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
@@ -445,7 +445,7 @@ class ATS::CandidatesController < AuthorizedController
       file: candidate_params[:file],
       cv: true
     ).call
-    in Success(file)
+    in Success()
       redirect_to tab_ats_candidate_path(@candidate, :info)
     in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
