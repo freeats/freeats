@@ -42,8 +42,7 @@
                        id: "form-with-recaptcha",
                        data: { controller: "recaptcha-v3" },
                        class: "d-flex flex-column gap-2 needs-validation" do |form|
-      .col
-        #turbo_recaptcha.position-absolute
+      #turbo_recaptcha.position-absolute.col
       .col
         = render TextInputComponent.new( \
             form,
