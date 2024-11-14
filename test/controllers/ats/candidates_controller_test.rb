@@ -786,6 +786,8 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     most_recent_cv_blob_id = duplicate1.cv.blob_id
 
     assert_no_difference ["ActiveStorage::Attachment.count", "AttachmentInformation.count"] do
+      # TODO: replace with controller method call.
+      ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
       Candidates::Merge.new(
         target: candidate,
         actor_account_id: accounts(:admin_account).id
