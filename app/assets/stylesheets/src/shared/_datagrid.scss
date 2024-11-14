@@ -49,6 +49,7 @@
   }
 }
 
+// The `-webkit` attributes are needed to support some older browsers
 .table-sort {
   &:after {
     -webkit-mask-image: $table-sort-bg-image;
