@@ -28,7 +28,7 @@ class EmailMessage < ApplicationRecord
 
   belongs_to :email_thread
 
-  enum sent_via: %i[gmail internal_compose internal_reply].index_with(&:to_s)
+  enum :sent_via, %i[gmail internal_compose internal_reply].index_with(&:to_s)
 
   validates :timestamp, presence: true
 

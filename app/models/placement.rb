@@ -30,7 +30,7 @@ class Placement < ApplicationRecord
   belongs_to :candidate
   belongs_to :disqualify_reason, optional: true
 
-  enum status: %i[
+  enum :status, %i[
     qualified
     reserved
     availability

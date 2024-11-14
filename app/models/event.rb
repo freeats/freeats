@@ -43,7 +43,7 @@ class Event < ApplicationRecord
              foreign_key: :changed_from,
              inverse_of: :removed_event
 
-  enum type: %i[
+  enum :type, %i[
     active_storage_attachment_added
     active_storage_attachment_removed
     candidate_added

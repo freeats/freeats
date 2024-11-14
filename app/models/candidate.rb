@@ -203,7 +203,7 @@ class Candidate < ApplicationRecord
   def google_search_url
     google_query =
       [*names, *candidate_email_addresses.pluck(:address)]
-      .filter(&:present?).map { |p| "\"#{p}\"" }.join(" OR ")
+      .compact_blank.map { |p| "\"#{p}\"" }.join(" OR ")
     "https://www.google.com/search?q=#{URI.encode_www_form_component(google_query)}"
   end
 

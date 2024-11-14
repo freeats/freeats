@@ -28,7 +28,7 @@ class AccountLink
         path = uri.path.last == "/" ? uri.path[0...-1] : uri.path
         "https://#{uri.domain}#{path.downcase}"
       when "github.com"
-        splited_path = uri.path.split("/").filter(&:present?)
+        splited_path = uri.path.split("/").compact_blank
         username = splited_path.shift
 
         downcased_url_part = [username].join("/").downcase
