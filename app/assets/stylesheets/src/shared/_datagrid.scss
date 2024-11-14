@@ -49,12 +49,19 @@
   }
 }
 
-/* table.ats_positions_grid, */
-/* table.ats_dashboard_positions_grid, */
-/* table.tasks_grid, */
-/* table.profile_tasks_grid { */
-/*   td.status { */
-/*     text-align: center; */
-/*     width: 1rem; */
-/*   } */
-/* } */
+.table-sort {
+  &:after {
+    -webkit-mask-image: $table-sort-bg-image;
+    mask-image: $table-sort-bg-image;
+  }
+
+  &.asc:after {
+    -webkit-mask-image: $table-sort-asc-bg-image;
+    mask-image: $table-sort-asc-bg-image;
+  }
+
+  &.desc:after {
+    -webkit-mask-image: $table-sort-desc-bg-image;
+    mask-image: $table-sort-desc-bg-image;
+  }
+}
