@@ -62,7 +62,7 @@ class API::V1::DocumentsController < AuthorizedController
 
   def add_resume(candidate, file, custom_metadata: {})
     if (old_resume = candidate.cv).present? &&
-        old_resume.blob.custom_metadata[:text_checksum] == custom_metadata[:text_checksum]
+       old_resume.blob.custom_metadata[:text_checksum] == custom_metadata[:text_checksum]
       return Success()
     end
 
