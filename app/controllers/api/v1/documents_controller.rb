@@ -16,7 +16,7 @@ class API::V1::DocumentsController < AuthorizedController
     ActiveRecord::Base.transaction do
       case create_or_update_candidate(params_hash, url)
       in Success(candidate)
-        case add_resume(candidate, file)
+        case add_resume(candidate, file, custom_metadata: { text_checksum: })
         in Success(file)
           render json: { url: candidate.url }, status: :ok
         in Failure[:file_invalid, e]
@@ -60,12 +60,13 @@ class API::V1::DocumentsController < AuthorizedController
     end
   end
 
-  def add_resume(candidate, file)
+  def add_resume(candidate, file, custom_metadata: {})
     Candidates::UploadFile.new(
       candidate:,
       actor_account: current_account,
       file:,
-      cv: true
+      cv: true,
+      custom_metadata:
     ).call
   end
 

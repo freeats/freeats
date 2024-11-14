@@ -7,12 +7,14 @@ class Candidates::UploadFile < ApplicationOperation
   option :actor_account, Types::Instance(Account).optional
   option :file, Types::Instance(ActionDispatch::Http::UploadedFile)
   option :cv, Types::Strict::Bool.optional, default: proc { false }
-  option :text_checksum, Types::Strict::String.optional
+  option :custom_metadata, Types::Strict::Hash.optional, default: proc { {} }
 
   def call
     result = Try[ActiveRecord::RecordInvalid] do
       ActiveRecord::Base.transaction do
         attachment = candidate.files.attach(file).attachments.last
+
+        attachment.blob.custom_metadata = custom_metadata
 
         Events::Add.new(
           params:
