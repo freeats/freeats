@@ -51,7 +51,7 @@ export default class extends Controller {
         const $collapseButton = $noteThread.find(".thread-collapse-button");
         const firstNoteId = $noteThread.find(".note:first").prop("id").split("-").pop();
         if ($noteThread.find(`#note-edit-${firstNoteId}.active`).length) {
-          $collapseButton.css({ position: "absolute", bottom: "2px" });
+          $collapseButton.css({ position: "absolute", bottom: "3px" });
         } else {
           $collapseButton.css({ position: "static" });
         }
@@ -73,7 +73,7 @@ export default class extends Controller {
           $noteThread.find(".note-edit").removeClass("active");
           $replyTab.addClass("active");
         }
-        $collapseButton.css({ position: "absolute", bottom: "2px" });
+        $collapseButton.css({ position: "absolute", bottom: "3px" });
       },
     );
     $(this.threadsTargets).on("shown.bs.collapse", ".collapse", function scrollToLastNote() {
@@ -125,7 +125,14 @@ export default class extends Controller {
       if (isReply || ($noteThread.length && !$linkedNote.is($noteThread.find(".note:first")))) {
         const noteThreadId = $noteThread.prop("id").split("_").pop();
         const $collapsedNotes = $(`#other-thread-notes-thread-${noteThreadId}`);
-        if (!$collapsedNotes.hasClass("show")) {
+
+        if ($collapsedNotes.hasClass("show")) {
+          $noteThread.find(".thread-collapse-button")
+            .css({
+              position: "absolute",
+              bottom: "3px",
+            });
+        } else {
           $collapsedNotes.addClass("show");
           $noteThread.find(".note-thread-reply").addClass("active");
           $noteThread.find(".icon-chevron-show, .icon-chevron-hide").toggle();
