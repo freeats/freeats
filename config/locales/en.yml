@@ -128,25 +128,9 @@ en:
     disabled_avatar_tooltip: You can't delete the avatar right now. It’s being processed.
     disqualification:
       disqualify_statuses:
-        availability: The candidate is not available for new opportunities at the
-          moment.
-        location: The candidate is not interested in our office locations.
         no_reply: The candidate didn't reply to the first message or stopped replying
           afterwards.
-        not_interested: The candidate wasn't interested due to an unspecified reason.
-        other: The candidate was rejected for some other reason.
-        other_offer: The candidate accepted another offer, a counteroffer from the
-          current employer or decided to pursue another career path.
-        overpriced: The candidate's salary expectations are higher than what can be
-          offered.
-        overqualified: The candidate has more experience than needed for the position
-          or they are interested in higher positions.
         position_closed: The position was closed.
-        remote_only: The candidate prefers only remote work.
-        team_fit: There was a mismatch with the team culture.
-        underqualified: The candidate didn't have the required skills or level of
-          experience needed.
-        workload: The candidate's availability didn't match with position requirements.
       reason_not_found: Disqualification reason has not been found.
     disqualify: Disqualify
     download_file: download file
