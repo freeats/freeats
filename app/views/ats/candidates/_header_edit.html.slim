@@ -36,9 +36,9 @@
               options: compose_location_option_for_select(@candidate.location),
             },
           )
-      = render LabeledComponent.new do |c|
+      = render LabeledComponent.new(right_class: "d-flex align-items-center") do |c|
         - c.with_label(t("candidates.blacklisted"), form:, for_field: :blacklisted)
-        = form.check_box(:blacklisted, class: "form-control-sm")
+        = form.check_box(:blacklisted, class: "form-check-input")
 
       - if allowed_to?(:destroy?, @candidate, with: ATS::CandidatePolicy)
         = render LabeledComponent.new(class: "mt-3")
