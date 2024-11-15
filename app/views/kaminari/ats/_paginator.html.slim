@@ -5,8 +5,9 @@
     per_page:      number of items to fetch per page
     remote:        data-remote
     paginator:     the paginator that renders the pagination tags inside
+    klass:         additional classes for wrapper
 == paginator.render do
-  nav.page-paginator.hub-paginator aria-label="pager"
+  nav.page-paginator aria-label="pager" class=klass
     ul.pagination.flex-wrap.mb-0
       == first_page_tag
       == prev_page_tag
