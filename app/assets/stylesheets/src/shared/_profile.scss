@@ -171,3 +171,18 @@
     }
   }
 }
+
+#activities {
+  .card-body {
+    --tblr-card-spacer-y: 12px;
+
+    .divide-y {
+      > :not(template):not(:last-child) {
+        padding-bottom: 12px !important;
+      }
+      > :not(template):not(:first-child) {
+        padding-top: 12px !important;
+      }
+    }
+  }
+}
