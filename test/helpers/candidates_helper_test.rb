@@ -12,7 +12,7 @@ class CandidatesHelperTest < ActionView::TestCase
     @event = Event.new(performed_at: Time.current)
   end
 
-  test "candidate_display_activity with actor_account_id present" do
+  test "candidate_display_activity with candidate_added, method manual and actor_account_id present" do
     @event.actor_account_id = accounts(:admin_account).id
     @event.type = "candidate_added"
     @event.properties = { "method" => "manual" }
@@ -23,14 +23,24 @@ class CandidatesHelperTest < ActionView::TestCase
     assert_match("<span><b>#{@event.actor_account.name}</b> added the candidate manually</span>", result)
   end
 
-  test "candidate_display_activity with actor_account_id blank" do
+  test "candidate_display_activity with candidate_added, method manual and actor_account_id blank" do
     @event.actor_account_id = nil
     @event.type = "candidate_added"
     @event.properties = { "method" => "manual" }
 
     result = candidate_display_activity(@event)
 
-    assert_match(/FreeATS added the candidate/, result)
+    assert_match(/FreeATS added the candidate manually/, result)
+  end
+
+  test "candidate_display_activity with candidate_added, method api and actor_account_id blank" do
+    @event.actor_account_id = nil
+    @event.type = "candidate_added"
+    @event.properties = { "method" => "api" }
+
+    result = candidate_display_activity(@event)
+
+    assert_match(/FreeATS added the candidate using extension/, result)
   end
 
   test "candidate_display_activity with placement_added and applied true" do

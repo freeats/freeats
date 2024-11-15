@@ -4,7 +4,7 @@ class Candidates::Apply < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
   option :actor_account, Types::Instance(Account).optional
-  option :method, Types::Strict::String, default: -> { "manual" }
+  option :method, Types::Strict::String, default: -> { "applied" }
   option :params, Types::Strict::Hash.schema(
     email: Types::Strict::String,
     file: Types::Instance(ActionDispatch::Http::UploadedFile),
