@@ -1,6 +1,6 @@
 /# locals: (event:)
 
-li.list-group-item id="event-#{event.id}"
+div id="event-#{event.id}"
   span.fw-light.me-2
     = event.performed_at.to_fs(:datetime)
   span = ats_task_display_activity(event)

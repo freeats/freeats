@@ -64,7 +64,7 @@ ruby:
                                   hide_visibility_controls: true,
                                 }
                     .tab-pane.fade id="activities-tab" role="tabpanel" aria-labelledby="activities-tab"
-                      .row.mt-3
-                        .col
-                            ul.list-group.text-break id="turbo_task_event_list"
-                              = render partial: "ats/tasks/activity_event_row", collection: all_activities, as: :event
+                      #activities.card.mt-3
+                        .card-body
+                          .divide-y id="turbo_task_event_list"
+                            = render partial: "ats/tasks/activity_event_row", collection: all_activities, as: :event
