@@ -1,8 +1,11 @@
 = render "ats/positions/profile"
-  ul.list-group.col-12.col-lg-7.col-xl-8.mt-3.text-break.bg-white
-    - @activities.each do |event|
-      li.list-group-item
-        span.fw-light.me-2
-          = event.performed_at.to_fs(:datetime)
-        span = ats_position_display_activity(event)
-  .mt-3 = paginate(@activities, theme: "ats")
+  .col-12.col-lg-7.col-xl-8
+    #activities.card.mt-3
+      .card-body
+        .divide-y
+          - @activities.each do |event|
+            div id="event-#{event.id}"
+              span.fw-light.me-2
+                = event.performed_at.to_fs(:datetime)
+              span = ats_position_display_activity(event)
+    = paginate(@activities, theme: "ats", klass: "mt-3 ")
