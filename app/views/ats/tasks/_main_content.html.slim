@@ -60,14 +60,16 @@ ruby:
   .d-flex.flex-wrap.mt-3.column-gap-4
     / Assignee
     = form_with model: task, url: ats_task_path(task, grid:),
-                class: "row flex-fill col-12 col-lg-6 turbo-instant-submit" do |f|
+                class: "row flex-fill col-12 col-lg-6",
+                data: { controller: "select-field-instant-submit" } do |f|
       = f.label :assignee_id, t("core.assignee"), class: label_classes
       .col-lg-9
         = render SingleSelectComponent.new( \
                    f,
                    include_blank: t("core.unassign"),
                    method: :assignee_id,
-                   local: { options: composed_assignee_options } \
+                   local: { options: composed_assignee_options },
+                   data: { deferred_selectize_select_field_instant_submit_target: "selectField" } \
                  )
 
     / Watchers
@@ -98,7 +100,8 @@ ruby:
                                                   humanized_datepicker_target: "datepickerAlt" })
     / Repeat
     = form_with model: task, url: ats_task_path(task, grid:),
-                class: "row flex-fill col-12 col-lg-6 turbo-instant-submit" do |f|
+                class: "row flex-fill col-12 col-lg-6",
+                data: { controller: "select-field-instant-submit" } do |f|
       = f.label :repeat_interval, t("tasks.repeat"), class: label_classes
       .col-lg-9
         = render SingleSelectComponent.new( \
@@ -106,6 +109,7 @@ ruby:
                    method: :repeat_interval,
                    required: true,
                    local: { options: repeat_interval_options },
+                   data: { deferred_selectize_select_field_instant_submit_target: "selectField" } \
                  )
 
   / Fourth row
