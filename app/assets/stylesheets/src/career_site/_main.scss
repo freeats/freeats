@@ -36,9 +36,9 @@ footer {
   a,
   span,
   div {
-    color: $gray-600;
+    color: $gray-500;
     &:visited:not(.btn, .nav-link, .dropdown-item, .badge) {
-      color: $gray-600;
+      color: $gray-500;
     }
   }
 }
