@@ -125,7 +125,7 @@ module CandidatesHelper
     end
     right_event_info_element = tag.span(sanitize(text.join(" ")))
 
-    tag.li(class: "list-group-item", id: "event-#{event.id}") do
+    tag.div(id: "event-#{event.id}") do
       safe_join([left_datetime_element, right_event_info_element])
     end
   end

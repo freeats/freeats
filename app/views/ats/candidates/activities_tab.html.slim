@@ -1,7 +1,7 @@
 = render "ats/candidates/profile" do
-  .row.mt-3
-    .col
-      ul#activities.list-group.text-break.bg-white
+  #activities.card.mt-3
+    .card-body
+      .divide-y
         - @all_activities.each do |event|
           = candidate_display_activity(event)
-      .mt-3 = paginate(@all_activities, theme: "ats")
+  = paginate(@all_activities, theme: "ats", klass: "mt-3")
