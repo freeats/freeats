@@ -9,6 +9,34 @@ class PlacementTest < ActiveSupport::TestCase
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
   end
 
+  test "should not allow not disqualified placements to have disqualify_reason" do
+    placement = placements(:sam_golang_replied)
+
+    assert_predicate placement, :valid?
+    assert_not placement.disqualified?
+    assert_not placement.disqualify_reason
+
+    placement.disqualify_reason = disqualify_reasons(:no_reply_toughbyte)
+
+    assert_not placement.valid?
+    assert_includes placement.errors.full_messages,
+                    "Not disqualified placement must not have a disqualification reason"
+  end
+
+  test "should not allow disqualified placements to have blank disqualify_reason" do
+    placement = placements(:sam_golang_sourced)
+
+    assert_predicate placement, :valid?
+    assert_predicate placement, :disqualified?
+    assert placement.disqualify_reason
+
+    placement.disqualify_reason_id = nil
+
+    assert_not placement.valid?
+    assert_includes placement.errors.full_messages,
+                    "Disqualified placement must have a disqualification reason"
+  end
+
   test "should add placement and create event" do
     candidate = candidates(:jane)
     position = positions(:ruby_position)
@@ -93,35 +121,6 @@ class PlacementTest < ActiveSupport::TestCase
       assert_equal event.changed_field, "stage"
       assert_equal event.changed_from, old_stage_id
       assert_equal event.changed_to, placement.position_stage_id
-    end
-  end
-
-  test "should change status and create event" do
-    placement = placements(:sam_golang_sourced)
-    actor_account = accounts(:admin_account)
-    old_status = placement.status
-    new_status = "overqualified"
-
-    assert_not_equal old_status, new_status
-
-    assert_difference "Event.count" => 1 do
-      placement = Placements::ChangeStatus.new(
-        new_status:,
-        placement:,
-        actor_account:
-      ).call.value!
-
-      assert_equal placement.status, new_status
-
-      event = Event.last
-
-      assert_equal event.actor_account_id, actor_account.id
-      assert_equal event.type, "placement_changed"
-      assert_equal event.eventable_id, placement.id
-      assert_equal event.eventable_type, "Placement"
-      assert_equal event.changed_field, "status"
-      assert_equal event.changed_from, old_status
-      assert_equal event.changed_to, new_status
     end
   end
 

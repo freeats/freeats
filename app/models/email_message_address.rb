@@ -7,7 +7,7 @@ class EmailMessageAddress < ApplicationRecord
 
   belongs_to :email_message
 
-  enum field: %i[from to cc bcc].index_with(&:to_s), _suffix: true
+  enum :field, %i[from to cc bcc].index_with(&:to_s), suffix: true
 
   validates :address, presence: true
   validates :address, format: { with: EMAIL_REGEXP }

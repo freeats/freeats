@@ -38,7 +38,7 @@ class ATS::ScorecardsController < AuthorizedController
     ).call
     in Success(scorecard)
       redirect_to ats_scorecard_path(scorecard)
-    in Failure[:scorecard_invalid, _error] |
+    in Failure[:scorecard_invalid, _error] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:scorecard_not_unique, _error] |
        Failure[:scorecard_question_invalid, _error] |
        Failure[:scorecard_question_not_unique, _error]
@@ -58,7 +58,7 @@ class ATS::ScorecardsController < AuthorizedController
     ).call
     in Success(scorecard)
       redirect_to ats_scorecard_path(scorecard)
-    in Failure[:scorecard_invalid, _error] |
+    in Failure[:scorecard_invalid, _error] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:scorecard_not_unique, _error] |
        Failure[:scorecard_question_invalid, _error] |
        Failure[:scorecard_question_not_unique, _error]
@@ -73,7 +73,7 @@ class ATS::ScorecardsController < AuthorizedController
     ).call
     in Success(candidate_id)
       redirect_to tab_ats_candidate_path(candidate_id, :scorecards)
-    in Failure[:scorecard_not_destroyed, _error] | Failure[:event_invalid, _error]
+    in Failure[:scorecard_not_destroyed, _error] | Failure[:event_invalid, _error] # rubocop:disable Lint/UnderscorePrefixedVariableName
       render_error _error, status: :unprocessable_entity
     end
   end

@@ -17,7 +17,7 @@ class LiteralAsExpectedArgumentTest < ActiveSupport::TestCase
       class FooTest < ActiveSupport::TestCase
         test "some test" do
           assert_equal "Test", test
-                       ^^^^^^^^^^^^ Replace the literal with the second argument.
+                       ^^^^^^^^^^^^ Minitest/LiteralAsExpectedArgument: Replace the literal with the second argument.
         end
       end
     RUBY
@@ -36,7 +36,7 @@ class LiteralAsExpectedArgumentTest < ActiveSupport::TestCase
       class FooTest < ActiveSupport::TestCase
         test "some test" do
           assert_equal [1, 2, { key: :value }], foo
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Replace the literal with the second argument.
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Minitest/LiteralAsExpectedArgument: Replace the literal with the second argument.
         end
       end
     RUBY

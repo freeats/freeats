@@ -49,6 +49,10 @@
   }
 }
 
+a.table-sort {
+  text-decoration: none;
+}
+
 // The `-webkit` attributes are needed to support some older browsers
 .table-sort {
   &:after {

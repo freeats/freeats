@@ -19,8 +19,8 @@ class Task < ApplicationRecord
   belongs_to :taskable, polymorphic: true, optional: true
   belongs_to :assignee, class_name: "Member", optional: true
 
-  enum status: %i[open closed].index_with(&:to_s)
-  enum repeat_interval: %i[never daily weekly monthly yearly].index_with(&:to_s), _suffix: true
+  enum :status, %i[open closed].index_with(&:to_s)
+  enum :repeat_interval, %i[never daily weekly monthly yearly].index_with(&:to_s), suffix: true
 
   strip_attributes only: :name
 
