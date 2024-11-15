@@ -104,7 +104,7 @@ class ATS::PlacementsController < AuthorizedController
       else
         render_placements_panel(placement)
       end
-    in Failure[:placement_invalid, _error] | Failure[:disqualify_reason_invalid, _error]
+    in Failure[:placement_invalid, _error] | Failure[:disqualify_reason_invalid, _error] # rubocop:disable Lint/UnderscorePrefixedVariableName
       render_error _error
     end
   end
