@@ -11,6 +11,8 @@ export default class extends Controller {
     // Used explicitly `requestSubmitPolyfilled` because `turbo-instant-submit`
     // works incorrectly when we type something irrelevant and lose focus.
     selectize.on("change", () => {
+      // Turn off focus to prevent reopening the selectize dropdown after turbo action.
+      selectize.$control_input.blur();
       requestSubmitPolyfilled(form);
     });
   }
