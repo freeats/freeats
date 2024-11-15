@@ -65,15 +65,11 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
       position_stage_id: position_stage.id
     }
 
-    error = "Event is invalid"
-    call_mock = Minitest::Mock.new
-    call_mock.expect(:call, Failure[:event_invalid, error])
-
-    Events::Add.stub :new, ->(_params) { call_mock } do
+    Event.stub :create!, ->(_params) { raise ActiveRecord::RecordInvalid } do
       assert_no_difference "ScorecardTemplate.count", "Event.count" do
         case ScorecardTemplates::Add.new(params:, questions_params: [], actor_account:).call
         in Failure[:event_invalid, e]
-          assert_equal e, error
+          assert_equal e, "Record invalid"
         end
       end
     end
