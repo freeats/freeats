@@ -112,7 +112,7 @@
   .selectize-input {
     border-radius: 4px !important;
     vertical-align: middle; // Fix the height of the component.
-    background: 0 0;
+    background-color: var(--tblr-white);
     border-color: var(--tblr-border-color);
 
     &.focus {
