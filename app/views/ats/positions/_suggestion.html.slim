@@ -17,16 +17,17 @@
                   aria: { expanded: false, haspopup: true },
                 )
         ul.dropdown-menu.dropdown-menu-end
-          - Placement::MANUAL_DISQUALIFY_STATUSES.each do |status|
+          - DisqualifyReason.find_each do |reason|
             ruby:
               tooltip_hash = {
                 data: { bs_toggle: "tooltip", bs_placement: "left" },
-                title: t("candidates.disqualification.disqualify_statuses.#{status}")
+                title: reason.description
               }
             li = form_with url: ats_candidate_placements_path(candidate_id, position_id: suggestion.id) do |form|
+              = form.hidden_field :disqualify_reason_id, value: reason.id
               = form.button({ class: "dropdown-item", name: "suggestion_disqualify_reason",
-                              value: status }.merge(tooltip_hash))
-                = status.humanize
+                              value: "disqualified" }.merge(tooltip_hash))
+                = reason.title
       = form_with url: ats_candidate_placements_path(candidate_id, position_id: suggestion.id),
                        data: { "bs-toggle": "tooltip", "bs-title": t("core.add_button") }
         = render IconButtonComponent.new(:plus, size: :tiny)

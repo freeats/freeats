@@ -37,7 +37,7 @@ class ATS::PositionStagesController < AuthorizedController
         message = t("position_stages.succesfully_deleted")
         turbo_remove_stage = turbo_stream.remove("position_stage#{@position_stage.id}")
         render_turbo_stream([turbo_remove_stage], notice: message)
-      in Failure[:position_stage_not_deleted, _error] | Failure[:event_invalid, _error]
+      in Failure[:position_stage_not_deleted, _error] | Failure[:event_invalid, _error] # rubocop:disable Lint/UnderscorePrefixedVariableName
         render_error _error, status: :unprocessable_entity
       in Failure(:stage_already_deleted)
         render_error t("position_stages.already_deleted"), status: :unprocessable_entity

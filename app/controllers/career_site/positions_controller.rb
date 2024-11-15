@@ -129,7 +129,7 @@ class CareerSite::PositionsController < ApplicationController
           candidate_or_message
         end
       render_error error_message, status: :unprocessable_entity
-    in Failure[:placement_invalid, _e] | Failure[:task_invalid, _e] |
+    in Failure[:placement_invalid, _e] | Failure[:task_invalid, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:new_stage_invalid, _e] | Failure[:file_invalid, _e] |
        Failure[:event_invalid, _e] | Failure[:inactive_assignee, _e]
       ATS::Logger

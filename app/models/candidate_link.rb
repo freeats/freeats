@@ -6,15 +6,15 @@ class CandidateLink < ApplicationRecord
   belongs_to :candidate
   belongs_to :created_by, class_name: "Member", optional: true
 
-  enum status: %i[
+  enum :status, %i[
     current
     outdated
-  ].index_with(&:to_s), _prefix: true
+  ].index_with(&:to_s), prefix: true
 
-  enum created_via: %i[
+  enum :created_via, %i[
     api
     manual
-  ].index_with(&:to_s), _prefix: true
+  ].index_with(&:to_s), prefix: true
 
   validates :url, presence: true, uniqueness: { scope: :candidate_id }
 

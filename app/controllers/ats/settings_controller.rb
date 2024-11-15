@@ -66,7 +66,7 @@ class ATS::SettingsController < AuthorizedController
     ).call
 
     case rs
-    in Failure[:failed_to_fetch_tokens, _e] |
+    in Failure[:failed_to_fetch_tokens, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:failed_to_retrieve_email_address, _e] |
        Failure[:new_tokens_are_not_saved, _e]
       Log.tagged("link_gmail") { _1.external_log(_e) }

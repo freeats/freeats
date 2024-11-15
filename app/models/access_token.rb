@@ -7,7 +7,7 @@ class AccessToken < ApplicationRecord
 
   acts_as_tenant(:tenant)
 
-  enum context: %i[member_invitation].index_with(&:to_s)
+  enum :context, [:member_invitation].index_with(&:to_s)
   validates :hashed_token, :sent_to, :context, presence: true
   validates :sent_to, format: { with: EMAIL_REGEXP }
 

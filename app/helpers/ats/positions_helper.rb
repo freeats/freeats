@@ -125,7 +125,7 @@ module ATS::PositionsHelper
     tooltip_code = color_code
     color_code = -1 if (0..2).cover?(color_code)
     colors = {
-      -3 => "text-gray-600",
+      -3 => "code-gray",
       -1 => "code-green",
       3 => "code-blue",
       6 => "code-black"

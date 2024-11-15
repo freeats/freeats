@@ -29,7 +29,7 @@ class ATS::ScorecardTemplatesController < AuthorizedController
     ).call
     in Success(scorecard_template)
       redirect_to ats_scorecard_template_path(scorecard_template)
-    in Failure[:scorecard_template_invalid, _e] |
+    in Failure[:scorecard_template_invalid, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:scorecard_template_not_unique, _e] |
        Failure[:scorecard_template_question_invalid, _e] |
        Failure[:scorecard_template_question_not_unique, _e]
@@ -46,7 +46,7 @@ class ATS::ScorecardTemplatesController < AuthorizedController
     ).call
     in Success(scorecard_template)
       redirect_to ats_scorecard_template_path(scorecard_template)
-    in Failure[:scorecard_template_invalid, _e] |
+    in Failure[:scorecard_template_invalid, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:scorecard_template_not_unique, _e] |
        Failure[:scorecard_template_question_invalid, _e] |
        Failure[:scorecard_template_question_not_unique, _e]
@@ -61,7 +61,7 @@ class ATS::ScorecardTemplatesController < AuthorizedController
     ).call
     in Success(position)
       redirect_to ats_position_path(position)
-    in Failure[:scorecard_template_not_destroyed, _error] | Failure[:event_invalid, _error]
+    in Failure[:scorecard_template_not_destroyed, _error] | Failure[:event_invalid, _error] # rubocop:disable Lint/UnderscorePrefixedVariableName
       render_error _error, status: :unprocessable_entity
     end
   end

@@ -103,8 +103,8 @@ class Position < ApplicationRecord
 
   accepts_nested_attributes_for :stages
 
-  enum status: %i[draft open on_hold closed].index_with(&:to_s)
-  enum change_status_reason: %i[
+  enum :status, %i[draft open on_hold closed].index_with(&:to_s)
+  enum :change_status_reason, %i[
     other
     new_position
     deprioritized

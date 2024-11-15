@@ -264,7 +264,7 @@ class ATS::CandidatesController < AuthorizedController
           )
         ]
       )
-    in Failure[:candidate_invalid, _e] |
+    in Failure[:candidate_invalid, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:alternative_name_invalid, _e] |
        Failure[:alternative_name_not_unique, _e]
       render_error _e, status: :unprocessable_entity
@@ -375,7 +375,7 @@ class ATS::CandidatesController < AuthorizedController
           turbo_update_card(card_name)
         ]
       )
-    in Failure[:candidate_invalid, _e] |
+    in Failure[:candidate_invalid, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:alternative_name_invalid, _e] |
        Failure[:alternative_name_not_unique, _e]
       render_error _e, status: :unprocessable_entity

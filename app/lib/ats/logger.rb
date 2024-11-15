@@ -50,7 +50,7 @@ class ATS::Logger
     @logger = Dry.Logger(:hub, **default_options)
     @logger.context[:where] = where
     external_logger =
-      Dry.Logger(:hub, **default_options.merge(template: external_template(template)))
+      Dry.Logger(:hub, **default_options, template: external_template(template))
     external_logger.context[:where] = where
     if Rails.env.development? || ENV["LOG_TO_STDOUT"].present?
       @logger.add_backend(stream: $stdout)
