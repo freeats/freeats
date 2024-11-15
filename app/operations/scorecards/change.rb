@@ -69,10 +69,11 @@ class Scorecards::Change < ApplicationOperation
       type: :scorecard_changed,
       eventable: scorecard
     }
-
-    yield Events::Add.new(params: scorecard_changed_params).call
+    Event.create!(scorecard_changed_params)
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 
   def scorecard_changed?(old_values:, scorecard:)

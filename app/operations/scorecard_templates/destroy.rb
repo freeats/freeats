@@ -13,18 +13,24 @@ class ScorecardTemplates::Destroy < ApplicationOperation
     ActiveRecord::Base.transaction do
       scorecard_template.destroy!
 
-      yield Events::Add.new(
-        params:
-          {
-            type: :scorecard_template_removed,
-            eventable: position_stage,
-            actor_account:
-          }
-      ).call
+      yield add_event(position_stage:, actor_account:)
     end
 
     Success(position_id)
   rescue ActiveRecord::RecordNotDestroyed => e
     Failure[:scorecard_template_not_destroyed, e.record.errors]
+  end
+
+  def add_event(position_stage:, actor_account:)
+    Event.create!(
+      type: :scorecard_template_removed,
+      eventable: position_stage,
+      performed_at: Time.zone.now,
+      actor_account:
+    )
+
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end

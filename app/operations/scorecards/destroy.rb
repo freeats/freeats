@@ -13,19 +13,27 @@ class Scorecards::Destroy < ApplicationOperation
     ActiveRecord::Base.transaction do
       scorecard.destroy!
 
-      yield Events::Add.new(
-        params:
-          {
-            type: :scorecard_removed,
-            eventable: placement,
-            changed_from: scorecard.title,
-            actor_account:
-          }
-      ).call
+      yield add_event(placement:, changed_from: scorecard.title)
     end
 
     Success(candidate_id)
   rescue ActiveRecord::RecordNotDestroyed => e
     Failure[:scorecard_not_destroyed, e.record.errors]
+  end
+
+  private
+
+  def add_event(placement:, changed_from:)
+    Event.create!(
+      type: :scorecard_removed,
+      eventable: placement,
+      changed_from:,
+      performed_at: Time.zone.now,
+      actor_account:
+    )
+
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end

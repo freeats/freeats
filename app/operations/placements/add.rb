@@ -63,14 +63,15 @@ class Placements::Add < ApplicationOperation
   end
 
   def add_event(placement:, actor_account:)
-    placement_added_params = {
+    Event.create!(
       actor_account:,
       type: :placement_added,
+      performed_at: Time.zone.now,
       eventable: placement
-    }
-
-    yield Events::Add.new(params: placement_added_params).call
+    )
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end

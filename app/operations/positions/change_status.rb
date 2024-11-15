@@ -33,7 +33,7 @@ class Positions::ChangeStatus < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_position(position)
-      yield Events::Add.new(params: position_changed_params).call
+      yield add_event(position_changed_params)
     end
 
     Success(position)
@@ -47,5 +47,13 @@ class Positions::ChangeStatus < ApplicationOperation
     Success()
   rescue ActiveRecord::RecordInvalid => e
     Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
+  end
+
+  def add_event(params)
+    Event.create!(params)
+
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end

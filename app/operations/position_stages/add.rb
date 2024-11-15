@@ -32,15 +32,17 @@ class PositionStages::Add < ApplicationOperation
   end
 
   def add_event(position_stage:, actor_account:)
-    position_stage_added_params = {
+    params = {
       actor_account:,
       type: :position_stage_added,
       eventable: position_stage,
+      performed_at: Time.zone.now,
       properties: { name: position_stage.name }
     }
-
-    yield Events::Add.new(params: position_stage_added_params).call
+    Event.create!(params)
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end

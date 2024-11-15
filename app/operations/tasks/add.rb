@@ -64,27 +64,27 @@ class Tasks::Add < ApplicationOperation
     task_added_params = {
       actor_account:,
       type: :task_added,
+      performed_at: Time.zone.now,
       eventable: task
     }
-
-    yield Events::Add.new(params: task_added_params).call
+    Event.create!(task_added_params)
 
     return Success() if (task_watchers = task.watchers).empty?
 
     task_watchers.each do |watcher|
-      Events::Add.new(
-        params:
-          {
-            eventable: task,
-            changed_field: :watcher,
-            type: :task_watcher_added,
-            changed_to: watcher.id,
-            actor_account:
-          }
-      ).call
+      Event.create!(
+        eventable: task,
+        changed_field: :watcher,
+        type: :task_watcher_added,
+        changed_to: watcher.id,
+        performed_at: Time.zone.now,
+        actor_account:
+      )
     end
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 
   def watchers

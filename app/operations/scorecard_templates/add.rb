@@ -51,11 +51,13 @@ class ScorecardTemplates::Add < ApplicationOperation
     scorecard_template_added_params = {
       actor_account:,
       type: :scorecard_template_added,
+      performed_at: Time.zone.now,
       eventable: scorecard_template
     }
-
-    yield Events::Add.new(params: scorecard_template_added_params).call
+    Event.create!(scorecard_template_added_params)
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end

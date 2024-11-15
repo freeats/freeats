@@ -64,12 +64,14 @@ class ScorecardTemplates::Change < ApplicationOperation
     scorecard_template_changed_params = {
       actor_account:,
       type: :scorecard_template_changed,
+      performed_at: Time.zone.now,
       eventable: scorecard_template
     }
-
-    yield Events::Add.new(params: scorecard_template_changed_params).call
+    Event.create!(scorecard_template_changed_params)
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 
   def scorecard_template_changed?(old_values:, scorecard_template:)

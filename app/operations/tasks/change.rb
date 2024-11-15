@@ -50,28 +50,24 @@ class Tasks::Change < ApplicationOperation
       new_value = task.public_send(field)
       if field == :watcher_ids
         (new_value - old_value).each do |new_watcher|
-          Events::Add.new(
-            params:
-              {
-                eventable: task,
-                changed_field: :watcher,
-                type: :task_watcher_added,
-                changed_to: new_watcher,
-                actor_account:
-              }
-          ).call
+          Event.create!(
+            eventable: task,
+            changed_field: :watcher,
+            type: :task_watcher_added,
+            changed_to: new_watcher,
+            performed_at: Time.zone.now,
+            actor_account:
+          )
         end
         (old_value - new_value).each do |removed_watcher|
-          Events::Add.new(
-            params:
-              {
-                eventable: task,
-                changed_field: :watcher,
-                type: :task_watcher_removed,
-                changed_from: removed_watcher,
-                actor_account:
-              }
-          ).call
+          Event.create!(
+            eventable: task,
+            changed_field: :watcher,
+            type: :task_watcher_removed,
+            changed_from: removed_watcher,
+            performed_at: Time.zone.now,
+            actor_account:
+          )
         end
       else
         Events::AddChangedEvent.new(
@@ -85,6 +81,8 @@ class Tasks::Change < ApplicationOperation
     end
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 
   def watchers

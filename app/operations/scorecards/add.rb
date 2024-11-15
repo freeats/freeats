@@ -60,11 +60,13 @@ class Scorecards::Add < ApplicationOperation
     scorecard_added_params = {
       actor_account:,
       type: :scorecard_added,
+      performed_at: Time.zone.now,
       eventable: scorecard
     }
-
-    yield Events::Add.new(params: scorecard_added_params).call
+    Event.create!(scorecard_added_params)
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end

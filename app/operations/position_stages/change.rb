@@ -36,17 +36,19 @@ class PositionStages::Change < ApplicationOperation
   def add_event(position_stage:, actor_account:, old_name:)
     return Success() if old_name == position_stage.name
 
-    position_stage_changed_params = {
+    params = {
       actor_account:,
       type: :position_stage_changed,
       eventable: position_stage,
+      performed_at: Time.zone.now,
       changed_field: :name,
       changed_from: old_name,
       changed_to: position_stage.name
     }
-
-    yield Events::Add.new(params: position_stage_changed_params).call
+    Event.create!(params)
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end

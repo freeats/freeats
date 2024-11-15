@@ -35,7 +35,7 @@ class EmailSynchronization::ProcessSingleMessage::CreateFromImap < ApplicationOp
       performed_at: Time.zone.at(email_message.timestamp).to_datetime
     }
 
-    yield Events::Add.new(params: email_message_params).call
+    yield add_event(email_message_params)
 
     Success(email_message)
   end
@@ -69,5 +69,13 @@ class EmailSynchronization::ProcessSingleMessage::CreateFromImap < ApplicationOp
     else
       "<#{cleared_address.join}>"
     end
+  end
+
+  def add_event(params)
+    Event.create!(params)
+
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end

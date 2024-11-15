@@ -50,7 +50,7 @@ class Positions::Add < ApplicationOperation
       eventable: position
     }
 
-    yield Events::Add.new(params: position_added_params).call
+    Event.create!(position_added_params)
 
     position_changed_params = {
       actor_account:,
@@ -60,7 +60,7 @@ class Positions::Add < ApplicationOperation
       changed_to: position.name
     }
 
-    yield Events::Add.new(params: position_changed_params).call
+    Event.create!(position_changed_params)
 
     position_recruiter_assigned_params = {
       actor_account:,
@@ -69,7 +69,7 @@ class Positions::Add < ApplicationOperation
       changed_to: position.recruiter_id
     }
 
-    yield Events::Add.new(params: position_recruiter_assigned_params).call
+    Event.create!(position_recruiter_assigned_params)
 
     if params[:location_id].present?
       yield Events::AddChangedEvent.new(
@@ -82,5 +82,7 @@ class Positions::Add < ApplicationOperation
     end
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end

@@ -18,6 +18,7 @@ class Placements::ChangeStatus < ApplicationOperation
       actor_account:,
       type: :placement_changed,
       eventable: placement,
+      performed_at: Time.zone.now,
       changed_field: :status,
       changed_from: old_status,
       changed_to: new_status
@@ -25,7 +26,7 @@ class Placements::ChangeStatus < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_placement(placement)
-      yield Events::Add.new(params: placement_changed_params).call
+      yield add_event(placement_changed_params)
     end
 
     Success(placement)
@@ -39,5 +40,13 @@ class Placements::ChangeStatus < ApplicationOperation
     Success()
   rescue ActiveRecord::RecordInvalid => e
     Failure[:placement_invalid, placement.errors.full_messages.presence || e.to_s]
+  end
+
+  def add_event(params)
+    Event.create!(params)
+
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end

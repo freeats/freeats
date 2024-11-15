@@ -47,48 +47,54 @@ class Tasks::ChangeStatus < ApplicationOperation
         actor_account:,
         type: :task_status_changed,
         eventable: task,
+        performed_at: Time.zone.now,
         changed_field: :status,
         changed_from: "open",
         changed_to: "closed"
       }
 
-      yield Events::Add.new(params: task_status_changed_params).call
+      Event.create!(task_status_changed_params)
 
       task_status_changed_params = {
         actor_account: nil,
         type: :task_status_changed,
         eventable: task,
+        performed_at: Time.zone.now,
         changed_field: :status,
         changed_from: "closed",
         changed_to: "open"
       }
 
-      yield Events::Add.new(params: task_status_changed_params).call
+      Event.create!(task_status_changed_params)
 
       task_changed_params = {
         actor_account: nil,
         type: :task_changed,
         eventable: task,
+        performed_at: Time.zone.now,
         changed_field: :due_date,
         changed_from: old_values[:due_date].to_s,
         changed_to: task.due_date.to_s
       }
 
-      yield Events::Add.new(params: task_changed_params).call
+      Event.create!(task_changed_params)
     else
       task_status_changed_params = {
         actor_account:,
         type: :task_status_changed,
         eventable: task,
+        performed_at: Time.zone.now,
         changed_field: :status,
         changed_from: old_values[:status],
         changed_to: task.status
       }
 
-      yield Events::Add.new(params: task_status_changed_params).call
+      Event.create!(task_status_changed_params)
     end
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 
   def new_due_date(task)

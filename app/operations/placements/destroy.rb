@@ -30,6 +30,7 @@ class Placements::Destroy < ApplicationOperation
       actor_account:,
       type: :placement_removed,
       eventable: placement.candidate,
+      performed_at: Time.zone.now,
       properties: {
         position_id: placement.position_id,
         placement_id: placement.id,
@@ -39,9 +40,10 @@ class Placements::Destroy < ApplicationOperation
         added_at: placement.added_event.performed_at
       }
     }
-
-    yield Events::Add.new(params:).call
+    Event.create!(params)
 
     Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:event_invalid, e.to_s]
   end
 end
