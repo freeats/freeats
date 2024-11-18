@@ -134,13 +134,6 @@ class ATS::CandidatesController < AuthorizedController
         when "files"
           @all_files = @candidate.all_files
         when "activities"
-          if params[:event]
-            redirect_to tab_ats_candidate_path(@candidate, :activities,
-                                               page: page_of_activity(params[:event]),
-                                               anchor: "event-#{params[:event]}")
-            return
-          end
-
           @all_activities =
             @candidate
             .events
@@ -186,6 +179,13 @@ class ATS::CandidatesController < AuthorizedController
             # so it doesn't work without .to_a
             .union(Event.where(eventable: @candidate.files.to_a))
             .order(performed_at: :desc)
+
+          if params[:event]
+            redirect_to tab_ats_candidate_path(@candidate, :activities,
+                                               page: page_of_activity(params[:event]),
+                                               anchor: "event-#{params[:event]}")
+            return
+          end
 
           @all_activities =
             @all_activities
