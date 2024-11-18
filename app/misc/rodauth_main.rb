@@ -39,7 +39,8 @@ module CreateAccount
 
         account[:name] = name
         account[:tenant_id] =
-          param("tenant_id").presence || Tenant.create!(name: param("company_name")).id
+          param("tenant_id").presence ||
+          Tenants::Add.new(company_name: param("company_name")).call.value!.id
       end
 
       # The `internal_request` is used for creating a member for the existing tenant
@@ -52,7 +53,6 @@ module CreateAccount
           account.verified!
           Member.create!(account_id:, tenant_id:, access_level: :member)
         else
-          Tenant.find(tenant_id).create_mandatory_disqualify_reasons
           Member.create!(account_id:, tenant_id:, access_level: :admin)
           CandidateSource.create!(tenant_id:, name: "LinkedIn")
           # If mailer is not enabled, it's impossible to verify account via email.

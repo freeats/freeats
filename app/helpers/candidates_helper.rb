@@ -166,7 +166,7 @@ module CandidatesHelper
     end
     right_event_info_element = tag.span(sanitize(text.join(" ")))
 
-    tag.li(class: "list-group-item", id: "event-#{event.id}") do
+    tag.div(id: "event-#{event.id}") do
       safe_join([left_datetime_element, right_event_info_element])
     end
   end
@@ -188,11 +188,6 @@ module CandidatesHelper
         <<~TEXT
           disqualified the candidate on #{position_link}
           with reason <b>#{event.properties['reason']}</b>
-        TEXT
-      else # TODO: remove this branch after events update.
-        <<~TEXT
-          disqualified the candidate on #{position_link}
-          with reason <b>#{event.changed_to.humanize}</b>
         TEXT
       end
     when "stage"

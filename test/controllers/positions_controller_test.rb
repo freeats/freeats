@@ -479,7 +479,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
 
     activities =
       Nokogiri::HTML(response.body)
-              .css("#ats-positions-show-activities li")
+              .css("#ats-positions-show-activities #activities div")
               .map { _1.at_css(":nth-child(2)").text.strip }
 
     reference_activities = [

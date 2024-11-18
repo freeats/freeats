@@ -20,7 +20,7 @@ export default class extends Controller {
       $(this.collapsedStateIconTargets).toggle();
     }
     if (this.hasCollapseButtonTarget) {
-      $(this.collapseButtonTarget).css({ position: "absolute", bottom: "2px" });
+      $(this.collapseButtonTarget).css({ position: "absolute", bottom: "3px" });
     }
 
     const $textarea = $replyTab.find("textarea:first");
@@ -32,6 +32,7 @@ export default class extends Controller {
     if (!this.hasCollapsedNotesTarget) {
       $(this.replyTabTarget).removeClass("active");
     } else {
+      this.collapseButtonTarget.setAttribute("style", "");
       $(this.collapsedNotesTarget).collapse("hide");
       $(this.collapsedStateIconTargets).toggle();
     }

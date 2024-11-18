@@ -41,27 +41,35 @@
                        position_id: @position.id),
                        id: "form-with-recaptcha",
                        data: { controller: "recaptcha-v3" },
-                       class: "d-flex flex-column gap-2" do |form|
-      #turbo_recaptcha.position-absolute
-      = render TextInputComponent.new( \
-          form,
-          method: :full_name,
-          required: true,
-          size: :medium,
-          placeholder: "Full name" \
-        )
-      = render TextInputComponent.new( \
-          form,
-          method: :email,
-          required: true,
-          type: :email,
-          size: :medium,
-          pattern: EmailRegexp::HTML_EMAIL_PATTERN,
-          placeholder: "Email" \
-        )
-      = form.file_field :file, class: "form-control", id: "formFile", type: "file",
-                               required: true, accept: ".pdf,.doc,.docx,.odt,.rtf"
-
+                       class: "d-flex flex-column gap-2 needs-validation" do |form|
+      #turbo_recaptcha.position-absolute.col
+      .col
+        = render TextInputComponent.new( \
+            form,
+            method: :full_name,
+            required: true,
+            size: :medium,
+            placeholder: "Full name" \
+          )
+        .invalid-feedback
+          = t("career_site.positions.invalid_full_name_error")
+      .col
+        = render TextInputComponent.new( \
+            form,
+            method: :email,
+            required: true,
+            type: :email,
+            size: :medium,
+            pattern: EmailRegexp::HTML_EMAIL_PATTERN,
+            placeholder: "Email" \
+          )
+        .invalid-feedback
+          = t("career_site.positions.invalid_email_error")
+      .col
+        = form.file_field :file, class: "form-control", id: "formFile", type: "file",
+                                required: true, accept: ".pdf,.doc,.docx,.odt,.rtf"
+        .invalid-feedback
+          = t("career_site.positions.invalid_file_error")
       = hidden_field_tag :recaptcha_v3_score
       = render ButtonComponent.new( \
           variant: :primary,
