@@ -182,7 +182,7 @@ en:
       text: We couldn't process your request because some information is missing or incorrect.
     500:
       heading: Internal server error
-      text: We couldn't process your request because some information is missing or incorrect.
+      text: Something went wrong, please try again later.
     button:
       text: Take me home
     forbidden_action: You are not allowed to perform this action.
