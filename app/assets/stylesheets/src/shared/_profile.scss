@@ -183,6 +183,9 @@
       > :not(template):not(:first-child) {
         padding-top: 12px !important;
       }
+      > :target {
+        background-color: var(--tblr-blue-lt);
+      }
     }
   }
 }
