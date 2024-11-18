@@ -31,7 +31,7 @@ a.table-sort {
 }
 
 .page-paginator {
-  &:last-child:not(&:first-child) {
+  &:not(&:first-child) {
     margin-top: 16px;
   }
 }
