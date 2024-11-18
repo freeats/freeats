@@ -40,7 +40,7 @@ class Notes::Add < ApplicationOperation
 
       note.note_thread = note_thread
       yield save_note(note)
-      yield add_event(note:, actor_account:)
+      add_event(note:, actor_account:)
     end
 
     send_notifications(note:, actor_account:)
@@ -80,10 +80,6 @@ class Notes::Add < ApplicationOperation
       performed_at: Time.zone.now,
       actor_account:
     )
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def send_notifications(note:, actor_account:)

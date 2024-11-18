@@ -55,7 +55,7 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
     assert_nil ScorecardTemplateQuestion.find_by(id: scorecard_template_question.id)
   end
 
-  test "should return failure with invalid event" do
+  test "should bubble up exception if event creation raises exception" do
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     position_stage = position_stages(:ruby_position_hired)
     actor_account = accounts(:admin_account)
@@ -66,11 +66,8 @@ class ScorecardTemplateTest < ActiveSupport::TestCase
     }
 
     Event.stub :create!, ->(_params) { raise ActiveRecord::RecordInvalid } do
-      assert_no_difference "ScorecardTemplate.count", "Event.count" do
-        case ScorecardTemplates::Add.new(params:, questions_params: [], actor_account:).call
-        in Failure[:event_invalid, e]
-          assert_equal e, "Record invalid"
-        end
+      assert_raises(ActiveRecord::RecordInvalid) do
+        ScorecardTemplates::Add.new(params:, questions_params: [], actor_account:).call
       end
     end
   end

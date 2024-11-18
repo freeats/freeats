@@ -26,7 +26,7 @@ class Placements::ChangeStatus < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_placement(placement)
-      yield add_event(placement_changed_params)
+      Event.create!(placement_changed_params)
     end
 
     Success(placement)
@@ -40,13 +40,5 @@ class Placements::ChangeStatus < ApplicationOperation
     Success()
   rescue ActiveRecord::RecordInvalid => e
     Failure[:placement_invalid, placement.errors.full_messages.presence || e.to_s]
-  end
-
-  def add_event(params)
-    Event.create!(params)
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 end

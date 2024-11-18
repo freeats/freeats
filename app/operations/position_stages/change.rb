@@ -17,7 +17,7 @@ class PositionStages::Change < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_position_stage(position_stage)
-      yield add_event(position_stage:, actor_account:, old_name:)
+      add_event(position_stage:, actor_account:, old_name:)
     end
 
     Success()
@@ -46,9 +46,5 @@ class PositionStages::Change < ApplicationOperation
       changed_to: position_stage.name
     }
     Event.create!(params)
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 end

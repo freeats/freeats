@@ -15,16 +15,22 @@ class Candidates::RemoveFile < ApplicationOperation
       added_at: file.added_event.performed_at
     }
     ActiveRecord::Base.transaction do
-      yield add_event(candidate:, properties:, actor_account:)
-      file.remove
+      add_event(candidate:, properties:, actor_account:)
+      yield remove_file(file)
     end
+
+    Success()
+  end
+
+  private
+
+  def remove_file(file)
+    file.remove
 
     Success()
   rescue ActiveRecord::RecordInvalid => e
     Failure[:file_invalid, e.to_s]
   end
-
-  private
 
   def add_event(candidate:, properties:, actor_account:)
     Event.create!(
@@ -34,9 +40,5 @@ class Candidates::RemoveFile < ApplicationOperation
       performed_at: Time.zone.now,
       actor_account:
     )
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 end

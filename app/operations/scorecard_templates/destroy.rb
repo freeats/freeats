@@ -13,7 +13,7 @@ class ScorecardTemplates::Destroy < ApplicationOperation
     ActiveRecord::Base.transaction do
       scorecard_template.destroy!
 
-      yield add_event(position_stage:, actor_account:)
+      add_event(position_stage:, actor_account:)
     end
 
     Success(position_id)
@@ -28,9 +28,5 @@ class ScorecardTemplates::Destroy < ApplicationOperation
       performed_at: Time.zone.now,
       actor_account:
     )
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 end

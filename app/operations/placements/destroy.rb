@@ -8,7 +8,7 @@ class Placements::Destroy < ApplicationOperation
 
   def call
     ActiveRecord::Base.transaction do
-      yield add_event(placement:, actor_account:)
+      add_event(placement:, actor_account:)
       yield destroy_placement(placement)
     end
 
@@ -41,9 +41,5 @@ class Placements::Destroy < ApplicationOperation
       }
     }
     Event.create!(params)
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 end

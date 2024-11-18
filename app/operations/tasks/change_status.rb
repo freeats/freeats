@@ -25,7 +25,7 @@ class Tasks::ChangeStatus < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_task(task)
-      yield add_task_status_changed_events(old_values:, task:, repeat:, actor_account:)
+      add_task_status_changed_events(old_values:, task:, repeat:, actor_account:)
     end
 
     Success(task)
@@ -91,10 +91,6 @@ class Tasks::ChangeStatus < ApplicationOperation
 
       Event.create!(task_status_changed_params)
     end
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def new_due_date(task)

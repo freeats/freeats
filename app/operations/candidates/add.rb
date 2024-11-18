@@ -61,8 +61,7 @@ class Candidates::Add < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_candidate(candidate)
-      yield add_events(candidate:, actor_account:)
-      # TODO: add yield to rollback transaction of failure
+      add_events(candidate:, actor_account:)
       add_changed_events(candidate:, actor_account:, old_values:)
     end
 
@@ -126,10 +125,6 @@ class Candidates::Add < ApplicationOperation
       actor_account:,
       changed_to: candidate.recruiter_id
     )
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def add_changed_events(candidate:, actor_account:, old_values:)

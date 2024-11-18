@@ -30,7 +30,7 @@ class Positions::Change < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_position(position)
-      yield add_events(old_values:, position:, actor_account:)
+      add_events(old_values:, position:, actor_account:)
     end
 
     Success(position.reload)
@@ -49,17 +49,15 @@ class Positions::Change < ApplicationOperation
   def add_events(old_values:, position:, actor_account:)
     common_event_params = { actor_account:, eventable: position, performed_at: Time.zone.now }
 
-    yield add_changed_recruiter_events(old_values:, position:, common_event_params:)
-    yield add_changed_collaborators_events(old_values:, position:, common_event_params:)
-    yield add_changed_hiring_managers_events(old_values:, position:, common_event_params:)
-    yield add_changed_interviewers_events(old_values:, position:, common_event_params:)
-    yield add_position_changed_events(old_values:, position:, actor_account:)
-
-    Success()
+    add_changed_recruiter_events(old_values:, position:, common_event_params:)
+    add_changed_collaborators_events(old_values:, position:, common_event_params:)
+    add_changed_hiring_managers_events(old_values:, position:, common_event_params:)
+    add_changed_interviewers_events(old_values:, position:, common_event_params:)
+    add_position_changed_events(old_values:, position:, actor_account:)
   end
 
   def add_changed_recruiter_events(old_values:, position:, common_event_params:)
-    return Success() if old_values[:recruiter_id] == position.recruiter_id
+    return if old_values[:recruiter_id] == position.recruiter_id
 
     if old_values[:recruiter_id].present?
       Event.create!(
@@ -69,23 +67,19 @@ class Positions::Change < ApplicationOperation
       )
     end
 
-    return Success() if position.recruiter_id.blank?
+    return if position.recruiter_id.blank?
 
     Event.create!(
       **common_event_params,
       type: :position_recruiter_assigned,
       changed_to: position.recruiter_id
     )
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def add_changed_collaborators_events(old_values:, position:, common_event_params:)
     position_collaborator_ids = position.collaborator_ids
 
-    return Success() if old_values[:collaborator_ids] == position_collaborator_ids
+    return if old_values[:collaborator_ids] == position_collaborator_ids
 
     removed_collaborator_ids = old_values[:collaborator_ids] - position_collaborator_ids
     removed_collaborator_ids.each do |removed_collaborator_id|
@@ -96,7 +90,7 @@ class Positions::Change < ApplicationOperation
       )
     end
 
-    return Success() if position_collaborator_ids.blank?
+    return if position_collaborator_ids.blank?
 
     added_collaborator_ids = position_collaborator_ids - old_values[:collaborator_ids]
     added_collaborator_ids.each do |added_collaborator_id|
@@ -106,16 +100,12 @@ class Positions::Change < ApplicationOperation
         changed_to: added_collaborator_id
       )
     end
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def add_changed_hiring_managers_events(old_values:, position:, common_event_params:)
     position_hiring_manager_ids = position.hiring_manager_ids
 
-    return Success() if old_values[:hiring_manager_ids] == position_hiring_manager_ids
+    return if old_values[:hiring_manager_ids] == position_hiring_manager_ids
 
     removed_hiring_manager_ids = old_values[:hiring_manager_ids] - position_hiring_manager_ids
     removed_hiring_manager_ids.each do |removed_hiring_manager_id|
@@ -126,7 +116,7 @@ class Positions::Change < ApplicationOperation
       )
     end
 
-    return Success() if position_hiring_manager_ids.blank?
+    return if position_hiring_manager_ids.blank?
 
     added_hiring_manager_ids = position_hiring_manager_ids - old_values[:hiring_manager_ids]
     added_hiring_manager_ids.each do |added_hiring_manager_id|
@@ -136,16 +126,12 @@ class Positions::Change < ApplicationOperation
         changed_to: added_hiring_manager_id
       )
     end
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def add_changed_interviewers_events(old_values:, position:, common_event_params:)
     position_interviewer_ids = position.interviewer_ids
 
-    return Success() if old_values[:interviewer_ids] == position_interviewer_ids
+    return if old_values[:interviewer_ids] == position_interviewer_ids
 
     removed_interviewer_ids = old_values[:interviewer_ids] - position_interviewer_ids
     removed_interviewer_ids.each do |removed_interviewer_id|
@@ -156,7 +142,7 @@ class Positions::Change < ApplicationOperation
       )
     end
 
-    return Success() if position_interviewer_ids.blank?
+    return if position_interviewer_ids.blank?
 
     added_interviewer_ids = position_interviewer_ids - old_values[:interviewer_ids]
     added_interviewer_ids.each do |added_interviewer_id|
@@ -166,10 +152,6 @@ class Positions::Change < ApplicationOperation
         changed_to: added_interviewer_id
       )
     end
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def add_position_changed_events(old_values:, position:, actor_account:)
@@ -209,9 +191,5 @@ class Positions::Change < ApplicationOperation
       new_value: position.location&.short_name,
       actor_account:
     ).call
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 end

@@ -29,7 +29,7 @@ class Tasks::Change < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_task(task)
-      yield add_task_changed_events(old_values:, task:, actor_account:)
+      add_task_changed_events(old_values:, task:, actor_account:)
     end
 
     Success(task)
@@ -79,10 +79,6 @@ class Tasks::Change < ApplicationOperation
         ).call
       end
     end
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def watchers

@@ -25,7 +25,7 @@ class Scorecards::Add < ApplicationOperation
     ActiveRecord::Base.transaction do
       yield save_scorecard(scorecard)
       yield add_questions(scorecard:, questions_params:)
-      yield add_event(scorecard:, actor_account:)
+      add_event(scorecard:, actor_account:)
     end
 
     Success(scorecard)
@@ -64,9 +64,5 @@ class Scorecards::Add < ApplicationOperation
       eventable: scorecard
     }
     Event.create!(scorecard_added_params)
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 end

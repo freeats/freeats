@@ -36,7 +36,7 @@ class Placements::Add < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_placement(placement)
-      yield add_event(placement:, actor_account:)
+      add_event(placement:, actor_account:)
 
       if (reason = params[:suggestion_disqualify_reason]).present?
         yield Placements::ChangeStatus.new(
@@ -69,9 +69,5 @@ class Placements::Add < ApplicationOperation
       performed_at: Time.zone.now,
       eventable: placement
     )
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 end

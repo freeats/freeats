@@ -19,19 +19,25 @@ class Notes::Destroy < ApplicationOperation
     }
 
     ActiveRecord::Base.transaction do
-      yield add_event(notable:, properties:, actor_account:)
-      note.destroy!
-      yield NoteThreads::Destroy.new(
-        note_thread:
-      ).call
+      add_event(notable:, properties:, actor_account:)
+      yield destroy_note(note, note_thread)
     end
 
     Success(note_thread)
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:note_invalid, note.errors.full_messages.presence || e.to_s]
   end
 
   private
+
+  def destroy_note(note, note_thread)
+    note.destroy!
+    yield NoteThreads::Destroy.new(
+      note_thread:
+    ).call
+
+    Success()
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:note_invalid, note.errors.full_messages.presence || e.to_s]
+  end
 
   def add_event(notable:, properties:, actor_account:)
     Event.create!(
@@ -41,9 +47,5 @@ class Notes::Destroy < ApplicationOperation
       performed_at: Time.zone.now,
       actor_account:
     )
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 end

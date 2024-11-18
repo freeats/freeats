@@ -28,7 +28,7 @@ class PositionStages::Delete < ApplicationOperation
         yield ScorecardTemplates::Destroy.new(scorecard_template:, actor_account:).call
       end
 
-      yield add_event(position:, position_stage_id: position_stage.id)
+      add_event(position:, position_stage_id: position_stage.id)
 
       if placements_to_move.present?
         yield move_placements(
@@ -69,10 +69,6 @@ class PositionStages::Delete < ApplicationOperation
       performed_at: Time.zone.now,
       actor_account:
     )
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def move_placements(placements:, stage:, new_stage_name:, actor_account:)

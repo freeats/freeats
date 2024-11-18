@@ -13,7 +13,7 @@ class Scorecards::Destroy < ApplicationOperation
     ActiveRecord::Base.transaction do
       scorecard.destroy!
 
-      yield add_event(placement:, changed_from: scorecard.title)
+      add_event(placement:, changed_from: scorecard.title)
     end
 
     Success(candidate_id)
@@ -31,9 +31,5 @@ class Scorecards::Destroy < ApplicationOperation
       performed_at: Time.zone.now,
       actor_account:
     )
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 end

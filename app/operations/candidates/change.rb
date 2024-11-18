@@ -70,7 +70,7 @@ class Candidates::Change < ApplicationOperation
       end
 
       if candidate.recruiter_id != old_values[:recruiter_id]
-        yield add_recruiter_changed_events(
+        add_recruiter_changed_events(
           candidate:,
           actor_account:,
           old_recruiter_id: old_values[:recruiter_id]
@@ -165,7 +165,7 @@ class Candidates::Change < ApplicationOperation
       )
     end
 
-    return Success() if candidate.recruiter_id.blank?
+    return if candidate.recruiter_id.blank?
 
     Event.create!(
       type: :candidate_recruiter_assigned,
@@ -174,10 +174,6 @@ class Candidates::Change < ApplicationOperation
       performed_at: Time.zone.now,
       actor_account:
     )
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def add_changed_events(candidate:, actor_account:, old_values:)

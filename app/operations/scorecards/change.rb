@@ -30,7 +30,7 @@ class Scorecards::Change < ApplicationOperation
     ActiveRecord::Base.transaction do
       yield save_scorecard(scorecard)
       yield change_questions(scorecard:, questions_params:)
-      yield add_event(old_values:, scorecard:, actor_account:)
+      add_event(scorecard:, actor_account:) if scorecard_changed?(old_values:, scorecard:)
     end
 
     Success(scorecard)
@@ -61,19 +61,13 @@ class Scorecards::Change < ApplicationOperation
     Success()
   end
 
-  def add_event(old_values:, scorecard:, actor_account:)
-    return Success() unless scorecard_changed?(old_values:, scorecard:)
-
+  def add_event(scorecard:, actor_account:)
     scorecard_changed_params = {
       actor_account:,
       type: :scorecard_changed,
       eventable: scorecard
     }
     Event.create!(scorecard_changed_params)
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def scorecard_changed?(old_values:, scorecard:)

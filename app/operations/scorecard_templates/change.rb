@@ -23,7 +23,7 @@ class ScorecardTemplates::Change < ApplicationOperation
     ActiveRecord::Base.transaction do
       yield save_scorecard_template(scorecard_template)
       yield change_scorecard_template_questions(scorecard_template:, questions_params:)
-      yield add_event(old_values:, scorecard_template:, actor_account:)
+      add_event(old_values:, scorecard_template:, actor_account:)
     end
 
     Success(scorecard_template)
@@ -68,10 +68,6 @@ class ScorecardTemplates::Change < ApplicationOperation
       eventable: scorecard_template
     }
     Event.create!(scorecard_template_changed_params)
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 
   def scorecard_template_changed?(old_values:, scorecard_template:)

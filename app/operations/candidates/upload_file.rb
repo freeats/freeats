@@ -11,17 +11,23 @@ class Candidates::UploadFile < ApplicationOperation
   def call
     properties = { name: file.original_filename }
     ActiveRecord::Base.transaction do
-      attachment = candidate.files.attach(file).attachments.last
-      yield add_event(attachment:, properties:, actor_account:)
-      attachment.change_cv_status(actor_account) if cv
+      attachment = yield upload_file(candidate:, file:, cv:)
+      add_event(attachment:, properties:, actor_account:)
     end
 
     Success(candidate.files.last)
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:file_invalid, e.to_s]
   end
 
   private
+
+  def upload_file(candidate:, file:, cv:)
+    attachment = candidate.files.attach(file).attachments.last
+    attachment.change_cv_status(actor_account) if cv
+
+    Success(attachment)
+  rescue ActiveRecord::RecordInvalid => e
+    Failure[:file_invalid, e.to_s]
+  end
 
   def add_event(attachment:, properties:, actor_account:)
     Event.create!(
@@ -31,9 +37,5 @@ class Candidates::UploadFile < ApplicationOperation
       performed_at: Time.zone.now,
       actor_account:
     )
-
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
   end
 end

@@ -18,7 +18,7 @@ class Positions::Add < ApplicationOperation
     ActiveRecord::Base.transaction do
       yield save_position(position)
       yield add_default_stages(position, actor_account:)
-      yield add_events(position:, actor_account:)
+      add_events(position:, actor_account:)
     end
 
     Success(position.reload)
@@ -71,18 +71,14 @@ class Positions::Add < ApplicationOperation
 
     Event.create!(position_recruiter_assigned_params)
 
-    if params[:location_id].present?
-      yield Events::AddChangedEvent.new(
-        eventable: position,
-        changed_field: "location",
-        old_value: nil,
-        new_value: position.location.short_name,
-        actor_account:
-      ).call
-    end
+    return if params[:location_id].blank?
 
-    Success()
-  rescue ActiveRecord::RecordInvalid => e
-    Failure[:event_invalid, e.to_s]
+    yield Events::AddChangedEvent.new(
+      eventable: position,
+      changed_field: "location",
+      old_value: nil,
+      new_value: position.location.short_name,
+      actor_account:
+    ).call
   end
 end
