@@ -8,4 +8,4 @@
               span.fw-light.me-2
                 = event.performed_at.to_fs(:datetime)
               span = ats_position_display_activity(event)
-    = paginate(@activities, theme: "ats", klass: "mt-3 ")
+    = paginate(@activities, theme: "ats")
