@@ -68,7 +68,8 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     get "/500"
 
     assert_response :internal_server_error
-    assert_select "h1", "500 | Application Error"
+    assert_select "h1", "Internal server error"
+    assert_select "p", "Something went wrong, please try again later."
 
     get "/500", headers: { Accept: "application/json" }
 
