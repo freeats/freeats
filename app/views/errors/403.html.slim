@@ -1,8 +1,12 @@
-- title = "403 | Unauthorized"
-- content_for(:title) { title }
+ruby:
+  error_code = 403
+  heading = t(".heading")
+  content_for(:title) { [error_code, heading].join(" | ") }
 
-header
-  .error-pages
-    h1 = title
-    .font-subheader
-      | Sorry, it looks like you don't have access to this page.
+.empty
+  .empty-header = error_code
+  h1.empty-title = heading
+  p.empty-subtitle.text-secondary
+    = t(".text")
+  .empty-action
+    = render partial: "errors/button"

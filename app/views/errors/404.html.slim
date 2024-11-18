@@ -1,8 +1,12 @@
-- title = "404 | Page not found"
-- content_for(:title) { title }
+ruby:
+  error_code = 404
+  heading = t(".heading")
+  content_for(:title) { [error_code, heading].join(" | ") }
 
-header
-  .error-pages
-    h1 = title
-    .font-subheader
-      | The page you are looking for doesn't exist.
+.empty
+  .empty-header = error_code
+  h1.empty-title = heading
+  p.empty-subtitle.text-secondary
+    = t(".text")
+  .empty-action
+    = render partial: "errors/button"
