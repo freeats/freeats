@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ScorecardTemplates::Destroy < ApplicationOperation
-  include Dry::Monads[:result, :do]
+  include Dry::Monads[:result]
 
   option :scorecard_template, Types.Instance(ScorecardTemplate)
   option :actor_account, Types::Instance(Account).optional, optional: true

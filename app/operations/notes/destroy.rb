@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Notes::Destroy < ApplicationOperation
-  include Dry::Monads[:result, :do, :try]
+  include Dry::Monads[:result, :do]
 
   option :id, Types::Strict::String | Types::Strict::Integer
   option :actor_account, Types::Instance(Account)
