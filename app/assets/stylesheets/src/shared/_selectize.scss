@@ -3,24 +3,6 @@
 // https://github.com/selectize/selectize.js/issues/1614.
 @import "selectize/dist/css/selectize.bootstrap5";
 
-.selectize-input {
-  input[placeholder] {
-    width: inherit !important;
-  }
-}
-
-.select-in-applicant-profile {
-  .selectize-input,
-  .filter-option-inner {
-    min-height: 40px !important;
-    line-height: 1.5 !important;
-  }
-  &.selectize-control .selectize-input {
-    padding: 7px 14px;
-    border-radius: 0.25rem;
-  }
-}
-
 .selectize-control > .selectize-input {
   cursor: text !important;
 }
