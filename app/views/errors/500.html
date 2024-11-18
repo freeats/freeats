@@ -1,26 +1,57 @@
 <!doctype html>
-<!-- TODO: replace style attributes with css styles-->
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>500 | Application error</title>
-    <link rel="stylesheet" media="all" href="https://freeats.s3.eu-west-1.amazonaws.com/error_pages/error-page-v2.css" />
+    <title>500 | Internal server error</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta21/dist/css/tabler.min.css" />
+
+    <style>
+      :root {
+        --tblr-body-line-height: 1.5;
+      }
+      .btn {
+        --tblr-btn-line-height: var(--tblr-body-line-height);
+        --tblr-btn-icon-size: 17px;
+      }
+      .btn .icon {
+        margin: 0;
+      }
+      .btn-small {
+        --tblr-btn-font-size: 14px;
+        --tblr-btn-padding-x: 9px;
+        --tblr-btn-padding-y: 4.5px;
+      }
+      [class*="container"] {
+        --tblr-gutter-x: 3rem;
+      }
+    </style>
   </head>
 
-  <body class="min-vh-100 d-flex flex-column">
-    <div class="bg-dark" style="height: 56px"></div>
+  <body class="vstack">
+    <nav class="navbar" style="height: 56px"></nav>
 
-    <div class="flex-grow-1 container-fluid p-4">
-      <h1 class="font-weight-bold">500 | Application Error</h1>
-      <p class="font-subheader">Something went wrong. Try to refresh this page or contact support if the problem persists.</p>
+    <div class="container-fluid p-4 pb-5">
+      <div class="empty">
+        <div class="empty-header">500</div>
+        <h1 class="empty-title">Internal server error</h1>
+        <p class="empty-subtitle text-secondary">Something went wrong, please try again later.</p>
+        <div class="empty-action">
+          <a class="btn btn-primary btn-small gap-2" href="/"
+            ><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left icon-component flex-shrink-0 icon-component-small">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M5 12l14 0"></path>
+              <path d="M5 12l6 6"></path>
+              <path d="M5 12l6 -6"></path></svg
+            >Take me home</a
+          >
+        </div>
+      </div>
     </div>
 
-    <footer class="pt-2" style="background-color: #212529">
-      <div class="container-fluid p-4 pb-5">
-        <div class="font-size-sm text-center text-lg-left">
-          <div class="text-white-50 font-weight-bold my-2">© 2024 Toughbyte</div>
-        </div>
+    <footer class="pt-2 text-secondary mt-auto" style="height: 117px">
+      <div class="container-fluid h-100 d-flex justify-content-lg-start justify-content-center" style="padding-top: 24px; padding-bottom: 32px">
+        <div class="d-flex align-items-center">© 2024 Toughbyte</div>
       </div>
     </footer>
   </body>
