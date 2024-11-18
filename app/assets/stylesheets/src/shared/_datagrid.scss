@@ -4,51 +4,6 @@
   }
 }
 
-// Pagination
-.page-paginator {
-  display: inline-block;
-}
-
-// Remove right border on all pagination links except last to prevent overlapping articfacts when
-// zooming out (Issue #4464).
-.page-link {
-  border-right-width: 0px;
-}
-
-.page-link-last {
-  border-right-width: 1px;
-}
-
-// Prevent the pagination links background from covering up the borders on the right side.
-.page-item.active {
-  z-index: 0;
-}
-
-.page-item:hover {
-  z-index: 0;
-}
-
-.ats-paginator {
-  .page-item {
-    padding: 0;
-
-    .page-link {
-      @extend .font-medium;
-      line-height: 1.5rem;
-      min-width: 2.125rem;
-      padding: 0.25rem 0.5rem;
-      text-align: center;
-      background-clip: content-box;
-    }
-    &:not(.active) .page-link:hover {
-      text-decoration: none;
-    }
-    &.active .page-link {
-      font-weight: bold;
-    }
-  }
-}
-
 a.table-sort {
   text-decoration: none;
 }
@@ -73,4 +28,10 @@ a.table-sort {
 .grid-column-35 {
   min-width: 140px;
   width: 140px;
+}
+
+.page-paginator {
+  &:not(&:first-child) {
+    margin-top: 16px;
+  }
 }

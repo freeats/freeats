@@ -26,7 +26,11 @@ hr {
   }
 }
 
-main.container,
+main.container {
+  padding-top: 24px;
+  padding-bottom: 48px;
+}
+
 footer .container-fluid {
   padding-top: 32px;
   padding-bottom: 48px;
