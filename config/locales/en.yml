@@ -171,6 +171,20 @@ en:
     upload_file_button: Upload file
 
   errors:
+    403:
+      heading: Forbidden
+      text: You don't have permission to access this page.
+    404:
+      heading: Not found
+      text: The page you were looking for doesn't exist.
+    422:
+      heading: Unprocessable content
+      text: We couldn't process your request because some information is missing or incorrect.
+    500:
+      heading: Internal server error
+      text: We couldn't process your request because some information is missing or incorrect.
+    button:
+      text: Take me home
     forbidden_action: You are not allowed to perform this action.
     general_error: |-
       FreeATS Error
