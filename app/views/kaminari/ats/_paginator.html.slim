@@ -7,7 +7,7 @@
     paginator:     the paginator that renders the pagination tags inside
     class:         additional classes for wrapper
 == paginator.render do
-  nav.mt-3 aria-label="pager" class=local_assigns[:class]
+  nav.page-paginator aria-label="pager" class=local_assigns[:class]
     ul.pagination.flex-wrap.mb-0
       == first_page_tag
       == prev_page_tag

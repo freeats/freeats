@@ -29,3 +29,9 @@ a.table-sort {
   min-width: 140px;
   width: 140px;
 }
+
+.page-paginator {
+  &:last-child:not(&:first-child) {
+    margin-top: 16px;
+  }
+}
