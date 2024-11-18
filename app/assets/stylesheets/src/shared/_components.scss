@@ -112,13 +112,15 @@
   .selectize-input {
     border-radius: 4px !important;
     vertical-align: middle; // Fix the height of the component.
-
-    input::placeholder {
-      color: $gray-600;
-    }
+    background-color: var(--tblr-bg-forms);
+    border-color: var(--tblr-border-color);
 
     &.focus {
-      border-color: tint-color($blue, 50%) !important;
+      border-color: #83b7e8 !important;
+
+      box-shadow:
+        $box-shadow-input,
+        0 0 0 0.25rem rgba(var(--tblr-primary-rgb), 0.25);
     }
 
     &.locked {
@@ -135,8 +137,13 @@
     }
 
     input {
+      &::placeholder {
+        color: var(--tblr-gray-400);
+      }
+
       @extend .text-truncate;
       cursor: text !important;
+      color: var(--tblr-body-color);
     }
 
     .item {

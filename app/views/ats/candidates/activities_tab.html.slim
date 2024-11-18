@@ -4,4 +4,4 @@
       .divide-y
         - @all_activities.each do |event|
           = candidate_display_activity(event)
-  = paginate(@all_activities, theme: "ats", klass: "mt-3")
+  = paginate(@all_activities, theme: "ats")

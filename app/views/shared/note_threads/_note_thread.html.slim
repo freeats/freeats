@@ -21,13 +21,5 @@ ruby:
                                             thread:,
                                             show_reply: expanded,
                                             hide_visibility_controls:
-        = button_tag( \
-            class: "btn btn-link thread-collapse-button align-self-start toggle-chevron-content " \
-            "px-0 pb-0 pt-2", data: { bs_toggle: "collapse", bs_target: "#other-thread-notes-thread-#{thread.id}",
-            note_thread_target: "collapseButton" }, type: "button", aria: { expanded: expanded.to_s,
-            controls: "other-thread-notes-thread-#{thread.id}" }) do
-            span = t('notes.replies', count: other_thread_notes_size)
-            span.icon-chevron-show.ms-1 class="#{'hidden' if expanded}" data-note-thread-target="collapsedStateIcon"
-              = render IconComponent.new(:chevron_down)
-            span.icon-chevron-hide.ms-1 class="#{'hidden' unless expanded}" data-note-thread-target="collapsedStateIcon"
-              = render IconComponent.new(:chevron_up)
+
+        = thread_collapse_button(thread.id, other_thread_notes_size:, expanded:)
