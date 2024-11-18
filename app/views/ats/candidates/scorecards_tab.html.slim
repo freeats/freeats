@@ -11,7 +11,7 @@
             .row.w-100.me-1
               .col-md
                 = position.name
-              .col-md-auto.text-md-end.text-secondary
+              .col-md-auto.text-md-end.text-secondary.text-truncate
                 = "#{placement.status.humanize}/#{placement.stage} " \
                   "(#{placement.added_event.performed_at.to_fs(:date)})"
         .accordion-collapse.collapse [data-bs-parent="#scorecards-accordion" id=unique_id
