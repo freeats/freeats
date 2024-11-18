@@ -58,7 +58,7 @@ class ButtonComponent < ApplicationComponent
   # Needed to place content inside the button horizontally.
   # Responsive classes just pass them to a `:class` additional option.
   option :flex_content_position,
-         Types::Strict::Symbol.enum(:start, :end, :center),
+         Types::Strict::Symbol.enum(:start, :end, :center, :between),
          default: -> { :center }
 
   def call
