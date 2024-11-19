@@ -86,9 +86,8 @@ class Event < ApplicationRecord
 
   self.inheritance_column = nil
 
+  validates_with MergedCandidateIsReadOnlyValidator
   validates :type, presence: true
-  validates :eventable_type, presence: true
-  validates :eventable_id, presence: true # rubocop:disable Rails/RedundantPresenceValidationOnBelongsTo
 
   after_create :update_candidate_last_activity
 
