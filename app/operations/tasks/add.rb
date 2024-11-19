@@ -64,7 +64,6 @@ class Tasks::Add < ApplicationOperation
     task_added_params = {
       actor_account:,
       type: :task_added,
-      performed_at: Time.zone.now,
       eventable: task
     }
     Event.create!(task_added_params)
@@ -77,7 +76,6 @@ class Tasks::Add < ApplicationOperation
         changed_field: :watcher,
         type: :task_watcher_added,
         changed_to: watcher.id,
-        performed_at: Time.zone.now,
         actor_account:
       )
     end

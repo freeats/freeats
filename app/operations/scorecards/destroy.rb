@@ -28,7 +28,6 @@ class Scorecards::Destroy < ApplicationOperation
       type: :scorecard_removed,
       eventable: placement,
       changed_from:,
-      performed_at: Time.zone.now,
       actor_account:
     )
   end

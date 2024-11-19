@@ -17,7 +17,6 @@ class Placements::ChangeStatus < ApplicationOperation
       actor_account:,
       type: :placement_changed,
       eventable: placement,
-      performed_at: Time.zone.now,
       changed_field: :status,
       changed_from: old_status,
       changed_to: new_status

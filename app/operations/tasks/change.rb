@@ -55,7 +55,6 @@ class Tasks::Change < ApplicationOperation
             changed_field: :watcher,
             type: :task_watcher_added,
             changed_to: new_watcher,
-            performed_at: Time.zone.now,
             actor_account:
           )
         end
@@ -65,7 +64,6 @@ class Tasks::Change < ApplicationOperation
             changed_field: :watcher,
             type: :task_watcher_removed,
             changed_from: removed_watcher,
-            performed_at: Time.zone.now,
             actor_account:
           )
         end

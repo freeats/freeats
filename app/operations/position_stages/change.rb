@@ -40,7 +40,6 @@ class PositionStages::Change < ApplicationOperation
       actor_account:,
       type: :position_stage_changed,
       eventable: position_stage,
-      performed_at: Time.zone.now,
       changed_field: :name,
       changed_from: old_name,
       changed_to: position_stage.name

@@ -30,7 +30,6 @@ class Placements::Destroy < ApplicationOperation
       actor_account:,
       type: :placement_removed,
       eventable: placement.candidate,
-      performed_at: Time.zone.now,
       properties: {
         position_id: placement.position_id,
         placement_id: placement.id,

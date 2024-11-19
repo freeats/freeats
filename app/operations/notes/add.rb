@@ -77,7 +77,6 @@ class Notes::Add < ApplicationOperation
     Event.create!(
       type: :note_added,
       eventable: note,
-      performed_at: Time.zone.now,
       actor_account:
     )
   end

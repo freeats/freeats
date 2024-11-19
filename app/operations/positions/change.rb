@@ -47,7 +47,7 @@ class Positions::Change < ApplicationOperation
   end
 
   def add_events(old_values:, position:, actor_account:)
-    common_event_params = { actor_account:, eventable: position, performed_at: Time.zone.now }
+    common_event_params = { actor_account:, eventable: position }
 
     add_changed_recruiter_events(old_values:, position:, common_event_params:)
     add_changed_collaborators_events(old_values:, position:, common_event_params:)

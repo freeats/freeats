@@ -47,7 +47,6 @@ class Tasks::ChangeStatus < ApplicationOperation
         actor_account:,
         type: :task_status_changed,
         eventable: task,
-        performed_at: Time.zone.now,
         changed_field: :status,
         changed_from: "open",
         changed_to: "closed"
@@ -59,7 +58,6 @@ class Tasks::ChangeStatus < ApplicationOperation
         actor_account: nil,
         type: :task_status_changed,
         eventable: task,
-        performed_at: Time.zone.now,
         changed_field: :status,
         changed_from: "closed",
         changed_to: "open"
@@ -71,7 +69,6 @@ class Tasks::ChangeStatus < ApplicationOperation
         actor_account: nil,
         type: :task_changed,
         eventable: task,
-        performed_at: Time.zone.now,
         changed_field: :due_date,
         changed_from: old_values[:due_date].to_s,
         changed_to: task.due_date.to_s
@@ -83,7 +80,6 @@ class Tasks::ChangeStatus < ApplicationOperation
         actor_account:,
         type: :task_status_changed,
         eventable: task,
-        performed_at: Time.zone.now,
         changed_field: :status,
         changed_from: old_values[:status],
         changed_to: task.status

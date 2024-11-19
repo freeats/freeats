@@ -21,7 +21,6 @@ class Placements::ChangeStage < ApplicationOperation
       actor_account:,
       type: :placement_changed,
       eventable: placement,
-      performed_at: Time.zone.now,
       changed_field: :stage,
       changed_from: old_stage_id,
       changed_to: placement.position_stage_id

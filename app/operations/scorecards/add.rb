@@ -60,7 +60,6 @@ class Scorecards::Add < ApplicationOperation
     scorecard_added_params = {
       actor_account:,
       type: :scorecard_added,
-      performed_at: Time.zone.now,
       eventable: scorecard
     }
     Event.create!(scorecard_added_params)

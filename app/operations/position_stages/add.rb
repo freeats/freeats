@@ -36,7 +36,6 @@ class PositionStages::Add < ApplicationOperation
       actor_account:,
       type: :position_stage_added,
       eventable: position_stage,
-      performed_at: Time.zone.now,
       properties: { name: position_stage.name }
     }
     Event.create!(params)

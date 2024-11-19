@@ -66,7 +66,6 @@ class Placements::Add < ApplicationOperation
     Event.create!(
       actor_account:,
       type: :placement_added,
-      performed_at: Time.zone.now,
       eventable: placement
     )
   end

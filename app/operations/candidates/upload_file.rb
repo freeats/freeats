@@ -35,7 +35,6 @@ class Candidates::UploadFile < ApplicationOperation
       type: :active_storage_attachment_added,
       eventable: attachment,
       properties:,
-      performed_at: Time.zone.now,
       actor_account:
     )
   end

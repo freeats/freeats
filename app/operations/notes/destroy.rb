@@ -45,7 +45,6 @@ class Notes::Destroy < ApplicationOperation
       type: :note_removed,
       eventable: notable,
       properties:,
-      performed_at: Time.zone.now,
       actor_account:
     )
   end

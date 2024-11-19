@@ -160,7 +160,6 @@ class Candidates::Change < ApplicationOperation
         type: :candidate_recruiter_unassigned,
         eventable: candidate,
         changed_from: old_recruiter_id,
-        performed_at: Time.zone.now,
         actor_account:
       )
     end
@@ -171,7 +170,6 @@ class Candidates::Change < ApplicationOperation
       type: :candidate_recruiter_assigned,
       eventable: candidate,
       changed_to: candidate.recruiter_id,
-      performed_at: Time.zone.now,
       actor_account:
     )
   end

@@ -115,13 +115,11 @@ class Candidates::Add < ApplicationOperation
     Event.create!(
       type: :candidate_added,
       eventable: candidate,
-      performed_at: Time.zone.now,
       actor_account:
     )
     Event.create!(
       type: :candidate_recruiter_assigned,
       eventable: candidate,
-      performed_at: Time.zone.now,
       actor_account:,
       changed_to: candidate.recruiter_id
     )

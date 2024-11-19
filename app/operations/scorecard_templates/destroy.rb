@@ -25,7 +25,6 @@ class ScorecardTemplates::Destroy < ApplicationOperation
     Event.create!(
       type: :scorecard_template_removed,
       eventable: position_stage,
-      performed_at: Time.zone.now,
       actor_account:
     )
   end

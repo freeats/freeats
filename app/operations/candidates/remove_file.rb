@@ -38,7 +38,6 @@ class Candidates::RemoveFile < ApplicationOperation
       type: :active_storage_attachment_removed,
       eventable: candidate,
       properties:,
-      performed_at: Time.zone.now,
       actor_account:
     )
   end

@@ -64,7 +64,6 @@ class ScorecardTemplates::Change < ApplicationOperation
     scorecard_template_changed_params = {
       actor_account:,
       type: :scorecard_template_changed,
-      performed_at: Time.zone.now,
       eventable: scorecard_template
     }
     Event.create!(scorecard_template_changed_params)

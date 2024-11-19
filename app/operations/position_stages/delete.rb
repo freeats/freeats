@@ -66,7 +66,6 @@ class PositionStages::Delete < ApplicationOperation
       eventable: position,
       changed_field: "stage",
       changed_from: position_stage_id,
-      performed_at: Time.zone.now,
       actor_account:
     )
   end
