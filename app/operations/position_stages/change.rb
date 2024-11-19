@@ -17,7 +17,7 @@ class PositionStages::Change < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_position_stage(position_stage)
-      yield add_event(position_stage:, actor_account:, old_name:)
+      add_event(position_stage:, actor_account:, old_name:)
     end
 
     Success()
@@ -34,9 +34,9 @@ class PositionStages::Change < ApplicationOperation
   end
 
   def add_event(position_stage:, actor_account:, old_name:)
-    return Success() if old_name == position_stage.name
+    return if old_name == position_stage.name
 
-    position_stage_changed_params = {
+    params = {
       actor_account:,
       type: :position_stage_changed,
       eventable: position_stage,
@@ -44,9 +44,6 @@ class PositionStages::Change < ApplicationOperation
       changed_from: old_name,
       changed_to: position_stage.name
     }
-
-    yield Events::Add.new(params: position_stage_changed_params).call
-
-    Success()
+    Event.create!(params)
   end
 end

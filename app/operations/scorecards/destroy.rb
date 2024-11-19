@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Scorecards::Destroy < ApplicationOperation
-  include Dry::Monads[:result, :do]
+  include Dry::Monads[:result]
 
   option :scorecard, Types.Instance(Scorecard)
   option :actor_account, Types.Instance(Account)
@@ -13,19 +13,22 @@ class Scorecards::Destroy < ApplicationOperation
     ActiveRecord::Base.transaction do
       scorecard.destroy!
 
-      yield Events::Add.new(
-        params:
-          {
-            type: :scorecard_removed,
-            eventable: placement,
-            changed_from: scorecard.title,
-            actor_account:
-          }
-      ).call
+      add_event(placement:, changed_from: scorecard.title)
     end
 
     Success(candidate_id)
   rescue ActiveRecord::RecordNotDestroyed => e
     Failure[:scorecard_not_destroyed, e.record.errors]
+  end
+
+  private
+
+  def add_event(placement:, changed_from:)
+    Event.create!(
+      type: :scorecard_removed,
+      eventable: placement,
+      changed_from:,
+      actor_account:
+    )
   end
 end

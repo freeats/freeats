@@ -42,19 +42,16 @@ class Events::AddChangedEvent < ApplicationOperation
     class_name = eventable.class.name.downcase
     type = Event.types["#{class_name}_changed"].to_sym
     created_event =
-      Events::Add.new(
-        params:
-          {
-            eventable:,
-            changed_from:,
-            changed_to:,
-            changed_field:,
-            properties:,
-            type:,
-            actor_account:,
-            performed_at:
-          }
-      ).call.value!
+      Event.create!(
+        eventable:,
+        changed_from:,
+        changed_to:,
+        changed_field:,
+        properties:,
+        type:,
+        actor_account:,
+        performed_at: performed_at || Time.zone.now
+      )
     Success(created_event)
   end
 end

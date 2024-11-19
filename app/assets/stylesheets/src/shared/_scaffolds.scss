@@ -1,5 +1,5 @@
 $footer-min-height: 117px;
-$navbar-min-height: 53px;
+$navbar-min-height: 56px;
 
 :root,
 :host,
@@ -30,6 +30,17 @@ html,
 body {
   height: 100%;
   min-width: 320px;
+}
+
+.form-control {
+  line-height: var(--tblr-body-line-height);
+  text-overflow: ellipsis;
+
+  &:focus {
+    box-shadow:
+      $box-shadow-input,
+      0 0 0 0.25rem rgba(var(--tblr-primary-rgb), 0.25);
+  }
 }
 
 // place the footer at the bottom of the page
@@ -195,17 +206,6 @@ picture {
 #alerts:has(+ .authentication-container) {
   max-width: 460px;
   margin: 0 auto;
-}
-
-.error-pages {
-  h1 {
-    line-height: 3rem;
-    font-size: 2.5rem;
-  }
-  .font-subheader {
-    line-height: 2rem;
-    font-size: 1.25rem;
-  }
 }
 
 .icon {

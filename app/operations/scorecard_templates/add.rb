@@ -18,7 +18,7 @@ class ScorecardTemplates::Add < ApplicationOperation
     ActiveRecord::Base.transaction do
       yield save_scorecard_template(scorecard_template)
       yield add_scorecard_template_questions(scorecard_template:, questions_params:)
-      yield add_event(scorecard_template:, actor_account:)
+      add_event(scorecard_template:, actor_account:)
     end
 
     Success(scorecard_template)
@@ -53,9 +53,6 @@ class ScorecardTemplates::Add < ApplicationOperation
       type: :scorecard_template_added,
       eventable: scorecard_template
     }
-
-    yield Events::Add.new(params: scorecard_template_added_params).call
-
-    Success()
+    Event.create!(scorecard_template_added_params)
   end
 end

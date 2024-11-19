@@ -6,7 +6,7 @@ export default class extends Controller {
     "collapsedNotes",
     "collapseButton",
     "replyTab",
-    "collapsedStateIcon"
+    "collapsedStateIcon",
   ];
 
   showReplyTab(e) {

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EmailSynchronization::ProcessSingleMessage::CreateFromImap < ApplicationOperation
-  include Dry::Monads[:result, :do]
+  include Dry::Monads[:result]
 
   option :message, Types::Instance(Imap::Message)
   option :email_thread_id, Types::Coercible::Integer
@@ -35,7 +35,7 @@ class EmailSynchronization::ProcessSingleMessage::CreateFromImap < ApplicationOp
       performed_at: Time.zone.at(email_message.timestamp).to_datetime
     }
 
-    yield Events::Add.new(params: email_message_params).call
+    Event.create!(email_message_params)
 
     Success(email_message)
   end

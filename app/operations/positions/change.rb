@@ -30,7 +30,7 @@ class Positions::Change < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_position(position)
-      yield add_events(old_values:, position:, actor_account:)
+      add_events(old_values:, position:, actor_account:)
     end
 
     Success(position.reload)
@@ -49,119 +49,109 @@ class Positions::Change < ApplicationOperation
   def add_events(old_values:, position:, actor_account:)
     common_event_params = { actor_account:, eventable: position }
 
-    yield add_changed_recruiter_events(old_values:, position:, common_event_params:)
-    yield add_changed_collaborators_events(old_values:, position:, common_event_params:)
-    yield add_changed_hiring_managers_events(old_values:, position:, common_event_params:)
-    yield add_changed_interviewers_events(old_values:, position:, common_event_params:)
-    yield add_position_changed_events(old_values:, position:, actor_account:)
-
-    Success()
+    add_changed_recruiter_events(old_values:, position:, common_event_params:)
+    add_changed_collaborators_events(old_values:, position:, common_event_params:)
+    add_changed_hiring_managers_events(old_values:, position:, common_event_params:)
+    add_changed_interviewers_events(old_values:, position:, common_event_params:)
+    add_position_changed_events(old_values:, position:, actor_account:)
   end
 
   def add_changed_recruiter_events(old_values:, position:, common_event_params:)
-    return Success() if old_values[:recruiter_id] == position.recruiter_id
+    return if old_values[:recruiter_id] == position.recruiter_id
 
     if old_values[:recruiter_id].present?
-      yield Events::Add.new(
-        params: { **common_event_params,
-          type: :position_recruiter_unassigned,
-          changed_from: old_values[:recruiter_id] }
-      ).call
+      Event.create!(
+        **common_event_params,
+        type: :position_recruiter_unassigned,
+        changed_from: old_values[:recruiter_id]
+      )
     end
 
-    return Success() if position.recruiter_id.blank?
+    return if position.recruiter_id.blank?
 
-    yield Events::Add.new(
-      params: { **common_event_params,
-        type: :position_recruiter_assigned,
-        changed_to: position.recruiter_id }
-    ).call
-
-    Success()
+    Event.create!(
+      **common_event_params,
+      type: :position_recruiter_assigned,
+      changed_to: position.recruiter_id
+    )
   end
 
   def add_changed_collaborators_events(old_values:, position:, common_event_params:)
     position_collaborator_ids = position.collaborator_ids
 
-    return Success() if old_values[:collaborator_ids] == position_collaborator_ids
+    return if old_values[:collaborator_ids] == position_collaborator_ids
 
     removed_collaborator_ids = old_values[:collaborator_ids] - position_collaborator_ids
     removed_collaborator_ids.each do |removed_collaborator_id|
-      yield Events::Add.new(
-        params: { **common_event_params,
-          type: :position_collaborator_unassigned,
-          changed_from: removed_collaborator_id }
-      ).call
+      Event.create!(
+        **common_event_params,
+        type: :position_collaborator_unassigned,
+        changed_from: removed_collaborator_id
+      )
     end
 
-    return Success() if position_collaborator_ids.blank?
+    return if position_collaborator_ids.blank?
 
     added_collaborator_ids = position_collaborator_ids - old_values[:collaborator_ids]
     added_collaborator_ids.each do |added_collaborator_id|
-      yield Events::Add.new(
-        params: { **common_event_params,
-          type: :position_collaborator_assigned,
-          changed_to: added_collaborator_id }
-      ).call
+      Event.create!(
+        **common_event_params,
+        type: :position_collaborator_assigned,
+        changed_to: added_collaborator_id
+      )
     end
-
-    Success()
   end
 
   def add_changed_hiring_managers_events(old_values:, position:, common_event_params:)
     position_hiring_manager_ids = position.hiring_manager_ids
 
-    return Success() if old_values[:hiring_manager_ids] == position_hiring_manager_ids
+    return if old_values[:hiring_manager_ids] == position_hiring_manager_ids
 
     removed_hiring_manager_ids = old_values[:hiring_manager_ids] - position_hiring_manager_ids
     removed_hiring_manager_ids.each do |removed_hiring_manager_id|
-      yield Events::Add.new(
-        params: { **common_event_params,
-          type: :position_hiring_manager_unassigned,
-          changed_from: removed_hiring_manager_id }
-      ).call
+      Event.create!(
+        **common_event_params,
+        type: :position_hiring_manager_unassigned,
+        changed_from: removed_hiring_manager_id
+      )
     end
 
-    return Success() if position_hiring_manager_ids.blank?
+    return if position_hiring_manager_ids.blank?
 
     added_hiring_manager_ids = position_hiring_manager_ids - old_values[:hiring_manager_ids]
     added_hiring_manager_ids.each do |added_hiring_manager_id|
-      yield Events::Add.new(
-        params: { **common_event_params,
-          type: :position_hiring_manager_assigned,
-          changed_to: added_hiring_manager_id }
-      ).call
+      Event.create!(
+        **common_event_params,
+        type: :position_hiring_manager_assigned,
+        changed_to: added_hiring_manager_id
+      )
     end
-
-    Success()
   end
 
   def add_changed_interviewers_events(old_values:, position:, common_event_params:)
     position_interviewer_ids = position.interviewer_ids
 
-    return Success() if old_values[:interviewer_ids] == position_interviewer_ids
+    return if old_values[:interviewer_ids] == position_interviewer_ids
 
     removed_interviewer_ids = old_values[:interviewer_ids] - position_interviewer_ids
     removed_interviewer_ids.each do |removed_interviewer_id|
-      yield Events::Add.new(
-        params: { **common_event_params,
-          type: :position_interviewer_unassigned,
-          changed_from: removed_interviewer_id }
-      ).call
+      Event.create!(
+        **common_event_params,
+        type: :position_interviewer_unassigned,
+        changed_from: removed_interviewer_id
+      )
     end
 
-    return Success() if position_interviewer_ids.blank?
+    return if position_interviewer_ids.blank?
 
     added_interviewer_ids = position_interviewer_ids - old_values[:interviewer_ids]
     added_interviewer_ids.each do |added_interviewer_id|
-      yield Events::Add.new(
-        params: { **common_event_params,
-          type: :position_interviewer_assigned,
-          changed_to: added_interviewer_id }
-      ).call
+      Event.create!(
+        **common_event_params,
+        type: :position_interviewer_assigned,
+        changed_to: added_interviewer_id
+      )
     end
-
-    Success()
   end
 
   def add_position_changed_events(old_values:, position:, actor_account:)
@@ -178,7 +168,7 @@ class Positions::Change < ApplicationOperation
         changed_to: position.name
       }
 
-      yield Events::Add.new(params: position_changed_params).call
+      Event.create!(position_changed_params)
     end
 
     if old_values[:description] != position.description.to_s
@@ -191,7 +181,7 @@ class Positions::Change < ApplicationOperation
         changed_to: position.description.to_s
       }
 
-      yield Events::Add.new(params: position_changed_params).call
+      Event.create!(position_changed_params)
     end
 
     Events::AddChangedEvent.new(
@@ -201,7 +191,5 @@ class Positions::Change < ApplicationOperation
       new_value: position.location&.short_name,
       actor_account:
     ).call
-
-    Success()
   end
 end

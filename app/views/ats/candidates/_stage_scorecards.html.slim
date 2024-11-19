@@ -1,18 +1,31 @@
 /# locals: (stage:, scorecards:, placement_id:)
 
-.d-flex.gap-2.align-items-baseline.justify-content-around.mb-2
-  .d-flex.gap-2.flex-row.flex-column.flex-grow-1
-    - scorecards.each do |scorecard|
-      .d-flex.mb-1.gap-1
-        - if allowed_to?(:show?, scorecard, with: ATS::ScorecardPolicy)
-          = link_to(scorecard.title, ats_scorecard_path(scorecard))
-        - else
-          = scorecard.title
-        = score_icon(scorecard.score)
-        = "by #{scorecard.interviewer.name} on #{scorecard.added_event.performed_at.strftime('%d.%m.%Y')}"
+- add_scorecard_button = capture do
   - if allowed_to?(:new?, stage.scorecard_template, with: ATS::ScorecardPolicy) && !stage.deleted
     = render ButtonLinkComponent.new( \
       new_ats_scorecard_path(position_stage_id: stage.id, placement_id:),
       variant: :cancel, size: :tiny, type: :button \
     )
       | Add scorecard
+
+- if scorecards.present?
+  .row.align-items-baseline
+    .col-12.col-md.row.gap-2.mb-2
+      - scorecards.each do |scorecard|
+        .row
+          .col-md-auto.px-1
+            - if allowed_to?(:show?, scorecard, with: ATS::ScorecardPolicy)
+              = link_to(scorecard.title, ats_scorecard_path(scorecard))
+            - else
+              = scorecard.title
+          .col-md-auto.col-12
+            .row.align-items-center
+              .col-auto.px-1
+                = score_icon(scorecard.score)
+              .col-auto.px-1
+                = "by #{scorecard.interviewer.name} on #{scorecard.added_event.performed_at.strftime('%d.%m.%Y')}"
+    .col-12.col-md-auto
+      = add_scorecard_button
+- else
+  .d-flex.justify-content-md-end.mb-2
+    = add_scorecard_button
