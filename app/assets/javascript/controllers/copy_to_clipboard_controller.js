@@ -144,8 +144,9 @@ export default class extends Controller {
       }
     }
     if (isLink) {
-      window.location.href =
-        `${linkWithMailTo}body=${encodeURIComponent(this.dataset.clipboardPlainText)}`;
+      window.location.href = `${linkWithMailTo}body=${
+        encodeURIComponent(this.dataset.clipboardPlainText)
+      }`;
     }
     const event = new Event("triggerCopy");
     this.addEventListener("triggerCopy", copyToClip);
