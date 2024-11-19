@@ -45,7 +45,7 @@ html
       - onload = "&onload=onGrecaptchaLoad"
       script[defer="true" src="https://www.google.com/recaptcha/api.js?render=#{RecaptchaV3::SITE_KEY}#{onload}"]
   body#career_site.bg-white.d-flex.flex-column
-    .wrapper id=@page_id
+    .flex-grow-1 id=@page_id
       main.container.container-small
         = render partial: "shared/notification"
         = yield

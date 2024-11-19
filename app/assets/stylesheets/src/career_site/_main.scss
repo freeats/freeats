@@ -36,11 +36,6 @@ footer .container-fluid {
   padding-bottom: 48px;
 }
 
-// place the footer at the bottom of the page
-.wrapper {
-  min-height: calc(100% - #{$footer-min-height});
-}
-
 #application_form a,
 #back_on_all_positions a,
 a div {
