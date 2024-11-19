@@ -11,8 +11,8 @@ module ScorecardsHelper
   def score_icon(score, with_text: false)
     icon, color = SCORE_STYLES[score.to_sym]
 
-    content_tag(:span, class: ["d-flex align-items-center gap-2", color]) do
-      concat(render(IconComponent.new(icon, icon_type: :filled)))
+    content_tag(:span, class: "d-flex align-items-center gap-2") do
+      concat(render(IconComponent.new(icon, icon_type: :filled, class: color)))
       if with_text
         concat(
           t("candidates.advancement.#{score}_candidate")

@@ -1,0 +1,24 @@
+no_reply_toughbyte:
+  title: No reply
+  description: The candidate didn't reply to the first message or stopped replying afterwards.
+  tenant: toughbyte_tenant
+
+position_closed_toughbyte:
+  title: Position closed
+  description: The position was closed.
+  tenant: toughbyte_tenant
+
+availability_toughbyte:
+  title: Availability
+  description: The candidate is not available for new opportunities at the moment.
+  tenant: toughbyte_tenant
+
+no_reply_acme:
+  title: No reply
+  description: The candidate didn't reply to the first message or stopped replying afterwards.
+  tenant: acme_tenant
+
+position_closed_acme:
+  title: Position closed
+  description: The position was closed.
+  tenant: acme_tenant

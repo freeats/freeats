@@ -9,9 +9,9 @@
               aria-expanded="#{index.zero?}" aria-controls=unique_id
               class=("collapsed" if index.positive?)]
             .row.w-100.me-1
-              .col-8
+              .col-md
                 = position.name
-              .col-4.text-end.text-secondary
+              .col-md-auto.text-md-end.text-secondary.text-truncate
                 = "#{placement.status.humanize}/#{placement.stage} " \
                   "(#{placement.added_event.performed_at.to_fs(:date)})"
         .accordion-collapse.collapse [data-bs-parent="#scorecards-accordion" id=unique_id

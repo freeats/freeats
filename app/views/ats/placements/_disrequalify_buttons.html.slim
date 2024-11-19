@@ -34,12 +34,12 @@
                data: { bs_toggle: :tooltip, bs_title: "Disqualify", bs_placement: "bottom" },
              )
   ul.dropdown-menu.dropdown-menu-end
-    - Placement::MANUAL_DISQUALIFY_STATUSES.each do |status|
+    - DisqualifyReason.find_each do |reason|
       li
         = form_with url: change_status_ats_placement_path(placement, position_pipeline_card:) do |form|
           ruby:
             tooltip_hash, button_attr =
-              if status == "position_closed" && !placement.position.closed?
+              if reason.title == "Position closed" && !placement.position.closed?
                 [
                   {
                     data: { bs_toggle: "tooltip", bs_placement: "left" },
@@ -52,9 +52,10 @@
               else
                 {
                   data: { bs_toggle: "tooltip", bs_placement: "left" },
-                  title: t("candidates.disqualification.disqualify_statuses.#{status}")
+                  title: reason.description
                 }
               end
           = tag.div(**(tooltip_hash || {})) do
-            = form.button({ class: "dropdown-item", name: "status", value: status }.merge(button_attr || {})) do
-              = status.humanize
+            = form.hidden_field :disqualify_reason_id, value: reason.id
+            = form.button({ class: "dropdown-item", name: "status", value: "disqualified" }.merge(button_attr || {})) do
+              = reason.title

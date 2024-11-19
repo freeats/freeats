@@ -13,3 +13,7 @@
   // https://stackoverflow.com/questions/44543157/how-to-hide-the-google-invisible-recaptcha-badge
   visibility: hidden !important;
 }
+
+#recaptcha_message {
+  line-height: 1.125rem;
+}

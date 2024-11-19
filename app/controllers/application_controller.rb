@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   private
 
   def current_account
-    rodauth.rails_account
+    rodauth&.rails_account
   end
 
   def current_member

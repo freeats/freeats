@@ -3,9 +3,6 @@
 class Placement < ApplicationRecord
   acts_as_tenant(:tenant)
 
-  MANUAL_DISQUALIFY_STATUSES =
-    %w[availability team_fit remote_only location no_reply not_interested workload other_offer
-       overpriced overqualified underqualified position_closed other].freeze
   has_many :events, as: :eventable, dependent: :destroy
   has_many :scorecards, dependent: :destroy
 
@@ -33,22 +30,11 @@ class Placement < ApplicationRecord
   enum :status, %i[
     qualified
     reserved
-    availability
-    location
-    no_reply
-    not_interested
-    other_offer
-    overpriced
-    overqualified
-    position_closed
-    remote_only
-    team_fit
-    underqualified
-    workload
-    other
+    disqualified
   ].index_with(&:to_s)
 
   validate :position_stage_must_be_present_in_position
+  validate :only_disqualified_placements_have_disqualify_reason
 
   scope :join_last_placement_added_or_changed_event, lambda {
     joins(
@@ -66,10 +52,6 @@ class Placement < ApplicationRecord
       SQL
     )
   }
-
-  def disqualified?
-    %w[qualified reserved].exclude?(status)
-  end
 
   def sourced?
     position_stage.name == "Sourced"
@@ -101,5 +83,13 @@ class Placement < ApplicationRecord
     return if position.stages.include?(position_stage)
 
     errors.add(:position_stage, "must be present in position")
+  end
+
+  def only_disqualified_placements_have_disqualify_reason
+    if status == "disqualified" && disqualify_reason.blank?
+      errors.add(:base, "Disqualified placement must have a disqualification reason")
+    elsif status != "disqualified" && disqualify_reason.present?
+      errors.add(:base, "Not disqualified placement must not have a disqualification reason")
+    end
   end
 end

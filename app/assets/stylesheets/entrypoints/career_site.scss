@@ -10,7 +10,7 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 @import "tributejs/dist/tribute";
 
 @import "../src/shared/scaffolds";
-@import "../src/ats/recaptcha";
+@import "../src/shared/recaptcha";
 
 // Custom component styles
 @import "../src/shared/components";

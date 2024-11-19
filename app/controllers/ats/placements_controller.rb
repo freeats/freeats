@@ -88,11 +88,13 @@ class ATS::PlacementsController < AuthorizedController
   def change_status
     old_status = @placement.status
     new_status = params.require(:status)
+    disqualify_reason_id = params[:disqualify_reason_id]
 
     position_pipeline_card = params[:position_pipeline_card] == "true"
 
     case Placements::ChangeStatus.new(
       new_status:,
+      disqualify_reason_id:,
       placement: @placement,
       actor_account: current_account
     ).call
@@ -102,8 +104,8 @@ class ATS::PlacementsController < AuthorizedController
       else
         render_placements_panel(placement)
       end
-    in Failure[:placement_invalid, error]
-      render_error error
+    in Failure[:placement_invalid, _error] | Failure[:disqualify_reason_invalid, _error] # rubocop:disable Lint/UnderscorePrefixedVariableName
+      render_error _error
     end
   end
 

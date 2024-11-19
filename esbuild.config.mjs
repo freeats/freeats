@@ -10,6 +10,7 @@ const result = await esbuild
       "entrypoints/lookbook.js",
       "entrypoints/ats.js",
       "entrypoints/recaptcha.js",
+      "entrypoints/career_site.js",
     ],
     bundle: true,
     loader: {
