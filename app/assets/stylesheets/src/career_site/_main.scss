@@ -97,3 +97,15 @@ footer {
 .position_location:hover {
   text-decoration: none;
 }
+
+// This styles fit only medium form-control input size
+input[type="file"] {
+  font-size: 1rem;
+  padding: 7px 14px;
+
+  &::file-selector-button {
+    padding: 7px 14px;
+    margin: -7px -14px;
+    margin-inline-end: 14px;
+  }
+}
