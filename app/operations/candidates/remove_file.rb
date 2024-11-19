@@ -8,14 +8,8 @@ class Candidates::RemoveFile < ApplicationOperation
   option :file, Types::Instance(ActiveStorage::Attachment)
 
   def call
-    properties = {
-      name: file.blob.filename,
-      active_storage_attachment_id: file.id,
-      added_actor_account_id: file.added_event.actor_account_id,
-      added_at: file.added_event.performed_at
-    }
     ActiveRecord::Base.transaction do
-      add_event(candidate:, properties:, actor_account:)
+      add_event(candidate:, file:, actor_account:)
       yield remove_file(file)
     end
 
@@ -32,7 +26,14 @@ class Candidates::RemoveFile < ApplicationOperation
     Failure[:file_invalid, e.to_s]
   end
 
-  def add_event(candidate:, properties:, actor_account:)
+  def add_event(candidate:, file:, actor_account:)
+    properties = {
+      name: file.blob.filename,
+      active_storage_attachment_id: file.id,
+      added_actor_account_id: file.added_event.actor_account_id,
+      added_at: file.added_event.performed_at
+    }
+
     Event.create!(
       type: :active_storage_attachment_removed,
       eventable: candidate,

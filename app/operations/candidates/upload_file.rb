@@ -9,10 +9,9 @@ class Candidates::UploadFile < ApplicationOperation
   option :cv, Types::Strict::Bool.optional, default: proc { false }
 
   def call
-    properties = { name: file.original_filename }
     ActiveRecord::Base.transaction do
       attachment = yield upload_file(candidate:, file:, cv:)
-      add_event(attachment:, properties:, actor_account:)
+      add_event(attachment:, file:, actor_account:)
     end
 
     Success(candidate.files.last)
@@ -29,7 +28,9 @@ class Candidates::UploadFile < ApplicationOperation
     Failure[:file_invalid, e.to_s]
   end
 
-  def add_event(attachment:, properties:, actor_account:)
+  def add_event(attachment:, file:, actor_account:)
+    properties = { name: file.original_filename }
+
     Event.create!(
       type: :active_storage_attachment_added,
       eventable: attachment,
