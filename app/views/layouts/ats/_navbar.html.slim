@@ -4,6 +4,14 @@
     li.nav-item
       = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "nav-link"
 
+- quick_search_element = proc do |placeholder|
+  = render HtmlSelectComponent.new( \
+             "quick_search",
+             placeholder:,
+             item_as_rich_text: true,
+             remote: { search_url: ats_quick_search_index_path(q: "QUERY"), type: :quick_search } \
+           )
+
 nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.column-gap-3
   - if rodauth.logged_in? && current_account.member?
     / Mobile burger menu button
@@ -44,15 +52,10 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.column-gap-3
     / Quick search
     - if allowed_to?(:index?, with: ATS::QuickSearchPolicy)
       .quick-search.flex-grow-1.flex-lg-grow-0.order-3
-        = render HtmlSelectComponent.new( \
-                   "quick_search",
-                   placeholder: t("core.search"),
-                   item_as_rich_text: true,
-                   data: { controller: "quick-search",
-                           action: "resize@window->quick-search#changePlaceholder" },
-                   remote: { search_url: ats_quick_search_index_path(q: "QUERY"),
-                             type: :quick_search } \
-                 )
+        .d-lg-none
+          = capture(t("core.quick_search_mobile_placeholder"), &quick_search_element)
+        .d-none.d-lg-flex
+          = capture(t("core.quick_search_desktop_placeholder"), &quick_search_element)
 
     / Account icon
     .dropdown.order-4

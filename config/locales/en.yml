@@ -42,6 +42,8 @@ en:
     position: Position
     positions: Positions
     profile: Profile
+    quick_search_desktop_placeholder: Press S to search
+    quick_search_mobile_placeholder: Search
     recruiter: Recruiter
     remove_button: Remove
     reply_button: Reply
