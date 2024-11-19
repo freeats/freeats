@@ -5,7 +5,7 @@
             class: "turbo-instant-submit d-inline-block",
             data: { "tasks-target" => "changeStatusForm" } do |f|
   = hidden_field_tag :grid, grid
-  .form-check.mb-0
+  .form-check.d-flex.justify-content-center.mb-0
     = f.check_box :status,
                   { class: ["form-check-input", "current", *("border-danger" if task.overdue?)],
                     id: dom_id(task, :grid_status) },

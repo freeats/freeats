@@ -32,7 +32,12 @@ hr {
   margin: 1rem 0;
 }
 
-#ats-dashboard-index .position_status,
-#ats-dashboard-index .avatar_image {
-  width: 64px;
+tr {
+  td,
+  th {
+    &:first-child {
+      width: 64px;
+      text-align: center;
+    }
+  }
 }
