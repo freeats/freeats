@@ -4,7 +4,7 @@ module ErrorHandler
   extend ActiveSupport::Concern
 
   def render403
-    message = "Unauthorized"
+    message = t("errors.403.heading")
     status = :forbidden
     respond_to do |format|
       format.html do
@@ -45,7 +45,7 @@ module ErrorHandler
   end
 
   def render404
-    message = "Page Not Found"
+    message = t("errors.404.heading")
     status = :not_found
     respond_to do |format|
       format.html do
@@ -86,7 +86,7 @@ module ErrorHandler
   end
 
   def render422
-    message = "The change you wanted was rejected"
+    message = t("errors.422.heading")
     status = :unprocessable_entity
     respond_to do |format|
       format.html do
@@ -127,7 +127,7 @@ module ErrorHandler
   end
 
   def render500
-    message = "Application Error."
+    message = t("errors.500.heading")
     status = :internal_server_error
     respond_to do |format|
       format.html do
