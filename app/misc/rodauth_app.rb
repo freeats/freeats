@@ -1,13 +1,10 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/MethodCallWithArgsParentheses, Rails
+# rubocop:disable Style/MethodCallWithArgsParentheses
 class RodauthApp < Rodauth::Rails::App
   configure RodauthMain
 
   route do |r|
-    # Ignore configuration for custom actions.
-    return if r.path.in?(["/invitation", "/accept_invite", "/recaptcha/verify"])
-
     # Ignore configuration for custom actions which used basic authentication.
     routes = Rails.application.routes.url_helpers
     basic_auth_routes = [
@@ -29,15 +26,6 @@ class RodauthApp < Rodauth::Rails::App
     end
 
     r.rodauth # route rodauth requests
-
-    rodauth.require_account
-
-    unless rodauth.active?
-      rodauth.forget_login
-      rodauth.logout
-      flash[:alert] = "This account has been deactivated."
-      r.redirect "/sign_in"
-    end
   end
 end
-# rubocop:enable Style/MethodCallWithArgsParentheses, Rails
+# rubocop:enable Style/MethodCallWithArgsParentheses
