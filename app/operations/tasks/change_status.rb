@@ -25,7 +25,7 @@ class Tasks::ChangeStatus < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_task(task)
-      yield add_task_status_changed_events(old_values:, task:, repeat:, actor_account:)
+      add_task_status_changed_events(old_values:, task:, repeat:, actor_account:)
     end
 
     Success(task)
@@ -52,7 +52,7 @@ class Tasks::ChangeStatus < ApplicationOperation
         changed_to: "closed"
       }
 
-      yield Events::Add.new(params: task_status_changed_params).call
+      Event.create!(task_status_changed_params)
 
       task_status_changed_params = {
         actor_account: nil,
@@ -63,7 +63,7 @@ class Tasks::ChangeStatus < ApplicationOperation
         changed_to: "open"
       }
 
-      yield Events::Add.new(params: task_status_changed_params).call
+      Event.create!(task_status_changed_params)
 
       task_changed_params = {
         actor_account: nil,
@@ -74,7 +74,7 @@ class Tasks::ChangeStatus < ApplicationOperation
         changed_to: task.due_date.to_s
       }
 
-      yield Events::Add.new(params: task_changed_params).call
+      Event.create!(task_changed_params)
     else
       task_status_changed_params = {
         actor_account:,
@@ -85,10 +85,8 @@ class Tasks::ChangeStatus < ApplicationOperation
         changed_to: task.status
       }
 
-      yield Events::Add.new(params: task_status_changed_params).call
+      Event.create!(task_status_changed_params)
     end
-
-    Success()
   end
 
   def new_due_date(task)

@@ -40,15 +40,7 @@ class Notes::Add < ApplicationOperation
 
       note.note_thread = note_thread
       yield save_note(note)
-
-      yield Events::Add.new(
-        params:
-          {
-            type: :note_added,
-            eventable: note,
-            actor_account:
-          }
-      ).call
+      add_event(note:, actor_account:)
     end
 
     send_notifications(note:, actor_account:)
@@ -79,6 +71,14 @@ class Notes::Add < ApplicationOperation
     else
       []
     end
+  end
+
+  def add_event(note:, actor_account:)
+    Event.create!(
+      type: :note_added,
+      eventable: note,
+      actor_account:
+    )
   end
 
   def send_notifications(note:, actor_account:)

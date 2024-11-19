@@ -239,6 +239,7 @@ en:
     succesfully_deleted: The position was successfully deleted.
     successfully_created: Position draft was successfully created.
     your_positions: Your positions
+    status_cant_be_changed_to_draft: Status cannot be changed to draft
 
   scorecard_templates:
     add: Add scorecard template

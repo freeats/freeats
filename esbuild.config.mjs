@@ -31,10 +31,10 @@ const result = await esbuild
         {
           from: ["./node_modules/@tabler/icons/icons/**/*.svg"],
           to: ["./icons"],
-          keepStructure: true
-        }
-      ]
-    }
+          keepStructure: true,
+        },
+      ],
+    },
     )],
     define: {},
   })

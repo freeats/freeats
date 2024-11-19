@@ -38,7 +38,7 @@ class Placements::ChangeStatus < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_placement(placement)
-      yield Events::Add.new(params: placement_changed_params).call
+      Event.create!(placement_changed_params)
     end
 
     Success(placement)

@@ -108,15 +108,13 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
   test "should assign and remove file and create events and update last_activity_at" do
     file = fixture_file_upload("app/assets/images/icons/user.png", "image/png")
     candidate = candidates(:john)
+    candidate.update!(last_activity_at: 3.days.ago)
 
-    assert_predicate candidate.last_activity_at, :today?
     assert_not candidate.files.attached?
 
-    travel_to Time.zone.now.days_since(1) do
-      assert_difference "ActiveStorage::Blob.count" do
-        assert_difference "Event.where(type: 'active_storage_attachment_added').count" do
-          post upload_file_ats_candidate_path(candidate), params: { candidate: { file: } }
-        end
+    assert_difference "ActiveStorage::Blob.count" do
+      assert_difference "Event.where(type: 'active_storage_attachment_added').count" do
+        post upload_file_ats_candidate_path(candidate), params: { candidate: { file: } }
       end
     end
 
@@ -124,18 +122,18 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_predicate candidate.files, :attached?
     assert_match(%r{.*/user\.png}, candidate.files.first.blob.key)
-    assert_predicate candidate.last_activity_at, :tomorrow?
+    assert_predicate candidate.last_activity_at, :today?
 
-    travel_to Time.zone.now.days_since(2) do
-      assert_difference "Event.where(type: 'active_storage_attachment_removed').count" do
-        delete delete_file_ats_candidate_path(candidate, candidate: { file_id_to_remove: candidate.files.first.id })
-      end
+    candidate.update!(last_activity_at: 3.months.ago)
+
+    assert_difference "Event.where(type: 'active_storage_attachment_removed').count" do
+      delete delete_file_ats_candidate_path(candidate, candidate: { file_id_to_remove: candidate.files.first.id })
     end
 
     candidate.reload
 
     assert_not candidate.files.attached?
-    assert_equal candidate.last_activity_at.to_date, 2.days.from_now.to_date
+    assert_predicate candidate.last_activity_at, :today?
   end
 
   test "should upload candidate file and remove it" do
@@ -167,23 +165,21 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
   test "should set file as cv and then reassign the cv flag to another file" do
     candidate = candidates(:jane)
     attachment = candidate.files.last
+    candidate.update!(last_activity_at: 2.days.ago)
 
     assert_equal candidate.files.count, 1
-    assert_predicate candidate.last_activity_at, :today?
     assert_not candidate.cv
 
-    travel_to Time.zone.now.days_since(1) do
-      assert_difference "Event.where(type: 'candidate_changed').count" do
-        patch change_cv_status_ats_candidate_path(candidate),
-              params: { candidate: { file_id_to_change_cv_status: attachment.id } }
-      end
+    assert_difference "Event.where(type: 'candidate_changed').count" do
+      patch change_cv_status_ats_candidate_path(candidate),
+            params: { candidate: { file_id_to_change_cv_status: attachment.id } }
     end
 
     assert_response :success
     candidate.reload
 
     assert_predicate candidate.cv, :present?
-    assert_predicate candidate.last_activity_at, :tomorrow?
+    assert_predicate candidate.last_activity_at, :today?
 
     # Attach new file and make it a CV
     new_cv_file = fixture_file_upload("empty.pdf", "application/pdf")
@@ -277,6 +273,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
   test "should update profile header card, create events and update last_activity_at" do
     candidate = candidates(:jane)
+    candidate.update!(last_activity_at: 1.year.ago)
 
     old_alternative_names = candidate.candidate_alternative_names.pluck(:name)
     new_alternative_names = %w[name1 name2 name3]
@@ -290,7 +287,6 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
       }
     # rubocop:enable Lint/SymbolConversion
 
-    assert_predicate candidate.last_activity_at, :today?
     assert_equal candidate.full_name, "Jane Doe"
     assert_empty candidate.headline
     assert_empty candidate.company
@@ -298,22 +294,20 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_equal candidate.location, locations(:helsinki_city)
     assert_not_equal old_alternative_names, new_alternative_names
 
-    travel_to Time.zone.now.days_since(1) do
-      assert_difference "Event.where(type: 'candidate_changed').count", 6 do
-        patch(
-          update_header_ats_candidate_path(candidate),
-          params: {
-            candidate: {
-              full_name: "New Awesome Name",
-              headline: "new headline",
-              company: "New awesome company",
-              blacklisted: true,
-              location_id: locations(:valencia_city).id,
-              candidate_alternative_names_attributes:
-            }
+    assert_difference "Event.where(type: 'candidate_changed').count", 6 do
+      patch(
+        update_header_ats_candidate_path(candidate),
+        params: {
+          candidate: {
+            full_name: "New Awesome Name",
+            headline: "new headline",
+            company: "New awesome company",
+            blacklisted: true,
+            location_id: locations(:valencia_city).id,
+            candidate_alternative_names_attributes:
           }
-        )
-      end
+        }
+      )
     end
 
     assert_response :success
@@ -352,7 +346,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     candidate.reload
 
-    assert_predicate candidate.last_activity_at, :tomorrow?
+    assert_predicate candidate.last_activity_at, :today?
     assert_equal candidate.full_name, "New Awesome Name"
     assert_equal candidate.headline, "new headline"
     assert_equal candidate.company, "New awesome company"
@@ -563,17 +557,17 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
       assert_equal event.eventable, candidate
     end
 
-    travel_to Time.zone.now.days_since(1) do
-      assert_difference "Event.where(type: 'candidate_recruiter_unassigned').count" do
-        assert_difference "Event.where(type: 'candidate_recruiter_assigned').count" do
-          patch assign_recruiter_ats_candidate_path(candidate.id),
-                params: { candidate: { recruiter_id: recruiter2.id } }
-        end
+    candidate.update!(last_activity_at: 5.days.ago)
+
+    assert_difference "Event.where(type: 'candidate_recruiter_unassigned').count" do
+      assert_difference "Event.where(type: 'candidate_recruiter_assigned').count" do
+        patch assign_recruiter_ats_candidate_path(candidate.id),
+              params: { candidate: { recruiter_id: recruiter2.id } }
       end
     end
 
     assert_equal candidate.reload.recruiter_id, recruiter2.id
-    assert_predicate candidate.last_activity_at, :tomorrow?
+    assert_predicate candidate.last_activity_at, :today?
 
     Event.last(2).tap do |recruiter_unassigned_event, recruiter_assigned_event|
       assert_equal recruiter_unassigned_event.type, "candidate_recruiter_unassigned"

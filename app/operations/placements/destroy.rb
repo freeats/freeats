@@ -8,7 +8,7 @@ class Placements::Destroy < ApplicationOperation
 
   def call
     ActiveRecord::Base.transaction do
-      yield add_event(placement:, actor_account:)
+      add_event(placement:, actor_account:)
       yield destroy_placement(placement)
     end
 
@@ -39,9 +39,6 @@ class Placements::Destroy < ApplicationOperation
         added_at: placement.added_event.performed_at
       }
     }
-
-    yield Events::Add.new(params:).call
-
-    Success()
+    Event.create!(params)
   end
 end

@@ -27,7 +27,7 @@ $(document).on(
         // Initialize Bootstrap tooltips on page load
         new Tooltip("body", {
           selector: '[data-bs-toggle="tooltip"]',
-          trigger: "hover"
+          trigger: "hover",
         });
         // Disable default HTML5 validation
         // This is not done in the view,
@@ -48,5 +48,5 @@ $(document).on(
     };
 
     setupFormValidation();
-  }
+  },
 );

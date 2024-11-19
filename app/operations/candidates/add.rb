@@ -61,25 +61,7 @@ class Candidates::Add < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_candidate(candidate)
-      yield Events::Add.new(
-        params:
-          {
-            type: :candidate_added,
-            eventable: candidate,
-            actor_account:
-          }
-      ).call
-
-      yield Events::Add.new(
-        params:
-          {
-            type: :candidate_recruiter_assigned,
-            eventable: candidate,
-            actor_account:,
-            changed_to: candidate.recruiter_id
-          }
-      ).call
-
+      add_events(candidate:, actor_account:)
       add_changed_events(candidate:, actor_account:, old_values:)
     end
 
@@ -127,6 +109,20 @@ class Candidates::Add < ApplicationOperation
     end
 
     params
+  end
+
+  def add_events(candidate:, actor_account:)
+    Event.create!(
+      type: :candidate_added,
+      eventable: candidate,
+      actor_account:
+    )
+    Event.create!(
+      type: :candidate_recruiter_assigned,
+      eventable: candidate,
+      actor_account:,
+      changed_to: candidate.recruiter_id
+    )
   end
 
   def add_changed_events(candidate:, actor_account:, old_values:)

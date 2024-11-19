@@ -156,28 +156,22 @@ class Candidates::Change < ApplicationOperation
 
   def add_recruiter_changed_events(candidate:, actor_account:, old_recruiter_id:)
     if old_recruiter_id.present?
-      Events::Add.new(
-        params:
-          {
-            type: :candidate_recruiter_unassigned,
-            eventable: candidate,
-            changed_from: old_recruiter_id,
-            actor_account:
-          }
-      ).call
+      Event.create!(
+        type: :candidate_recruiter_unassigned,
+        eventable: candidate,
+        changed_from: old_recruiter_id,
+        actor_account:
+      )
     end
 
     return if candidate.recruiter_id.blank?
 
-    Events::Add.new(
-      params:
-        {
-          type: :candidate_recruiter_assigned,
-          eventable: candidate,
-          changed_to: candidate.recruiter_id,
-          actor_account:
-        }
-    ).call
+    Event.create!(
+      type: :candidate_recruiter_assigned,
+      eventable: candidate,
+      changed_to: candidate.recruiter_id,
+      actor_account:
+    )
   end
 
   def add_changed_events(candidate:, actor_account:, old_values:)

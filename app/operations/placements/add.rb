@@ -36,7 +36,7 @@ class Placements::Add < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_placement(placement)
-      yield add_event(placement:, actor_account:)
+      add_event(placement:, actor_account:)
 
       if (reason = params[:suggestion_disqualify_reason]).present?
         yield Placements::ChangeStatus.new(
@@ -63,14 +63,10 @@ class Placements::Add < ApplicationOperation
   end
 
   def add_event(placement:, actor_account:)
-    placement_added_params = {
+    Event.create!(
       actor_account:,
       type: :placement_added,
       eventable: placement
-    }
-
-    yield Events::Add.new(params: placement_added_params).call
-
-    Success()
+    )
   end
 end
