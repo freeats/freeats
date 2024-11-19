@@ -71,9 +71,11 @@
         .invalid-feedback
           = t("career_site.positions.invalid_file_error")
       = hidden_field_tag :recaptcha_v3_score
-      = render ButtonComponent.new( \
-          variant: :primary,
-          size: :medium,
-          class: "flex-grow-1 flex-md-grow-0 mt-2" \
-        ).with_content(t("career_site.positions.submit_application"))
+      .d-flex.mt-2
+        = render ButtonComponent.new( \
+                   variant: :primary,
+                   size: :medium,
+                   class: "flex-grow-1 flex-md-grow-0" \
+                 )
+          = t("career_site.positions.submit_application")
       .mt-2.font-small.text-secondary#recaptcha_message = t("recaptcha.privacy_message_html")
