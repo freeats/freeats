@@ -675,8 +675,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
 
-    visible_stage_names =
-      css_select("#placement-#{ruby_placement.id} .row").map { _1.at_css("div").text }
+    visible_stage_names = css_select("#placement-#{ruby_placement.id} .text-gray-600").map(&:text)
 
     assert_equal visible_stage_names, %w[Sourced Contacted]
 
@@ -692,8 +691,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
 
-    visible_stage_names =
-      css_select("#placement-#{ruby_placement.id} .row").map { _1.at_css("div").text }
+    visible_stage_names = css_select("#placement-#{ruby_placement.id} .text-gray-600").map(&:text)
 
     assert_equal visible_stage_names, %w[Sourced Contacted Replied]
 
@@ -707,8 +705,7 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
 
-    visible_stage_names =
-      css_select("#placement-#{ruby_placement.id} .row").map { _1.at_css("div").text }
+    visible_stage_names = css_select("#placement-#{ruby_placement.id} .text-gray-600").map(&:text)
 
     assert_equal visible_stage_names, %w[Sourced Contacted Replied]
   end
