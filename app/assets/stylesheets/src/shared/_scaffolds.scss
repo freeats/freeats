@@ -32,11 +32,6 @@ body {
   min-width: 320px;
 }
 
-// place the footer at the bottom of the page
-.wrapper {
-  min-height: calc(100% - $footer-min-height);
-}
-
 .font-medium {
   font-size: 0.875rem;
   line-height: 1.5;

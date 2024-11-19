@@ -31,3 +31,9 @@
 hr {
   margin: 1rem 0;
 }
+
+// TODO: replace this with flex > flex-grow-1 as it done on career site
+// place the footer at the bottom of the page
+.wrapper {
+  min-height: calc(100% - $footer-min-height);
+}
