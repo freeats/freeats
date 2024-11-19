@@ -60,14 +60,18 @@ export default [
         allowTernary: true,
       }],
 
-      semi: ["error", "always", {
+      "@stylistic/js/semi": ["error", "always", {
         omitLastInOneLineBlock: true,
       }],
 
       "@stylistic/js/comma-dangle": ["error", "always-multiline"],
+
       "@stylistic/js/brace-style": "error",
+
       "@stylistic/js/block-spacing": ["error", "always"],
+
       "@stylistic/js/object-curly-spacing": ["error", "always"],
+
       "@stylistic/js/lines-between-class-members": ["error", "always"],
     },
   },
