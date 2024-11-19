@@ -41,6 +41,10 @@ footer .container-fluid {
   min-height: calc(100% - #{$footer-min-height});
 }
 
+footer {
+  min-height: $footer-min-height;
+}
+
 #application_form a,
 #back_on_all_positions a,
 a div {
