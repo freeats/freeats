@@ -1,6 +1,6 @@
 /# locals: (account:)
 
-#account_avatar.hstack.gap-2
+#account_avatar.d-flex.flex-column.flex-md-row.gap-2
   - if account.avatar.attached?
     = image_tag account.avatar.variant(:medium), class: "avatar avatar-64px"
   - else

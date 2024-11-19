@@ -6,7 +6,7 @@
       - c.with_icon(:trash, size: c.size, position: :right)
       = t("core.delete_button")
 - else
-  = form_with url:, method: :delete, class: "d-inline", local: true
+  = form_with url:, method: :delete, class: "hstack", local: true
     = render ButtonComponent.new(variant: :danger_secondary,
                                  data: { toggle: "ats-confirmation",
                                          title: t("candidates.delete_avatar"),
