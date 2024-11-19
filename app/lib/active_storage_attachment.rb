@@ -35,13 +35,13 @@ module ActiveStorageAttachment
 
       same_file = old_cv&.blob == blob
 
-      Events::AddChangedEvent.new(
+      Event.create_changed_event_if_value_changed(
         eventable: record,
         changed_field: "cv",
         old_value: old_cv&.blob&.filename.to_s,
         new_value: same_file ? nil : blob.filename.to_s,
         actor_account:
-      ).call
+      )
 
       case result
       in Success(attachment_information)
