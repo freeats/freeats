@@ -274,6 +274,8 @@ class ATS::PositionsController < AuthorizedController
       ).call
       in Failure[:position_invalid, error]
         render_error error, status: :unprocessable_entity
+      in Failure(:invalid_status)
+        render_error t("positions.status_cant_be_changed_to_draft"), status: :unprocessable_entity
       in Success[_]
         render_turbo_stream(
           [

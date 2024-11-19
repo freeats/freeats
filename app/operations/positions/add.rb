@@ -73,7 +73,7 @@ class Positions::Add < ApplicationOperation
 
     return if params[:location_id].blank?
 
-    yield Events::AddChangedEvent.new(
+    Events::AddChangedEvent.new(
       eventable: position,
       changed_field: "location",
       old_value: nil,

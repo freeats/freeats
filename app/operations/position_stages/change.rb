@@ -34,7 +34,7 @@ class PositionStages::Change < ApplicationOperation
   end
 
   def add_event(position_stage:, actor_account:, old_name:)
-    return Success() if old_name == position_stage.name
+    return if old_name == position_stage.name
 
     params = {
       actor_account:,
