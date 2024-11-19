@@ -1,3 +1,6 @@
+$footer-min-height-mobile: 117px;
+$footer-min-height-tablet: 101px;
+
 body {
   padding-top: 0rem;
 }
@@ -38,11 +41,21 @@ footer .container-fluid {
 
 // place the footer at the bottom of the page
 .wrapper {
-  min-height: calc(100% - #{$footer-min-height});
+  min-height: calc(100% - #{$footer-min-height-mobile});
 }
 
 footer {
-  min-height: $footer-min-height;
+  min-height: $footer-min-height-mobile;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    min-height: calc(100% - #{$footer-min-height-tablet});
+  }
+
+  footer {
+    min-height: $footer-min-height-tablet;
+  }
 }
 
 #application_form a,
