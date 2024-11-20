@@ -22,8 +22,9 @@ hr {
 }
 
 tr {
-  td,
-  th {
+  td.position_status,
+  td.avatar_image,
+  td.task_status {
     &:first-child {
       width: 64px;
       text-align: center;
