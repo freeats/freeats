@@ -14,8 +14,8 @@ module CVParser
             process_annotations(page, annotation)
           end
         end.uniq.compact
-        urls = links.filter { _1.match?(/^http/i) }
-        email_links = links.filter { _1.match?(/^mailto:/i) }
+        urls = links.grep(/^http/i)
+        email_links = links.grep(/^mailto:/i)
         emails = email_links.map { _1.sub(/^mailto:/i, "") }
         if (extra_links = links - urls - email_links).present?
           HubLog.tagged("CVParser::parse_pdf") { _1.warn(extra_links:) }

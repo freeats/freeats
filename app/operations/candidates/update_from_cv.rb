@@ -61,7 +61,8 @@ class Candidates::UpdateFromCV < ApplicationOperation
 
   def update_contacts(data, parsed_emails:, parsed_urls:, country_code:, actor_account:)
     phones = (candidate.candidate_phones.map do |candidate_phone|
-                candidate_phone.slice(:phone, :list_index, :status, :source, :type, :created_via).symbolize_keys
+                candidate_phone
+                  .slice(:phone, :list_index, :status, :source, :type, :created_via).symbolize_keys
               end +
               data.phones.filter_map do |phone|
                 next unless CandidatePhone.valid_phone?(phone, country_code)
@@ -85,7 +86,8 @@ class Candidates::UpdateFromCV < ApplicationOperation
       email
     end
     emails = candidate.candidate_email_addresses.map do |email_address|
-      email_address.slice(:address, :list_index, :status, :source, :type, :created_via).symbolize_keys
+      email_address
+        .slice(:address, :list_index, :status, :source, :type, :created_via).symbolize_keys
     end + emails_from_cv
     emails.uniq! { _1[:address] }
     emails.select! { _1[:address].present? }
