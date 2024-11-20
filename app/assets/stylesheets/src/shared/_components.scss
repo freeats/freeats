@@ -109,6 +109,21 @@
     --tblr-btn-padding-y: 4px;
   }
 
+  // Imitate tabler dropdown toggle icon.
+  &.with-chevron .selectize-input:after {
+    border-color: unset !important;
+    border-style: unset !important;
+
+    border-bottom-style: var(--tblr-border-style) !important;
+    border-left-style: var(--tblr-border-style) !important;
+    transform: rotate(-45deg) translateY(-50%);
+    border-width: 1px !important;
+
+    margin-top: calc(var(--select_component_chevron_size) / -2) !important;
+    width: var(--select_component_chevron_size) !important;
+    height: var(--select_component_chevron_size) !important;
+  }
+
   .selectize-input {
     border-radius: 4px !important;
     vertical-align: middle; // Fix the height of the component.
@@ -155,48 +170,36 @@
   &.tiny {
     --select_component_font_size: 12px;
     --select_component_min_height: 28px;
+    --select_component_chevron_size: 0.4em;
 
     .selectize-input {
       min-height: var(--select_component_min_height) !important;
       padding: 4px 8px !important;
       font-size: var(--select_component_font_size);
-
-      &:before {
-        height: var(--select_component_font_size);
-        width: var(--select_component_font_size);
-      }
     }
   }
 
   &.small {
     --select_component_font_size: 14px;
     --select_component_min_height: 32px;
+    --select_component_chevron_size: 0.5em;
 
     .selectize-input {
       min-height: var(--select_component_min_height) !important;
       padding: 4.5px 9px !important;
       font-size: var(--select_component_font_size);
-
-      &:before {
-        height: var(--select_component_font_size);
-        width: var(--select_component_font_size);
-      }
     }
   }
 
   &.medium {
     --select_component_font_size: 16px;
     --select_component_min_height: 40px;
+    --select_component_chevron_size: 0.7em;
 
     .selectize-input {
       min-height: var(--select_component_min_height) !important;
       padding: 7px 14px !important;
       font-size: var(--select_component_font_size);
-
-      &:before {
-        height: var(--select_component_font_size);
-        width: var(--select_component_font_size);
-      }
     }
   }
   // End of sizes.
