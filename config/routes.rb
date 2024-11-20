@@ -148,9 +148,8 @@ Rails.application.routes.draw do
   mount PgHero::Engine, at: "pghero"
   mount MissionControl::Jobs::Engine, at: "jobs"
 
-  mount Lookbook::Engine, at: "lookbook" unless Rails.env.test?
-
-  constraints(Rodauth::Rails.authenticate { |rodauth| rodauth.admin? || rodauth.member? }) do
+  constraints(Rodauth::Rails.authenticate(&:active?)) do
+    mount Lookbook::Engine, at: "lookbook" unless Rails.env.test?
     mount Blazer::Engine, at: "stats"
   end
 

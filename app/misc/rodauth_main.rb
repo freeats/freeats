@@ -360,14 +360,6 @@ class RodauthMain < Rodauth::Rails::Auth
   end
   # rubocop:enable Layout/LineLength
 
-  def admin?
-    member && member.admin? # rubocop:disable Style/SafeNavigation
-  end
-
-  def member?
-    member && member.member? # rubocop:disable Style/SafeNavigation
-  end
-
   def active?
     member && member.active? # rubocop:disable Style/SafeNavigation
   end

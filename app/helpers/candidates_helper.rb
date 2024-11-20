@@ -17,102 +17,143 @@ module CandidatesHelper
     actor_account_name = compose_actor_account_name(event)
 
     text =
-      if event.type == "email_received"
-        []
-      else
-        [actor_account_name]
-      end
-    text <<
       case event.type
       when "candidate_added"
-        "added the candidate"
+        if event.properties["method"] == "manual"
+          [actor_account_name, "added the candidate manually"]
+        elsif event.properties["method"] == "api"
+          [actor_account_name, "added the candidate using extension"]
+        else
+          [actor_account_name, "added the candidate"]
+        end
       when "candidate_changed"
         to = event.changed_to
         from = event.changed_from
         field = event.changed_field.humanize(capitalize: false)
-        if to.is_a?(Array) && from.is_a?(Array)
-          removed = from - to
-          added = to - from
-          message = [
-            ("removed <b>#{removed.join(', ')}</b> " if removed.any?),
-            ("added <b>#{added.join(', ')}</b> " if added.any?)
-          ].compact.join(" and ")
-          message << field.singularize.pluralize([removed, added].max_by(&:size).size)
-        elsif from.in?([true, false]) && to.in?([true, false])
-          "#{to ? 'added' : 'removed'} <b>Blacklisted</b> status"
-        elsif to.present? && from.present?
-          "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
-        elsif to.present?
-          "added <b>#{to}</b> #{field}"
-        elsif from.present?
-          "removed <b>#{from}</b> #{field}"
-        end
+        activity_text =
+          if to.is_a?(Array) && from.is_a?(Array)
+            removed = from - to
+            added = to - from
+            message = [
+              ("removed <b>#{removed.join(', ')}</b> " if removed.any?),
+              ("added <b>#{added.join(', ')}</b> " if added.any?)
+            ].compact.join(" and ")
+            message << field.singularize.pluralize([removed, added].max_by(&:size).size)
+          elsif from.in?([true, false]) && to.in?([true, false])
+            "#{to ? 'added' : 'removed'} <b>Blacklisted</b> status"
+          elsif to.present? && from.present?
+            "changed #{field} from <b>#{from}</b> to <b>#{to}</b>"
+          elsif to.present?
+            "added <b>#{to}</b> #{field}"
+          elsif from.present?
+            "removed <b>#{from}</b> #{field}"
+          end
+        [actor_account_name, activity_text]
       when "candidate_recruiter_assigned"
-        <<~TEXT
-          assigned \
-          #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)} \
-          as recruiter to the candidate
-        TEXT
+        [
+          actor_account_name,
+          <<~TEXT
+            assigned \
+            #{event_actor_account_name_for_assignment(event:, member: event.assigned_member)} \
+            as recruiter to the candidate
+          TEXT
+        ]
       when "candidate_recruiter_unassigned"
-        <<~TEXT
-          unassigned \
-          #{event_actor_account_name_for_assignment(event:, member: event.unassigned_member)} \
-          as recruiter from the candidate
-        TEXT
+        [
+          actor_account_name,
+          <<~TEXT
+            unassigned \
+            #{event_actor_account_name_for_assignment(event:, member: event.unassigned_member)} \
+            as recruiter from the candidate
+          TEXT
+        ]
       when "email_received"
         message = event.eventable
-        <<~TEXT
-          The candidate #{message.in_reply_to.present? ? 'replied to' : 'sent'} the email <b>
-          #{message.subject}</b> <blockquote class='activity-quote
-          'text-truncate'>#{
-          message.plain_body&.truncate(180)}</blockquote>
-        TEXT
+        activity_text =
+          <<~TEXT
+            The candidate #{message.in_reply_to.present? ? 'replied to' : 'sent'} the email <b>
+            #{message.subject}</b> <blockquote class='activity-quote
+            'text-truncate'>#{
+            message.plain_body&.truncate(180)}</blockquote>
+          TEXT
+        [activity_text]
       when "email_sent"
         message = event.eventable
-        <<~TEXT
-          #{message.in_reply_to.present? ? 'replied to' : 'sent'}
-          the email <b>#{message.subject}</b> <blockquote class='activity-quote
-          text-truncate'>#{
-          message.plain_body&.truncate(180)}</blockquote>
-        TEXT
+        [
+          actor_account_name,
+          <<~TEXT
+            #{message.in_reply_to.present? ? 'replied to' : 'sent'}
+            the email <b>#{message.subject}</b> <blockquote class='activity-quote
+            text-truncate'>#{
+            message.plain_body&.truncate(180)}</blockquote>
+          TEXT
+        ]
       when "active_storage_attachment_added"
-        "added file <b>#{event.properties['name']}</b>"
+        [actor_account_name, "added file <b>#{event.properties['name']}</b>"]
       when "active_storage_attachment_removed"
-        "removed file <b>#{event.properties['name']}</b>"
+        [actor_account_name, "removed file <b>#{event.properties['name']}</b>"]
       when "note_added"
-        "added a note <blockquote class='activity-quote text-truncate'>
-        #{event.eventable&.text&.truncate(180)}</blockquote>"
+        [
+          actor_account_name,
+          "added a note <blockquote class='activity-quote text-truncate'>
+          #{event.eventable&.text&.truncate(180)}</blockquote>"
+        ]
       when "note_removed"
-        "removed a note"
+        [actor_account_name, "removed a note"]
       when "placement_added"
         position = event.eventable.position
-        "assigned the candidate to #{link_to(position.name, ats_position_path(position))}"
+        activity_text =
+          if event.properties["applied"] == true
+            "applied to #{link_to(position.name, ats_position_path(position))}"
+          else
+            "assigned the candidate to #{link_to(position.name, ats_position_path(position))}"
+          end
+        actor_text =
+          if event.properties["applied"] == true
+            ["Candidate"]
+          else
+            [actor_account_name]
+          end
+        [actor_text, activity_text]
       when "placement_changed"
-        placement_changed_text(event)
+        [actor_account_name, placement_changed_text(event)]
       when "placement_removed"
         position = Position.find(event.properties["position_id"])
-        "unassigned the candidate from #{link_to(position.name, ats_position_path(position))}"
+        [actor_account_name,
+         "unassigned the candidate from #{link_to(position.name, ats_position_path(position))}"]
       when "scorecard_added"
         scorecard = event.eventable
         position = scorecard.placement.position
-        "added scorecard #{link_to(scorecard.title, ats_scorecard_path(scorecard))} " \
+        [
+          actor_account_name,
+          "added scorecard #{link_to(scorecard.title, ats_scorecard_path(scorecard))} " \
           "for #{link_to(position.name, ats_position_path(position))}"
+        ]
       when "scorecard_removed"
         position = event.eventable.position
-        "removed scorecard <b>#{event.changed_from}</b> " \
+        [
+          actor_account_name,
+          "removed scorecard <b>#{event.changed_from}</b> " \
           "for #{link_to(position.name, ats_position_path(position))}"
+        ]
       when "scorecard_changed"
         scorecard = event.eventable
         position = scorecard.placement.position
-        "updated scorecard #{link_to(scorecard.title, ats_scorecard_path(scorecard))} " \
+        [
+          actor_account_name,
+          "updated scorecard #{link_to(scorecard.title, ats_scorecard_path(scorecard))} " \
           "for #{link_to(position.name, ats_position_path(position))}"
+        ]
       when "task_added"
-        "created <b>#{event.eventable.name}</b> task"
+        [actor_account_name, "created <b>#{event.eventable.name}</b> task"]
       when "task_status_changed"
-        "#{event.changed_to == 'open' ? 'reopened' : 'closed'} " \
-        "<b>#{event.eventable.name}</b> task"
+        [
+          actor_account_name,
+          "#{event.changed_to == 'open' ? 'reopened' : 'closed'} " \
+          "<b>#{event.eventable.name}</b> task"
+        ]
       when "task_changed"
-        ats_task_changed_display_activity(event)
+        [actor_account_name, ats_task_changed_display_activity(event)]
       else
         Log.tagged("candidate_display_activity") do |log|
           log.external_log("unhandled event type #{event.type}")
