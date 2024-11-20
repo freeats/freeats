@@ -11,15 +11,18 @@
 /)
 
 ruby:
-  target_model ||= nil
   allowed_to_edit ||= true unless allowed_to_edit == false
   currently_assigned_account ||= nil
   tooltip_title ||= nil
   target_url ||= nil
   input_button_name ||= nil
-  unassignment_label ||= nil
   mobile ||= false
   excluded_member_ids ||= []
+  member_options = compose_member_options_for_select(
+    excluded_member_ids:,
+    unassignment_label:,
+    selected_member_id: target_model.recruiter_id
+  )
 
 .reassignment-button data-controller=("reassignment-buttons select-field-instant-submit" if allowed_to_edit)
   - if allowed_to_edit
@@ -46,7 +49,7 @@ ruby:
                  id_suffix: mobile ? "-mobile" : "",
                  include_blank: unassignment_label.present?,
                  required: unassignment_label.blank?,
-                 local: { options: compose_member_options_for_select(excluded_member_ids:, unassignment_label:) },
+                 local: { options: member_options },
                  data: { deferred_selectize_reassignment_buttons_target: "select",
                          deferred_selectize_select_field_instant_submit_target: "selectField" },
                )

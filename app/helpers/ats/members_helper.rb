@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 module ATS::MembersHelper
-  def compose_member_options_for_select(excluded_member_ids:, unassignment_label:)
+  def compose_member_options_for_select(
+    excluded_member_ids:,
+    unassignment_label:,
+    selected_member_id:
+  )
     dataset = Member.active.where.not(id: excluded_member_ids).order("accounts.name").to_a
 
     if dataset.include?(current_member)
@@ -32,7 +36,9 @@ module ATS::MembersHelper
     end
 
     dataset.zip(partials).map do |data, partial|
-      tag.option(value: data.id, label: data.name) { partial }
+      tag.option(value: data.id, label: data.name, selected: data.id == selected_member_id) do
+        partial
+      end
     end.join
   end
 

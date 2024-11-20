@@ -18,12 +18,12 @@ module CandidatesGridHelper
             placement.position_stage.name
           when "reserved"
             safe_join(
-              [render(IconComponent.new(:clock, size: :tiny)), placement.status.humanize],
+              [render(IconComponent.new(:clock, size: :small)), placement.status.humanize],
               " "
             )
           when "disqualified"
             safe_join(
-              [render(IconComponent.new(:ban, size: :tiny)), placement.disqualify_reason.title],
+              [render(IconComponent.new(:ban, size: :small)), placement.disqualify_reason.title],
               " "
             )
           end

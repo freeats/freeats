@@ -30,3 +30,14 @@ tr {
     }
   }
 }
+
+// TODO: replace this with flex > flex-grow-1 as it done on career site
+// place the footer at the bottom of the page
+.wrapper {
+  min-height: calc(100% - $footer-min-height);
+}
+
+.header-edit-avatar-row .col-form-label-sm {
+  padding-top: 0;
+  padding-bottom: 0;
+}

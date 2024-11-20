@@ -86,11 +86,52 @@ class Event < ApplicationRecord
 
   self.inheritance_column = nil
 
+  validates_with MergedCandidateIsReadOnlyValidator
   validates :type, presence: true
-  validates :eventable_type, presence: true
-  validates :eventable_id, presence: true # rubocop:disable Rails/RedundantPresenceValidationOnBelongsTo
 
   after_create :update_candidate_last_activity
+
+  def self.create_changed_event_if_value_changed(
+    eventable:,
+    changed_field: nil,
+    field_type: :singular,
+    performed_at: Time.zone.now,
+    old_value: nil,
+    new_value: nil,
+    actor_account: nil,
+    properties: {}
+  )
+    changed_from =
+      if field_type == :plural
+        (old_value || []).sort
+      else
+        old_value
+      end
+
+    changed_to =
+      if field_type == :plural
+        (new_value || []).sort
+      else
+        new_value
+      end
+
+    # CV files may have the same names.
+    return if changed_from == changed_to && changed_field != "cv"
+
+    class_name = eventable.class.name.downcase
+    type = Event.types["#{class_name}_changed"].to_sym
+
+    Event.create!(
+      eventable:,
+      changed_from:,
+      changed_to:,
+      changed_field:,
+      properties:,
+      type:,
+      actor_account:,
+      performed_at:
+    )
+  end
 
   def update_candidate_last_activity
     candidates_to_update =

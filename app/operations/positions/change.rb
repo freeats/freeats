@@ -184,12 +184,12 @@ class Positions::Change < ApplicationOperation
       Event.create!(position_changed_params)
     end
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: position,
       changed_field: "location",
       old_value: old_values[:location]&.short_name,
       new_value: position.location&.short_name,
       actor_account:
-    ).call
+    )
   end
 end

@@ -159,6 +159,7 @@
       color: var(--tblr-body-color);
       .icon {
         color: var($bg-color);
+        transition: color 0.3s;
       }
     }
 
@@ -166,7 +167,7 @@
       background-color: var($bg-color);
       color: var(--tblr-white);
       .icon {
-        color: inherit;
+        color: var(--tblr-white);
       }
     }
   }

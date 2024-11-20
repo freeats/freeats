@@ -1,16 +1,16 @@
 /# locals: (account:)
 
-#account_avatar.hstack.gap-2
+#account_avatar.d-flex.flex-column.flex-md-row.gap-2
   - if account.avatar.attached?
     = image_tag account.avatar.variant(:medium), class: "avatar avatar-64px"
   - else
     span.avatar.avatar-64px
       = render IconComponent.new(:user)
+  .hstack.gap-2
+    = form_with model: account,
+                url: update_avatar_ats_settings_path,
+                method: :patch, class: "hstack gap-2 turbo-instant-submit" do |form|
+      = render "shared/profile/image_upload_button", file_field: :avatar, form:
 
-  = form_with model: account,
-              url: update_avatar_ats_settings_path,
-              method: :patch, class: "hstack gap-2 turbo-instant-submit" do |form|
-    = render "shared/profile/image_upload_button", file_field: :avatar, form:
-
-  - if account.avatar.present?
-    = render "shared/profile/image_delete_button", url: remove_avatar_ats_settings_path
+    - if account.avatar.present?
+      = render "shared/profile/image_delete_button", url: remove_avatar_ats_settings_path

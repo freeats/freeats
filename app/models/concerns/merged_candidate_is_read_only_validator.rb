@@ -10,6 +10,10 @@ class MergedCandidateIsReadOnlyValidator < ActiveModel::Validator
       return unless record.notable_type == "Candidate"
 
       candidate = record.notable
+    elsif record.respond_to?(:eventable_id)
+      return unless record.eventable_type == "Candidate"
+
+      candidate = record.eventable
     else
       candidate = record.try(:candidate)
       return unless candidate
