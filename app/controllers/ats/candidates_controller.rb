@@ -440,16 +440,25 @@ class ATS::CandidatesController < AuthorizedController
   end
 
   def upload_cv_file
-    case Candidates::UploadFile.new(
-      candidate: @candidate,
-      actor_account: current_account,
-      file: candidate_params[:file],
-      cv: true
-    ).call
-    in Success(file)
-      redirect_to tab_ats_candidate_path(@candidate, :info)
-    in Failure[:file_invalid, e]
-      render_error e, status: :unprocessable_entity
+    file = candidate_params[:file]
+    # TODO: remove transaction
+    ActiveRecord::Base.transaction do
+      case Candidates::UploadFile.new(
+        candidate: @candidate,
+        actor_account: current_account,
+        file:,
+        cv: true
+      ).call
+      in Success()
+        Candidates::UpdateFromCV.new(
+          candidate: @candidate,
+          actor_account: current_account,
+          cv_file: file
+        ).call
+        redirect_to tab_ats_candidate_path(@candidate, :info)
+      in Failure[:file_invalid, e]
+        render_error e, status: :unprocessable_entity
+      end
     end
   end
 

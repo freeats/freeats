@@ -14,7 +14,7 @@ class Candidates::UploadFile < ApplicationOperation
       add_event(attachment:, file:, actor_account:)
     end
 
-    Success(candidate.files.last)
+    Success()
   end
 
   private
