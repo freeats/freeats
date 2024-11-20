@@ -4,7 +4,7 @@ class Candidates::Add < ApplicationOperation
   include Dry::Monads[:do, :result]
 
   option :actor_account, Types::Instance(Account).optional
-  option :method, Types::Strict::String, default: -> { "manual" }
+  option :method, Types::String.enum("api", "applied", "manual")
   option :params, Types::Strict::Hash.schema(
     alternative_names?: Types::Strict::Array.of(
       Types::Strict::Hash.schema(

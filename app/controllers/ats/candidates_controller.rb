@@ -228,7 +228,8 @@ class ATS::CandidatesController < AuthorizedController
   def create
     case Candidates::Add.new(
       params: candidate_params.to_h.deep_symbolize_keys,
-      actor_account: current_account
+      actor_account: current_account,
+      method: "manual"
     ).call
     in Success(candidate)
       redirect_to tab_ats_candidate_path(candidate, :info),
