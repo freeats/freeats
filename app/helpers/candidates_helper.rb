@@ -19,7 +19,7 @@ module CandidatesHelper
     text =
       case event.type
       when "candidate_added"
-        if event.properties["method"].in?(%w[manual applied])
+        if event.properties["method"] == "manual"
           [actor_account_name, "added the candidate manually"]
         elsif event.properties["method"] == "api"
           [actor_account_name, "added the candidate using extension"]
