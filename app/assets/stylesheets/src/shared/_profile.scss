@@ -159,6 +159,7 @@
       color: var(--tblr-body-color);
       .icon {
         color: var($bg-color);
+        transition: color 0.3s;
       }
     }
 
