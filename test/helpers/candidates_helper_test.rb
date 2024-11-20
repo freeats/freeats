@@ -23,7 +23,7 @@ class CandidatesHelperTest < ActionView::TestCase
     assert_match("<span><b>#{@event.actor_account.name}</b> added the candidate manually</span>", result)
   end
 
-  test "candidate_display_activity with candidate_added, method applied and actor_account_id blank" do
+  test "candidate_display_activity with candidate_added and method applied" do
     @event.actor_account_id = nil
     @event.type = "candidate_added"
     @event.properties = { "method" => "applied" }
