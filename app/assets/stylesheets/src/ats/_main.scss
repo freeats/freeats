@@ -26,3 +26,8 @@ hr {
 .wrapper {
   min-height: calc(100% - $footer-min-height);
 }
+
+.header-edit-avatar-row .col-form-label-sm {
+  padding-top: 0;
+  padding-bottom: 0;
+}

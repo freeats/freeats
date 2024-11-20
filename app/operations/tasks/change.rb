@@ -68,13 +68,13 @@ class Tasks::Change < ApplicationOperation
           )
         end
       else
-        Events::AddChangedEvent.new(
+        Event.create_changed_event_if_value_changed(
           eventable: task,
           changed_field: field,
           old_value:,
           new_value:,
           actor_account:
-        ).call
+        )
       end
     end
   end

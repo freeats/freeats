@@ -24,14 +24,14 @@ class Candidates::AlternativeNames::Change < ApplicationOperation
           ).call
         end
 
-        Events::AddChangedEvent.new(
+        Event.create_changed_event_if_value_changed(
           eventable: candidate,
           changed_field: "alternative_names",
           field_type: :plural,
           old_value: old_alternative_names,
           new_value: candidate.candidate_alternative_names.pluck(:name),
           actor_account:
-        ).call
+        )
 
         nil
       end

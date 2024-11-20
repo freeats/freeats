@@ -73,12 +73,12 @@ class Positions::Add < ApplicationOperation
 
     return if params[:location_id].blank?
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: position,
       changed_field: "location",
       old_value: nil,
       new_value: position.location.short_name,
       actor_account:
-    ).call
+    )
   end
 end
