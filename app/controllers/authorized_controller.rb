@@ -41,7 +41,7 @@ class AuthorizedController < ApplicationController
   def authenticate
     rodauth.require_account # redirect to login page if not authenticated
 
-    return if rodauth.active?
+    return if current_member.active?
 
     rodauth.forget_login
     rodauth.logout
