@@ -13,21 +13,21 @@
   }
 }
 
-.form-control {
-  line-height: var(--tblr-body-line-height);
-  text-overflow: ellipsis;
-
-  &:focus {
-    box-shadow:
-      $box-shadow-input,
-      0 0 0 0.25rem rgba(var(--tblr-primary-rgb), 0.25);
-  }
-}
-
 .badge {
   border-color: var(--tblr-gray-200);
 }
 
 hr {
   margin: 1rem 0;
+}
+
+// TODO: replace this with flex > flex-grow-1 as it done on career site
+// place the footer at the bottom of the page
+.wrapper {
+  min-height: calc(100% - $footer-min-height);
+}
+
+.header-edit-avatar-row .col-form-label-sm {
+  padding-top: 0;
+  padding-bottom: 0;
 }

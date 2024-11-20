@@ -36,11 +36,6 @@ footer .container-fluid {
   padding-bottom: 48px;
 }
 
-// place the footer at the bottom of the page
-.wrapper {
-  min-height: calc(100% - #{$footer-min-height});
-}
-
 #application_form a,
 #back_on_all_positions a,
 a div {
@@ -48,8 +43,6 @@ a div {
 }
 
 footer {
-  min-height: $footer-min-height;
-
   a,
   span,
   div {
@@ -98,4 +91,16 @@ footer {
 
 .position_location:hover {
   text-decoration: none;
+}
+
+// This styles fit only medium form-control input size
+input[type="file"] {
+  font-size: 1rem;
+  padding: 7px 14px;
+
+  &::file-selector-button {
+    padding: 7px 14px;
+    margin: -7px -14px;
+    margin-inline-end: 14px;
+  }
 }

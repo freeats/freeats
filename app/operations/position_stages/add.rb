@@ -15,7 +15,7 @@ class PositionStages::Add < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_position_stage(position_stage)
-      yield add_event(position_stage:, actor_account:)
+      add_event(position_stage:, actor_account:)
     end
 
     Success()
@@ -32,15 +32,12 @@ class PositionStages::Add < ApplicationOperation
   end
 
   def add_event(position_stage:, actor_account:)
-    position_stage_added_params = {
+    params = {
       actor_account:,
       type: :position_stage_added,
       eventable: position_stage,
       properties: { name: position_stage.name }
     }
-
-    yield Events::Add.new(params: position_stage_added_params).call
-
-    Success()
+    Event.create!(params)
   end
 end

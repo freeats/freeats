@@ -13,7 +13,7 @@ class Positions::ChangeStatus < ApplicationOperation
     old_status = position.status
 
     return Success(position) if old_status == new_status
-    return Failure[:invalid_status, "Status cannot be changed to draft"] if new_status == "draft"
+    return Failure(:invalid_status) if new_status == "draft"
 
     position.change_status_reason = new_change_status_reason
     position.status = new_status
@@ -33,7 +33,7 @@ class Positions::ChangeStatus < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_position(position)
-      yield Events::Add.new(params: position_changed_params).call
+      Event.create!(position_changed_params)
     end
 
     Success(position)

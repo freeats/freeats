@@ -28,16 +28,7 @@ class PositionStages::Delete < ApplicationOperation
         yield ScorecardTemplates::Destroy.new(scorecard_template:, actor_account:).call
       end
 
-      yield Events::Add.new(
-        params:
-          {
-            type: :position_stage_removed,
-            eventable: position,
-            changed_field: "stage",
-            changed_from: position_stage.id,
-            actor_account:
-          }
-      ).call
+      add_event(position:, position_stage_id: position_stage.id)
 
       if placements_to_move.present?
         yield move_placements(
@@ -67,6 +58,16 @@ class PositionStages::Delete < ApplicationOperation
     Success()
   rescue ActiveRecord::RecordInvalid => e
     Failure[:position_stage_invalid, position_stage.errors.full_messages.presence || e.to_s]
+  end
+
+  def add_event(position:, position_stage_id:)
+    Event.create!(
+      type: :position_stage_removed,
+      eventable: position,
+      changed_field: "stage",
+      changed_from: position_stage_id,
+      actor_account:
+    )
   end
 
   def move_placements(placements:, stage:, new_stage_name:, actor_account:)

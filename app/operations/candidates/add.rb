@@ -60,26 +60,7 @@ class Candidates::Add < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_candidate(candidate)
-      yield Events::Add.new(
-        params:
-          {
-            type: :candidate_added,
-            eventable: candidate,
-            properties: { method: },
-            actor_account:
-          }
-      ).call
-
-      yield Events::Add.new(
-        params:
-          {
-            type: :candidate_recruiter_assigned,
-            eventable: candidate,
-            actor_account:,
-            changed_to: candidate.recruiter_id
-          }
-      ).call
-
+      add_events(candidate:, actor_account:, method:)
       add_changed_events(candidate:, actor_account:, old_values:)
     end
 
@@ -129,96 +110,111 @@ class Candidates::Add < ApplicationOperation
     params
   end
 
+  def add_events(candidate:, actor_account:, method:)
+    Event.create!(
+      type: :candidate_added,
+      eventable: candidate,
+      actor_account:,
+      properties: { method: }
+    )
+    Event.create!(
+      type: :candidate_recruiter_assigned,
+      eventable: candidate,
+      actor_account:,
+      changed_to: candidate.recruiter_id
+    )
+  end
+
   def add_changed_events(candidate:, actor_account:, old_values:)
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: candidate,
       changed_field: "location",
       old_value: old_values[:location]&.short_name,
       new_value: candidate.location&.short_name,
       actor_account:
-    ).call
+    )
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: candidate,
       changed_field: "full_name",
       old_value: old_values[:full_name],
       new_value: candidate.full_name,
       actor_account:
-    ).call
+    )
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: candidate,
       changed_field: "company",
       old_value: old_values[:company],
       new_value: candidate.company,
       actor_account:
-    ).call
+    )
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: candidate,
       changed_field: "blacklisted",
       old_value: old_values[:blacklisted],
       new_value: candidate.blacklisted,
       actor_account:
-    ).call
+    )
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: candidate,
       changed_field: "headline",
       old_value: old_values[:headline],
       new_value: candidate.headline,
       actor_account:
-    ).call
+    )
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: candidate,
       changed_field: "telegram",
       old_value: old_values[:telegram],
       new_value: candidate.telegram,
       actor_account:
-    ).call
+    )
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: candidate,
       changed_field: "skype",
       old_value: old_values[:skype],
       new_value: candidate.skype,
       actor_account:
-    ).call
+    )
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: candidate,
       changed_field: "candidate_source",
       old_value: old_values[:candidate_source],
       new_value: candidate.source,
       actor_account:
-    ).call
+    )
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: candidate,
       changed_field: "email_addresses",
       field_type: :plural,
       old_value: old_values[:emails],
       new_value: candidate.emails,
       actor_account:
-    ).call
+    )
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: candidate,
       changed_field: "phones",
       field_type: :plural,
       old_value: old_values[:phones],
       new_value: candidate.phones,
       actor_account:
-    ).call
+    )
 
-    Events::AddChangedEvent.new(
+    Event.create_changed_event_if_value_changed(
       eventable: candidate,
       changed_field: "links",
       field_type: :plural,
       old_value: old_values[:links],
       new_value: candidate.links,
       actor_account:
-    ).call
+    )
   end
 end

@@ -23,7 +23,7 @@ $font-family-sans-serif: "Open Sans", Arial, Helvetica, sans-serif;
 @import "../src/ats/positions";
 @import "../src/ats/task";
 @import "../src/ats/quick_search";
-@import "../src/ats/recaptcha";
+@import "../src/shared/recaptcha";
 
 // Custom component styles
 @import "../src/shared/components";
