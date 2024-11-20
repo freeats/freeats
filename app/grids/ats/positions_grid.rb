@@ -151,7 +151,7 @@ class ATS::PositionsGrid
     html: true
   ) do |model|
     status_html = position_html_status_circle(model, tooltip_placement: "right")
-    link_to status_html, tab_ats_position_path(model, :pipeline), class: "d-flex align-items-center"
+    link_to status_html, tab_ats_position_path(model, :pipeline)
   end
 
   column(
