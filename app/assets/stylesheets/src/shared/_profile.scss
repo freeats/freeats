@@ -166,7 +166,7 @@
       background-color: var($bg-color);
       color: var(--tblr-white);
       .icon {
-        color: inherit;
+        color: var(--tblr-white);
       }
     }
   }
