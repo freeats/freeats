@@ -31,7 +31,7 @@ ruby:
   .card.card-edit class=classes
     = form_with model: target_model, url: target_url, **form_options do |form|
       .d-flex.flex-row.card-header.align-items-center.gap-2
-        .d-flex.align-items-center.flex-fill.card-title.mb-0 = header
+        .d-flex.align-items-center.flex-fill.card-title.text-truncate.mb-0 = header
         .float-end.hstack.gap-2
           = render ButtonComponent.new(size: :tiny,
                                        data: { \
