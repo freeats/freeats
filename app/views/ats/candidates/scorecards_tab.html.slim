@@ -16,7 +16,7 @@
                   "(#{placement.added_event.performed_at.to_fs(:date)})"
         .accordion-collapse.collapse [data-bs-parent="#scorecards-accordion" id=unique_id
           class=("show" if index.zero?)]
-          .accordion-body
+          .accordion-body.vstack.gap-3
             - visible_stages(placement).each do |stage|
               - stage_name_to_display = stage.deleted ? "#{stage.name}<br>(deleted)" : stage.name
               = render LabeledComponent.new do |c|

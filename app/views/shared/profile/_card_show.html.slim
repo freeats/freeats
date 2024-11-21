@@ -10,7 +10,7 @@ ruby:
 = turbo_frame_tag "turbo_#{card_name}_section"
   .card.mt-3
     .card-header.d-flex.flex-row
-      .d-flex.align-items-center.flex-fill.card-title.mb-0 = header
+      .d-flex.align-items-center.flex-fill.card-title.text-truncate.mb-0 = header
       - if control_button == :edit && allowed_to?(:card_edit?, with: policy)
         = render IconButtonComponent.new( \
                    :pencil,
