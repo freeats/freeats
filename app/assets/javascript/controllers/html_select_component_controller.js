@@ -50,7 +50,7 @@ export default class extends SelectComponentController {
     this.purgeDeadSelectize(target);
 
     $(target).selectize({
-      plugins: ["auto_position"],
+      plugins: ["auto_position", "search_icons"],
       showArrow: this.withChevronValue,
       selectOnTab: false,
       searchField: "html",
