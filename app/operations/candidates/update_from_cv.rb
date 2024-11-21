@@ -9,37 +9,19 @@ class Candidates::UpdateFromCV < ApplicationOperation
 
   def call
     country_code = candidate.location&.country_code
-    file = yield convert_cv_to_pdf(cv_file)
-    parsed = yield parse_pdf(file)
+    file_extension = cv_file.original_filename.split(".").last
+    return Failure(:unsupported_file_format) if file_extension != "pdf"
+
+    parsed = yield parse_pdf(cv_file)
     data = extract(parsed[:plain_text], country_code:)
     update_contacts(
       data,
       parsed_emails: parsed[:emails],
       parsed_urls: parsed[:urls],
       country_code:,
-      actor_account:
+      actor_account:,
+      candidate:
     )
-  end
-
-  def convert_cv_to_pdf(file)
-    splitted_name = file.original_filename.split(".")
-    filename_extension = splitted_name.pop
-    return Success(file) if filename_extension == "pdf"
-
-    unless filename_extension.in?(%w[docx doc odt rtf])
-      return Failure[:unsupported_file_format, "Unsupported file format",
-                     { filename_extension:, candidate_id: candidate.id }]
-    end
-
-    begin
-      pdf_tempfile = Tempfile.new([splitted_name.join("."), ".pdf"])
-      Libreconv.convert(file.path, pdf_tempfile.path)
-    rescue StandardError => e
-      return Failure[:convert_cv_to_pdf, "Error converting file to PDF",
-                     { errors: e.message, candidate_id: candidate.id }]
-    end
-
-    Success(pdf_tempfile)
   end
 
   def parse_pdf(file)
@@ -59,7 +41,7 @@ class Candidates::UpdateFromCV < ApplicationOperation
     CVParser::Content.extract_from_text(text_to_parse, country_code:)
   end
 
-  def update_contacts(data, parsed_emails:, parsed_urls:, country_code:, actor_account:)
+  def update_contacts(data, parsed_emails:, parsed_urls:, country_code:, actor_account:, candidate:)
     phones = (candidate.candidate_phones.map do |candidate_phone|
                 candidate_phone
                   .slice(:phone, :list_index, :status, :source, :type, :created_via).symbolize_keys
@@ -121,7 +103,6 @@ class Candidates::UpdateFromCV < ApplicationOperation
     in Failure[:candidate_invalid, _]
       Failure[
         :update_contacts,
-        "Contacts have not been updated",
         { errors: candidate.errors.full_messages,
           candidate_id: candidate.id,
           phones:,

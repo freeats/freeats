@@ -450,12 +450,17 @@ class ATS::CandidatesController < AuthorizedController
         cv: true
       ).call
       in Success()
-        Candidates::UpdateFromCV.new(
+        case Candidates::UpdateFromCV.new(
           candidate: @candidate,
           actor_account: current_account,
           cv_file: file
         ).call
-        redirect_to tab_ats_candidate_path(@candidate, :info)
+        in Success()
+          nil
+        in Failure[:update_contacts, :data]
+          notice = "Contacts have not been updated, data: #{data}"
+        end
+          redirect_to tab_ats_candidate_path(@candidate, :info), notice:
       in Failure[:file_invalid, e]
         render_error e, status: :unprocessable_entity
       end
