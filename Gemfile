@@ -27,7 +27,6 @@ gem "irb"
 gem "jbuilder"
 gem "jsbundling-rails"
 gem "kaminari"
-gem 'libreconv'
 gem "lookbook", "~> 2.0.0"
 gem "mission_control-jobs"
 gem "pdf-reader"
