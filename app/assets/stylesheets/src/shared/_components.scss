@@ -114,18 +114,25 @@
   --sc_input_right_padding: calc(var(--sc_chevron_size) * 1.41 + var(--sc_chevron_padding));
 
   // Imitate tabler dropdown toggle icon.
-  &.with-chevron .selectize-input:after {
-    border-style: unset;
-    border-color: var(--tblr-gray-500);
-    border-bottom-style: var(--tblr-border-style) !important;
-    border-left-style: var(--tblr-border-style) !important;
-    transform: rotate(-45deg) translateY(-50%);
-    border-width: 1px !important;
+  &.with-chevron .selectize-input {
+    input,
+    .item {
+      max-width: 100% !important;
+    }
 
-    margin-top: calc(var(--sc_chevron_size) / -2) !important;
-    width: var(--sc_chevron_size) !important;
-    height: var(--sc_chevron_size) !important;
-    right: var(--sc_chevron_padding);
+    &:after {
+      border-style: unset;
+      border-color: var(--tblr-gray-500);
+      border-bottom-style: var(--tblr-border-style) !important;
+      border-left-style: var(--tblr-border-style) !important;
+      transform: rotate(-45deg) translateY(-50%);
+      border-width: 1px !important;
+
+      margin-top: calc(var(--sc_chevron_size) / -2) !important;
+      width: var(--sc_chevron_size) !important;
+      height: var(--sc_chevron_size) !important;
+      right: var(--sc_chevron_padding);
+    }
   }
 
   .selectize-input {
