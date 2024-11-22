@@ -25,16 +25,14 @@ class Candidates::UpdateFromCV < ApplicationOperation
   end
 
   def parse_pdf(file)
-    begin
-      parsed = CVParser::Parser.parse_pdf(file.tempfile)
-    rescue PDF::Reader::MalformedPDFError, PDF::Reader::InvalidPageError => e
-      return Failure[:invalid_pdf, "Invalid PDF file",
-                     { errors: e.message, candidate_id: candidate.id }]
-    rescue CVParser::CVParserError => e
-      return Failure[:parse_pdf, "Error converting from PDF to text",
-                     { errors: e.message, candidate_id: candidate.id }]
-    end
+    # CVParser::CVParserError is not loaded before the next line,
+    # see https://stackoverflow.com/a/68572572
+    parsed = CVParser::Parser.parse_pdf(file.tempfile)
     Success(parsed)
+  rescue PDF::Reader::MalformedPDFError, PDF::Reader::InvalidPageError => e
+    return Failure[:invalid_pdf, { errors: e.message, candidate_id: candidate.id }]
+  rescue CVParser::CVParserError => e
+    return Failure[:parse_pdf_error, { errors: e.message, candidate_id: candidate.id }]
   end
 
   def extract(text_to_parse, country_code:)
