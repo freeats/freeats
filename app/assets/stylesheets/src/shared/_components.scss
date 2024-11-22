@@ -109,10 +109,6 @@
     --tblr-btn-padding-y: 4px;
   }
 
-  --sc_chevron_padding: 8px;
-  // Chevron rotation is 45deg, so the actual size is 1.41 times bigger.
-  --sc_input_right_padding: calc(var(--sc_chevron_size) * 1.41 + var(--sc_chevron_padding));
-
   // Imitate tabler dropdown toggle icon.
   &.with-chevron .selectize-input {
     input,
@@ -131,7 +127,7 @@
       margin-top: calc(var(--sc_chevron_size) / -2) !important;
       width: var(--sc_chevron_size) !important;
       height: var(--sc_chevron_size) !important;
-      right: var(--sc_chevron_padding);
+      right: 8px;
     }
   }
 
@@ -185,7 +181,7 @@
     --sc_check_size: 8.84px;
 
     &.with-chevron .selectize-input {
-      padding: 4px var(--sc_input_right_padding) 4px 8px !important;
+      padding: 4px 15px 4px 8px !important;
     }
 
     .selectize-input {
@@ -202,7 +198,7 @@
     --sc_check_size: 10.01px;
 
     &.with-chevron .selectize-input {
-      padding: 4.5px var(--sc_input_right_padding) 4.5px 9px !important;
+      padding: 4.5px 18px 4.5px 9px !important;
     }
 
     .selectize-input {
@@ -219,7 +215,7 @@
     --sc_check_size: 11.78px;
 
     &.with-chevron .selectize-input {
-      padding: 7px var(--sc_input_right_padding) 7px 14px !important;
+      padding: 7px 24px 7px 14px !important;
     }
 
     .selectize-input {
