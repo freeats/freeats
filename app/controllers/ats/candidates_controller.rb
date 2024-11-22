@@ -457,13 +457,16 @@ class ATS::CandidatesController < AuthorizedController
         ).call
         in Success()
           nil
-        in Failure[:update_contacts, _data] | Failure[:invalid_pdf, _data] |
-           Failure[:parse_pdf_error, _data]
-          notice = "Contacts have not been updated, data: #{_data}"
+        in Failure[:contacts_invalid, data]
+          warning = t("candidates.upload_cv.contacts_invalid", data:)
+        in Failure[:invalid_pdf, data]
+          warning = t("candidates.upload_cv.invalid_pdf", data:)
+        in Failure[:parse_pdf_error, data]
+          warning = t("candidates.upload_cv.parse_pdf_error", data:)
         in Failure(:unsupported_file_format)
-          notice = t("candidates.upload_cv.unsupported_format")
+          warning = t("candidates.upload_cv.unsupported_format")
         end
-          redirect_to tab_ats_candidate_path(@candidate, :info), notice:
+          redirect_to tab_ats_candidate_path(@candidate, :info), warning:
       in Failure[:file_invalid, e]
         render_error e, status: :unprocessable_entity
       end
