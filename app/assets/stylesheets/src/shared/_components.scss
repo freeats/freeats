@@ -176,7 +176,7 @@
     --sc_font_size: 12px;
     --sc_min_height: 28px;
     --sc_chevron_size: 5.3px;
-    --sc_check_size: 0.7em;
+    --sc_check_size: 8.83px;
 
     &.with-chevron .selectize-input {
       padding: 4px var(--sc_input_right_padding) 4px 8px !important;
@@ -193,7 +193,7 @@
     --sc_font_size: 14px;
     --sc_min_height: 32px;
     --sc_chevron_size: 6.01px;
-    --sc_check_size: 0.8em;
+    --sc_check_size: 10.01px;
 
     &.with-chevron .selectize-input {
       padding: 4.5px var(--sc_input_right_padding) 4.5px 9px !important;
@@ -210,7 +210,7 @@
     --sc_font_size: 16px;
     --sc_min_height: 40px;
     --sc_chevron_size: 7.07px;
-    --sc_check_size: 0.9em;
+    --sc_check_size: 11.78px;
 
     &.with-chevron .selectize-input {
       padding: 7px var(--sc_input_right_padding) 7px 14px !important;
@@ -272,7 +272,7 @@
       border-width: 1px;
 
       width: var(--sc_check_size);
-      height: calc(var(--sc_check_size) / 1.7);
+      height: calc(var(--sc_check_size) / 2);
     }
   }
 
