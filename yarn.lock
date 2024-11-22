@@ -1598,9 +1598,9 @@ sass@^1.71.1:
     immutable "^4.0.0"
     source-map-js ">=0.6.2 <2.0.0"
 
-"selectize@git+https://github.com/toughbyte/selectize.js.git":
+"selectize@git+https://github.com/toughbyte/selectize.js.git#added-search-icon-plugin":
   version "0.15.2"
-  resolved "git+https://github.com/toughbyte/selectize.js.git#35f5080d5c842fa39f626b1cf547a3094506b12b"
+  resolved "git+https://github.com/toughbyte/selectize.js.git#f949ad60fbb47d3b598e8ba4b75e105bcef0f47f"
 
 semver@^6.3.1:
   version "6.3.1"

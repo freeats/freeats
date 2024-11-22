@@ -18,7 +18,7 @@
     "jquery": "^3.7.1",
     "jquery-ui": "^1.13.2",
     "sass": "^1.71.1",
-    "selectize": "git+https://github.com/toughbyte/selectize.js.git",
+    "selectize": "git+https://github.com/toughbyte/selectize.js.git#added-search-icon-plugin",
     "tributejs": "5.1.0",
     "trix": "^2.1.4"
   },
