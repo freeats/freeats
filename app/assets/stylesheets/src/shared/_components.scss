@@ -118,7 +118,7 @@
 
     &:after {
       border-style: unset;
-      border-color: var(--tblr-gray-500);
+      border-color: var(--tblr-gray-500) !important;
       border-bottom-style: var(--tblr-border-style) !important;
       border-left-style: var(--tblr-border-style) !important;
       transform: rotate(-45deg) translateY(-50%);
