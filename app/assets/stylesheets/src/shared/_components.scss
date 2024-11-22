@@ -175,7 +175,7 @@
   &.tiny {
     --sc_font_size: 12px;
     --sc_min_height: 28px;
-    --sc_chevron_size: 0.4em;
+    --sc_chevron_size: 5.3px;
     --sc_check_size: 0.7em;
 
     &.with-chevron .selectize-input {
@@ -192,7 +192,7 @@
   &.small {
     --sc_font_size: 14px;
     --sc_min_height: 32px;
-    --sc_chevron_size: 0.5em;
+    --sc_chevron_size: 6.01px;
     --sc_check_size: 0.8em;
 
     &.with-chevron .selectize-input {
@@ -209,7 +209,7 @@
   &.medium {
     --sc_font_size: 16px;
     --sc_min_height: 40px;
-    --sc_chevron_size: 0.7em;
+    --sc_chevron_size: 7.07px;
     --sc_check_size: 0.9em;
 
     &.with-chevron .selectize-input {
