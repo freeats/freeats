@@ -16,8 +16,13 @@ class API::V1::DocumentsController < AuthorizedController
       case create_or_update_candidate(params_hash, url)
       in Success(candidate)
         case add_resume(candidate, file)
-        in Success(file)
-          render json: { url: candidate.url }, status: :ok
+        in Success()
+          case update_profile(candidate, file)
+          in Success()
+            render json: { url: candidate.url }, status: :ok
+          in Failure[:contacts_invalid, :e]
+            render json: { url: candidate.url, message: error_message(e) }, status: :ok
+          end
         in Failure[:file_invalid, e]
           render json: { message: error_message(e) }, status: :unprocessable_entity
         end
@@ -65,6 +70,14 @@ class API::V1::DocumentsController < AuthorizedController
       actor_account: current_account,
       file:,
       cv: true
+    ).call
+  end
+
+  def update_profile(candidate, file)
+    Candidates::UpdateFromCV.new(
+      cv_file: file,
+      candidate:,
+      actor_account: current_account
     ).call
   end
 
