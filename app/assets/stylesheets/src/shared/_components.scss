@@ -115,9 +115,8 @@
 
   // Imitate tabler dropdown toggle icon.
   &.with-chevron .selectize-input:after {
-    border-color: unset !important;
-    border-style: unset !important;
-
+    border-style: unset;
+    border-color: var(--tblr-gray-500);
     border-bottom-style: var(--tblr-border-style) !important;
     border-left-style: var(--tblr-border-style) !important;
     transform: rotate(-45deg) translateY(-50%);
