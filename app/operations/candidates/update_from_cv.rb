@@ -30,9 +30,9 @@ class Candidates::UpdateFromCV < ApplicationOperation
     parsed = CVParser::Parser.parse_pdf(file.tempfile)
     Success(parsed)
   rescue PDF::Reader::MalformedPDFError, PDF::Reader::InvalidPageError => e
-    return Failure[:invalid_pdf, { errors: e.message, candidate_id: candidate.id }]
+    Failure[:invalid_pdf, { errors: e.message, candidate_id: candidate.id }]
   rescue CVParser::CVParserError => e
-    return Failure[:parse_pdf_error, { errors: e.message, candidate_id: candidate.id }]
+    Failure[:parse_pdf_error, { errors: e.message, candidate_id: candidate.id }]
   end
 
   def extract(text_to_parse, country_code:)

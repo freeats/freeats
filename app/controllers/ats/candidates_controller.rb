@@ -466,7 +466,7 @@ class ATS::CandidatesController < AuthorizedController
         in Failure(:unsupported_file_format)
           warning = t("candidates.upload_cv.unsupported_format")
         end
-          redirect_to tab_ats_candidate_path(@candidate, :info), warning:
+        redirect_to tab_ats_candidate_path(@candidate, :info), warning:
       in Failure[:file_invalid, e]
         render_error e, status: :unprocessable_entity
       end
