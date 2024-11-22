@@ -100,7 +100,7 @@ class Candidates::UpdateFromCV < ApplicationOperation
       Success()
     in Failure[:candidate_invalid, _]
       Failure[
-        :update_contacts,
+        :contacts_invalid,
         { errors: candidate.errors.full_messages,
           candidate_id: candidate.id,
           phones:,

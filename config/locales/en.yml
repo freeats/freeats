@@ -172,8 +172,9 @@ en:
         <b>%{position_name}</b> on <b>%{date}</b> and is reserved."
     upload_file_button: Upload file
     upload_cv:
-      invalid_pdf: Invalid PDF file
-      parse_pdf_error: Error converting from PDF to text
+      contacts_invalid: Contacts have not been updated, %{data}
+      invalid_pdf: Invalid PDF file, %{data}
+      parse_pdf_error: Error converting from PDF to text, %{data}
       unsupported_format: CV file has unsupported format
 
   errors:
