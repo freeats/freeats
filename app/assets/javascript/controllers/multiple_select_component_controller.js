@@ -121,10 +121,10 @@ export default class extends SelectComponentController {
       otherItems.forEach((item) => item.style.visibility = "hidden");
     } else if (selectize.items.length > 1) {
       $selectizeInput.css("text-overflow", "ellipsis");
-      otherItems.forEach((item) => item.style.visibility = "");
+      [firstItem, ...otherItems].forEach((item) => item.style.visibility = "");
     } else {
       $selectizeInput.css("text-overflow", "");
-      otherItems.forEach((item) => item.style.visibility = "");
+      [firstItem, ...otherItems].forEach((item) => item.style.visibility = "");
     }
   }
 }
