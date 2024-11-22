@@ -457,8 +457,11 @@ class ATS::CandidatesController < AuthorizedController
         ).call
         in Success()
           nil
-        in Failure[:update_contacts, :data]
-          notice = "Contacts have not been updated, data: #{data}"
+        in Failure[:update_contacts, _data] | Failure[:invalid_pdf, _data] |
+           Failure[:parse_pdf_error, _data]
+          notice = "Contacts have not been updated, data: #{_data}"
+        in Failure(:unsupported_file_format)
+          notice = t("candidates.upload_cv.unsupported_format")
         end
           redirect_to tab_ats_candidate_path(@candidate, :info), notice:
       in Failure[:file_invalid, e]
