@@ -1,0 +1,61 @@
+- ats_title(t("core.dashboard"))
+
+#settings.card
+  .row.g-0
+    .col-12.col-md-3.border-end
+      .card-body
+        h4.subheader
+          = inline_svg_tag("user.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+          | Personal
+        .list-group.list-group-transparent
+          a.list-group-item.list-group-item-action.d-flex.align-items-center.active href="#" Profile
+        h4.subheader.mt-4
+          = inline_svg_tag("building.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+          | Company
+        .list-group.list-group-transparent
+          a.list-group-item.list-group-item-action href="#" General
+          a.list-group-item.list-group-item-action href="#" Career site
+        h4.subheader.mt-4
+          = inline_svg_tag("search.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+          | Recruitment
+        .list-group.list-group-transparent
+          a.list-group-item.list-group-item-action href="#" Email templates
+          a.list-group-item.list-group-item-action href="#" Sources
+          a.list-group-item.list-group-item-action href="#" Disqualify reasons
+    .col-12.col-md-9.d-flex.flex-column
+      .row
+        .col-12.col-md-6.flex-column
+          .card-body.d-flex.flex-column.gap-3
+            h1.mb-2 Profile
+            = render "account_avatar", account: current_account
+            = render "account_info", account: current_account
+            = render LabeledComponent.new( \
+                  left_layout_class: "col-12",
+                  right_layout_class: "col-12",
+                  class: "gap-2" \
+                ) do |c|
+              - c.with_label t("user_accounts.settings.show.email_input_label"), for_field: :email
+              .hstack.gap-2
+                = render TextInputComponent.new(:email,
+                                                type: :email,
+                                                readonly: true,
+                                                value: current_account.email,
+                                                aria: { label: t("user_accounts.settings.show.email_input_label") })
+                - if allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
+                  = render ButtonLinkComponent.new(@link_gmail_uri,
+                                                  variant: :secondary,
+                                                  disabled: current_member.email_service_linked?)
+                    - if current_member.email_service_linked?
+                      = t("user_accounts.settings.show.email_linked")
+                    - else
+                      = t("user_accounts.settings.show.email_not_linked")
+            = render LabeledComponent.new( \
+                  left_layout_class: "col-12",
+                  right_layout_class: "col-12",
+                  class: "gap-2" \
+                ) do |c|
+              - c.with_label "Password"
+              = link_to t("user_accounts.settings.show.change_password_link_text"), rodauth.change_password_path
+            .hstack.gap-2.mt-2
+              = render ButtonComponent.new(form: :settings_form)
+                = t("core.save_button")
