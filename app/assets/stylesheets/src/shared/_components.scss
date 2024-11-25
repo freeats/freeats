@@ -245,11 +245,6 @@
   &.multiple {
     @extend .single;
 
-    // Add an ellipsis if there is more than 1 selected item.
-    .selectize-input:has(.item:nth-of-type(2)) {
-      text-overflow: ellipsis;
-    }
-
     .item {
       padding: 0 !important;
       margin: 0rem !important;
