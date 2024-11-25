@@ -228,7 +228,8 @@ class ATS::CandidatesController < AuthorizedController
   def create
     case Candidates::Add.new(
       params: candidate_params.to_h.deep_symbolize_keys,
-      actor_account: current_account
+      actor_account: current_account,
+      method: "manual"
     ).call
     in Success(candidate)
       redirect_to tab_ats_candidate_path(candidate, :info),
@@ -264,7 +265,7 @@ class ATS::CandidatesController < AuthorizedController
           )
         ]
       )
-    in Failure[:candidate_invalid, _e] |
+    in Failure[:candidate_invalid, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:alternative_name_invalid, _e] |
        Failure[:alternative_name_not_unique, _e]
       render_error _e, status: :unprocessable_entity
@@ -375,7 +376,7 @@ class ATS::CandidatesController < AuthorizedController
           turbo_update_card(card_name)
         ]
       )
-    in Failure[:candidate_invalid, _e] |
+    in Failure[:candidate_invalid, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:alternative_name_invalid, _e] |
        Failure[:alternative_name_not_unique, _e]
       render_error _e, status: :unprocessable_entity

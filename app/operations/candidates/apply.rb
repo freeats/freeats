@@ -4,14 +4,19 @@ class Candidates::Apply < ApplicationOperation
   include Dry::Monads[:result, :do, :try]
 
   option :actor_account, Types::Instance(Account).optional
+  option :method, Types::Strict::String, default: -> { "applied" }
   option :params, Types::Strict::Hash.schema(
+    email: Types::Strict::String,
     file: Types::Instance(ActionDispatch::Http::UploadedFile),
-    full_name: Types::Strict::String,
-    email: Types::Strict::String
+    full_name: Types::Strict::String
   )
   option :position_id, Types::Coercible::Integer
 
   def call
+    position = Position.find(position_id)
+    recruiter = position.recruiter
+    return Failure(:no_active_recruiter) if recruiter.blank? || recruiter.inactive?
+
     candidate_email_addresses =
       [{
         address: params[:email],
@@ -20,28 +25,22 @@ class Candidates::Apply < ApplicationOperation
         type: "personal",
         created_via: "applied"
       }]
-    candidate_params = { full_name: params[:full_name], emails: candidate_email_addresses }
+    candidate_params =
+      { full_name: params[:full_name], emails: candidate_email_addresses,
+        recruiter_id: recruiter.id }
     file = params[:file]
 
-    position = Position.find(position_id)
-    recruiter = position.recruiter
-    return Failure(:no_active_recruiter) if recruiter.blank? || recruiter.inactive?
-
     candidate = Candidate.transaction do
-      candidate = yield Candidates::Add.new(params: candidate_params, actor_account:).call
+      candidate =
+        yield Candidates::Add.new(params: candidate_params, actor_account:, method:).call
 
       placement = yield Placements::Add.new(
         params: { candidate_id: candidate.id, position_id: },
-        actor_account:
+        actor_account:,
+        applied: true
       ).call
 
       yield Placements::ChangeStage.new(new_stage: "Replied", placement:, actor_account:).call
-
-      yield Candidates::Change.new(
-        candidate:,
-        actor_account:,
-        params: { recruiter_id: recruiter.id }
-      ).call
 
       yield Tasks::Add.new(
         actor_account:,

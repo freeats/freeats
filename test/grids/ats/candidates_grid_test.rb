@@ -106,6 +106,7 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
     candidate_with_both_placements = candidates(:sam)
     golang_position = positions(:golang_position)
     ruby_position = positions(:ruby_position)
+    disqualify_reason = disqualify_reasons(:no_reply_toughbyte)
 
     grid_assets = ATS::CandidatesGrid.new.assets.to_a
 
@@ -145,7 +146,7 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
       ATS::CandidatesGrid.new(
         position: golang_position.id,
         stage: %w[Sourced Hired],
-        status: "no_reply"
+        status: disqualify_reason.id
       ).assets.to_a
 
     assert_not_includes grid_assets, candidate_without_placements
@@ -190,7 +191,8 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
   test "status filter should return only disqualified candidates for disqualified " \
        "option and only reserved candidates for reserved option" do
     disqualified_placement = placements(:jake_golang_sourced)
-    disqualified_placement.update!(status: :availability)
+    availability_reason = disqualify_reasons(:availability_toughbyte)
+    disqualified_placement.update!(status: :disqualified, disqualify_reason: availability_reason)
     reserved_placement = placements(:john_ruby_replied)
     reserved_placement.update!(status: :reserved)
 

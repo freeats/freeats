@@ -22,7 +22,7 @@ module CandidateCardsHelper
   end
 
   def candidate_turn_array_to_string_with_line_breakers(array)
-    array.filter(&:present?)
+    array.compact_blank
          .join(", ")
          .gsub(/([\[+`;,{-~])/) { Regexp.last_match(1).to_s }
   end

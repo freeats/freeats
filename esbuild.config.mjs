@@ -10,6 +10,7 @@ const result = await esbuild
       "entrypoints/lookbook.js",
       "entrypoints/ats.js",
       "entrypoints/recaptcha.js",
+      "entrypoints/career_site.js",
     ],
     bundle: true,
     loader: {
@@ -30,10 +31,10 @@ const result = await esbuild
         {
           from: ["./node_modules/@tabler/icons/icons/**/*.svg"],
           to: ["./icons"],
-          keepStructure: true
-        }
-      ]
-    }
+          keepStructure: true,
+        },
+      ],
+    },
     )],
     define: {},
   })

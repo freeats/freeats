@@ -48,7 +48,7 @@ class EmailSynchronization::Synchronize < ApplicationOperation
        Failure(:draft_message)
       nil
     in Success[:with_log_report, payload]
-      logger.error(payload[:error_name], **extra.merge(payload.except(:error_name)))
+      logger.error(payload[:error_name], **extra, **payload.except(:error_name))
     in Failure[:email_thread_invalid, error]
       logger.error("Failed to create email_thread", error)
     in Failure(:no_from_addresses)
@@ -62,7 +62,7 @@ class EmailSynchronization::Synchronize < ApplicationOperation
     in Failure[:no_candidate_participants, payload]
       logger.error(
         "Received a message in thread with no person participants",
-        **extra.merge(payload)
+        **extra, **payload
       )
     end
   rescue StandardError, ActiveRecord::RecordInvalid => e

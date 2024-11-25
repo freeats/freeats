@@ -28,7 +28,11 @@ export default class extends Controller {
     const htmlTextToClipboard = element.dataset.copyLinkHtmlText;
     const plainTextToClipboard = element.dataset.copyLinkPlainText;
 
-    this.insertSvgIcon(button, copyIcon, { width: 15, height: 15, "stroke-width": 1.25 });
+    this.insertSvgIcon(
+      button,
+      copyIcon,
+      { "stroke-width": 1.25, class: ["icon-component", "icon-component-small"] },
+    );
 
     if (tooltipText && tooltipText !== "") {
       button.innerHTML = [`<span class="me-2">${tooltipText}</span>`, button.innerHTML].join("");
@@ -157,6 +161,12 @@ export default class extends Controller {
     const svgIcon = element.querySelector("svg");
 
     for (const [key, value] of Object.entries(options)) {
+      if (key === "class") {
+        Array.isArray(value)
+          ? value.forEach((className) => svgIcon.classList.add(className))
+          : svgIcon.classList.add(value);
+        continue;
+      }
       svgIcon.setAttribute(key, value);
     }
 

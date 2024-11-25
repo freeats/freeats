@@ -26,7 +26,7 @@ class Location < ApplicationRecord
           inverse_of: false,
           dependent: nil
 
-  enum type: %i[city admin_region2 admin_region1 country set].index_with(&:to_s)
+  enum :type, %i[city admin_region2 admin_region1 country set].index_with(&:to_s)
 
   validates :name, presence: true
   validates :ascii_name, presence: true

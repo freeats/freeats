@@ -10,14 +10,14 @@ export default class extends Controller {
 
   showForm() {
     if ($(this.buttonTarget).is(":visible")) {
-      $(this.buttonTarget).hide();
+      this.buttonTarget.classList.add("d-none");
     }
     $(this.formTarget).show();
     this.selectTarget.selectize.focus();
   }
 
   hideForm() {
-    $(this.buttonTarget).show();
+    this.buttonTarget.classList.remove("d-none");
     $(this.formTarget).hide();
   }
 }

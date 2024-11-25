@@ -1,8 +1,12 @@
-- title = "422 | The change you wanted was rejected"
-- content_for(:title) { title }
+ruby:
+  error_code = 422
+  heading = t(".heading")
+  content_for(:title) { [error_code, heading].join(" | ") }
 
-header
-  .error-pages
-    h1 = title
-    .font-subheader
-      | Maybe you tried to change something you didn't have access to.
+.empty
+  .empty-header = error_code
+  h1.empty-title = heading
+  p.empty-subtitle.text-secondary
+    = t(".text")
+  .empty-action
+    = render partial: "errors/button"

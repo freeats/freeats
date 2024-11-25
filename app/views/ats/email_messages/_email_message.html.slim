@@ -14,7 +14,7 @@ ruby:
         - if (sender_avatar = message.sender_avatar_url(hashed_avatars, message.from_addresses.map(&:second))).present?
           = image_tag sender_avatar
         - else
-          = render IconComponent.new(:user, class: "email-sender-avatar empty-avatar-icon rounded")
+          = render IconComponent.new(:user, class: "email-sender-avatar rounded")
       .col.text-muted.fw-light
         | From: #{ats_pretty_email_addresses(message.from_addresses)}
         br

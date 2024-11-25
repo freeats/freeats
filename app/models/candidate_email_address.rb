@@ -10,13 +10,13 @@ class CandidateEmailAddress < ApplicationRecord
   belongs_to :candidate
   belongs_to :created_by, class_name: "Member", optional: true
 
-  enum status: %i[
+  enum :status, %i[
     current
     invalid
     outdated
-  ].index_with(&:to_s), _prefix: true
+  ].index_with(&:to_s), prefix: true
 
-  enum source: %i[
+  enum :source, %i[
     bitbucket
     devto
     djinni
@@ -30,18 +30,18 @@ class CandidateEmailAddress < ApplicationRecord
     nymeria
     salesql
     other
-  ].index_with(&:to_s), _prefix: true
+  ].index_with(&:to_s), prefix: true
 
-  enum type: %i[
+  enum :type, %i[
     personal
     work
   ].index_with(&:to_s)
 
-  enum created_via: %i[
+  enum :created_via, %i[
     api
     applied
     manual
-  ].index_with(&:to_s), _prefix: true
+  ].index_with(&:to_s), prefix: true
 
   validates :address, presence: true, uniqueness: { scope: :candidate_id }
   validates :list_index, presence: true

@@ -49,8 +49,11 @@ export default class extends SelectComponentController {
 
     this.purgeDeadSelectize(target);
 
+    let plugins = ["auto_position"];
+    if (this.typeValue == "quick_search") plugins.push("search_icon");
+
     $(target).selectize({
-      plugins: ["auto_position"],
+      plugins,
       showArrow: this.withChevronValue,
       selectOnTab: false,
       searchField: "html",

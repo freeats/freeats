@@ -9,7 +9,7 @@
 .row#position_heading.mt-3.gap-3.justify-content-between
   .col-12.col-md-10
     .col
-      h2 = @position.name
+      h1 = @position.name
     - if @position.open?
       .col
         = @position.location&.short_name
@@ -35,35 +35,47 @@
         = sanitize @position.description.body&.to_html
   hr.my-4
   #application_form
-    h2.mb-3 Apply for this job
+    h2.mb-3 = t("career_site.positions.apply_position")
     = form_with url: apply_career_site_position_path( \
                        tenant_slug: @current_tenant.slug,
                        position_id: @position.id),
                        id: "form-with-recaptcha",
                        data: { controller: "recaptcha-v3" },
-                       class: "d-flex flex-column gap-2" do |form|
-      #turbo_recaptcha.position-absolute
-      = render TextInputComponent.new( \
-          form,
-          method: :full_name,
-          required: true,
-          placeholder: "Full name" \
-        )
-      = render TextInputComponent.new( \
-          form,
-          method: :email,
-          required: true,
-          type: :email,
-          pattern: EmailRegexp::HTML_EMAIL_PATTERN,
-          placeholder: "Email" \
-        )
-      = form.file_field :file, class: "form-control", id: "formFile", type: "file",
-                               required: true, accept: ".pdf,.doc,.docx,.odt,.rtf"
-
+                       class: "d-flex flex-column gap-2 needs-validation" do |form|
+      #turbo_recaptcha.position-absolute.col
+      .col
+        = render TextInputComponent.new( \
+            form,
+            method: :full_name,
+            required: true,
+            size: :medium,
+            placeholder: "Full name" \
+          )
+        .invalid-feedback
+          = t("career_site.positions.invalid_full_name_error")
+      .col
+        = render TextInputComponent.new( \
+            form,
+            method: :email,
+            required: true,
+            type: :email,
+            size: :medium,
+            pattern: EmailRegexp::HTML_EMAIL_PATTERN,
+            placeholder: "Email" \
+          )
+        .invalid-feedback
+          = t("career_site.positions.invalid_email_error")
+      .col
+        = form.file_field :file, class: "form-control", id: "formFile", type: "file",
+                                required: true, accept: ".pdf,.doc,.docx,.odt,.rtf"
+        .invalid-feedback
+          = t("career_site.positions.invalid_file_error")
       = hidden_field_tag :recaptcha_v3_score
-      = render ButtonComponent.new( \
-          variant: :primary,
-          size: :medium,
-          class: "flex-grow-1 flex-lg-grow-0 mt-2" \
-        ).with_content(t("career_site.positions.submit_application"))
-      .mt-2.font-small.text-gray-600 = t("recaptcha.privacy_message_html")
+      .d-flex.mt-2
+        = render ButtonComponent.new( \
+                   variant: :primary,
+                   size: :medium,
+                   class: "flex-grow-1 flex-md-grow-0" \
+                 )
+          = t("career_site.positions.submit_application")
+      .mt-2.font-small.text-secondary#recaptcha_message = t("recaptcha.privacy_message_html")

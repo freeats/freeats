@@ -7,7 +7,7 @@
                                  type: :button,
                                  aria: { expanded: false, haspopup: true },
                                  data: { bs_toggle: "dropdown" }) do |c|
-      - c.with_icon(:chevron_down, position: :right)
+      - c.with_icon(:chevron_down, size: c.size, position: :right)
       | Search
     ul.dropdown-menu.dropdown-menu-end
       li = link_to "Facebook", profile.facebook_search_url, class: "dropdown-item", target: "_blank"

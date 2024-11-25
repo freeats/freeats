@@ -19,8 +19,8 @@ class PositionStageTest < ActiveSupport::TestCase
     assert_no_difference "PositionStage.count" do
       params = { position:, name: sourced_position_stage.name, list_index: 5 }
       case PositionStages::Add.new(params:, actor_account:).call
-      in Failure[:position_stage_invalid, _errors]
-        assert_equal _errors, ["Stage name is not unique: Sourced"]
+      in Failure[:position_stage_invalid, errors]
+        assert_equal errors, ["Stage name is not unique: Sourced"]
       end
     end
   end

@@ -13,11 +13,11 @@ class CandidatePhone < ApplicationRecord
   belongs_to :candidate
   belongs_to :created_by, class_name: "Member", optional: true
 
-  enum type: %i[
+  enum :type, %i[
     personal
     work
   ].index_with(&:to_s)
-  enum source: %i[
+  enum :source, %i[
     bitbucket
     devto
     djinni
@@ -30,16 +30,16 @@ class CandidatePhone < ApplicationRecord
     nymeria
     salesql
     other
-  ].index_with(&:to_s), _prefix: true
-  enum status: %i[
+  ].index_with(&:to_s), prefix: true
+  enum :status, %i[
     current
     invalid
     outdated
-  ].index_with(&:to_s), _prefix: true
-  enum created_via: %i[
+  ].index_with(&:to_s), prefix: true
+  enum :created_via, %i[
     api
     manual
-  ].index_with(&:to_s), _prefix: true
+  ].index_with(&:to_s), prefix: true
 
   validates :list_index, presence: true
   validates :list_index, numericality: { greater_than: 0 }

@@ -44,7 +44,7 @@ class Tasks::Add < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_task(task)
-      yield add_events(task:, actor_account:)
+      add_events(task:, actor_account:)
     end
 
     Success(task)
@@ -66,25 +66,19 @@ class Tasks::Add < ApplicationOperation
       type: :task_added,
       eventable: task
     }
+    Event.create!(task_added_params)
 
-    yield Events::Add.new(params: task_added_params).call
-
-    return Success() if (task_watchers = task.watchers).empty?
+    return if (task_watchers = task.watchers).empty?
 
     task_watchers.each do |watcher|
-      Events::Add.new(
-        params:
-          {
-            eventable: task,
-            changed_field: :watcher,
-            type: :task_watcher_added,
-            changed_to: watcher.id,
-            actor_account:
-          }
-      ).call
+      Event.create!(
+        eventable: task,
+        changed_field: :watcher,
+        type: :task_watcher_added,
+        changed_to: watcher.id,
+        actor_account:
+      )
     end
-
-    Success()
   end
 
   def watchers

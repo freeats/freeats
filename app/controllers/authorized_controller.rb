@@ -3,6 +3,7 @@
 class AuthorizedController < ApplicationController
   set_current_tenant_through_filter
 
+  before_action :authenticate
   before_action :set_tenant
   before_action :set_navbar_variables,
                 unless: -> {
@@ -16,11 +17,6 @@ class AuthorizedController < ApplicationController
   def user_not_authorized
     respond_to do |format|
       format.html do
-        unless current_member&.active?
-          redirect_to login_url
-          return
-        end
-
         redirect_back fallback_location: root_url,
                       alert: t("errors.forbidden_action")
       end
@@ -40,5 +36,16 @@ class AuthorizedController < ApplicationController
 
   def set_navbar_variables
     @pending_tasks_count = current_member.tasks_count if current_member
+  end
+
+  def authenticate
+    rodauth.require_account # redirect to login page if not authenticated
+
+    return if current_member.active?
+
+    rodauth.forget_login
+    rodauth.logout
+    flash[:alert] = "This account has been deactivated."
+    redirect_to rodauth.login_path
   end
 end

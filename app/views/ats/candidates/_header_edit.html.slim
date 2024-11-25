@@ -13,7 +13,7 @@
     = candidate_card_edit "header", @candidate, target_url: update_header_ats_candidate_path(@candidate) do |form|
       .header-edit-avatar-row.mb-2
         = card_row render("ats/candidates/avatar_image", candidate: @candidate, is_form: true),
-                   capture(form, &avatar_edit_buttons), form: true
+                   capture(form, &avatar_edit_buttons), form: true, class: "row-gap-2"
       = render LabeledComponent.new(class: "mb-2") do |c|
         - c.with_label(t("candidates.full_name"), form:, for_field: :full_name)
         = render TextInputComponent.new(form, method: :full_name, required: true)
@@ -36,9 +36,9 @@
               options: compose_location_option_for_select(@candidate.location),
             },
           )
-      = render LabeledComponent.new do |c|
+      = render LabeledComponent.new(right_class: "d-flex align-items-center") do |c|
         - c.with_label(t("candidates.blacklisted"), form:, for_field: :blacklisted)
-        = form.check_box(:blacklisted, class: "form-control-sm")
+        = form.check_box(:blacklisted, class: "form-check-input")
 
       - if allowed_to?(:destroy?, @candidate, with: ATS::CandidatePolicy)
         = render LabeledComponent.new(class: "mt-3")

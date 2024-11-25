@@ -2,33 +2,53 @@ body {
   padding-top: 0rem;
 }
 
+h1,
+h2,
+span,
+div {
+  color: var(--tblr-gray-800);
+}
+
+hr {
+  border-color: var(--tblr-border-color);
+  opacity: 1;
+}
+
 .container-small {
   min-width: 320px;
-  max-width: 980px;
+  max-width: 740px;
+}
 
+.container-md-small {
+  @media (min-width: 768px) {
+    min-width: 320px;
+    max-width: 740px;
+  }
+}
+
+main.container {
   padding-top: 24px;
   padding-bottom: 48px;
 }
 
-// place the footer at the bottom of the page
-.wrapper {
-  min-height: calc(100% - #{$footer-min-height});
+footer .container-fluid {
+  padding-top: 32px;
+  padding-bottom: 48px;
 }
 
+#application_form a,
 #back_on_all_positions a,
-#application_form a {
-  color: $blue-500;
+a div {
+  color: var(--tblr-primary);
 }
 
 footer {
-  height: $footer-min-height;
-
   a,
   span,
   div {
-    color: $gray-600;
+    color: var(--tblr-secondary);
     &:visited:not(.btn, .nav-link, .dropdown-item, .badge) {
-      color: $gray-600;
+      color: var(--tblr-secondary);
     }
   }
 }
@@ -49,9 +69,38 @@ footer {
   border-left: none;
   border-right: none;
   border-top: none;
-  border-bottom: 1px solid $gray-500;
+  border-bottom: 1px solid var(--tblr-border-color);
+  border-radius: 0;
 }
 
 .list-group .custom-list-item:hover {
   background-color: $blue-100;
+  a {
+    text-decoration: none;
+  }
+}
+
+.position_name:hover {
+  text-decoration: underline;
+}
+
+.position_location {
+  text-decoration: none;
+  color: var(--tblr-gray-800);
+}
+
+.position_location:hover {
+  text-decoration: none;
+}
+
+// This styles fit only medium form-control input size
+input[type="file"] {
+  font-size: 1rem;
+  padding: 7px 14px;
+
+  &::file-selector-button {
+    padding: 7px 14px;
+    margin: -7px -14px;
+    margin-inline-end: 14px;
+  }
 }

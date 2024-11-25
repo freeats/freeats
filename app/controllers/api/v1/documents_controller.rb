@@ -56,7 +56,7 @@ class API::V1::DocumentsController < AuthorizedController
         )
         .call
     else
-      Candidates::Add.new(params:, actor_account: current_account).call
+      Candidates::Add.new(params:, actor_account: current_account, method: "api").call
     end
   end
 

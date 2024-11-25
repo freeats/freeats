@@ -22,7 +22,7 @@ class Scorecard < ApplicationRecord
 
   accepts_nested_attributes_for :scorecard_questions
 
-  enum score: %i[
+  enum :score, %i[
     irrelevant
     relevant
     good

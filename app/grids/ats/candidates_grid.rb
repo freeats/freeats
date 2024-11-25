@@ -88,17 +88,16 @@ class ATS::CandidatesGrid
     :status,
     :enum,
     select: lambda {
-      Placement.statuses.map { |k, v| [k.humanize, v] }
-                        .insert(1, %w[Disqualified disqualified])
+      Placement.statuses.map { |k, v| [k.humanize, v] } + DisqualifyReason.pluck(:title, :id)
     },
     include_blank: I18n.t("core.status"),
     placeholder: I18n.t("core.status")
-  ) do |status|
+  ) do |status_or_reason_id|
     query =
-      if status == "disqualified"
-        where.not(placements: { status: %w[reserved qualified] })
+      if status_or_reason_id.in?(%w[qualified reserved disqualified])
+        where(placements: { status: status_or_reason_id })
       else
-        where(placements: { status: })
+        where(placements: { disqualify_reason_id: status_or_reason_id })
       end
     query.joins(:placements).distinct
   end
@@ -133,14 +132,15 @@ class ATS::CandidatesGrid
   # Columns
   #
 
-  column(:avatar, html: true, order: false, header: "") do |model|
+  column(:avatar_image, html: true, order: false, header: "") do |model|
     link_to(
       tab_ats_candidate_path(model.id, :info)
     ) do
-      picture_avatar_icon model.avatar, {}, class: "small-avatar-thumbnail"
+      picture_avatar_icon model.avatar
     end
   end
 
+  # NOTE: there is a problem if candidate name is too long
   column(:name, html: true) do |model|
     link_to(
       model.full_name,
@@ -157,7 +157,7 @@ class ATS::CandidatesGrid
     :position_stage,
     header: "#{I18n.t('core.position')} - #{I18n.t('core.stage')}",
     preload: {
-      placements: %i[position position_stage]
+      placements: %i[position position_stage disqualify_reason]
     },
     html: true
   ) do |model|

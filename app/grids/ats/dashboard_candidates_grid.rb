@@ -17,11 +17,11 @@ class ATS::DashboardCandidatesGrid
   # Columns
   #
 
-  column(:avatar, html: true, header: "", order: false) do |model|
+  column(:avatar_image, html: true, header: "", order: false) do |model|
     link_to(
       tab_ats_candidate_path(model.id, :info)
     ) do
-      picture_avatar_icon model.avatar, {}, class: "small-avatar-thumbnail"
+      picture_avatar_icon model.avatar
     end
   end
 
@@ -36,7 +36,7 @@ class ATS::DashboardCandidatesGrid
     :position_stage,
     header: "#{I18n.t('core.position')} - #{I18n.t('core.stage')}",
     preload: {
-      placements: %i[position position_stage]
+      placements: %i[position position_stage disqualify_reason]
     },
     html: true
   ) do |model|

@@ -31,7 +31,7 @@ class NotesController < AuthorizedController
       end
 
       render_turbo_stream([notes_stream, latest_activities_stream])
-    in Failure[:note_invalid, _e] | Failure[:note_not_unique, _e] |
+    in Failure[:note_invalid, _e] | Failure[:note_not_unique, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:note_thread_invalid, _e] | Failure[:note_thread_not_unique, _e]
       render_error _e, status: :unprocessable_entity
     end
@@ -59,7 +59,7 @@ class NotesController < AuthorizedController
       render_turbo_stream([notes_stream, latest_activities_stream])
     in Failure(:mentioned_in_hidden_thread, forbidden_member_ids)
       render_mentioned_in_hidden_thread_modal(action: :reply, forbidden_member_ids:)
-    in Failure[:note_invalid, _e] | Failure[:note_not_unique, _e] |
+    in Failure[:note_invalid, _e] | Failure[:note_not_unique, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:note_thread_invalid, _e] | Failure[:note_thread_not_unique, _e]
       render_error _e, status: :unprocessable_entity
     end
@@ -91,7 +91,7 @@ class NotesController < AuthorizedController
       render_turbo_stream([notes_stream, updates_stream, latest_activities_stream])
     in Failure(:mentioned_in_hidden_thread, forbidden_member_ids)
       render_mentioned_in_hidden_thread_modal(action: :update, forbidden_member_ids:)
-    in Failure(:note_invalid, _e) | Failure(:note_thread_invalid, _e)
+    in Failure(:note_invalid, _e) | Failure(:note_thread_invalid, _e) # rubocop:disable Lint/UnderscorePrefixedVariableName
       render_error _e, status: :unprocessable_entity
     end
   end
@@ -119,7 +119,7 @@ class NotesController < AuthorizedController
       end
 
       render_turbo_stream([notes_stream, remove_stream, latest_activities_stream])
-    in Failure(:note_invalid, _e) | Failure(:note_thread_invalid, _e)
+    in Failure(:note_invalid, _e) | Failure(:note_thread_invalid, _e) # rubocop:disable Lint/UnderscorePrefixedVariableName
       render_error _e
     end
   end

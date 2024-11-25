@@ -106,8 +106,8 @@ class ATS::TasksController < AuthorizedController
     ).call
     in Success(_task)
       render_task_card
-    in Failure[:task_invalid, _error]
-      render_error _error, status: :unprocessable_entity
+    in Failure[:task_invalid, error]
+      render_error error, status: :unprocessable_entity
     end
   end
 
@@ -119,8 +119,8 @@ class ATS::TasksController < AuthorizedController
     ).call
     in Success[_task]
       render_task_card
-    in Failure[:task_invalid, _error]
-      render_error _error, status: :unprocessable_entity
+    in Failure[:task_invalid, error]
+      render_error error, status: :unprocessable_entity
     end
   end
 

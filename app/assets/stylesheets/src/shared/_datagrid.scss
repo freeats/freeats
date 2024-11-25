@@ -1,106 +1,37 @@
-table.datagrid {
-  margin-bottom: 0rem;
-
-  th,
-  td {
-    max-width: 320px;
-    color: $gray-900;
-  }
-
-  th.ordered,
-  td.ordered {
-    background-color: rgba(228, 228, 228, 0.3);
-
-    &.desc a.desc,
-    &.asc a.asc {
-      color: $red;
-    }
-  }
-
-  .links {
-    a ~ a {
-      @extend .ms-2;
-    }
-  }
-
-  .grid-column-35 {
-    min-width: 140px;
-    width: 140px;
-  }
-}
-
 .datagrid-filter {
   .grid-checkbox {
     min-height: 32px;
   }
 }
 
-// Pagination
-.page-paginator {
-  display: inline-block;
+a.table-sort {
+  text-decoration: none;
 }
 
-// Remove right border on all pagination links except last to prevent overlapping articfacts when
-// zooming out (Issue #4464).
-.page-link {
-  border-right-width: 0px;
-}
+// The `-webkit` attributes are needed to support some older browsers
+.table-sort {
+  &:after {
+    -webkit-mask-image: $table-sort-bg-image;
+    mask-image: $table-sort-bg-image;
+  }
 
-.page-link-last {
-  border-right-width: 1px;
-}
+  &.asc:after {
+    -webkit-mask-image: $table-sort-asc-bg-image;
+    mask-image: $table-sort-asc-bg-image;
+  }
 
-// Prevent the pagination links background from covering up the borders on the right side.
-.page-item.active {
-  z-index: 0;
-}
-
-.page-item:hover {
-  z-index: 0;
-}
-
-.ats-paginator {
-  .page-item {
-    padding: 0;
-
-    .page-link {
-      @extend .font-medium;
-      line-height: 1.5rem;
-      min-width: 2.125rem;
-      padding: 0.25rem 0.5rem;
-      text-align: center;
-      border-color: $gray-500;
-      background-clip: content-box;
-    }
-    &:not(.active) .page-link:hover {
-      background-color: $gray-100;
-      text-decoration: none;
-    }
-    &.active .page-link {
-      color: $gray-900;
-      font-weight: bold;
-    }
-    &:not(.disabled) .page-link {
-      color: $blue;
-      &:hover {
-        color: $blue;
-      }
-    }
+  &.desc:after {
+    -webkit-mask-image: $table-sort-desc-bg-image;
+    mask-image: $table-sort-desc-bg-image;
   }
 }
-
-.pagination .disabled span,
-.pagination .disabled a {
-  background-color: transparent;
-  color: $gray-600;
+.grid-column-35 {
+  min-width: 140px;
+  width: 140px;
 }
 
-table.ats_positions_grid,
-table.ats_dashboard_positions_grid,
-table.tasks_grid,
-table.profile_tasks_grid {
-  td.status {
-    text-align: center;
-    width: 1rem;
+.page-paginator {
+  &:not(&:first-child) {
+    margin-top: 16px;
   }
 }

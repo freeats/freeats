@@ -12,69 +12,73 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     get "/403"
 
     assert_response :forbidden
-    assert_select "h1", "403 | Unauthorized"
+    assert_select "h1", "Forbidden"
+    assert_select "p", "You don't have permission to access this page."
 
     get "/403", headers: { Accept: "application/json" }
 
     assert_response :forbidden
-    assert_equal response.body, { error: { title: "Unauthorized" } }.to_json
+    assert_equal response.body, { error: { title: "Forbidden" } }.to_json
 
     get "/403", xhr: true
 
     assert_response :forbidden
-    assert_includes response.body, "Unauthorized"
+    assert_includes response.body, "Forbidden"
   end
 
   test "should render 404 error" do
     get "/404"
 
     assert_response :not_found
-    assert_select "h1", "404 | Page not found"
+    assert_select "h1", "Not found"
+    assert_select "p", "The page you were looking for doesn't exist."
 
     get "/404", headers: { Accept: "application/json" }
 
     assert_response :not_found
-    assert_equal response.body, { error: { title: "Page Not Found" } }.to_json
+    assert_equal response.body, { error: { title: "Not found" } }.to_json
 
     get "/404", xhr: true
 
     assert_response :not_found
-    assert_includes response.body, "Page Not Found"
+    assert_includes response.body, "Not found"
   end
 
   test "should render 422 error" do
     get "/422"
 
     assert_response :unprocessable_entity
-    assert_select "h1", "422 | The change you wanted was rejected"
+    assert_select "h1", "Unprocessable content"
+    assert_select "p", "We couldn't process your request because some information is missing or incorrect."
 
     get "/422", headers: { Accept: "application/json" }
 
     assert_response :unprocessable_entity
     assert_equal response.body,
                  { error:
-                  { title: "The change you wanted was rejected" } }.to_json
+                  { title: "Unprocessable content" } }.to_json
 
     get "/422", xhr: true
 
     assert_response :unprocessable_entity
-    assert_includes response.body, "The change you wanted was rejected."
+    assert_includes response.body, "Unprocessable content"
   end
 
   test "should render 500 error" do
     get "/500"
 
     assert_response :internal_server_error
-    assert_select "h1", "500 | Application Error"
+    assert_select "h1", "Internal server error"
+    assert_select "p", "Something went wrong, please try again later."
 
     get "/500", headers: { Accept: "application/json" }
 
     assert_response :internal_server_error
-    assert_equal response.body, { error: { title: "Application Error." } }.to_json
+    assert_equal response.body, { error: { title: "Internal server error" } }.to_json
 
     get "/500", xhr: true
 
     assert_response :internal_server_error
-    assert_includes response.body, "Application Error."
+    assert_includes response.body, "Internal server error"
   end
 end

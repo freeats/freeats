@@ -24,6 +24,7 @@ html
     = csrf_meta_tags
     = include_gon
     = stylesheet_link_tag "career_site", media: "all", "data-turbo-track": "reload"
+    = javascript_include_tag "career_site", "data-turbo-track": "reload"
     - if ApplicationController::CLARITY_KEY.present?
       javascript:
         (function(c,l,a,r,i,t,y){
@@ -43,8 +44,8 @@ html
       = javascript_include_tag "recaptcha"
       - onload = "&onload=onGrecaptchaLoad"
       script[defer="true" src="https://www.google.com/recaptcha/api.js?render=#{RecaptchaV3::SITE_KEY}#{onload}"]
-  body#career_site data-controller="alerts"
-    .wrapper.bg-white id=@page_id
+  body#career_site.bg-white.d-flex.flex-column
+    .flex-grow-1 id=@page_id
       main.container.container-small
         = render partial: "shared/notification"
         = yield

@@ -38,25 +38,23 @@ module CreateAccount
         end
 
         account[:name] = name
+        account[:tenant_id] =
+          param("tenant_id").presence ||
+          Tenants::Add.new(company_name: param("company_name")).call.value!.id
       end
 
       # The `internal_request` is used for creating a member for the existing tenant
       # when we invite a new member.
       # Otherwise we register a new tenant and a new member.
       after_create_account do
+        account = Account.find(account_id)
+        tenant_id = account.tenant_id
         if internal_request?
-          tenant_id = param("tenant_id")
-          account = Account.find(account_id)
-          account.update!(tenant_id:)
           account.verified!
           Member.create!(account_id:, tenant_id:, access_level: :member)
         else
-          tenant = Tenant.create!(name: param("company_name"))
-          tenant.create_mandatory_disqualify_reasons
-          account = Account.find(account_id)
-          account.update!(tenant_id: tenant.id)
-          Member.create!(account_id:, tenant:, access_level: :admin)
-          CandidateSource.create!(tenant:, name: "LinkedIn")
+          Member.create!(account_id:, tenant_id:, access_level: :admin)
+          CandidateSource.create!(tenant_id:, name: "LinkedIn")
           # If mailer is not enabled, it's impossible to verify account via email.
           account.verified! unless MAILER_ENABLED
         end
@@ -361,14 +359,6 @@ class RodauthMain < Rodauth::Rails::Auth
     # verify_login_change_deadline_interval Hash[days: 2]
   end
   # rubocop:enable Layout/LineLength
-
-  def admin?
-    member && member.admin? # rubocop:disable Style/SafeNavigation
-  end
-
-  def member?
-    member && member.member? # rubocop:disable Style/SafeNavigation
-  end
 
   def active?
     member && member.active? # rubocop:disable Style/SafeNavigation

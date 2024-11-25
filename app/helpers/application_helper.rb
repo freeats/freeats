@@ -60,7 +60,7 @@ module ApplicationHelper
     else
       form.datagrid_filter(
         filter,
-        class: "form-control",
+        class: "form-control text-input-component-default text-input-component-small",
         **(filter.options.slice(:placeholder, :type) || {})
       )
     end
