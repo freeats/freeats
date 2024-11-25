@@ -18,7 +18,7 @@ module CVParser
         email_links = links.grep(/^mailto:/i)
         emails = email_links.map { _1.sub(/^mailto:/i, "") }
         if (extra_links = links - urls - email_links).present?
-          HubLog.tagged("CVParser::parse_pdf") { _1.warn(extra_links:) }
+          Log.tagged("CVParser::parse_pdf") { _1.warn(extra_links:) }
         end
 
         { plain_text:, urls:, emails: }
