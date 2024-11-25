@@ -143,6 +143,12 @@ Rails.application.routes.draw do
     get :change_visibility_modal, on: :member
   end
 
+  namespace :settings do
+    namespace :personal do
+      resource :profile, only: %i[show]
+    end
+  end
+
   # The below routes are using the basic authuentication.
   mount RailsAdmin::Engine => "admin", as: "rails_admin"
   mount PgHero::Engine, at: "pghero"
