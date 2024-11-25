@@ -109,24 +109,26 @@
     --tblr-btn-padding-y: 4px;
   }
 
-  --sc_chevron_padding: 8px;
-  // Chevron rotation is 45deg, so the actual size is 1.41 times bigger.
-  --sc_input_right_padding: calc(var(--sc_chevron_size) * 1.41 + var(--sc_chevron_padding));
-
   // Imitate tabler dropdown toggle icon.
-  &.with-chevron .selectize-input:after {
-    border-color: unset !important;
-    border-style: unset !important;
+  &.with-chevron .selectize-input {
+    input,
+    .item {
+      max-width: 100% !important;
+    }
 
-    border-bottom-style: var(--tblr-border-style) !important;
-    border-left-style: var(--tblr-border-style) !important;
-    transform: rotate(-45deg) translateY(-50%);
-    border-width: 1px !important;
+    &:after {
+      border-style: unset;
+      border-color: var(--tblr-gray-500) !important;
+      border-bottom-style: var(--tblr-border-style) !important;
+      border-left-style: var(--tblr-border-style) !important;
+      transform: rotate(-45deg) translateY(-50%);
+      border-width: 1px !important;
 
-    margin-top: calc(var(--sc_chevron_size) / -2) !important;
-    width: var(--sc_chevron_size) !important;
-    height: var(--sc_chevron_size) !important;
-    right: var(--sc_chevron_padding);
+      margin-top: calc(var(--sc_chevron_size) / -2) !important;
+      width: var(--sc_chevron_size) !important;
+      height: var(--sc_chevron_size) !important;
+      right: 8px;
+    }
   }
 
   .selectize-input {
@@ -175,11 +177,11 @@
   &.tiny {
     --sc_font_size: 12px;
     --sc_min_height: 28px;
-    --sc_chevron_size: 0.4em;
-    --sc_check_size: 0.7em;
+    --sc_chevron_size: 5.3px;
+    --sc_check_size: 8.84px;
 
     &.with-chevron .selectize-input {
-      padding: 4px var(--sc_input_right_padding) 4px 8px !important;
+      padding: 4px 15px 4px 8px !important;
     }
 
     .selectize-input {
@@ -192,11 +194,11 @@
   &.small {
     --sc_font_size: 14px;
     --sc_min_height: 32px;
-    --sc_chevron_size: 0.5em;
-    --sc_check_size: 0.8em;
+    --sc_chevron_size: 6.01px;
+    --sc_check_size: 10.01px;
 
     &.with-chevron .selectize-input {
-      padding: 4.5px var(--sc_input_right_padding) 4.5px 9px !important;
+      padding: 4.5px 18px 4.5px 9px !important;
     }
 
     .selectize-input {
@@ -209,11 +211,11 @@
   &.medium {
     --sc_font_size: 16px;
     --sc_min_height: 40px;
-    --sc_chevron_size: 0.7em;
-    --sc_check_size: 0.9em;
+    --sc_chevron_size: 7.07px;
+    --sc_check_size: 11.78px;
 
     &.with-chevron .selectize-input {
-      padding: 7px var(--sc_input_right_padding) 7px 14px !important;
+      padding: 7px 24px 7px 14px !important;
     }
 
     .selectize-input {
@@ -243,11 +245,6 @@
   &.multiple {
     @extend .single;
 
-    // Add an ellipsis if there is more than 1 selected item.
-    .selectize-input:has(.item:nth-of-type(2)) {
-      text-overflow: ellipsis;
-    }
-
     .item {
       padding: 0 !important;
       margin: 0rem !important;
@@ -272,7 +269,7 @@
       border-width: 1px;
 
       width: var(--sc_check_size);
-      height: calc(var(--sc_check_size) / 1.7);
+      height: calc(var(--sc_check_size) / 2);
     }
   }
 

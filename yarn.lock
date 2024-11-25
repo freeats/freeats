@@ -1600,7 +1600,7 @@ sass@^1.71.1:
 
 "selectize@git+https://github.com/toughbyte/selectize.js.git":
   version "0.15.2"
-  resolved "git+https://github.com/toughbyte/selectize.js.git#35f5080d5c842fa39f626b1cf547a3094506b12b"
+  resolved "git+https://github.com/toughbyte/selectize.js.git#2e196c5b4c56653519bad10256071496d3b09211"
 
 semver@^6.3.1:
   version "6.3.1"
