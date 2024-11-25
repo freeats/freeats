@@ -10,7 +10,8 @@ class Candidates::UpdateFromCV < ApplicationOperation
   def call
     country_code = candidate.location&.country_code
     file_extension = cv_file.original_filename.split(".").last
-    return Failure(:unsupported_file_format) if file_extension != "pdf"
+
+    return Failure() if file_extension != "pdf"
 
     parsed = yield parse_pdf(cv_file)
     data = extract(parsed[:plain_text], country_code:)
@@ -29,10 +30,11 @@ class Candidates::UpdateFromCV < ApplicationOperation
     # see https://stackoverflow.com/a/68572572
     parsed = CVParser::Parser.parse_pdf(file.tempfile)
     Success(parsed)
-  rescue PDF::Reader::MalformedPDFError, PDF::Reader::InvalidPageError => e
-    Failure[:invalid_pdf, { errors: e.message, candidate_id: candidate.id }]
-  rescue CVParser::CVParserError => e
-    Failure[:parse_pdf_error, { errors: e.message, candidate_id: candidate.id }]
+  rescue PDF::Reader::MalformedPDFError, PDF::Reader::InvalidPageError, CVParser::CVParserError => e
+    Log.tagged("Candidates::UpdateFromCV") do |log|
+      log.warn({ errors: e.message, candidate_id: candidate.id })
+    end
+    Failure()
   end
 
   def extract(text_to_parse, country_code:)
@@ -99,14 +101,18 @@ class Candidates::UpdateFromCV < ApplicationOperation
     in Success(_)
       Success()
     in Failure[:candidate_invalid, _]
-      Failure[
-        :contacts_invalid,
-        { errors: candidate.errors.full_messages,
-          candidate_id: candidate.id,
-          phones:,
-          links:,
-          emails: }
-      ]
+      Log.tagged("Candidates::UpdateFromCV") do |log|
+        log.warn(
+          {
+            errors: candidate.errors.full_messages,
+            candidate_id: candidate.id,
+            phones:,
+            links:,
+            emails:
+          }
+        )
+      end
+      Failure()
     end
   end
 end

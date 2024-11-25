@@ -14,6 +14,8 @@ class Candidates::UploadFile < ApplicationOperation
       add_event(attachment:, file:, actor_account:)
     end
 
+    update_profile_from_cv(candidate:, file:, actor_account:) if cv
+
     Success()
   end
 
@@ -37,5 +39,13 @@ class Candidates::UploadFile < ApplicationOperation
       properties:,
       actor_account:
     )
+  end
+
+  def update_profile_from_cv(candidate:, file:, actor_account:)
+    Candidates::UpdateFromCV.new(
+      cv_file: file,
+      candidate:,
+      actor_account:
+    ).call
   end
 end
