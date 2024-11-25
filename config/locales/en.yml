@@ -170,11 +170,6 @@ en:
       reserved_placement_exist: "<b>%{candidate_name}</b> was last assigned on the
         <b>%{position_name}</b> on <b>%{date}</b> and is reserved."
     upload_file_button: Upload file
-    upload_cv:
-      contacts_invalid: Contacts have not been updated, %{data}
-      invalid_pdf: Invalid PDF file, %{data}
-      parse_pdf_error: Error converting from PDF to text, %{data}
-      unsupported_format: CV file has unsupported format
 
   errors:
     403:
