@@ -86,13 +86,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :settings, only: %i[show] do
-      get :link_gmail, path: "link-gmail"
-      patch :update_account
-      patch :update_avatar
-      delete :remove_avatar
-    end
-
     resource :lookbook, only: [], controller: "lookbook" do
       get :fetch_options_for_select_component_preview
     end
@@ -145,7 +138,12 @@ Rails.application.routes.draw do
 
   namespace :settings do
     namespace :personal do
-      resource :profile, only: %i[show]
+      resource :profile, only: %i[show] do
+        get :link_gmail, path: "link-gmail"
+        patch :update_account
+        patch :update_avatar
+        delete :remove_avatar
+      end
     end
   end
 

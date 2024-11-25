@@ -41,7 +41,7 @@
                                                 readonly: true,
                                                 value: current_account.email,
                                                 aria: { label: t("user_accounts.settings.show.email_input_label") })
-                - if allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
+                - if allowed_to?(:link_gmail?, with: Settings::Personal::ProfilePolicy)
                   = render ButtonLinkComponent.new(@link_gmail_uri,
                                                   variant: :secondary,
                                                   disabled: current_member.email_service_linked?)
