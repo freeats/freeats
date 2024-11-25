@@ -137,6 +137,9 @@ Rails.application.routes.draw do
   end
 
   namespace :settings do
+    namespace :company do
+      resource :general, only: %i[show]
+    end
     namespace :personal do
       resource :profile, only: %i[show] do
         get :link_gmail, path: "link-gmail"
@@ -144,6 +147,10 @@ Rails.application.routes.draw do
         patch :update_avatar
         delete :remove_avatar
       end
+    end
+    namespace :recruitment do
+      resource :disqualify_reasons, only: %i[show]
+      resource :source, only: %i[show]
     end
   end
 

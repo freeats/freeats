@@ -8,20 +8,26 @@
           = inline_svg_tag("user.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
           | Personal
         .list-group.list-group-transparent
-          a.list-group-item.list-group-item-action.d-flex.align-items-center.active href="#" Profile
+          = link_to "Profile", settings_personal_profile_path,
+                    class: "list-group-item list-group-item-action #{'active' if @active_tab == :profile}"
         h4.subheader.mt-4
           = inline_svg_tag("building.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
           | Company
         .list-group.list-group-transparent
-          a.list-group-item.list-group-item-action href="#" General
-          a.list-group-item.list-group-item-action href="#" Career site
+          = link_to "General", settings_company_general_path,
+                    class: "list-group-item list-group-item-action #{'active' if @active_tab == :general}"
+          = link_to "Career site", "#",
+                    class: "list-group-item list-group-item-action #{'active' if @active_tab == :career_site}"
         h4.subheader.mt-4
           = inline_svg_tag("search.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
           | Recruitment
         .list-group.list-group-transparent
-          a.list-group-item.list-group-item-action href="#" Email templates
-          a.list-group-item.list-group-item-action href="#" Sources
-          a.list-group-item.list-group-item-action href="#" Disqualify reasons
+          = link_to "Email templates", "#",
+                    class: "list-group-item list-group-item-action #{'active' if @active_tab == :email_templates}"
+          = link_to "Sources", settings_recruitment_source_path,
+                    class: "list-group-item list-group-item-action #{'active' if @active_tab == :sources}"
+          = link_to "Disqualify reasons", settings_recruitment_disqualify_reasons_path,
+                    class: "list-group-item list-group-item-action #{'active' if @active_tab == :disqualify_reasons}"
     .col-12.col-md-9.d-flex.flex-column
       .row
         .col-12.col-md-6.flex-column
