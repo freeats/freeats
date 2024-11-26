@@ -8,15 +8,14 @@ class Candidates::ApplyTest < ActionDispatch::IntegrationTest
   test "apply should create candidate, placement and task and assign recruiter" do
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     position = positions(:ruby_position)
-    tempfile = fixture_file_upload("empty.pdf", "application/pdf")
-    file =
-      ActionDispatch::Http::UploadedFile.new(
-        {
-          filename: "empty.pdf",
-          type: "application/pdf",
-          tempfile:
-        }
-      )
+
+    file = ActionDispatch::Http::UploadedFile.new(
+      {
+        filename: "empty.pdf",
+        type: "application/pdf",
+        tempfile: Rails.root.join("test/fixtures/files/empty.pdf")
+      }
+    )
 
     candidate_params = { full_name: "John Smith", email: "KdQ5j@example.com", file: }
 

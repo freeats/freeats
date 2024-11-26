@@ -31,7 +31,7 @@ class CVParser::Content
 
       emails = text.scan(EMAIL_REGEX).each_with_object([]) do |email, memo|
         email = email.strip.sub(/[[:punct:]]+\z/, "")
-        next unless Person.valid_email?(email)
+        next unless CandidateEmailAddress.valid_email?(email)
 
         memo << { address: email }
       end
