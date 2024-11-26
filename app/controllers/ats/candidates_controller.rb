@@ -430,7 +430,8 @@ class ATS::CandidatesController < AuthorizedController
     case Candidates::UploadFile.new(
       candidate: @candidate,
       actor_account: current_account,
-      file: candidate_params[:file]
+      file: candidate_params[:file],
+      namespace: :ats
     ).call
     in Success()
       redirect_to tab_ats_candidate_path(@candidate, :files)
@@ -446,7 +447,8 @@ class ATS::CandidatesController < AuthorizedController
       candidate: @candidate,
       actor_account: current_account,
       file: candidate_params[:file],
-      cv: true
+      cv: true,
+      namespace: :ats
     ).call
     in Success()
       redirect_to tab_ats_candidate_path(@candidate, :info)

@@ -76,7 +76,8 @@ class Candidates::ApplyTest < ActionDispatch::IntegrationTest
         result = Candidates::Apply.new(
           params: candidate_params,
           position_id: position.id,
-          actor_account: nil
+          actor_account: nil,
+          namespace: :career_site
         ).call
 
         assert_equal result, Failure[:file_invalid, "File is invalid"]

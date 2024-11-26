@@ -65,7 +65,8 @@ class API::V1::DocumentsController < AuthorizedController
       actor_account: current_account,
       file:,
       cv: true,
-      source:
+      source:,
+      namespace: :api
     ).call
   end
 
