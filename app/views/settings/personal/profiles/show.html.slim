@@ -1,8 +1,58 @@
 - ats_title(t("core.dashboard"))
 
+ruby:
+  tab_labels = {
+    profile: "Profile",
+    general: "General",
+    career_site: "Career site",
+    email_templates: "Email templates",
+    sources: "Sources",
+    disqualify_reasons: "Disqualify reasons"
+  }
 #settings.card
   .row.g-0
-    .col-12.col-md-3.border-end
+    .col.d-md-none.dropdown.w-100.profile-mobile-nav.border-end
+      .card-body
+        = render ButtonComponent.new( \
+                  variant: :cancel,
+                  type: :button,
+                  flex_content_position: :between,
+                  id: "dropdownNavLink",
+                  class: "w-100",
+                  data: { bs_toggle: :dropdown },
+                ) do |c|
+          - c.with_icon(:chevron_down)
+          span = tab_labels[@active_tab]
+        ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
+          h6.dropdown-header
+            = inline_svg_tag("user.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+            | Personal
+          li
+            = link_to "Profile", settings_personal_profile_path,
+                      class: "dropdown-item #{'active' if @active_tab == :profile}"
+          h6.dropdown-header
+            = inline_svg_tag("building.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+            | Company
+          li
+            = link_to "General", settings_company_general_path,
+                      class: "dropdown-item #{'active' if @active_tab == :general}"
+          li
+            = link_to "Career site", "#",
+                      class: "dropdown-item #{'active' if @active_tab == :career_site}"
+          h6.dropdown-header
+            = inline_svg_tag("search.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+            | Recruitment
+          li
+            = link_to "Email templates", "#",
+                      class: "dropdown-item #{'active' if @active_tab == :email_templates}"
+          li
+            = link_to "Sources", settings_recruitment_source_path,
+                      class: "dropdown-item #{'active' if @active_tab == :sources}"
+          li
+            = link_to "Disqualify reasons", settings_recruitment_disqualify_reasons_path,
+                      class: "dropdown-item #{'active' if @active_tab == :disqualify_reasons}"
+
+    .col-12.col-md-3.border-end.d-none.d-md-flex
       .card-body
         h4.subheader
           = inline_svg_tag("user.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
@@ -28,6 +78,7 @@
                     class: "list-group-item list-group-item-action #{'active' if @active_tab == :sources}"
           = link_to "Disqualify reasons", settings_recruitment_disqualify_reasons_path,
                     class: "list-group-item list-group-item-action #{'active' if @active_tab == :disqualify_reasons}"
+
     .col-12.col-md-9.d-flex.flex-column
       .row
         .col-12.col-md-6.flex-column

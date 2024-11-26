@@ -8,6 +8,7 @@ class Settings::Personal::ProfilesController < AuthorizedController
   before_action { authorize! :profile }
   before_action :set_partial_variables, only: :show
   before_action :set_gon_variables, only: :show
+  before_action :active_tab
 
   def show; end
 
@@ -88,5 +89,9 @@ class Settings::Personal::ProfilesController < AuthorizedController
 
     @link_gmail_uri =
       Gmail::Auth.authorization_uri(redirect_uri: link_gmail_settings_personal_profile_url)
+  end
+
+  def active_tab
+    @active_tab ||= :profile
   end
 end
