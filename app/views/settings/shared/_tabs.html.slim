@@ -29,27 +29,37 @@ ruby:
       li
         = link_to t("user_accounts.profile"), settings_personal_profile_path,
                   class: "dropdown-item #{'active' if active_tab == :profile}"
-      h6.dropdown-header
-        = inline_svg_tag("building.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
-        = t("company.company")
-      li
-        = link_to t("company.general"), settings_company_general_path,
-                  class: "dropdown-item #{'active' if active_tab == :general}"
-      li
-        = link_to t("company.career_site"), "#",
-                  class: "dropdown-item #{'active' if active_tab == :career_site}"
-      h6.dropdown-header
-        = inline_svg_tag("search.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
-        = t("recruitment.recruitment")
-      li
-        = link_to t("recruitment.email_templates"), "#",
-                  class: "dropdown-item #{'active' if active_tab == :email_templates}"
-      li
-        = link_to t("recruitment.sources"), settings_recruitment_source_path,
-                  class: "dropdown-item #{'active' if active_tab == :sources}"
-      li
-        = link_to t("recruitment.disqualify_reasons"), settings_recruitment_disqualify_reasons_path,
-                  class: "dropdown-item #{'active' if active_tab == :disqualify_reasons}"
+      - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy) || \
+           allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
+        h6.dropdown-header
+          = inline_svg_tag("building.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+          = t("company.company")
+        - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy)
+          li
+            = link_to t("company.general"), settings_company_general_path,
+                      class: "dropdown-item #{'active' if active_tab == :general}"
+        - if allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
+          li
+            = link_to t("company.career_site"), "#",
+                      class: "dropdown-item #{'active' if active_tab == :career_site}"
+      - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy) || \
+           allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy) || \
+           allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
+        h6.dropdown-header
+          = inline_svg_tag("search.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+          = t("recruitment.recruitment")
+        - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
+          li
+            = link_to t("recruitment.email_templates"), "#",
+                      class: "dropdown-item #{'active' if active_tab == :email_templates}"
+        - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy)
+          li
+            = link_to t("recruitment.sources"), settings_recruitment_source_path,
+                      class: "dropdown-item #{'active' if active_tab == :sources}"
+        - if allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
+          li
+            = link_to t("recruitment.disqualify_reasons"), settings_recruitment_disqualify_reasons_path,
+                      class: "dropdown-item #{'active' if active_tab == :disqualify_reasons}"
 
 .col-12.col-md-3.border-end.d-none.d-md-flex
   .card-body
@@ -59,21 +69,31 @@ ruby:
     .list-group.list-group-transparent
       = link_to t("user_accounts.profile"), settings_personal_profile_path,
                 class: "list-group-item list-group-item-action #{'active' if active_tab == :profile}"
-    h4.subheader.mt-4
-      = inline_svg_tag("building.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
-      = t("company.company")
-    .list-group.list-group-transparent
-      = link_to t("company.general"), settings_company_general_path,
-                class: "list-group-item list-group-item-action #{'active' if active_tab == :general}"
-      = link_to t("company.career_site"), "#",
-                class: "list-group-item list-group-item-action #{'active' if active_tab == :career_site}"
-    h4.subheader.mt-4
-      = inline_svg_tag("search.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
-      = t("recruitment.recruitment")
-    .list-group.list-group-transparent
-      = link_to t("recruitment.email_templates"), "#",
-                class: "list-group-item list-group-item-action #{'active' if active_tab == :email_templates}"
-      = link_to t("recruitment.sources"), settings_recruitment_source_path,
-                class: "list-group-item list-group-item-action #{'active' if active_tab == :sources}"
-      = link_to t("recruitment.disqualify_reasons"), settings_recruitment_disqualify_reasons_path,
-                class: "list-group-item list-group-item-action #{'active' if active_tab == :disqualify_reasons}"
+    - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy) || \
+         allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
+      h4.subheader.mt-4
+        = inline_svg_tag("building.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+        = t("company.company")
+      .list-group.list-group-transparent
+        - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy)
+          = link_to t("company.general"), settings_company_general_path,
+                    class: "list-group-item list-group-item-action #{'active' if active_tab == :general}"
+        - if allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
+          = link_to t("company.career_site"), "#",
+                    class: "list-group-item list-group-item-action #{'active' if active_tab == :career_site}"
+    - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy) || \
+         allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy) || \
+         allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
+      h4.subheader.mt-4
+        = inline_svg_tag("search.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+        = t("recruitment.recruitment")
+      .list-group.list-group-transparent
+        - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
+          = link_to t("recruitment.email_templates"), "#",
+                    class: "list-group-item list-group-item-action #{'active' if active_tab == :email_templates}"
+        - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy)
+          = link_to t("recruitment.sources"), settings_recruitment_source_path,
+                    class: "list-group-item list-group-item-action #{'active' if active_tab == :sources}"
+        - if allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
+          = link_to t("recruitment.disqualify_reasons"), settings_recruitment_disqualify_reasons_path,
+                    class: "list-group-item list-group-item-action #{'active' if active_tab == :disqualify_reasons}"
