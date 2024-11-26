@@ -436,6 +436,8 @@ class ATS::CandidatesController < AuthorizedController
       redirect_to tab_ats_candidate_path(@candidate, :files)
     in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
+    in Failure[:file_already_present]
+      render_turbo_stream([], warning: t("candidates.file_already_present_warning"))
     end
   end
 
@@ -450,6 +452,8 @@ class ATS::CandidatesController < AuthorizedController
       redirect_to tab_ats_candidate_path(@candidate, :info)
     in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
+    in Failure[:file_already_present]
+      render_turbo_stream([], warning: t("candidates.file_already_present_warning"))
     end
   end
 

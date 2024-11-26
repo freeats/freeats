@@ -136,6 +136,7 @@ en:
     disqualify: Disqualify
     download_file: download file
     emails: Emails
+    file_already_present_warning: Prevent file duplicating because the candidate already contains the uploaded file.
     full_name: Full name
     headline: Headline
     include_blacklisted: Include blacklisted

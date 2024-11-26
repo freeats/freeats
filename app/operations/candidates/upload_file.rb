@@ -7,20 +7,25 @@ class Candidates::UploadFile < ApplicationOperation
   option :actor_account, Types::Instance(Account).optional
   option :file, Types::Instance(ActionDispatch::Http::UploadedFile)
   option :cv, Types::Strict::Bool.optional, default: proc { false }
-  option :source, Types::Strict::String.optional, default: proc {}
+  option :source, Types::Strict::String.optional, default: proc { "" }
 
   def call
-    case find_existing_same_file(candidate:, file:, source:)
+    checksum = calculate_checksum(file)
+    # Retrieving the existing CV file should be done before uploading a new file.
+    # Otherwise `candidate.cv` will raise an error.
+    existing_cv_file = candidate.cv
+
+    case find_existing_same_file(candidate:, checksum:, source:)
     in Success(existing_same_file)
-      mark_file_as_cv(file: existing_same_file, candidate:, actor_account:, source:) if cv
-      return Failure[:file_already_present] ## handle this case on level above
+      mark_file_as_cv(file: existing_same_file, existing_cv_file:, actor_account:, source:) if cv
+      return Failure[:file_already_present]
     in Failure[:no_existing_same_file]
       nil
     end
 
     ActiveRecord::Base.transaction do
-      attachment = yield upload_file(candidate:, file:)
-      mark_file_as_cv(file: attachment, candidate:, actor_account:, source:) if cv
+      attachment = yield upload_file(candidate:, file:, checksum:, source:)
+      mark_file_as_cv(file: attachment, existing_cv_file:, actor_account:, source:) if cv
       add_event(attachment:, file:, actor_account:)
     end
 
@@ -29,12 +34,19 @@ class Candidates::UploadFile < ApplicationOperation
 
   private
 
-  def find_existing_same_file(candidate:, file:, source:)
-    text_checksum = Digest::MD5.hexdigest(CVParser::Parser.parse_pdf(file.tempfile))
+  def calculate_checksum(file)
+    if file.content_type == "application/pdf"
+      Digest::MD5.hexdigest(CVParser::Parser.parse_pdf(file.tempfile))
+    else
+      binding.pry
+      Digest::MD5.hexdigest(file.read)
+    end
+  end
 
+  def find_existing_same_file(candidate:, checksum:, source:)
     existing_same_file = candidate.files.find do |attachment|
       custom_metadata = attachment.blob.custom_metadata
-      custom_metadata[:text_checksum] == text_checksum && custom_metadata[:source] == source
+      custom_metadata[:checksum] == checksum && custom_metadata[:source] == source
     end
 
     return Failure[:no_existing_same_file] if existing_same_file.blank?
@@ -42,10 +54,10 @@ class Candidates::UploadFile < ApplicationOperation
     Success(existing_same_file)
   end
 
-  def upload_file(candidate:, file:)
-    text_checksum = Digest::MD5.hexdigest(CVParser::Parser.parse_pdf(file.tempfile))
+  def upload_file(candidate:, file:, checksum:, source:)
     attachment = candidate.files.attach(file).attachments.last
-    attachment.blob.custom_metadata = { text_checksum: }
+    attachment.blob.custom_metadata = { checksum:, source: }
+    attachment.blob.save!
 
     Success(attachment)
   rescue ActiveRecord::RecordInvalid => e
@@ -63,12 +75,10 @@ class Candidates::UploadFile < ApplicationOperation
     )
   end
 
-  def mark_file_as_cv(file:, candidate:, actor_account:, source:)
-    existing_cv_file = candidate.cv
-
+  def mark_file_as_cv(file:, existing_cv_file:, actor_account:, source:)
     if existing_cv_file &&
-       existing_cv_file.blob.custom_metadata[:source] == source &&
-       existing_cv_file != file
+       (existing_cv_file.blob.custom_metadata[:source] != source ||
+       existing_cv_file == file)
       return
     end
 

@@ -58,7 +58,7 @@ class Candidates::Apply < ApplicationOperation
 
     # File uploading did not work correctly inside the main transaction.
     case Candidates::UploadFile.new(candidate:, actor_account:, file:, cv: true).call
-    in Success()
+    in Success() | Failure[:file_already_present]
       Success()
     in Failure[:file_invalid, e]
       candidate.destroy!
