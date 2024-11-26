@@ -55,11 +55,17 @@ export default class extends SelectComponentController {
 
     if (this.instantSubmitValue) this.#setupInstantSubmit(target);
 
+    this.#truncateItemsAddlisteners(target.selectize);
+
     this.applyCommonFunctions(target, this.searchUrlValue);
   }
 
   selectTargetDisconnected(target) {
     this.destroySelectize(target);
+
+    window.removeEventListener("resize", () => {
+      this.#truncateItems(target.selectize);
+    });
   }
 
   parseOptions(text) {
@@ -84,5 +90,41 @@ export default class extends SelectComponentController {
         }
       },
     );
+  }
+
+  #truncateItemsAddlisteners(selectize) {
+    this.#truncateItems(selectize);
+
+    selectize.on("change", () => {
+      this.#truncateItems(selectize);
+    });
+
+    window.addEventListener("resize", () => {
+      this.#truncateItems(selectize);
+    });
+  }
+
+  #truncateItems(selectize) {
+    const $selectizeInput = selectize.$control;
+    const inputWidth = $selectizeInput[0].clientWidth -
+      parseFloat($selectizeInput.css("padding-left")) -
+      parseFloat($selectizeInput.css("padding-right"));
+
+    const [firstItem, ...otherItems] = $selectizeInput.find(".item");
+
+    if (!firstItem) return;
+
+    const firstItemWidth = firstItem.clientWidth;
+
+    if (inputWidth <= firstItemWidth) {
+      $selectizeInput.css("text-overflow", "");
+      otherItems.forEach((item) => item.style.visibility = "hidden");
+    } else if (selectize.items.length > 1) {
+      $selectizeInput.css("text-overflow", "ellipsis");
+      [firstItem, ...otherItems].forEach((item) => item.style.visibility = "");
+    } else {
+      $selectizeInput.css("text-overflow", "");
+      [firstItem, ...otherItems].forEach((item) => item.style.visibility = "");
+    }
   }
 }
