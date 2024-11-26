@@ -3,6 +3,7 @@
 class Settings::Company::GeneralsController < AuthorizedController
   layout "ats/application"
 
+  before_action :authorize!
   before_action :active_tab
 
   def show; end
