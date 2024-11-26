@@ -38,7 +38,7 @@ class Candidates::UploadFile < ApplicationOperation
     if file.content_type == "application/pdf"
       Digest::MD5.hexdigest(CVParser::Parser.parse_pdf(file.tempfile))
     else
-      binding.pry
+      file.rewind
       Digest::MD5.hexdigest(file.read)
     end
   end
