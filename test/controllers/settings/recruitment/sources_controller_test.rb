@@ -7,7 +7,7 @@ class Settings::Recruitment::SourcesControllerTest < ActionDispatch::Integration
     skip "TODO: Functionality in the process of implementation."
     sign_in accounts(:interviewer_account)
 
-    get settings_recruitment_source_path
+    get settings_recruitment_sources_path
 
     assert_response :success
   end

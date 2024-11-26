@@ -150,7 +150,7 @@ Rails.application.routes.draw do
     end
     namespace :recruitment do
       resource :disqualify_reasons, only: %i[show]
-      resource :source, only: %i[show]
+      resource :sources, only: %i[show]
     end
   end
 

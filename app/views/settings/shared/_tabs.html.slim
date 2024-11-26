@@ -54,7 +54,7 @@ ruby:
                       class: "dropdown-item #{'active' if active_tab == :email_templates}"
         - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy)
           li
-            = link_to t("recruitment.sources"), settings_recruitment_source_path,
+            = link_to t("recruitment.sources"), settings_recruitment_sources_path,
                       class: "dropdown-item #{'active' if active_tab == :sources}"
         - if allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
           li
@@ -92,7 +92,7 @@ ruby:
           = link_to t("recruitment.email_templates"), "#",
                     class: "list-group-item list-group-item-action #{'active' if active_tab == :email_templates}"
         - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy)
-          = link_to t("recruitment.sources"), settings_recruitment_source_path,
+          = link_to t("recruitment.sources"), settings_recruitment_sources_path,
                     class: "list-group-item list-group-item-action #{'active' if active_tab == :sources}"
         - if allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
           = link_to t("recruitment.disqualify_reasons"), settings_recruitment_disqualify_reasons_path,
