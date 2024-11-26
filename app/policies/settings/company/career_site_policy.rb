@@ -3,6 +3,6 @@
 class Settings::Company::CareerSitePolicy < ApplicationPolicy
   # TODO: Functionality in the process of implementation.
   def show?
-    false || (Rails.env.development? && available_for_admin?)
+    Rails.env.development? && available_for_admin?
   end
 end
