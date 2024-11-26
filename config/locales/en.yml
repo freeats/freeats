@@ -171,6 +171,11 @@ en:
         <b>%{position_name}</b> on <b>%{date}</b> and is reserved."
     upload_file_button: Upload file
 
+  company:
+    career_site: Career site
+    company: Company
+    general: General
+
   errors:
     403:
       heading: Forbidden
@@ -240,6 +245,12 @@ en:
     your_positions: Your positions
     status_cant_be_changed_to_draft: Status cannot be changed to draft
 
+  recruitment:
+    disqualify_reasons: Disqualify reasons
+    email_templates: Email templates
+    recruitment: Recruitment
+    sources: Sources
+
   scorecard_templates:
     add: Add scorecard template
 
@@ -280,6 +291,8 @@ en:
     invite: Invite member
     joined_on: Joined on
     not_found: Account not found
+    personal: Personal
+    profile: Profile
     reinvite: Reinvite
     reactivate: Reactivate
     settings:

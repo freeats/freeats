@@ -2,15 +2,15 @@
 
 ruby:
   tab_labels = {
-    profile: "Profile",
-    general: "General",
-    career_site: "Career site",
-    email_templates: "Email templates",
-    sources: "Sources",
-    disqualify_reasons: "Disqualify reasons"
+    profile: t("user_accounts.profile"),
+    general: t("company.general"),
+    career_site: t("company.career_site"),
+    email_templates: t("recruitment.email_templates"),
+    sources: t("recruitment.sources"),
+    disqualify_reasons: t("recruitment.disqualify_reasons")
   }
 
-.col.d-md-none.dropdown.w-100.profile-mobile-nav.border-end
+.col.d-md-none.dropdown.w-100.mobile-nav.border-end.border-bottom
   .card-body
     = render ButtonComponent.new( \
               variant: :cancel,
@@ -25,55 +25,55 @@ ruby:
     ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
       h6.dropdown-header
         = inline_svg_tag("user.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
-        | Personal
+        = t("user_accounts.personal")
       li
-        = link_to "Profile", settings_personal_profile_path,
+        = link_to t("user_accounts.profile"), settings_personal_profile_path,
                   class: "dropdown-item #{'active' if active_tab == :profile}"
       h6.dropdown-header
         = inline_svg_tag("building.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
-        | Company
+        = t("company.company")
       li
-        = link_to "General", settings_company_general_path,
+        = link_to t("company.general"), settings_company_general_path,
                   class: "dropdown-item #{'active' if active_tab == :general}"
       li
-        = link_to "Career site", "#",
+        = link_to t("company.career_site"), "#",
                   class: "dropdown-item #{'active' if active_tab == :career_site}"
       h6.dropdown-header
         = inline_svg_tag("search.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
-        | Recruitment
+        = t("recruitment.recruitment")
       li
-        = link_to "Email templates", "#",
+        = link_to t("recruitment.email_templates"), "#",
                   class: "dropdown-item #{'active' if active_tab == :email_templates}"
       li
-        = link_to "Sources", settings_recruitment_source_path,
+        = link_to t("recruitment.sources"), settings_recruitment_source_path,
                   class: "dropdown-item #{'active' if active_tab == :sources}"
       li
-        = link_to "Disqualify reasons", settings_recruitment_disqualify_reasons_path,
+        = link_to t("recruitment.disqualify_reasons"), settings_recruitment_disqualify_reasons_path,
                   class: "dropdown-item #{'active' if active_tab == :disqualify_reasons}"
 
 .col-12.col-md-3.border-end.d-none.d-md-flex
   .card-body
     h4.subheader
       = inline_svg_tag("user.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
-      | Personal
+      = t("user_accounts.personal")
     .list-group.list-group-transparent
-      = link_to "Profile", settings_personal_profile_path,
+      = link_to t("user_accounts.profile"), settings_personal_profile_path,
                 class: "list-group-item list-group-item-action #{'active' if active_tab == :profile}"
     h4.subheader.mt-4
       = inline_svg_tag("building.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
-      | Company
+      = t("company.company")
     .list-group.list-group-transparent
-      = link_to "General", settings_company_general_path,
+      = link_to t("company.general"), settings_company_general_path,
                 class: "list-group-item list-group-item-action #{'active' if active_tab == :general}"
-      = link_to "Career site", "#",
+      = link_to t("company.career_site"), "#",
                 class: "list-group-item list-group-item-action #{'active' if active_tab == :career_site}"
     h4.subheader.mt-4
       = inline_svg_tag("search.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
-      | Recruitment
+      = t("recruitment.recruitment")
     .list-group.list-group-transparent
-      = link_to "Email templates", "#",
+      = link_to t("recruitment.email_templates"), "#",
                 class: "list-group-item list-group-item-action #{'active' if active_tab == :email_templates}"
-      = link_to "Sources", settings_recruitment_source_path,
+      = link_to t("recruitment.sources"), settings_recruitment_source_path,
                 class: "list-group-item list-group-item-action #{'active' if active_tab == :sources}"
-      = link_to "Disqualify reasons", settings_recruitment_disqualify_reasons_path,
+      = link_to t("recruitment.disqualify_reasons"), settings_recruitment_disqualify_reasons_path,
                 class: "list-group-item list-group-item-action #{'active' if active_tab == :disqualify_reasons}"

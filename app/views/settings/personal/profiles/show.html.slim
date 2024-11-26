@@ -35,7 +35,7 @@
                   right_layout_class: "col-12",
                   class: "gap-2" \
                 ) do |c|
-              - c.with_label "Password"
+              - c.with_label(t("rodauth.password_label"), color_class: "text-gray-900")
               = link_to t("user_accounts.settings.show.change_password_link_text"), rodauth.change_password_path
             .hstack.gap-2.mt-2
               = render ButtonComponent.new(form: :settings_form)
