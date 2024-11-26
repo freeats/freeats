@@ -11,7 +11,7 @@ class Candidates::UpdateFromCV < ApplicationOperation
     country_code = candidate.location&.country_code
     file_extension = cv_file.original_filename.split(".").last
 
-    return Failure() if file_extension != "pdf"
+    return Failure(:unsupported_file_format) if file_extension != "pdf"
 
     parsed = yield parse_pdf(cv_file)
     data = extract(parsed[:plain_text], country_code:)
@@ -34,7 +34,7 @@ class Candidates::UpdateFromCV < ApplicationOperation
     Log.tagged("Candidates::UpdateFromCV") do |log|
       log.warn({ errors: e.message, candidate_id: candidate.id })
     end
-    Failure()
+    Failure(:parse_failed)
   end
 
   def extract(text_to_parse, country_code:)
@@ -112,7 +112,7 @@ class Candidates::UpdateFromCV < ApplicationOperation
           }
         )
       end
-      Failure()
+      Failure(:contacts_not_updated)
     end
   end
 end
