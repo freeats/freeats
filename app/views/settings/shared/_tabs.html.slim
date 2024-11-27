@@ -96,4 +96,5 @@ ruby:
                     class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :sources}"
         - if allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
           = link_to t("recruitment.disqualify_reasons"), settings_recruitment_disqualify_reasons_path,
-                    class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :disqualify_reasons}"
+                    class: "py-3 list-group-item list-group-item-action " \
+                           "#{'active' if active_tab == :disqualify_reasons}"
