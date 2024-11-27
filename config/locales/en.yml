@@ -296,6 +296,7 @@ en:
     reinvite: Reinvite
     reactivate: Reactivate
     settings:
+      placeholder: Settings - Personal - Profile
       show:
         change_password_link_text: Change password
         email_input_label: Email
