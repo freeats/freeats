@@ -18,6 +18,10 @@ class Candidates::UploadFile < ApplicationOperation
     else
       upload_not_pdf_file(candidate:, file:, cv:, actor_account:)
     end
+
+    update_profile_from_cv(candidate:, file:, actor_account:) if cv
+
+    Success()
   end
 
   private
@@ -49,5 +53,17 @@ class Candidates::UploadFile < ApplicationOperation
       properties:,
       actor_account:
     )
+  end
+
+  def update_profile_from_cv(candidate:, file:, actor_account:)
+    case Candidates::UpdateFromCV.new(
+      cv_file: file,
+      candidate:,
+      actor_account:
+    ).call
+    in Success() | Failure(:unsupported_file_format) | Failure(:parse_failed) |
+       Failure(:contacts_not_updated)
+      nil
+    end
   end
 end

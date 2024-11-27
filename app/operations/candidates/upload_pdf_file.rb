@@ -11,7 +11,7 @@ class Candidates::UploadPdfFile < ApplicationOperation
   option :namespace, Types::Strict::Symbol
 
   def call
-    checksum = Digest::MD5.hexdigest(CVParser::Parser.parse_pdf(file.tempfile))
+    checksum = Digest::MD5.hexdigest(CVParser::Parser.retrieve_plain_text_from_pdf(file.tempfile))
     # Retrieving the existing CV file should be done before uploading a new file.
     # Otherwise `candidate.cv` will raise an error.
     existing_cv_file = candidate.cv

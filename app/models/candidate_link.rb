@@ -25,6 +25,18 @@ class CandidateLink < ApplicationRecord
     false
   end
 
+  def self.valid_link?(link)
+    return false if link.blank?
+
+    account_link = AccountLink.new(link)
+
+    # To prevent exception in AccountLink#normalize we consider such links invalid.
+    account_link.normalize
+    account_link.uri.scheme.in?(%w[http https]) && !account_link.uri.host.nil?
+  rescue Addressable::URI::InvalidURIError
+    false
+  end
+
   def to_params
     attributes.symbolize_keys.slice(
       :url,
