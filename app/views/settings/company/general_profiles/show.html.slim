@@ -1,2 +1,15 @@
-/ TODO: Functionality in the process of implementation. Template is not ready
-| Company profile
+- ats_title(t("settings.company.general.show.tab_title"))
+
+#settings.card
+  .row.g-0
+    = render "settings/shared/tabs", active_tab: @active_tab
+    .col-12.col-md-9.d-flex.flex-column
+      .row
+        .col-12.col-md-6.flex-column
+          .card-body.d-flex.flex-column.gap-3
+            h1.mb-2 = t("settings.company.general.title")
+            = render "company_logo"
+            = render "company_name", tenant: current_account.tenant
+            .hstack.gap-2.mt-2
+              = render ButtonComponent.new(form: :settings_form)
+                = t("core.save_button")
