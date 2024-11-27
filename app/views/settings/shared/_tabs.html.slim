@@ -29,12 +29,12 @@ ruby:
       li
         = link_to t("user_accounts.profile"), settings_personal_profile_path,
                   class: "dropdown-item #{'active' if active_tab == :profile}"
-      - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy) || \
+      - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy) || \
            allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
         h6.dropdown-header
           = render IconComponent.new(:building, size: :tiny, class: "me-2")
           = t("company.company")
-        - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy)
+        - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy)
           li
             = link_to t("company.general"), settings_company_general_path,
                       class: "dropdown-item #{'active' if active_tab == :general}"
@@ -69,13 +69,13 @@ ruby:
     .list-group.list-group-transparent
       = link_to t("user_accounts.profile"), settings_personal_profile_path,
                 class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :profile}"
-    - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy) || \
+    - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy) || \
          allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
       h4.subheader.mt-4
         = render IconComponent.new(:building, size: :tiny, class: "me-2")
         = t("company.company")
       .list-group.list-group-transparent
-        - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy)
+        - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy)
           = link_to t("company.general"), settings_company_general_path,
                     class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :general}"
         - if allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)

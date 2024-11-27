@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class Settings::Company::GeneralsController < AuthorizedController
+class Settings::Company::GeneralProfilesController < AuthorizedController
   layout "ats/application"
 
-  before_action { authorize! :general }
+  before_action { authorize! :general_profile }
   before_action :active_tab
 
   def show; end
