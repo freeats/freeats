@@ -251,6 +251,7 @@ en:
     person:
       profile:
         full_name_input_label: Full name
+        personal: Personal
         remove_avatar:
           successfully_removed: Account avatar successfully removed.
         show:
@@ -261,7 +262,7 @@ en:
           name_placeholder: Enter full name
           save_form_button: Save
           tab_title: Settings - Personal - Profile
-          title: Settings
+          title: Profile
         update_account:
           successfully_updated: Account successfully updated.
         update_avatar:
@@ -309,8 +310,6 @@ en:
     invite: Invite member
     joined_on: Joined on
     not_found: Account not found
-    personal: Personal
-    profile: Profile
     reinvite: Reinvite
     reactivate: Reactivate
     status: Account status

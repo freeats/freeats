@@ -6,7 +6,7 @@ ruby:
     disqualify_reasons: t("settings.recruitment.disqualify_reasons"),
     email_templates: t("settings.recruitment.email_templates"),
     general: t("settings.company.general"),
-    profile: t("user_accounts.profile"),
+    profile: t("settings.person.profile.show.title"),
     sources: t("settings.recruitment.sources")
   }
 
@@ -25,7 +25,7 @@ ruby:
     ul.dropdown-menu.w-85 aria-labelledby="dropdownNavLink"
       h6.dropdown-header
         = render IconComponent.new(:user, size: :tiny, class: "me-2")
-        = t("user_accounts.personal")
+        = t("settings.person.profile.personal")
       li
         = link_to tab_labels[:profile], settings_personal_profile_path,
                   class: "dropdown-item #{'active' if active_tab == :profile}"
@@ -65,7 +65,7 @@ ruby:
   .card-body
     h4.subheader
       = render IconComponent.new(:user, size: :tiny, class: "me-2")
-      = t("user_accounts.personal")
+      = t("settings.person.profile.personal")
     .list-group.list-group-transparent
       = link_to tab_labels[:profile], settings_personal_profile_path,
                 class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :profile}"
