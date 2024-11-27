@@ -1,0 +1,90 @@
+/ Partial variables:
+/ - default_to_address
+/ - default_cc_address
+/ - subject
+/ - email_addresses
+
+ruby:
+  default_to_address ||= ""
+  default_cc_address ||= ""
+  subject ||= ""
+  to_options = compose_member_email_options_for_select(email_addresses:, default_address: default_to_address)
+  cc_options = compose_member_email_options_for_select(email_addresses:, default_address: default_cc_address)
+  bcc_options = compose_member_email_options_for_select(email_addresses:)
+
+#turbo_form [data-controller="compose"
+             data-compose-button-utils-outlet=".compose-button"]
+  = form_with scope: :email_message,
+              url: ats_compose_index_path,
+              class: "card mt-3 compose-form",
+              html: { autocomplete: "off" },
+              data: { controller: "enter-turbo-submit",
+                      action: "turbo:submit-end->compose#closeForm",
+                      compose_target: "newThreadForm",
+                      ignore_interrupt_warning: true } do |form|
+    .card-header.d-flex.justify-content-between
+      span.card-title.mb-0 New Message
+      button.btn-close type="button" aria-label="Close" data-action="click->compose#closeForm"
+    .compose-body
+      .input-group
+        .input-group-prepend
+          = form.label :to, "To:", class: "input-group-text"
+        .w-100.selectize-without-border
+          = render PillSelectComponent.new( \
+                     form,
+                     method: :to,
+                     required: true,
+                     allow_create_new_option: true,
+                     local: { options: to_options },
+                     data: { deferred_selectize_compose_target: "formToSelect" } \
+                   )
+        .input-group-append.d-flex.justify-content-end
+          - if local_assigns[:default_cc_address].blank?
+            button.rounded.btn.btn-sm.input-group-append-button [type="button"
+                  data-action="click->compose#toggleAddressField" data-target-name="formCcInput"]
+              | Cc
+          button.rounded.btn.btn-sm.input-group-append-button.ms-1 [type="button"
+                data-action="click->compose#toggleAddressField" data-target-name="formBccInput"]
+            | Bcc
+      .input-group data-compose-target="formCcInput" class=("d-none" if local_assigns[:default_cc_address].blank?)
+        .input-group-prepend
+          = form.label :cc, "Cc:", class: "input-group-text"
+        .w-100.selectize-without-border
+          = render PillSelectComponent.new( \
+                     form,
+                     method: :cc,
+                     allow_create_new_option: true,
+                     local: { options: cc_options } \
+                   )
+      .input-group data-compose-target="formBccInput" class="d-none"
+        .input-group-prepend
+          = form.label :bcc, "Bcc:", class: "input-group-text shadow-none"
+        .w-100.selectize-without-border
+          = render PillSelectComponent.new( \
+                     form,
+                     method: :bcc,
+                     allow_create_new_option: true,
+                     local: { options: bcc_options } \
+                   )
+      .input-group.row.mx-0
+        .col-8.ps-0
+          = render TextInputComponent.new(form, method: :subject, size: :small,
+                                          class: "px-3 compose-form-subject shadow-none border-0 h-100",
+                                          placeholder: "Subject", required: true, value: subject,
+                                          data: { compose_target: "formSubject" })
+      .py-2.px-3
+        = trix_editor form,
+                      :html_body,
+                      placeholder: "Body",
+                      data: { \
+                        compose_target: "formBody",
+                        controller: "input-utils" \
+                      }
+
+    .card-footer.bg-transparent.px-3
+      = render ButtonComponent.new( \
+                 size: :small,
+                 tooltip_options: { bs_title: "Ctrl + Enter" },
+                 data: { enter_turbo_submit_target: "shortcut" } \
+               )
+        | Send
