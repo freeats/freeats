@@ -27,7 +27,7 @@ ruby:
         = render IconComponent.new(:user, size: :tiny, class: "me-2")
         = t("user_accounts.personal")
       li
-        = link_to t("user_accounts.profile"), settings_personal_profile_path,
+        = link_to tab_labels[:profile], settings_personal_profile_path,
                   class: "dropdown-item #{'active' if active_tab == :profile}"
       - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy) || \
            allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
@@ -36,11 +36,11 @@ ruby:
           = t("company.company")
         - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy)
           li
-            = link_to t("company.general"), settings_company_general_path,
+            = link_to tab_labels[:general], settings_company_general_path,
                       class: "dropdown-item #{'active' if active_tab == :general}"
         - if allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
           li
-            = link_to t("company.career_site"), "#",
+            = link_to tab_labels[:career_site], "#",
                       class: "dropdown-item #{'active' if active_tab == :career_site}"
       - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy) || \
            allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy) || \
@@ -50,15 +50,15 @@ ruby:
           = t("recruitment.recruitment")
         - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
           li
-            = link_to t("recruitment.email_templates"), "#",
+            = link_to tab_labels[:email_templates], "#",
                       class: "dropdown-item #{'active' if active_tab == :email_templates}"
         - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy)
           li
-            = link_to t("recruitment.sources"), settings_recruitment_sources_path,
+            = link_to tab_labels[:sources], settings_recruitment_sources_path,
                       class: "dropdown-item #{'active' if active_tab == :sources}"
         - if allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
           li
-            = link_to t("recruitment.disqualify_reasons"), settings_recruitment_disqualify_reasons_path,
+            = link_to tab_labels[:disqualify_reasons], settings_recruitment_disqualify_reasons_path,
                       class: "dropdown-item #{'active' if active_tab == :disqualify_reasons}"
 
 .col-12.col-md-3.border-end.d-none.d-md-flex
@@ -67,7 +67,7 @@ ruby:
       = render IconComponent.new(:user, size: :tiny, class: "me-2")
       = t("user_accounts.personal")
     .list-group.list-group-transparent
-      = link_to t("user_accounts.profile"), settings_personal_profile_path,
+      = link_to tab_labels[:profile], settings_personal_profile_path,
                 class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :profile}"
     - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy) || \
          allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
@@ -76,10 +76,10 @@ ruby:
         = t("company.company")
       .list-group.list-group-transparent
         - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy)
-          = link_to t("company.general"), settings_company_general_path,
+          = link_to tab_labels[:general], settings_company_general_path,
                     class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :general}"
         - if allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
-          = link_to t("company.career_site"), "#",
+          = link_to tab_labels[:career_site], "#",
                     class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :career_site}"
     - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy) || \
          allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy) || \
@@ -89,12 +89,12 @@ ruby:
         = t("recruitment.recruitment")
       .list-group.list-group-transparent
         - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
-          = link_to t("recruitment.email_templates"), "#",
+          = link_to tab_labels[:email_templates], "#",
                     class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :email_templates}"
         - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy)
-          = link_to t("recruitment.sources"), settings_recruitment_sources_path,
+          = link_to tab_labels[:sources], settings_recruitment_sources_path,
                     class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :sources}"
         - if allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
-          = link_to t("recruitment.disqualify_reasons"), settings_recruitment_disqualify_reasons_path,
+          = link_to tab_labels[:disqualify_reasons], settings_recruitment_disqualify_reasons_path,
                     class: "py-3 list-group-item list-group-item-action " \
                            "#{'active' if active_tab == :disqualify_reasons}"
