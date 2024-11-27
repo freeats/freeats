@@ -85,7 +85,7 @@ class Settings::Personal::ProfilesController < AuthorizedController
   private
 
   def set_partial_variables
-    return unless allowed_to?(:link_gmail?, with: Settings::Personal::ProfilePolicy)
+    return unless allowed_to?(:link_gmail?, :profile)
 
     @link_gmail_uri =
       Gmail::Auth.authorization_uri(redirect_uri: link_gmail_settings_personal_profile_url)
