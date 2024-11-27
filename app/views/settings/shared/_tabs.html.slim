@@ -22,7 +22,7 @@ ruby:
             ) do |c|
       - c.with_icon(:chevron_down)
       span = tab_labels[active_tab]
-    ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
+    ul.dropdown-menu.w-85 aria-labelledby="dropdownNavLink"
       h6.dropdown-header
         = inline_svg_tag("user.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
         = t("user_accounts.personal")
