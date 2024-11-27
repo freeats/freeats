@@ -16,7 +16,7 @@ class Candidates::UploadFile < ApplicationOperation
         .new(candidate:, actor_account:, file:, cv:, source:, namespace:)
         .call
     else
-      upload_not_pdf_file(candidate:, file:, cv:, actor_account:)
+      yield upload_not_pdf_file(candidate:, file:, cv:, actor_account:)
     end
 
     update_profile_from_cv(candidate:, file:, actor_account:) if cv

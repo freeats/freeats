@@ -438,7 +438,11 @@ class ATS::CandidatesController < AuthorizedController
     in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
     in Failure[:file_already_present]
-      render_turbo_stream([], warning: t("candidates.file_already_present_warning"))
+      render_turbo_stream(
+        turbo_stream.replace("turbo-file-upload-button", partial: "file_upload_button",
+                                                         locals: { candidate: @candidate }),
+        warning: t("candidates.file_already_present_warning")
+      )
     end
   end
 
@@ -455,7 +459,11 @@ class ATS::CandidatesController < AuthorizedController
     in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
     in Failure[:file_already_present]
-      render_turbo_stream([], warning: t("candidates.file_already_present_warning"))
+      render_turbo_stream(
+        turbo_stream.replace("candidate-info-cv-file", partial: "info_cv_file",
+                                                       locals: { candidate: @candidate }),
+        warning: t("candidates.file_already_present_warning")
+      )
     end
   end
 
