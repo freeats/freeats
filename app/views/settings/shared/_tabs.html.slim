@@ -24,7 +24,7 @@ ruby:
       span = tab_labels[active_tab]
     ul.dropdown-menu.w-85 aria-labelledby="dropdownNavLink"
       h6.dropdown-header
-        = inline_svg_tag("user.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+        = render IconComponent.new(:user, size: :tiny, class: "me-2")
         = t("user_accounts.personal")
       li
         = link_to t("user_accounts.profile"), settings_personal_profile_path,
@@ -32,7 +32,7 @@ ruby:
       - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy) || \
            allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
         h6.dropdown-header
-          = inline_svg_tag("building.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+          = render IconComponent.new(:building, size: :tiny, class: "me-2")
           = t("company.company")
         - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy)
           li
@@ -46,7 +46,7 @@ ruby:
            allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy) || \
            allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
         h6.dropdown-header
-          = inline_svg_tag("search.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+          = render IconComponent.new(:search, size: :tiny, class: "me-2")
           = t("recruitment.recruitment")
         - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
           li
@@ -64,7 +64,7 @@ ruby:
 .col-12.col-md-3.border-end.d-none.d-md-flex
   .card-body
     h4.subheader
-      = inline_svg_tag("user.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+      = render IconComponent.new(:user, size: :tiny, class: "me-2")
       = t("user_accounts.personal")
     .list-group.list-group-transparent
       = link_to t("user_accounts.profile"), settings_personal_profile_path,
@@ -72,7 +72,7 @@ ruby:
     - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy) || \
          allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
       h4.subheader.mt-4
-        = inline_svg_tag("building.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+        = render IconComponent.new(:building, size: :tiny, class: "me-2")
         = t("company.company")
       .list-group.list-group-transparent
         - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy)
@@ -85,7 +85,7 @@ ruby:
          allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy) || \
          allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
       h4.subheader.mt-4
-        = inline_svg_tag("search.svg", { class: "me-2", style: "--tblr-icon-size: 15px" })
+        = render IconComponent.new(:search, size: :tiny, class: "me-2")
         = t("recruitment.recruitment")
       .list-group.list-group-transparent
         - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
