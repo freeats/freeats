@@ -68,7 +68,7 @@ ruby:
       = t("user_accounts.personal")
     .list-group.list-group-transparent
       = link_to t("user_accounts.profile"), settings_personal_profile_path,
-                class: "list-group-item list-group-item-action #{'active' if active_tab == :profile}"
+                class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :profile}"
     - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy) || \
          allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
       h4.subheader.mt-4
@@ -77,10 +77,10 @@ ruby:
       .list-group.list-group-transparent
         - if allowed_to?(:show?, with: Settings::Company::GeneralPolicy)
           = link_to t("company.general"), settings_company_general_path,
-                    class: "list-group-item list-group-item-action #{'active' if active_tab == :general}"
+                    class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :general}"
         - if allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
           = link_to t("company.career_site"), "#",
-                    class: "list-group-item list-group-item-action #{'active' if active_tab == :career_site}"
+                    class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :career_site}"
     - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy) || \
          allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy) || \
          allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
@@ -90,10 +90,10 @@ ruby:
       .list-group.list-group-transparent
         - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
           = link_to t("recruitment.email_templates"), "#",
-                    class: "list-group-item list-group-item-action #{'active' if active_tab == :email_templates}"
+                    class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :email_templates}"
         - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy)
           = link_to t("recruitment.sources"), settings_recruitment_sources_path,
-                    class: "list-group-item list-group-item-action #{'active' if active_tab == :sources}"
+                    class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :sources}"
         - if allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
           = link_to t("recruitment.disqualify_reasons"), settings_recruitment_disqualify_reasons_path,
-                    class: "list-group-item list-group-item-action #{'active' if active_tab == :disqualify_reasons}"
+                    class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :disqualify_reasons}"
