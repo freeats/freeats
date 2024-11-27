@@ -3,11 +3,11 @@
 ruby:
   tab_labels = {
     profile: t("user_accounts.profile"),
-    general: t("company.general"),
-    career_site: t("company.career_site"),
-    email_templates: t("recruitment.email_templates"),
-    sources: t("recruitment.sources"),
-    disqualify_reasons: t("recruitment.disqualify_reasons")
+    general: t("settings.company.general"),
+    career_site: t("settings.company.career_site"),
+    email_templates: t("settings.recruitment.email_templates"),
+    sources: t("settings.recruitment.sources"),
+    disqualify_reasons: t("settings.recruitment.disqualify_reasons")
   }
 
 .col.d-md-none.dropdown.w-100.mobile-nav.border-end.border-bottom
@@ -33,7 +33,7 @@ ruby:
            allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
         h6.dropdown-header
           = render IconComponent.new(:building, size: :tiny, class: "me-2")
-          = t("company.company")
+          = t("settings.company.company")
         - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy)
           li
             = link_to tab_labels[:general], settings_company_general_path,
@@ -47,7 +47,7 @@ ruby:
            allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
         h6.dropdown-header
           = render IconComponent.new(:search, size: :tiny, class: "me-2")
-          = t("recruitment.recruitment")
+          = t("settings.recruitment.recruitment")
         - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
           li
             = link_to tab_labels[:email_templates], "#",
@@ -73,7 +73,7 @@ ruby:
          allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
       h4.subheader.mt-4
         = render IconComponent.new(:building, size: :tiny, class: "me-2")
-        = t("company.company")
+        = t("settings.company.company")
       .list-group.list-group-transparent
         - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy)
           = link_to tab_labels[:general], settings_company_general_path,
@@ -86,7 +86,7 @@ ruby:
          allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
       h4.subheader.mt-4
         = render IconComponent.new(:search, size: :tiny, class: "me-2")
-        = t("recruitment.recruitment")
+        = t("settings.recruitment.recruitment")
       .list-group.list-group-transparent
         - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
           = link_to tab_labels[:email_templates], "#",

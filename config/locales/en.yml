@@ -171,11 +171,6 @@ en:
         <b>%{position_name}</b> on <b>%{date}</b> and is reserved."
     upload_file_button: Upload file
 
-  company:
-    career_site: Career site
-    company: Company
-    general: General
-
   errors:
     403:
       heading: Forbidden
@@ -245,14 +240,37 @@ en:
     your_positions: Your positions
     status_cant_be_changed_to_draft: Status cannot be changed to draft
 
-  recruitment:
-    disqualify_reasons: Disqualify reasons
-    email_templates: Email templates
-    recruitment: Recruitment
-    sources: Sources
-
   scorecard_templates:
     add: Add scorecard template
+
+  settings:
+    company:
+      career_site: Career site
+      company: Company
+      general: General
+    person:
+      profile:
+        full_name_input_label: Full name
+        remove_avatar:
+          successfully_removed: Account avatar successfully removed.
+        show:
+          change_password_link_text: Change password
+          email_input_label: Email
+          email_linked: Linked
+          email_not_linked: Link email
+          name_placeholder: Enter full name
+          save_form_button: Save
+          tab_title: Settings - Personal - Profile
+          title: Settings
+        update_account:
+          successfully_updated: Account successfully updated.
+        update_avatar:
+          successfully_updated: Account avatar successfully updated.
+    recruitment:
+      disqualify_reasons: Disqualify reasons
+      email_templates: Email templates
+      recruitment: Recruitment
+      sources: Sources
 
   tasks:
     add_task_button: Add task
@@ -295,23 +313,6 @@ en:
     profile: Profile
     reinvite: Reinvite
     reactivate: Reactivate
-    settings:
-      placeholder: Settings - Personal - Profile
-      show:
-        change_password_link_text: Change password
-        email_input_label: Email
-        email_linked: Linked
-        email_not_linked: Link email
-        name_placeholder: Enter full name
-        save_form_button: Save
-        title: Settings
-      full_name_input_label: Full name
-      update_account:
-        successfully_updated: Account successfully updated.
-      update_avatar:
-        successfully_updated: Account avatar successfully updated.
-      remove_avatar:
-        successfully_removed: Account avatar successfully removed.
     status: Account status
     successfully_updated: "%{name} status was successfully changed to %{new_access_level}."
     successfully_deactivated: "%{name} status was successfully changed to inactive."

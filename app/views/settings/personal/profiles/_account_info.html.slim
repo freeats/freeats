@@ -7,12 +7,12 @@
             class: "vstack" do |form|
 
   = render LabeledComponent.new(left_layout_class: "col-12", right_layout_class: "col-12", class: "gap-2") do |c|
-    - c.with_label t("user_accounts.settings.full_name_input_label"), for_field: :full_name
+    - c.with_label t("settings.person.profile.full_name_input_label"), for_field: :full_name
     = render TextInputComponent.new(form,
                                     method: :name,
                                     size: :small,
                                     type: :text,
                                     required: true,
-                                    placeholder: t("user_accounts.settings.show.name_placeholder"),
+                                    placeholder: t("settings.person.profile.show.name_placeholder"),
                                     value: account.name,
-                                    aria: { label: t("user_accounts.settings.full_name_input_label") })
+                                    aria: { label: t("settings.person.profile.full_name_input_label") })

@@ -20,7 +20,7 @@ class Settings::Personal::ProfilesController < AuthorizedController
           partial: "account_info",
           locals: { account: current_account }
         ),
-        notice: t("user_accounts.settings.update_account.successfully_updated")
+        notice: t("settings.person.profile.update_account.successfully_updated")
       )
       return
     end
@@ -36,7 +36,7 @@ class Settings::Personal::ProfilesController < AuthorizedController
           partial: "account_avatar",
           locals: { account: current_account }
         ),
-        notice: t("user_accounts.settings.update_avatar.successfully_updated")
+        notice: t("settings.person.profile.update_avatar.successfully_updated")
       )
       return
     end
@@ -53,7 +53,7 @@ class Settings::Personal::ProfilesController < AuthorizedController
         partial: "account_avatar",
         locals: { account: current_account }
       ),
-      notice: t("user_accounts.settings.remove_avatar.successfully_removed")
+      notice: t("settings.person.profile.remove_avatar.successfully_removed")
     )
   rescue StandardError => e
     render_error e.message

@@ -1,4 +1,4 @@
-- ats_title(t("user_accounts.settings.placeholder"))
+- ats_title(t("settings.person.profile.show.tab_title"))
 
 #settings.card
   .row.g-0
@@ -15,28 +15,28 @@
                   right_layout_class: "col-12",
                   class: "gap-2" \
                 ) do |c|
-              - c.with_label t("user_accounts.settings.show.email_input_label"), for_field: :email
+              - c.with_label t("settings.person.profile.show.email_input_label"), for_field: :email
               .hstack.gap-2
                 = render TextInputComponent.new(:email,
                                                 type: :email,
                                                 readonly: true,
                                                 value: current_account.email,
-                                                aria: { label: t("user_accounts.settings.show.email_input_label") })
+                                                aria: { label: t("settings.person.profile.show.email_input_label") })
                 - if allowed_to?(:link_gmail?, with: Settings::Personal::ProfilePolicy)
                   = render ButtonLinkComponent.new(@link_gmail_uri,
                                                   variant: :secondary,
                                                   disabled: current_member.email_service_linked?)
                     - if current_member.email_service_linked?
-                      = t("user_accounts.settings.show.email_linked")
+                      = t("settings.person.profile.show.email_linked")
                     - else
-                      = t("user_accounts.settings.show.email_not_linked")
+                      = t("settings.person.profile.show.email_not_linked")
             = render LabeledComponent.new( \
                   left_layout_class: "col-12",
                   right_layout_class: "col-12",
                   class: "gap-2" \
                 ) do |c|
               - c.with_label(t("rodauth.password_label"), color_class: "text-gray-900")
-              = link_to t("user_accounts.settings.show.change_password_link_text"), rodauth.change_password_path
+              = link_to t("settings.person.profile.show.change_password_link_text"), rodauth.change_password_path
             .hstack.gap-2.mt-2
               = render ButtonComponent.new(form: :settings_form)
                 = t("core.save_button")
