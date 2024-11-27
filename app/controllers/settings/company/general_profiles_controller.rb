@@ -8,6 +8,8 @@ class Settings::Company::GeneralProfilesController < AuthorizedController
 
   def show; end
 
+  private
+
   def active_tab
     @active_tab ||= :general
   end
