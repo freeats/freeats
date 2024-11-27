@@ -4,7 +4,7 @@ class Candidates::UploadFile < ApplicationOperation
   include Dry::Monads[:result, :do]
 
   option :candidate, Types::Instance(Candidate)
-  option :actor_account, Types::Instance(Account).optional
+  option :actor_account, Types::Instance(Account).optional, optional: true
   option :file, Types::Instance(ActionDispatch::Http::UploadedFile)
   option :cv, Types::Strict::Bool.optional, default: proc { false }
   option :source, Types::Strict::String.optional, default: proc { "" }
@@ -12,7 +12,7 @@ class Candidates::UploadFile < ApplicationOperation
 
   def call
     if file.content_type == "application/pdf"
-      Candidates::UploadPdfFile
+      yield Candidates::UploadPdfFile
         .new(candidate:, actor_account:, file:, cv:, source:, namespace:)
         .call
     else
