@@ -112,6 +112,7 @@ Rails.application.routes.draw do
     end
 
     resources :quick_search, only: :index, controller: "quick_search"
+    resources :compose, only: %i[new create]
   end
 
   namespace :api, defaults: { format: "json" } do

@@ -118,6 +118,8 @@ en:
     candidate_created: Candidate was successfully created.
     candidate_deleted: The candidate was successfully deleted.
     chats: Chats
+    compose_button_disabled_tooltip:
+      no_emails: Candidate doesn't have emails with status Current and type Personal
     cover_letter: Cover letter
     cv: CV
     cv_file_extension_alert: CV has <b>%{extension}</b> extension and cannot be displayed.
