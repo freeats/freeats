@@ -197,19 +197,21 @@ class Candidates::UploadFileTest < ActionDispatch::IntegrationTest
 
     assert_equal candidate.files.size, 0
 
-    Candidates::UploadFile.new(candidate:, file: @empty_pdf_file, namespace: :api).call.value!
+    Candidates::UploadFile.new(candidate:, file: @empty_pdf_file, namespace: :ats, cv: true).call.value!
 
     candidate.reload
 
     assert_equal candidate.files.size, 1
+    assert_predicate candidate.cv, :present?
 
-    result = Candidates::UploadFile.new(candidate:, file: @empty_pdf_file, namespace: :api).call
+    result = Candidates::UploadFile.new(candidate:, file: @empty_pdf_file, namespace: :ats, cv: true).call
 
     assert_equal result, Failure[:file_already_present]
 
     candidate.reload
 
     assert_equal candidate.files.size, 1
+    assert_predicate candidate.cv, :present?
   end
 
   test "should allow to upload the same non-pdf file twice" do

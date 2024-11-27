@@ -75,10 +75,11 @@ class Candidates::UploadPdfFile < ApplicationOperation
   def mark_attachment_as_cv(attachment:, existing_cv_file:, actor_account:, source:, namespace:)
     if namespace == :api &&
        existing_cv_file &&
-       (existing_cv_file.blob.custom_metadata[:source] != source ||
-       existing_cv_file == attachment)
+       existing_cv_file.blob.custom_metadata[:source] != source
       return
     end
+
+    return if existing_cv_file == attachment
 
     attachment.change_cv_status(actor_account)
   end
