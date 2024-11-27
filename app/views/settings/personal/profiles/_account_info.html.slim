@@ -6,7 +6,7 @@
             method: :patch,
             class: "vstack" do |form|
 
-  = render LabeledComponent.new(left_layout_class: "col-12", right_layout_class: "col-12", class: "gap-2") do |c|
+  = render LabeledComponent.new(left_layout_class: "col-12 form-label", right_layout_class: "col-12") do |c|
     - c.with_label t("settings.person.profile.full_name_input_label"), for_field: :full_name
     = render TextInputComponent.new(form,
                                     method: :name,

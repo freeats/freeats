@@ -11,9 +11,8 @@
             = render "account_avatar", account: current_account
             = render "account_info", account: current_account
             = render LabeledComponent.new( \
-                  left_layout_class: "col-12",
-                  right_layout_class: "col-12",
-                  class: "gap-2" \
+                  left_layout_class: "col-12 form-label",
+                  right_layout_class: "col-12" \
                 ) do |c|
               - c.with_label t("settings.person.profile.show.email_input_label"), for_field: :email
               .hstack.gap-2
@@ -31,9 +30,8 @@
                     - else
                       = t("settings.person.profile.show.email_not_linked")
             = render LabeledComponent.new( \
-                  left_layout_class: "col-12",
-                  right_layout_class: "col-12",
-                  class: "gap-2" \
+                  left_layout_class: "col-12 form-label",
+                  right_layout_class: "col-12" \
                 ) do |c|
               - c.with_label(t("rodauth.password_label"), color_class: "text-gray-900")
               = link_to t("settings.person.profile.show.change_password_link_text"), rodauth.change_password_path
