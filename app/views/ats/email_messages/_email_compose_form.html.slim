@@ -12,7 +12,7 @@ ruby:
   cc_options = compose_member_email_options_for_select(email_addresses:, default_address: default_cc_address)
   bcc_options = compose_member_email_options_for_select(email_addresses:)
 
-#turbo_form [data-controller="compose"
+#turbo_email_compose_form [data-controller="compose"
              data-compose-button-utils-outlet=".compose-button"]
   = form_with scope: :email_message,
               url: ats_compose_index_path,

@@ -6,8 +6,8 @@ class ATS::ComposeController < AuthorizedController
   def new
     render_turbo_stream(
       turbo_stream.replace(
-        "turbo_form",
-        partial: "ats/email_messages/form",
+        "turbo_email_compose_form",
+        partial: "ats/email_messages/email_compose_form",
         locals: {
           default_to_address: params[:default_to_address],
           email_addresses: Member.email_addresses(except: current_member)
