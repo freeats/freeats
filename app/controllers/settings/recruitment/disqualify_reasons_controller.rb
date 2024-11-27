@@ -3,7 +3,7 @@
 class Settings::Recruitment::DisqualifyReasonsController < AuthorizedController
   layout "ats/application"
 
-  before_action { authorize! with: Settings::Recruitment::DisqualifyReasonsPolicy }
+  before_action { authorize! :disqualify_reasons }
   before_action :active_tab
 
   def show; end

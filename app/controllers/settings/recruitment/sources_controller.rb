@@ -3,7 +3,7 @@
 class Settings::Recruitment::SourcesController < AuthorizedController
   layout "ats/application"
 
-  before_action { authorize! with: Settings::Recruitment::SourcesPolicy }
+  before_action { authorize! :sources }
   before_action :active_tab
 
   def show; end
