@@ -301,6 +301,7 @@ en:
         email_input_label: Email
         email_linked: Linked
         email_not_linked: Link email
+        name_placeholder: Enter full name
         save_form_button: Save
         title: Settings
       full_name_input_label: Full name
