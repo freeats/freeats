@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ATS::ComposeController < AuthorizedController
+  include SchemaHelper
   before_action { authorize! :compose }
 
   def new
@@ -17,12 +18,19 @@ class ATS::ComposeController < AuthorizedController
   end
 
   def create
-    email_message = email_message_from_params
+    email_message_params = compose_email_message_params
+    validation = EmailMessageSchema.new.call(email_message_params.compact)
+    if validation.errors.present?
+      render_error schema_errors_to_string(validation.errors), status: :unprocessable_entity
+      return
+    end
+
+    EmailMessageMailer.with(email_message_params).send_email.deliver_now
   end
 
   private
 
-  def email_message_from_params
+  def compose_email_message_params
     result = { from: "notifications@freeats.com", reply_to: current_member.email_address }
 
     result[:to] = params.dig(:email_message, :to).map(&:strip)
