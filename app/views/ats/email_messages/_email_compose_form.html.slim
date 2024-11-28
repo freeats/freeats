@@ -1,5 +1,8 @@
-/ Partial variables:
-/ - email_addresses
+/# locals: (candidate_email_addresses:, members_email_addresses:)
+
+ruby:
+  to_options = candidate_email_addresses.map { { text: _1, value: _1 } }
+  cc_bcc_options = members_email_addresses.map { { text: _1, value: _1 } }
 
 #turbo_email_compose_form [data-controller="compose"
              data-compose-button-utils-outlet=".compose-button"]
@@ -12,19 +15,24 @@
                       compose_target: "newThreadForm",
                       ignore_interrupt_warning: true } do |form|
     .card-header.d-flex.justify-content-between
-      span.card-title.mb-0 New Message
-      button.btn-close type="button" aria-label="Close" data-action="click->compose#closeForm"
+      span.mb-0 New Message
+      = render IconButtonComponent.new( \
+                 :x,
+                 variant: :ghost,
+                 aria_label: "Close",
+                 data: { action: "click->compose#closeForm" } \
+               )
     .compose-body
       .input-group
         .input-group-prepend
           = form.label :to, "To:", class: "input-group-text"
-        .w-100.selectize-without-border
+        .w-100.selectize-without-border-and-chevron
           = render PillSelectComponent.new( \
                      form,
                      method: :to,
                      required: true,
                      allow_create_new_option: true,
-                     local: { options: email_addresses.map { { text: _1, value: _1 } } } \
+                     local: { options: to_options } \
                    )
         .input-group-append.d-flex.justify-content-end
           button.rounded.btn.btn-sm.input-group-append-button [type="button"
@@ -36,13 +44,23 @@
       .input-group data-compose-target="formCcInput" class="d-none"
         .input-group-prepend
           = form.label :cc, "Cc:", class: "input-group-text"
-        .w-100
-          = render TextInputComponent.new(form, method: :cc, class: "shadow-none border-0")
+        .w-100.selectize-without-border-and-chevron
+          = render PillSelectComponent.new( \
+                     form,
+                     method: :cc,
+                     allow_create_new_option: true,
+                     local: { options: cc_bcc_options } \
+                   )
       .input-group data-compose-target="formBccInput" class="d-none"
         .input-group-prepend
           = form.label :bcc, "Bcc:", class: "input-group-text shadow-none"
-        .w-100
-          = render TextInputComponent.new(form, method: :bcc, class: "shadow-none border-0")
+        .w-100.selectize-without-border-and-chevron
+          = render PillSelectComponent.new( \
+                     form,
+                     method: :bcc,
+                     allow_create_new_option: true,
+                     local: { options: cc_bcc_options } \
+                   )
       .input-group.row.mx-0
         .col-8.ps-0
           = render TextInputComponent.new(form, method: :subject,
@@ -60,7 +78,7 @@
 
     .card-footer.bg-transparent.px-3
       = render ButtonComponent.new( \
-                 size: :small,
+                 size: :tiny,
                  tooltip_options: { bs_title: "Ctrl + Enter" },
                  data: { enter_turbo_submit_target: "shortcut" } \
                )

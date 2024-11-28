@@ -4,12 +4,13 @@
   }
 
   .card-footer {
-    border-top-color: $gray-500;
+    border-top-color: var(--tblr-border-color);
   }
 
   .compose-form {
     .input-group {
-      border-bottom: 1px solid $gray-500;
+      border-bottom: 1px solid var(--tblr-border-color);
+      border-radius: 0;
       flex-wrap: nowrap;
       align-items: center;
       max-height: max-content;
@@ -29,7 +30,6 @@
 
       .input-group-append-button {
         @extend .font-small;
-        @extend .btn-outline-dark;
         padding: 5px;
       }
 
@@ -37,12 +37,16 @@
         padding-left: 15px !important;
       }
 
-      .selectize-without-border {
+      .selectize-without-border-and-chevron {
         .selectize-input {
           border: none;
 
           &.focus {
             box-shadow: none;
+          }
+
+          &:after {
+            content: none;
           }
         }
       }

@@ -6,13 +6,14 @@ class ATS::ComposeController < AuthorizedController
 
   def new
     candidate = Candidate.find(params[:candidate_id])
-    email_addresses = candidate.all_emails
+    candidate_email_addresses = candidate.all_emails
+    members_email_addresses = Member.email_addresses(except: current_member)
 
     render_turbo_stream(
       turbo_stream.replace(
         "turbo_email_compose_form",
         partial: "ats/email_messages/email_compose_form",
-        locals: { email_addresses: }
+        locals: { candidate_email_addresses:, members_email_addresses: }
       )
     )
   end
