@@ -10,56 +10,57 @@ ruby:
     sources: t("settings.recruitment.sources")
   }
 
-.col.d-md-none.dropdown.w-100.mobile-nav.border-end.border-bottom
-  .card-body
-    = render ButtonComponent.new( \
-              variant: :cancel,
-              type: :button,
-              flex_content_position: :between,
-              id: "dropdownNavLink",
-              class: "w-100",
-              data: { bs_toggle: :dropdown },
-            ) do |c|
-      - c.with_icon(:chevron_down)
-      span = tab_labels[active_tab]
-    ul.dropdown-menu.w-85 aria-labelledby="dropdownNavLink"
+.col.d-md-none.dropdown.w-100.mobile-nav.mx-3-5.py-3
+  = render ButtonComponent.new( \
+            variant: :cancel,
+            type: :button,
+            flex_content_position: :between,
+            id: "dropdownNavLink",
+            class: "w-100",
+            data: { bs_toggle: :dropdown },
+          ) do |c|
+    - c.with_icon(:chevron_down)
+    span = tab_labels[active_tab]
+  ul.dropdown-menu.w-100 aria-labelledby="dropdownNavLink"
+    h6.dropdown-header
+      = render IconComponent.new(:user, size: :tiny, class: "me-2")
+      = t("settings.person.profile.personal")
+    li
+      = link_to tab_labels[:profile], settings_personal_profile_path,
+                class: "dropdown-item #{'active' if active_tab == :profile}"
+    - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy) || \
+          allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
       h6.dropdown-header
-        = render IconComponent.new(:user, size: :tiny, class: "me-2")
-        = t("settings.person.profile.personal")
-      li
-        = link_to tab_labels[:profile], settings_personal_profile_path,
-                  class: "dropdown-item #{'active' if active_tab == :profile}"
-      - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy) || \
-           allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
-        h6.dropdown-header
-          = render IconComponent.new(:building, size: :tiny, class: "me-2")
-          = t("settings.company.company")
-        - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy)
-          li
-            = link_to tab_labels[:general], settings_company_general_path,
-                      class: "dropdown-item #{'active' if active_tab == :general}"
-        - if allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
-          li
-            = link_to tab_labels[:career_site], "#",
-                      class: "dropdown-item #{'active' if active_tab == :career_site}"
-      - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy) || \
-           allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy) || \
-           allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
-        h6.dropdown-header
-          = render IconComponent.new(:search, size: :tiny, class: "me-2")
-          = t("settings.recruitment.recruitment")
-        - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
-          li
-            = link_to tab_labels[:email_templates], "#",
-                      class: "dropdown-item #{'active' if active_tab == :email_templates}"
-        - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy)
-          li
-            = link_to tab_labels[:sources], settings_recruitment_sources_path,
-                      class: "dropdown-item #{'active' if active_tab == :sources}"
-        - if allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
-          li
-            = link_to tab_labels[:disqualify_reasons], settings_recruitment_disqualify_reasons_path,
-                      class: "dropdown-item #{'active' if active_tab == :disqualify_reasons}"
+        = render IconComponent.new(:building, size: :tiny, class: "me-2")
+        = t("settings.company.company")
+      - if allowed_to?(:show?, with: Settings::Company::GeneralProfilePolicy)
+        li
+          = link_to tab_labels[:general], settings_company_general_path,
+                    class: "dropdown-item #{'active' if active_tab == :general}"
+      - if allowed_to?(:show?, with: Settings::Company::CareerSitePolicy)
+        li
+          = link_to tab_labels[:career_site], "#",
+                    class: "dropdown-item #{'active' if active_tab == :career_site}"
+    - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy) || \
+          allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy) || \
+          allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
+      h6.dropdown-header
+        = render IconComponent.new(:search, size: :tiny, class: "me-2")
+        = t("settings.recruitment.recruitment")
+      - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
+        li
+          = link_to tab_labels[:email_templates], "#",
+                    class: "dropdown-item #{'active' if active_tab == :email_templates}"
+      - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy)
+        li
+          = link_to tab_labels[:sources], settings_recruitment_sources_path,
+                    class: "dropdown-item #{'active' if active_tab == :sources}"
+      - if allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
+        li
+          = link_to tab_labels[:disqualify_reasons], settings_recruitment_disqualify_reasons_path,
+                    class: "dropdown-item #{'active' if active_tab == :disqualify_reasons}"
+
+hr.my-0
 
 .col-12.col-md-3.border-end.d-none.d-md-flex
   .card-body

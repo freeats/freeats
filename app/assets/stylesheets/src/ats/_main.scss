@@ -19,6 +19,8 @@
 
 hr {
   margin: 1rem 0;
+  border-color: var(--tblr-border-color);
+  opacity: 1;
 }
 
 tr {
@@ -43,6 +45,7 @@ tr {
   padding-bottom: 0;
 }
 
-.w-85 {
-  width: 85% !important;
+.mx-3-5 {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
 }
