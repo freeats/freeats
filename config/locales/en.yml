@@ -136,6 +136,7 @@ en:
     disqualify: Disqualify
     download_file: download file
     emails: Emails
+    file_already_present_warning: The file has not been uploaded, since another one with the same content already exists.
     full_name: Full name
     headline: Headline
     include_blacklisted: Include blacklisted
