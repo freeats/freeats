@@ -137,6 +137,10 @@ en:
       reason_not_found: Disqualification reason has not been found.
     disqualify: Disqualify
     download_file: download file
+    email_compose:
+      email_sent_success_notice: Your email to %{email_addresses} has been sent.
+      email_sent_fail_alert: There was an issue sending your email to %{email_addresses}.
+      unsaved_changes_warning: You have unsaved changes. If you leave this page, you will lose those changes.
     emails: Emails
     file_already_present_warning: The file has not been uploaded, since another one with the same content already exists.
     full_name: Full name
@@ -172,8 +176,6 @@ en:
         stage."
       reserved_placement_exist: "<b>%{candidate_name}</b> was last assigned on the
         <b>%{position_name}</b> on <b>%{date}</b> and is reserved."
-    email_sent_success_notice: Your email to %{email_addresses} has been sent.
-    email_sent_fail_alert: There was an issue sending your email to %{email_addresses}.
     upload_file_button: Upload file
 
   errors:

@@ -13,6 +13,8 @@ export default class extends Controller {
     "button-utils",
   ];
 
+  static values = { unsavedChangesWarning: String };
+
   newThreadFormTargetConnected() {
     this.#setupComposeInterruptHandler();
     this.initialSubjectContent = this.formSubjectTarget.value;
@@ -28,10 +30,7 @@ export default class extends Controller {
     if (
       !event.target.dataset.ignoreInterruptWarning &&
       this.#hasUnsavedChanges() &&
-      // Use locale!!!!!!
-      !window.confirm(
-        "You have unsaved changes. If you leave this page, you will lose those changes.",
-      )
+      !window.confirm(this.unsavedChangesWarningValue)
     ) return;
 
     this.newThreadFormTarget.remove();
@@ -80,10 +79,7 @@ export default class extends Controller {
   #composeInterruptHandler = (event) => {
     if (
       this.#hasUnsavedChanges() &&
-      // Use locale!!!!!!
-      !window.confirm(
-        "You have unsaved changes. If you leave this page, you will lose those changes.",
-      )
+      !window.confirm(this.unsavedChangesWarningValue)
     ) {
       event.preventDefault();
       event.returnValue = "";
