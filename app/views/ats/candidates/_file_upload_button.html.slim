@@ -1,18 +1,19 @@
 /# locals: (candidate:)
 
-= form_with( \
-  model: candidate,
-  url: upload_file_ats_candidate_path,
-  local: true,
-  multipart: true,
-  method: :post,
-  data: { controller: "handle-upload-button" } \
-) do |form|
-  button.btn.btn-primary.btn-small.file-upload-button data-bs-toggle="tooltip" title=drag_and_drop_tooltip
-    span data-handle-upload-button-target="text"
-      = t("candidates.upload_file_button")
-    = form.file_field :file,
-                      required: true,
-                      class: "upload turbo-instant-submit",
-                      accept: ".bmp,.doc,.docx,.jpeg,.jpg,.m4a,.mp3,.mp4,.odt,.pdf,.png,.rtf,.svg,.wav,.webm,.webp",
-                      "data-handle-upload-button-target": "input"
+#turbo-file-upload-button
+  = form_with( \
+    model: candidate,
+    url: upload_file_ats_candidate_path,
+    local: true,
+    multipart: true,
+    method: :post,
+    data: { controller: "handle-upload-button" } \
+  ) do |form|
+    button.btn.btn-primary.btn-small.file-upload-button data-bs-toggle="tooltip" title=drag_and_drop_tooltip
+      span data-handle-upload-button-target="text"
+        = t("candidates.upload_file_button")
+      = form.file_field :file,
+                        required: true,
+                        class: "upload turbo-instant-submit",
+                        accept: ".bmp,.doc,.docx,.jpeg,.jpg,.m4a,.mp3,.mp4,.odt,.pdf,.png,.rtf,.svg,.wav,.webm,.webp",
+                        "data-handle-upload-button-target": "input"

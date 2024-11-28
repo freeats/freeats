@@ -162,6 +162,27 @@ class ATS::CandidatesControllerTest < ActionDispatch::IntegrationTest
     assert_empty candidate.files
   end
 
+  test "should not upload same pdf file twice" do
+    candidate = candidates(:john)
+
+    assert_empty candidate.files
+
+    file = fixture_file_upload("empty.pdf", "application/pdf")
+
+    post upload_file_ats_candidate_path(candidate), params: { candidate: { file: } }
+
+    assert_response :redirect
+    assert_equal candidate.files.size, 1
+
+    post upload_file_ats_candidate_path(candidate), params: { candidate: { file: } }
+
+    assert_response :success
+    assert_equal candidate.files.size, 1
+    assert_turbo_stream action: :replace, target: :alerts do
+      assert_select "template", text: I18n.t("candidates.file_already_present_warning")
+    end
+  end
+
   test "should set file as cv and then reassign the cv flag to another file" do
     candidate = candidates(:jane)
     attachment = candidate.files.last

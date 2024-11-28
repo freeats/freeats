@@ -27,7 +27,7 @@ class EmailSynchronization::RetrieveGmailTokensTest < ActiveSupport::TestCase
     Faraday.default_connection = Faraday.new { _1.adapter(:test, stubs) }
 
     redirect_uri =
-      Rails.application.routes.url_helpers.link_gmail_ats_settings_url(host: "localhost:3000")
+      Rails.application.routes.url_helpers.link_gmail_settings_personal_profile_url(host: "localhost:3000")
     current_member = members(:employee_member)
 
     assert_no_difference "Account.where(email: EMAIL_ADDRESS).count" do
@@ -65,7 +65,7 @@ class EmailSynchronization::RetrieveGmailTokensTest < ActiveSupport::TestCase
     Faraday.default_connection = Faraday.new { _1.adapter(:test, stubs) }
 
     redirect_uri =
-      Rails.application.routes.url_helpers.link_gmail_ats_settings_url(host: "localhost:3000")
+      Rails.application.routes.url_helpers.link_gmail_settings_personal_profile_url(host: "localhost:3000")
     current_member = members(:employee_member)
     current_member.account.update!(email: EMAIL_ADDRESS)
 

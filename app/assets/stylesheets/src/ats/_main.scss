@@ -19,6 +19,8 @@
 
 hr {
   margin: 1rem 0;
+  border-color: var(--tblr-border-color);
+  opacity: 1;
 }
 
 tr {
@@ -41,4 +43,9 @@ tr {
 .header-edit-avatar-row .col-form-label-sm {
   padding-top: 0;
   padding-bottom: 0;
+}
+
+.mx-3-5 {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
 }

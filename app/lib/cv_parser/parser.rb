@@ -24,6 +24,11 @@ module CVParser
         { plain_text:, urls:, emails: }
       end
 
+      def retrieve_plain_text_from_pdf(file)
+        reader = PDF::Reader.new(file)
+        reader.pages.reduce("") { |text, page| text + page.text }
+      end
+
       private
 
       def process_annotations(page, obj)

@@ -86,13 +86,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :settings, only: %i[show] do
-      get :link_gmail, path: "link-gmail"
-      patch :update_account
-      patch :update_avatar
-      delete :remove_avatar
-    end
-
     resource :lookbook, only: [], controller: "lookbook" do
       get :fetch_options_for_select_component_preview
     end
@@ -142,6 +135,24 @@ Rails.application.routes.draw do
 
   resources :note_threads, only: :update do
     get :change_visibility_modal, on: :member
+  end
+
+  namespace :settings do
+    namespace :company do
+      resource :general, only: %i[show], controller: "general_profiles"
+    end
+    namespace :personal do
+      resource :profile, only: %i[show] do
+        get :link_gmail, path: "link-gmail"
+        patch :update_account
+        patch :update_avatar
+        delete :remove_avatar
+      end
+    end
+    namespace :recruitment do
+      resource :disqualify_reasons, only: %i[show]
+      resource :sources, only: %i[show]
+    end
   end
 
   # The below routes are using the basic authuentication.

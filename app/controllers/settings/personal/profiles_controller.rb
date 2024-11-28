@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ATS::SettingsController < AuthorizedController
+class Settings::Personal::ProfilesController < AuthorizedController
   layout "ats/application"
 
   include Dry::Monads[:result]
@@ -8,6 +8,7 @@ class ATS::SettingsController < AuthorizedController
   before_action { authorize! :profile }
   before_action :set_partial_variables, only: :show
   before_action :set_gon_variables, only: :show
+  before_action :active_tab
 
   def show; end
 
@@ -19,7 +20,7 @@ class ATS::SettingsController < AuthorizedController
           partial: "account_info",
           locals: { account: current_account }
         ),
-        notice: t("user_accounts.settings.update_account.successfully_updated")
+        notice: t("settings.person.profile.update_account.successfully_updated")
       )
       return
     end
@@ -35,7 +36,7 @@ class ATS::SettingsController < AuthorizedController
           partial: "account_avatar",
           locals: { account: current_account }
         ),
-        notice: t("user_accounts.settings.update_avatar.successfully_updated")
+        notice: t("settings.person.profile.update_avatar.successfully_updated")
       )
       return
     end
@@ -52,7 +53,7 @@ class ATS::SettingsController < AuthorizedController
         partial: "account_avatar",
         locals: { account: current_account }
       ),
-      notice: t("user_accounts.settings.remove_avatar.successfully_removed")
+      notice: t("settings.person.profile.remove_avatar.successfully_removed")
     )
   rescue StandardError => e
     render_error e.message
@@ -62,7 +63,7 @@ class ATS::SettingsController < AuthorizedController
     rs = EmailSynchronization::RetrieveGmailTokens.new(
       current_member:,
       code: params[:code],
-      redirect_uri: link_gmail_ats_settings_url
+      redirect_uri: link_gmail_settings_personal_profile_url
     ).call
 
     case rs
@@ -70,21 +71,27 @@ class ATS::SettingsController < AuthorizedController
        Failure[:failed_to_retrieve_email_address, _e] |
        Failure[:new_tokens_are_not_saved, _e]
       Log.tagged("link_gmail") { _1.external_log(_e) }
-      redirect_to ats_settings_path, alert: "Something went wrong, please contact support."
+      redirect_to settings_personal_profile_path,
+                  alert: "Something went wrong, please contact support."
     in Failure[:emails_not_match, linked_email]
-      redirect_to ats_settings_path,
+      redirect_to settings_personal_profile_path,
                   alert: "The linked email #{linked_email} does not match the current email."
     in Success()
       # ReceiveEmailMessageUpdatesForMemberJob.perform_later(current_member.id)
-      redirect_to ats_settings_path, notice: "Gmail successfully linked."
+      redirect_to settings_personal_profile_path, notice: "Gmail successfully linked."
     end
   end
 
   private
 
   def set_partial_variables
-    return unless allowed_to?(:link_gmail?, with: ATS::ProfilePolicy)
+    return unless allowed_to?(:link_gmail?, :profile)
 
-    @link_gmail_uri = Gmail::Auth.authorization_uri(redirect_uri: link_gmail_ats_settings_url)
+    @link_gmail_uri =
+      Gmail::Auth.authorization_uri(redirect_uri: link_gmail_settings_personal_profile_url)
+  end
+
+  def active_tab
+    @active_tab ||= :profile
   end
 end
