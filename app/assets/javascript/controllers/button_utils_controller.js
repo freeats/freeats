@@ -16,6 +16,6 @@ export default class extends Controller {
 
     tooltip.dispose();
     this.element.classList.remove("disabled");
-    this.element.setAttribute("disabled", false);
+    this.element.removeAttribute("disabled");
   }
 }
