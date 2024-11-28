@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Candidates::UploadPdfFile < ApplicationOperation
+class Candidates::UploadPDFFile < ApplicationOperation
   include Dry::Monads[:result, :do]
 
   option :candidate, Types::Instance(Candidate)
@@ -22,8 +22,8 @@ class Candidates::UploadPdfFile < ApplicationOperation
       if cv
         mark_attachment_as_cv(attachment:, existing_cv_file:, actor_account:, source:, namespace:)
       end
-      return Failure[:file_already_present]
-    in Failure[:no_existing_same_file]
+      return Failure(:file_already_present)
+    in Failure(:no_existing_same_file)
       nil
     end
 
@@ -46,7 +46,7 @@ class Candidates::UploadPdfFile < ApplicationOperation
       custom_metadata[:text_checksum] == text_checksum && custom_metadata[:source] == source
     end
 
-    return Failure[:no_existing_same_file] if existing_same_file.blank?
+    return Failure(:no_existing_same_file) if existing_same_file.blank?
 
     Success(existing_same_file)
   end

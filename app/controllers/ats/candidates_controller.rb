@@ -437,7 +437,7 @@ class ATS::CandidatesController < AuthorizedController
       redirect_to tab_ats_candidate_path(@candidate, :files)
     in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
-    in Failure[:file_already_present]
+    in Failure(:file_already_present)
       render_turbo_stream(
         turbo_stream.replace("turbo-file-upload-button", partial: "file_upload_button",
                                                          locals: { candidate: @candidate }),
@@ -458,7 +458,7 @@ class ATS::CandidatesController < AuthorizedController
       redirect_to tab_ats_candidate_path(@candidate, :info)
     in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
-    in Failure[:file_already_present]
+    in Failure(:file_already_present)
       render_turbo_stream(
         turbo_stream.replace("candidate-info-cv-file", partial: "info_cv_file",
                                                        locals: { candidate: @candidate }),

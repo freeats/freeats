@@ -206,7 +206,7 @@ class Candidates::UploadFileTest < ActionDispatch::IntegrationTest
 
     result = Candidates::UploadFile.new(candidate:, file: @empty_pdf_file, namespace: :ats, cv: true).call
 
-    assert_equal result, Failure[:file_already_present]
+    assert_equal result, Failure(:file_already_present)
 
     candidate.reload
 

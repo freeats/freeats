@@ -16,7 +16,7 @@ class API::V1::DocumentsController < AuthorizedController
       case create_or_update_candidate(params_hash, url)
       in Success(candidate)
         case add_resume(candidate:, file:, source: params_hash[:source])
-        in Success() | Failure[:file_already_present]
+        in Success() | Failure(:file_already_present)
           render json: { url: candidate.url }, status: :ok
         in Failure[:file_invalid, e]
           render json: { message: error_message(e) }, status: :unprocessable_entity

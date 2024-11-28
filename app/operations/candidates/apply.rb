@@ -60,7 +60,7 @@ class Candidates::Apply < ApplicationOperation
     case Candidates::UploadFile
       .new(candidate:, actor_account:, file:, cv: true, namespace: :career_site)
       .call
-    in Success() | Failure[:file_already_present]
+    in Success() | Failure(:file_already_present)
       Success()
     in Failure[:file_invalid, e]
       candidate.destroy!

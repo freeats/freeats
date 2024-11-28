@@ -12,7 +12,7 @@ class Candidates::UploadFile < ApplicationOperation
 
   def call
     if file.content_type == "application/pdf"
-      yield Candidates::UploadPdfFile
+      yield Candidates::UploadPDFFile
         .new(candidate:, actor_account:, file:, cv:, source:, namespace:)
         .call
     else

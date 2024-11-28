@@ -22,7 +22,7 @@ class API::V1::DocumentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not update candidate's source if it is already set and update if not, " \
-       "and should not upload the same file twice" do
+       "and should not upload the same pdf file twice" do
     sign_in accounts(:admin_account)
 
     candidate = candidates(:sam)
