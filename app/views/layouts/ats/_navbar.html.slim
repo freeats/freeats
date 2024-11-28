@@ -15,8 +15,11 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.column-gap-3
     #navbarNav.collapse.navbar-collapse.gap-lg-2.order-5.order-lg-1
       ul.navbar-nav.text-nowrap.gap-1.gap-lg-0.mb-1.mb-lg-0
         - if allowed_to?(:index?, with: ATS::DashboardPolicy)
+          li.nav-links.py-2.pe-3.d-none.d-lg-flex.align-items-center
+            = link_to root_path do
+              = inline_svg_tag "ats-icon.svg"
           li.nav-item class=("active" if @nav_item == :dashboard)
-            = link_to t("core.dashboard"), root_path, class: "nav-link"
+            = link_to t("core.dashboard"), root_path, class: "nav-link d-lg-none"
         - if allowed_to?(:index?, with: ATS::TaskPolicy)
           li.nav-item class=("active" if @nav_item == :tasks)
             = link_to ats_tasks_path, class: "nav-link gap-1 justify-content-between"
