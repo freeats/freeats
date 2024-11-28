@@ -9,12 +9,13 @@ ruby:
   #email-threads
     .row.mt-2.g-2
       .col-6.col-sm-auto
-        = render ButtonLinkComponent.new( \
-                  new_ats_compose_path(default_to_address: @mail_to_address),
-                  class: "compose-button",
-                  disabled: compose_button_tooltip_text.present?,
-                  tooltip_title: compose_button_tooltip_text,
-                  data: { controller: ("button-utils" if compose_button_tooltip_text.blank?) } \
-                )
-          | Compose
+        = form_with url: new_ats_compose_path, method: :get
+          = hidden_field_tag :default_to_address, @mail_to_address
+          = render ButtonComponent.new( \
+                    class: "compose-button",
+                    disabled: compose_button_tooltip_text.present?,
+                    tooltip_title: compose_button_tooltip_text,
+                    data: { controller: ("button-utils" if compose_button_tooltip_text.blank?) } \
+                  )
+            | Compose
       .col-12#turbo_email_compose_form
