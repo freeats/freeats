@@ -173,7 +173,6 @@ class Candidates::UploadFileTest < ActionDispatch::IntegrationTest
       candidate:,
       file: @not_empty_pdf_file,
       cv: true,
-      source: "linkedin",
       namespace: :ats
     ).call.value!
 
@@ -225,13 +224,13 @@ class Candidates::UploadFileTest < ActionDispatch::IntegrationTest
       tempfile: Rails.root.join("test/fixtures/files/icon.jpg")
     )
 
-    Candidates::UploadFile.new(candidate:, file:, namespace: :api).call.value!
+    Candidates::UploadFile.new(candidate:, file:, namespace: :ats).call.value!
 
     candidate.reload
 
     assert_equal candidate.files.size, 1
 
-    Candidates::UploadFile.new(candidate:, file:, namespace: :api).call.value!
+    Candidates::UploadFile.new(candidate:, file:, namespace: :ats).call.value!
 
     candidate.reload
 
