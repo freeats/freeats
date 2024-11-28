@@ -272,7 +272,11 @@ en:
       disqualify_reasons: Disqualify reasons
       email_templates: Email templates
       recruitment: Recruitment
-      sources: Sources
+      sources:
+        show:
+          name_placeholder: Source
+          tab_title: Settings - Recruitment - Sources
+          title: Sources
 
   tasks:
     add_task_button: Add task

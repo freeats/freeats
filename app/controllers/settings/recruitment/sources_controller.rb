@@ -8,6 +8,10 @@ class Settings::Recruitment::SourcesController < AuthorizedController
 
   def show; end
 
+  def update
+    byebug
+  end
+
   private
 
   def active_tab
