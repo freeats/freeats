@@ -1,16 +1,5 @@
 / Partial variables:
-/ - default_to_address
-/ - default_cc_address
-/ - subject
 / - email_addresses
-
-ruby:
-  default_to_address ||= ""
-  default_cc_address ||= ""
-  subject ||= ""
-  to_options = compose_member_email_options_for_select(email_addresses:, default_address: default_to_address)
-  cc_options = compose_member_email_options_for_select(email_addresses:, default_address: default_cc_address)
-  bcc_options = compose_member_email_options_for_select(email_addresses:)
 
 #turbo_email_compose_form [data-controller="compose"
              data-compose-button-utils-outlet=".compose-button"]
@@ -35,42 +24,30 @@ ruby:
                      method: :to,
                      required: true,
                      allow_create_new_option: true,
-                     local: { options: to_options },
-                     data: { deferred_selectize_compose_target: "formToSelect" } \
+                     local: { options: email_addresses.map { { text: _1, value: _1 } } } \
                    )
         .input-group-append.d-flex.justify-content-end
-          - if local_assigns[:default_cc_address].blank?
-            button.rounded.btn.btn-sm.input-group-append-button [type="button"
-                  data-action="click->compose#toggleAddressField" data-target-name="formCcInput"]
-              | Cc
+          button.rounded.btn.btn-sm.input-group-append-button [type="button"
+                data-action="click->compose#toggleAddressField" data-target-name="formCcInput"]
+            | Cc
           button.rounded.btn.btn-sm.input-group-append-button.ms-1 [type="button"
                 data-action="click->compose#toggleAddressField" data-target-name="formBccInput"]
             | Bcc
-      .input-group data-compose-target="formCcInput" class=("d-none" if local_assigns[:default_cc_address].blank?)
+      .input-group data-compose-target="formCcInput" class="d-none"
         .input-group-prepend
           = form.label :cc, "Cc:", class: "input-group-text"
-        .w-100.selectize-without-border
-          = render PillSelectComponent.new( \
-                     form,
-                     method: :cc,
-                     allow_create_new_option: true,
-                     local: { options: cc_options } \
-                   )
+        .w-100
+          = render TextInputComponent.new(form, method: :cc, class: "shadow-none border-0")
       .input-group data-compose-target="formBccInput" class="d-none"
         .input-group-prepend
           = form.label :bcc, "Bcc:", class: "input-group-text shadow-none"
-        .w-100.selectize-without-border
-          = render PillSelectComponent.new( \
-                     form,
-                     method: :bcc,
-                     allow_create_new_option: true,
-                     local: { options: bcc_options } \
-                   )
+        .w-100
+          = render TextInputComponent.new(form, method: :bcc, class: "shadow-none border-0")
       .input-group.row.mx-0
         .col-8.ps-0
-          = render TextInputComponent.new(form, method: :subject, size: :small,
-                                          class: "px-3 compose-form-subject shadow-none border-0 h-100",
-                                          placeholder: "Subject", required: true, value: subject,
+          = render TextInputComponent.new(form, method: :subject,
+                                          class: "compose-form-subject shadow-none border-0",
+                                          placeholder: "Subject", required: true,
                                           data: { compose_target: "formSubject" })
       .py-2.px-3
         = trix_editor form,

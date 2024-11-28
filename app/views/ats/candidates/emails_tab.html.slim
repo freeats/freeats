@@ -1,6 +1,6 @@
 ruby:
   compose_button_tooltip_text =
-    if @mail_to_address.blank?
+    if @candidate.all_emails.blank?
       t("candidates.compose_button_disabled_tooltip.no_emails")
     end
 
@@ -10,7 +10,7 @@ ruby:
     .row.mt-2.g-2
       .col-6.col-sm-auto
         = form_with url: new_ats_compose_path, method: :get
-          = hidden_field_tag :default_to_address, @mail_to_address
+          = hidden_field_tag :candidate_id, @candidate.id
           = render ButtonComponent.new( \
                     class: "compose-button",
                     disabled: compose_button_tooltip_text.present?,

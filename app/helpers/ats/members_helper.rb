@@ -131,12 +131,4 @@ module ATS::MembersHelper
       )
     end
   end
-
-  def compose_member_email_options_for_select(email_addresses:, default_address: nil)
-    email_addresses.unshift(default_address) if default_address.present?
-
-    email_addresses.map do |address|
-      { text: address, value: address, selected: address == default_address }
-    end
-  end
 end

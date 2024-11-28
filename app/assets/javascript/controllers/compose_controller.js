@@ -2,7 +2,6 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = [
-    "formToSelect",
     "formBccInput",
     "formCcInput",
     "formSubject",
@@ -23,11 +22,6 @@ export default class extends Controller {
         "Please make sure you send the previous email before opening a new one",
       ),
     );
-  }
-
-
-  formToSelectTargetConnected() {
-    this.#findInputToFocus.focus();
   }
 
   closeForm(event) {
@@ -68,18 +62,6 @@ export default class extends Controller {
   disconnect() {
     document.removeEventListener("turbo:before-visit", this.#composeInterruptHandler);
     window.removeEventListener("beforeunload", this.#beforeunloadHandler);
-  }
-
-  get #findInputToFocus() {
-    if (this.formToSelectTarget.value === "") {
-      return this.formToSelectTarget.selectize;
-    }
-
-    const subjectInput = this.formSubjectTarget;
-    if (subjectInput.value === "") {
-      return subjectInput;
-    }
-    return this.formBodyTarget;
   }
 
   #setupComposeInterruptHandler() {

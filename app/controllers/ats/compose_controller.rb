@@ -4,15 +4,33 @@ class ATS::ComposeController < AuthorizedController
   before_action { authorize! :compose }
 
   def new
+    candidate = Candidate.find(params[:candidate_id])
+    email_addresses = candidate.all_emails
+
     render_turbo_stream(
       turbo_stream.replace(
         "turbo_email_compose_form",
         partial: "ats/email_messages/email_compose_form",
-        locals: {
-          default_to_address: params[:default_to_address],
-          email_addresses: Member.email_addresses(except: current_member)
-        }
+        locals: { email_addresses: }
       )
     )
+  end
+
+  def create
+    email_message = email_message_from_params
+  end
+
+  private
+
+  def email_message_from_params
+    result = { from: "notifications@freeats.com", reply_to: current_member.email_address }
+
+    result[:to] = params.dig(:email_message, :to).map(&:strip)
+    result[:cc] = (params.dig(:email_message, :cc) || []).map(&:strip)
+    result[:bcc] = (params.dig(:email_message, :bcc) || []).map(&:strip)
+    result[:subject] = params.dig(:email_message, :subject)
+    result[:html_body] = params.dig(:email_message, :html_body)
+
+    result
   end
 end

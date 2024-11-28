@@ -78,7 +78,7 @@ class ATS::CandidatesController < AuthorizedController
                  .per(DEFAULT_TAB_PAGINATION_LIMIT)
           end
         when "emails"
-          @mail_to_address = @candidate.all_emails(status: :current, type: :personal).first
+          # emails
         when "scorecards"
           # Do not use `includes` for position `stages`, it breaks their order by list_index.
           @placements_with_scorecard_templates =
