@@ -91,7 +91,8 @@ Rails.application.configure do
     port: ENV.fetch("MAILER_SMTP_PORT", "").to_i,
     domain: ENV.fetch("MAILER_SMTP_DOMAIN", ""),
     authentication: ENV.fetch("MAILER_SMTP_AUTHENTICATION", ""),
-    enable_starttls_auto: ENV.fetch("MAILER_SMTP_ENABLE_STARTTLS_AUTO", "true") == "true"
+    enable_starttls_auto: ENV.fetch("MAILER_SMTP_ENABLE_STARTTLS_AUTO", "true") == "true",
+    return_response: true
   }
   config.secret_key_base = ENV.fetch("SECRET_KEY_BASE")
 

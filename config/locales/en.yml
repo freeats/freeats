@@ -171,6 +171,8 @@ en:
         stage."
       reserved_placement_exist: "<b>%{candidate_name}</b> was last assigned on the
         <b>%{position_name}</b> on <b>%{date}</b> and is reserved."
+    email_sent_success_notice: Your email to %{email_addresses} has been sent.
+    email_sent_fail_alert: There was an issue sending your email to %{email_addresses}.
     upload_file_button: Upload file
 
   errors:

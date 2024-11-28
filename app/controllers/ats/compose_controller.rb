@@ -26,7 +26,16 @@ class ATS::ComposeController < AuthorizedController
       return
     end
 
-    EmailMessageMailer.with(email_message_params).send_email.deliver_now
+    email_addresses = email_message_params[:to].join(", ")
+    result = EmailMessageMailer.with(email_message_params).send_email.deliver_now!
+
+    if (result.is_a?(Net::SMTP::Response) && result.status == "250") ||
+       (result.is_a?(Mail::Message) && !Rails.env.production?)
+      render_turbo_stream([], notice: t("candidates.email_sent_success_notice", email_addresses:))
+    else
+      render_turbo_stream([], error: t("candidates.email_sent_fail_alert", email_addresses:),
+                              status: :unprocessable_entity)
+    end
   end
 
   private
