@@ -36,7 +36,7 @@ export default class extends Controller {
       this.#hasUnsavedChanges() &&
       // Use locale!!!!!!
       !window.confirm(
-        "You have unsaved changes. If you leave this page, you will lose those changes!",
+        "You have unsaved changes. If you leave this page, you will lose those changes.",
       )
     ) return;
 
@@ -100,7 +100,7 @@ export default class extends Controller {
       this.#hasUnsavedChanges() &&
       // Use locale!!!!!!
       !window.confirm(
-        "You have unsaved changes. If you leave this page, you will lose those changes!",
+        "You have unsaved changes. If you leave this page, you will lose those changes.",
       )
     ) {
       event.preventDefault();
