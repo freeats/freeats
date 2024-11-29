@@ -11,7 +11,7 @@ class LiquidTemplate
       "full_name" => candidate.full_name,
       "first_name" => candidate.full_name.split.first,
       "position" => position.name,
-      "company" => position.company.name
+      "company" => current_member.tenant.name
     }
   end
 
