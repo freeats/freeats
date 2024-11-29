@@ -270,7 +270,11 @@ en:
           successfully_updated: Account avatar successfully updated.
     recruitment:
       disqualify_reasons: Disqualify reasons
-      email_templates: Email templates
+      email_templates:
+        title: Email templates
+        show:
+          tab_title: Settings - Recruitment - Email templates
+          add_template: Add email template
       recruitment: Recruitment
       sources: Sources
 

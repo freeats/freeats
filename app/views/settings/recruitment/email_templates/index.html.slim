@@ -1,0 +1,14 @@
+- ats_title(t("settings.recruitment.email_templates.show.tab_title"))
+
+#settings.card
+  .row.g-0
+    = render "settings/shared/tabs", active_tab: @active_tab
+    .col-12.col-md-9.d-flex.flex-column
+      .row
+        .col-12
+          .card-body.d-md-flex.gap-3
+            .col-12.col-md
+              h1.mb-2 = t("settings.recruitment.email_templates.title")
+            .col-auto
+              = render ButtonLinkComponent.new(new_settings_recruitment_email_template_path)
+                = t("settings.recruitment.email_templates.show.add_template")

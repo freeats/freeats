@@ -4,7 +4,7 @@ ruby:
   tab_labels = {
     career_site: t("settings.company.career_site"),
     disqualify_reasons: t("settings.recruitment.disqualify_reasons"),
-    email_templates: t("settings.recruitment.email_templates"),
+    email_templates: t("settings.recruitment.email_templates.title"),
     general: t("settings.company.general"),
     profile: t("settings.person.profile.show.title"),
     sources: t("settings.recruitment.sources")
@@ -49,7 +49,7 @@ ruby:
         = t("settings.recruitment.recruitment")
       - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
         li
-          = link_to tab_labels[:email_templates], "#",
+          = link_to tab_labels[:email_templates], settings_recruitment_email_templates_path,
                     class: "dropdown-item #{'active' if active_tab == :email_templates}"
       - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy)
         li
@@ -90,7 +90,7 @@ hr.my-0
         = t("settings.recruitment.recruitment")
       .list-group.list-group-transparent
         - if allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy)
-          = link_to tab_labels[:email_templates], "#",
+          = link_to tab_labels[:email_templates], settings_recruitment_email_templates_path,
                     class: "py-3 list-group-item list-group-item-action #{'active' if active_tab == :email_templates}"
         - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy)
           = link_to tab_labels[:sources], settings_recruitment_sources_path,
