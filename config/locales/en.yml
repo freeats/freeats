@@ -255,7 +255,7 @@ en:
           tab_title: Settings - Company - General
         title: General
         update:
-          successfully_updated: Company successfully updated.
+          successfully_updated: All changes have been saved.
     person:
       profile:
         full_name_input_label: Full name
