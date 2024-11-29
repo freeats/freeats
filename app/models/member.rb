@@ -119,7 +119,7 @@ class Member < ApplicationRecord
   end
 
   def self.email_addresses(except: nil)
-    where.not(id: except&.id).map(&:email_address)
+    active.where.not(id: except&.id).map(&:email_address)
   end
 
   def imap_account
