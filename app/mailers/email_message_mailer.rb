@@ -2,7 +2,7 @@
 
 class EmailMessageMailer < ApplicationMailer
   def send_email
-    @html_body = params.delete(:html_body)
-    mail(params)
+    @html_body = params[:html_body]
+    mail(params.except(:html_body))
   end
 end

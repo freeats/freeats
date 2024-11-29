@@ -38,6 +38,10 @@ class ATS::ComposeController < AuthorizedController
         notice: t("candidates.email_compose.email_sent_success_notice", email_addresses:)
       )
     else
+      Log.tagged("ATS::ComposeController#create") do |logger|
+        logger.external_log("email message was not sent", email_message_params:,
+                                                          result: result.inspect)
+      end
       render_turbo_stream(
         [],
         error: t("candidates.email_compose.email_sent_fail_alert", email_addresses:),
@@ -49,13 +53,20 @@ class ATS::ComposeController < AuthorizedController
   private
 
   def compose_email_message_params
+    email_message_params =
+      params
+      .require(:email_message)
+      .permit(:subject, :html_body, to: [], cc: [], bcc: [])
+      .to_h
+      .symbolize_keys
+
     result = { from: FROM_ADDRESS, reply_to: current_member.email_address }
 
-    result[:to] = params.dig(:email_message, :to).map(&:strip)
-    result[:cc] = (params.dig(:email_message, :cc) || []).map(&:strip)
-    result[:bcc] = (params.dig(:email_message, :bcc) || []).map(&:strip)
-    result[:subject] = params.dig(:email_message, :subject)
-    result[:html_body] = params.dig(:email_message, :html_body)
+    result[:to] = email_message_params[:to].map(&:strip)
+    result[:cc] = (email_message_params[:cc] || []).map(&:strip)
+    result[:bcc] = (email_message_params[:bcc] || []).map(&:strip)
+    result[:subject] = email_message_params[:subject]
+    result[:html_body] = email_message_params[:html_body]
 
     result
   end
