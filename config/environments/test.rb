@@ -87,4 +87,5 @@ Rails.application.configure do
   ENV["GMAIL_LINKING_CLIENT_SECRET"] = "dummy"
 
   ENV["EMAIL_NOTIFICATIONS"] = "enabled"
+  ENV["NOTIFICATION_ADDRESS"] = "notifications@freeats.com"
 end

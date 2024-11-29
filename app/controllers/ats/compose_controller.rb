@@ -4,7 +4,7 @@ class ATS::ComposeController < AuthorizedController
   include SchemaHelper
   before_action { authorize! :compose }
 
-  FROM_ADDRESS = "notifications@freeats.com"
+  FROM_ADDRESS = ENV.fetch("NOTIFICATION_ADDRESS", nil)
 
   def new
     candidate = Candidate.find(params[:candidate_id])

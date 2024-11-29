@@ -98,4 +98,5 @@ Rails.application.configure do
 
   ENV["HOST_URL"] = "localhost:3000"
   ENV["EMAIL_NOTIFICATIONS"] = "enabled"
+  ENV["NOTIFICATION_ADDRESS"] = "notifications@freeats.com"
 end
