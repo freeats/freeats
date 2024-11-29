@@ -118,8 +118,6 @@ en:
     candidate_created: Candidate was successfully created.
     candidate_deleted: The candidate was successfully deleted.
     chats: Chats
-    compose_button_disabled_tooltip:
-      no_emails: Candidate doesn't have emails with status Current and type Personal
     cover_letter: Cover letter
     cv: CV
     cv_file_extension_alert: CV has <b>%{extension}</b> extension and cannot be displayed.
@@ -138,6 +136,8 @@ en:
     disqualify: Disqualify
     download_file: download file
     email_compose:
+      button_disabled_tooltip:
+        no_emails: Candidate doesn't have emails
       email_sent_success_notice: Your email to %{email_addresses} has been sent.
       email_sent_fail_alert: There was an issue sending your email to %{email_addresses}.
       unsaved_changes_warning: You have unsaved changes. If you leave this page, you will lose those changes.
