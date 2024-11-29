@@ -13,16 +13,13 @@ export default class extends Controller {
     "button-utils",
   ];
 
-  static values = { unsavedChangesWarning: String };
+  static values = { unsavedChangesWarning: String, tooltipOnOpenedComposeForm: String };
 
   newThreadFormTargetConnected() {
     this.#setupComposeInterruptHandler();
     this.initialSubjectContent = this.formSubjectTarget.value;
     this.buttonUtilsOutlets.forEach((btn) =>
-      // Use locale!!!!!!
-      btn.disableWithTooltip(
-        "Please make sure you send the previous email before opening a new one",
-      ),
+      btn.disableWithTooltip(this.tooltipOnOpenedComposeFormValue),
     );
   }
 
@@ -31,7 +28,10 @@ export default class extends Controller {
       !event.target.dataset.ignoreInterruptWarning &&
       this.#hasUnsavedChanges() &&
       !window.confirm(this.unsavedChangesWarningValue)
-    ) return;
+    ) {
+      event.preventDefault();
+      return;
+    }
 
     this.newThreadFormTarget.remove();
     this.buttonUtilsOutlets.forEach((btn) => btn.enableAndDisposeTooltip());
