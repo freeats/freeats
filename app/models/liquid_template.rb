@@ -2,16 +2,16 @@
 
 class LiquidTemplate
   EMAIL_TEMPLATE_VARIABLE_NAMES =
-    %w[sender_full_name sender_first_name full_name first_name position company].freeze
+    %w[first_name full_name sender_first_name sender_full_name company position].freeze
 
   def self.extract_attributes_from(current_member:, candidate:, position:)
     {
-      "sender_full_name" => current_member.name,
-      "sender_first_name" => current_member.name.split.first,
-      "full_name" => candidate.full_name,
       "first_name" => candidate.full_name.split.first,
-      "position" => position.name,
-      "company" => current_member.tenant.name
+      "full_name" => candidate.full_name,
+      "sender_first_name" => current_member.name.split.first,
+      "sender_full_name" => current_member.name,
+      "company" => current_member.tenant.name,
+      "position" => position.name
     }
   end
 
@@ -48,8 +48,9 @@ class LiquidTemplate
   end
 
   def present_variables
-    Liquid::ParseTreeVisitor.for(@template.root)
-                            .add_callback_for(Liquid::VariableLookup) do |node|
+    Liquid::ParseTreeVisitor
+      .for(@template.root)
+      .add_callback_for(Liquid::VariableLookup) do |node|
       [node.name, *node.lookups].join(".")
     end.visit.flatten.uniq.compact
   end
