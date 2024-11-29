@@ -4,6 +4,8 @@ class ATS::ComposeController < AuthorizedController
   include SchemaHelper
   before_action { authorize! :compose }
 
+  FROM_ADDRESS = "notifications@freeats.com"
+
   def new
     candidate = Candidate.find(params[:candidate_id])
     candidate_email_addresses = candidate.all_emails
@@ -47,7 +49,7 @@ class ATS::ComposeController < AuthorizedController
   private
 
   def compose_email_message_params
-    result = { from: "notifications@freeats.com", reply_to: current_member.email_address }
+    result = { from: FROM_ADDRESS, reply_to: current_member.email_address }
 
     result[:to] = params.dig(:email_message, :to).map(&:strip)
     result[:cc] = (params.dig(:email_message, :cc) || []).map(&:strip)
