@@ -10,5 +10,5 @@
             h1.mb-2 = t("settings.recruitment.sources.show.title")
             = render "sources_edit", tenant: current_account.tenant
             .hstack.gap-2.mt-2
-              = render ButtonComponent.new(form: :settings_form)
+              = render ButtonComponent.new(form: :settings_form, data: { turbo_frame: :turbo_modal_window })
                 = t("core.save_button")

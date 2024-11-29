@@ -5,9 +5,9 @@ ruby:
     CandidateSource.all.sort_by(&:name).sort_by { _1.name != "LinkedIn" ? 1 : 0 } + [CandidateSource.new]
 
 = form_with model: tenant,
-            url: settings_recruitment_sources_path,
+            url: update_modal_settings_recruitment_sources_path,
             id: :settings_form,
-            method: :patch do |form|
+            method: :get do |form|
   = tag.div id: "tenant-sources",
             class: "sortable-container",
             data: { controller: "array-fields",

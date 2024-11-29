@@ -6,8 +6,7 @@ class Tenant < ApplicationRecord
 
   has_many :candidate_sources,
            class_name: "CandidateSource",
-           dependent: :destroy,
-           inverse_of: :candidate
+           dependent: :destroy
   accepts_nested_attributes_for :candidate_sources, allow_destroy: true
 
   validates :name, presence: true
