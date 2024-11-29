@@ -15,7 +15,7 @@ class Settings::Company::GeneralProfilesController < AuthorizedController
           :company_name,
           partial: "company_name",
           locals: { tenant: current_tenant }
-        ), notice: t("settings.company.update.successfully_updated")
+        ), notice: t("settings.company.general.update.successfully_updated")
       )
       return
     end
