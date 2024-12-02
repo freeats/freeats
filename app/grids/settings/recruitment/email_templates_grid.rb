@@ -8,7 +8,7 @@ class Settings::Recruitment::EmailTemplatesGrid
   end
 
   column(:name, html: true, order: false, class: "w-100") do |model|
-    link_to model.name, edit_settings_recruitment_email_template_path(model.id)
+    link_to model.name, settings_recruitment_email_template_path(model.id)
   end
 
   column(:added) do |model|
