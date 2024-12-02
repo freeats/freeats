@@ -16,7 +16,7 @@ class Settings::Recruitment::EmailTemplatesController < AuthorizedController
     end
   end
 
-  def edit
+  def show
     @email_template = EmailTemplate.find(params[:id])
   end
 

@@ -179,6 +179,14 @@ en:
         <b>%{position_name}</b> on <b>%{date}</b> and is reserved."
     upload_file_button: Upload file
 
+  email_template_variables:
+    first_name: first name of the recipient
+    full_name: full name name of the recipient
+    sender_first_name: first name of the person sending the email
+    sender_full_name: full name of the person sending the email
+    company: your company name
+    position: position name of the most recent assigned position where candidate is qualified
+
   errors:
     403:
       heading: Forbidden
@@ -287,6 +295,7 @@ en:
       email_templates:
         edit:
           message_label: Message
+          message_placeholder: Enter email message
           name_label: Template name
           name_placeholder: Enter template name
           subject_label: Subject
