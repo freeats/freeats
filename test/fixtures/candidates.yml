@@ -31,5 +31,5 @@ john_duplicate:
 ivan_ivanov:
   full_name: Ivan Ivanov
   location: nizhniy_novgorod_city
-  candidate_source: headhunter
+  candidate_source: headhunter_acme
   tenant: acme_tenant

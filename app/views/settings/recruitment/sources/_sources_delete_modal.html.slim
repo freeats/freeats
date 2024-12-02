@@ -3,7 +3,7 @@
 
 - content_for :body
   | #{"Source".pluralize(sources.size)} #{sources.map(&:name).join(", ")}
-  |> will be permanently removed from any candidates that have it set.
+  |< will be permanently removed from any candidates that have it set.
 
 - content_for :footer
   = render ButtonComponent.new(variant: :cancel, type: :button, data: { bs_dismiss: "modal" })

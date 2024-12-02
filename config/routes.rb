@@ -151,8 +151,7 @@ Rails.application.routes.draw do
     namespace :recruitment do
       resource :disqualify_reasons, only: %i[show]
       resource :sources, only: %i[show] do
-        get :update_modal
-        post :update_with_modal
+        post :update_all
       end
     end
   end

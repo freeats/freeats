@@ -21,7 +21,7 @@ class Candidates::Change < ApplicationOperation
     headline?: Types::Strict::String,
     telegram?: Types::Strict::String,
     skype?: Types::Strict::String,
-    source?: Types::Strict::String,
+    source?: Types::Strict::String.optional,
     links?: Types::Strict::Array.of(
       Types::Strict::Hash.schema(
         url: Types::Strict::String,
