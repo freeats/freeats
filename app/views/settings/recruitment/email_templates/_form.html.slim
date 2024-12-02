@@ -8,8 +8,6 @@ ruby:
       settings_recruitment_email_template_path(email_template)
     end
 
-    placeholders = t("email_template_placeholders")
-
 = form_for email_template, url: submit_path do |form|
   h1.mb-3 = locales[:title]
 
@@ -49,7 +47,13 @@ ruby:
               class: "mb-3",
               left_layout_class: "col-12 form-label",
               right_layout_class: "col-12") do |c|
-    - c.with_label locales[:placeholders_label]
+    - c.with_label safe_join( \
+                     [locales[:placeholders_label],
+                      render(IconButtonComponent.new( \
+                        :help_circle,
+                        variant: :ghost,
+                        data: { bs_toggle: :tooltip, bs_title: locales[:placeholders_tooltip] }))] \
+                   )
     ul
-      - placeholders.each do |variable, description|
+      - locales[:placeholders_variables].each do |variable, description|
         li = "{{#{variable}}} - #{description}"
