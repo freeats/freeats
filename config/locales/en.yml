@@ -179,7 +179,7 @@ en:
         <b>%{position_name}</b> on <b>%{date}</b> and is reserved."
     upload_file_button: Upload file
 
-  email_template_variables:
+  email_template_placeholders:
     first_name: first name of the recipient
     full_name: full name name of the recipient
     sender_first_name: first name of the person sending the email
@@ -298,6 +298,7 @@ en:
           message_placeholder: Enter email message
           name_label: Template name
           name_placeholder: Enter template name
+          placeholders_label: Placeholders
           subject_label: Subject
           subject_placeholder: Enter email subject
           tab_title: Settings - Recruitment - Edit email template - Edit

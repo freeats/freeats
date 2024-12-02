@@ -8,6 +8,8 @@ ruby:
       settings_recruitment_email_template_path(email_template)
     end
 
+    placeholders = t("email_template_placeholders")
+
 = form_for email_template, url: submit_path do |form|
   h1.mb-3 = locales[:title]
 
@@ -42,3 +44,12 @@ ruby:
     - c.with_label locales[:message_label], for_field: :email_template_body
     .card.card-body
       = trix_editor form, :body, input: :body, placeholder: locales[:message_placeholder]
+
+  = render LabeledComponent.new( \
+              class: "mb-3",
+              left_layout_class: "col-12 form-label",
+              right_layout_class: "col-12") do |c|
+    - c.with_label locales[:placeholders_label]
+    ul
+      - placeholders.each do |variable, description|
+        li = "{{#{variable}}} - #{description}"
