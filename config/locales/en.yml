@@ -285,10 +285,18 @@ en:
     recruitment:
       disqualify_reasons: Disqualify reasons
       email_templates:
-        title: Email templates
-        show:
-          tab_title: Settings - Recruitment - Email templates
+        edit:
+          message_label: Message
+          name_label: Template name
+          name_placeholder: Enter template name
+          subject_label: Subject
+          subject_placeholder: Enter email subject
+          tab_title: Settings - Recruitment - Edit email template - Edit
+          title: Edit email template
+        index:
           add_template: Add email template
+          tab_title: Settings - Recruitment - Email templates
+          title: Email templates
       recruitment: Recruitment
       sources: Sources
 

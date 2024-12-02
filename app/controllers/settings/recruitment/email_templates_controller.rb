@@ -16,6 +16,10 @@ class Settings::Recruitment::EmailTemplatesController < AuthorizedController
     end
   end
 
+  def edit
+    @email_template = EmailTemplate.find(params[:id])
+  end
+
   private
 
   def active_tab

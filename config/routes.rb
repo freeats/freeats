@@ -154,7 +154,7 @@ Rails.application.routes.draw do
     namespace :recruitment do
       resource :disqualify_reasons, only: %i[show]
       resource :sources, only: %i[show]
-      resources :email_templates, only: %i[new create index show]
+      resources :email_templates, only: %i[new create index edit update]
     end
   end
 
