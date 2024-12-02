@@ -1,3 +1,7 @@
 ruby_dev_intro:
   name: Ruby dev introduction
   subject: New opportunity
+
+golang_dev_intro:
+  name: Golang dev introduction
+  subject: New opportunity
