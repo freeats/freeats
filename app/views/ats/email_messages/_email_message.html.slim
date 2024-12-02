@@ -1,0 +1,56 @@
+/# locals: (hashed_avatars:, email_message:, candidate_ids:, controller_name:)
+ruby:
+  message = email_message
+  tooltip_text =
+    unless current_member.email_service_linked?
+      t("user_accounts.email_not_linked")
+    end
+
+- if (sanitized_message_body = message.sanitized_body)
+  li.list-group-item.pt-2.px-3.pb-3
+    .email-header.row.mb-3
+      .col-auto
+        - if (sender_avatar = message.sender_avatar_url(hashed_avatars, message.from_addresses.map(&:second))).present?
+          = image_tag sender_avatar
+        - else
+          = render IconComponent.new(:user, class: "email-sender-avatar rounded")
+      .col.text-muted.fw-light
+        | From: #{ats_pretty_email_addresses(message.from_addresses)}
+        br
+        | To: #{ats_pretty_email_addresses(message.to_addresses)}
+        - if message.cc_addresses.length.positive?
+          br
+          | Cc: #{ats_pretty_email_addresses(message.cc_addresses)}
+        - if message.bcc_addresses.length.positive?
+          br
+          | Bcc: #{ats_pretty_email_addresses(message.bcc_addresses)}
+      .col-auto.align-items-start.mt-2.mt-sm-0
+        .hstack.gap-2
+          span.d-inline-block.text-nowrap.text-muted.fw-light [data-bs-toggle="tooltip"
+              data-bs-title=message.date.to_fs(:datetime_full) ]
+            - if (event = message.events.first) && candidate_ids
+              = ats_timelink_in_email_message(controller_name,
+                                              message,
+                                              candidate_ids,
+                                              event.id)
+
+            - else
+              | #{short_time_ago_in_words(message.date)} ago
+
+          - if message.message_id.present? && message.id
+            .d-flex.justify-content-end.email-message-button-group
+              = ats_profile_button_tooltip_wrapper(tooltip: tooltip_text)
+                - if controller_name.present? && (page_id = candidate_ids)
+                  span.d-inline-block title="Copy link" data-bs-toggle="tooltip"
+                    = render IconButtonComponent.new( \
+                               :link,
+                               type: :button,
+                               data: { \
+                                 controller: "copy-to-clipboard",
+                                 clipboard_text: message.url(page_id, controller_name),
+                                 bs_title: "Copied!",
+                                 bs_trigger: "manual",
+                               },
+                             )
+    div
+      = sanitized_message_body
