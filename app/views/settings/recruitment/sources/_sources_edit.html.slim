@@ -41,7 +41,7 @@ ruby:
     .array-unit [id="tenant_sources_hidden" hidden="true"
       data-update-requirement-attribute-for-select-field-target="form"
       data-controller="update-requirement-attribute-for-select-field"]
-      = form.fields_for(:tenant_candidate_sources, CandidateSource.new, child_index: "id") do |sources_form|
+      = form.fields_for(:candidate_sources, CandidateSource.new, child_index: "id") do |sources_form|
         .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-3
           .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
             = render TextInputComponent.new(sources_form, method: :name,
