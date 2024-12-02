@@ -276,6 +276,7 @@ GEM
       childprocess (~> 5.0)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
+    liquid (5.5.1)
     logger (1.6.1)
     loofah (2.23.1)
       crass (~> 1.0.2)
@@ -611,6 +612,7 @@ DEPENDENCIES
   jsbundling-rails
   kaminari
   letter_opener
+  liquid (~> 5.0)
   lookbook (~> 2.0.0)
   minitest-stub-const
   mission_control-jobs

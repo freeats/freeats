@@ -96,7 +96,7 @@ class ButtonLinkComponentPreview < ViewComponent::Preview
   def disabled_with_tooltip(
     icon_name: :arrow_right,
     size: :medium,
-    disabled: false,
+    disabled: true,
     icon_type: :outline,
     content: "Button",
     icon_position: :off

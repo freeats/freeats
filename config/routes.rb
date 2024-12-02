@@ -105,6 +105,7 @@ Rails.application.routes.draw do
     end
 
     resources :quick_search, only: :index, controller: "quick_search"
+    resources :compose, only: %i[new create]
   end
 
   namespace :api, defaults: { format: "json" } do
@@ -138,7 +139,9 @@ Rails.application.routes.draw do
 
   namespace :settings do
     namespace :company do
-      resource :general, only: %i[show], controller: "general_profiles"
+      resource :general, only: %i[show], controller: "general_profiles" do
+        patch :update
+      end
     end
     namespace :personal do
       resource :profile, only: %i[show] do

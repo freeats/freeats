@@ -8,6 +8,21 @@ class Settings::Company::GeneralProfilesController < AuthorizedController
 
   def show; end
 
+  def update
+    if current_tenant.update(name: params[:tenant][:name])
+      render_turbo_stream(
+        turbo_stream.update(
+          :company_name,
+          partial: "company_name",
+          locals: { tenant: current_tenant }
+        ), notice: t("settings.company.general.update.successfully_updated")
+      )
+      return
+    end
+
+    render_error current_tenant.errors.full_messages
+  end
+
   private
 
   def active_tab

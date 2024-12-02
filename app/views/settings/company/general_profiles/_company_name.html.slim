@@ -1,0 +1,17 @@
+/# locals: (tenant:)
+
+#company_name
+  = form_with model: tenant,
+              url: settings_company_general_path,
+              id: :settings_form,
+              method: :patch,
+              class: "vstack" do |form|
+
+    = render LabeledComponent.new(left_layout_class: "col-12 form-label", right_layout_class: "col-12") do |c|
+      - c.with_label t("settings.company.general.show.full_name_input_label"), for_field: :full_name
+      = render TextInputComponent.new(form,
+                                      method: :name,
+                                      required: true,
+                                      placeholder: t("settings.company.general.show.name_placeholder"),
+                                      value: tenant.name,
+                                      aria: { label: t("settings.company.general.show.full_name_input_label") })

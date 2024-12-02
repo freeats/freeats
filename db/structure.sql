@@ -1249,6 +1249,38 @@ ALTER SEQUENCE public.email_messages_id_seq OWNED BY public.email_messages.id;
 
 
 --
+-- Name: email_templates; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.email_templates (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    subject character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: email_templates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.email_templates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: email_templates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.email_templates_id_seq OWNED BY public.email_templates.id;
+
+
+--
 -- Name: email_threads; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2498,6 +2530,13 @@ ALTER TABLE ONLY public.email_messages ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: email_templates id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_templates ALTER COLUMN id SET DEFAULT nextval('public.email_templates_id_seq'::regclass);
+
+
+--
 -- Name: email_threads id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2898,6 +2937,14 @@ ALTER TABLE ONLY public.email_message_addresses
 
 ALTER TABLE ONLY public.email_messages
     ADD CONSTRAINT email_messages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_templates email_templates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_templates
+    ADD CONSTRAINT email_templates_pkey PRIMARY KEY (id);
 
 
 --
@@ -3481,6 +3528,13 @@ CREATE INDEX index_email_messages_on_message_id ON public.email_messages USING b
 --
 
 CREATE INDEX index_email_messages_on_tenant_id ON public.email_messages USING btree (tenant_id);
+
+
+--
+-- Name: index_email_templates_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_email_templates_on_name ON public.email_templates USING btree (name);
 
 
 --
@@ -4613,6 +4667,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241129084054'),
 ('20241107081744'),
 ('20241105130512'),
 ('20241102110106'),

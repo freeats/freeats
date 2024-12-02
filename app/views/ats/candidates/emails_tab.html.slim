@@ -1,39 +1,21 @@
 ruby:
-  synchronize_button_tooltip_text =
-    unless current_member.email_service_linked?
-      t("user_accounts.email_not_linked")
+  compose_button_tooltip_text =
+    if @candidate.all_emails.blank?
+      t("candidates.email_compose.button_tooltip.no_emails")
     end
 
 = render "ats/candidates/profile"
 
   #email-threads
-    / TOP BUTTONS
-    / - unless !@single_message
-    /   .row.mt-2.g-2
-    /     .col-6.col-sm
-    /     .col-auto
-    /       = ats_profile_button_tooltip_wrapper(tooltip: synchronize_button_tooltip_text, data: { bs_trigger: "hover" })
-    /         = render ButtonLinkComponent.new(synchronize_email_messages_ats_candidate_path(@candidate.id),
-    /                                          data: { bs_toggle: "tooltip",
-    /                                                  bs_placement: "top",
-    /                                                  turbo_method: :post },
-    /                                          title: "Please make sure that all email addresses " \
-    /                                                 "have been added to this profile before pressing the button",
-    /                                          disabled: synchronize_button_tooltip_text.present?)
-    /           | Synchronize
-    / EMAILS
-    .row
-      .col#turbo_thread_list
-        = render partial: "ats/email_threads/email_thread",
-                 collection: @ordered_candidate_email_threads,
-                 as: :email_thread,
-                 locals: { hashed_avatars: @hashed_avatars,
-                           candidate_ids: @candidate.id,
-                           single_message: @single_message,
-                           controller_name: }
-    .row.mt-3
-      .col
-      - if @single_message
-        = link_to "View all emails", tab_ats_candidate_path(@candidate, :emails)
-      - else
-        = paginate(@ordered_candidate_email_threads, theme: "ats")
+    .row.mt-2.g-2
+      .col-6.col-sm-auto
+        = form_with url: new_ats_compose_path, method: :get
+          = hidden_field_tag :candidate_id, @candidate.id
+          = render ButtonComponent.new( \
+                    class: "compose-button",
+                    disabled: compose_button_tooltip_text.present?,
+                    tooltip_title: compose_button_tooltip_text,
+                    data: { controller: ("button-utils" if compose_button_tooltip_text.blank?) } \
+                  )
+            | Compose
+      .col-12#turbo_email_compose_form

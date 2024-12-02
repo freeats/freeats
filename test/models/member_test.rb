@@ -22,4 +22,12 @@ class MemberTest < ActiveSupport::TestCase
     assert_equal Member.mentioned_in(text).sort,
                  [employee_account.member, admin_account.member, helen_account.member].sort
   end
+
+  test "email_addresses should not include a current member email address and inactive members" do
+    member = members(:admin_member)
+    inactive_member = members(:inactive_member)
+
+    assert_not_includes Member.email_addresses(except: member), member.email_address
+    assert_not_includes Member.email_addresses(except: member), inactive_member.email_address
+  end
 end
