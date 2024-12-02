@@ -1,4 +1,5 @@
-- ats_title(t("settings.recruitment.email_templates.index.tab_title"))
+- locales = t("settings.recruitment.email_templates.index")
+- ats_title(locales[:tab_title])
 
 #settings.card
   .row.g-0
@@ -8,10 +9,10 @@
         .col-12
           .d-md-flex.mb-3
             .col-12.col-md.me-md-3
-              h1.mb-3 = t("settings.recruitment.email_templates.index.title")
+              h1.mb-3 = locales[:title]
             .col-auto
               = render ButtonLinkComponent.new(new_settings_recruitment_email_template_path)
-                = t("settings.recruitment.email_templates.index.add_template")
+                = locales[:add_template]
         .col-12
           = datagrid_table(@email_templates_grid)
           = paginate(@email_templates_grid.assets, theme: "ats")
