@@ -5,5 +5,6 @@ FactoryBot.define do
     name { Faker::Lorem.sentence }
     subject { Faker::Lorem.sentence }
     body { Faker::Lorem.paragraph }
+    tenant { Tenant.find_by(name: "Toughbyte") }
   end
 end
