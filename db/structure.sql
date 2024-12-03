@@ -3440,6 +3440,13 @@ CREATE INDEX index_candidate_sources_on_tenant_id ON public.candidate_sources US
 
 
 --
+-- Name: index_candidate_sources_on_tenant_id_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_candidate_sources_on_tenant_id_and_name ON public.candidate_sources USING btree (tenant_id, name);
+
+
+--
 -- Name: index_candidates_on_candidate_source_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4667,6 +4674,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241203142925'),
 ('20241129084054'),
 ('20241107081744'),
 ('20241105130512'),
