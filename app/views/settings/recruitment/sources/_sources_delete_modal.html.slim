@@ -1,5 +1,5 @@
 - content_for :title
-  | Delete #{"source".pluralize(sources.size)}
+  | Delete #{"source".pluralize(sources.size)}?
 
 - content_for :body
   | #{"Source".pluralize(sources.size)} #{sources.map(&:name).join(", ")}
