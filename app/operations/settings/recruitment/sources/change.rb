@@ -52,7 +52,7 @@ class Settings::Recruitment::Sources::Change < ApplicationOperation
 
         if source.name == "LinkedIn" && name != "LinkedIn" ||
            source.name != "LinkedIn" && name == "LinkedIn"
-          raise ArgumentError
+          return Failure[:linkedin_source_cannot_be_changed]
         elsif source.name == "LinkedIn" && name == "LinkedIn"
           source
         else
@@ -65,13 +65,13 @@ class Settings::Recruitment::Sources::Change < ApplicationOperation
     sources_for_deleting = old_sources.filter do |source|
       new_sources.pluck(:id).exclude?(source.id)
     end
-    raise ArgumentError if sources_for_deleting.any? { _1.name == "LinkedIn" }
+    if sources_for_deleting.any? { _1.name == "LinkedIn" }
+      return Failure[:linkedin_source_cannot_be_changed]
+    end
 
     Success[new_sources, sources_for_deleting]
   rescue ActiveRecord::RecordNotFound => e
     Failure[:candidate_source_not_found, e]
-  rescue ArgumentError => _e
-    Failure[:linkedin_source_cannot_be_changed]
   end
 
   def save_candidate_source(candidate_source)
