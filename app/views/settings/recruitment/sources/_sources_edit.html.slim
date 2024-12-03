@@ -64,6 +64,6 @@ ruby:
                                   data: { action: "click->array-fields#addField" })
         | Add
 
-  .hstack.gap-2.mt-2
+  .mt-4
     = render ButtonComponent.new(form: :settings_form, data: { turbo_frame: :turbo_modal_window })
       = t("core.save_button")
