@@ -7,6 +7,7 @@ class Settings::Recruitment::SourcesController < AuthorizedController
 
   before_action { authorize! :sources }
   before_action :active_tab
+  before_action :all_sources
 
   def show; end
 
@@ -49,11 +50,12 @@ class Settings::Recruitment::SourcesController < AuthorizedController
       candidate_sources_params:
     ).call
     in Success()
-      redirect_to settings_recruitment_sources_path, notice: "Good!"
+      redirect_to settings_recruitment_sources_path,
+                  notice: I18n.t("settings.recruitment.sources.update_all.successfully_updated")
     in Failure[:candidate_source_not_found, e]
       redirect_to settings_recruitment_sources_path,
                   alert: "Source not found: #{e.message}"
-    in Failure[:deletion_failed, _e] | Failure[:invalid_sources, _e]
+    in Failure[:deletion_failed, _e] | Failure[:invalid_sources, _e] # rubocop:disable Lint/UnderscorePrefixedVariableName
       render_error _e.message, status: :unprocessable_entity
     in Failure[:linkedin_source_cannot_be_changed]
       render_error "LinkedIn source cannot be changed", status: :unprocessable_entity
@@ -64,6 +66,14 @@ class Settings::Recruitment::SourcesController < AuthorizedController
 
   def active_tab
     @active_tab ||= :sources
+  end
+
+  def all_sources
+    @all_sources ||=
+      CandidateSource
+      .all
+      .sort_by(&:name)
+      .sort_by { _1.name != "LinkedIn" ? 1 : 0 }
   end
 
   def new_sources_ids

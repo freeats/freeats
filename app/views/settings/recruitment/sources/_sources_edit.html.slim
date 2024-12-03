@@ -2,7 +2,7 @@
 
 ruby:
   order_field_collection =
-    CandidateSource.all.sort_by(&:name).sort_by { _1.name != "LinkedIn" ? 1 : 0 } + [CandidateSource.new]
+    @all_sources + [CandidateSource.new]
 
 = form_with model: tenant,
             url: update_all_settings_recruitment_sources_path,

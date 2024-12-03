@@ -291,6 +291,8 @@ en:
           name_placeholder: Source
           tab_title: Settings - Recruitment - Sources
           title: Sources
+        update_all:
+          successfully_updated: All changes have been saved.
 
   tasks:
     add_task_button: Add task
