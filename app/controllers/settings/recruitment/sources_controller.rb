@@ -51,7 +51,7 @@ class Settings::Recruitment::SourcesController < AuthorizedController
       render_turbo_stream(
         turbo_stream.update(
           :rercruitment_sources,
-          partial: "settings/recruitment/sources/sources_edit",
+          partial: "sources_edit",
           locals: { tenant: current_tenant, all_sources: all_sources }
         ), notice: t("settings.successfully_saved_notice")
       )
