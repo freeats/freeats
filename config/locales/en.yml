@@ -261,8 +261,6 @@ en:
           name_placeholder: Enter company name
           tab_title: Settings - Company - General
         title: General
-        update:
-          successfully_updated: All changes have been saved.
     person:
       profile:
         full_name_input_label: Full name
@@ -292,8 +290,8 @@ en:
           tab_title: Settings - Recruitment - Sources
           title: Sources
         update_all:
-          successfully_updated: All changes have been saved.
           linkedin_error: LinkedIn source cannot be changed.
+    successfully_saved_notice: All changes have been saved.
 
   tasks:
     add_task_button: Add task

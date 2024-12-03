@@ -53,13 +53,13 @@ class Settings::Recruitment::SourcesController < AuthorizedController
           :rercruitment_sources,
           partial: "settings/recruitment/sources/sources_edit",
           locals: { tenant: current_tenant, all_sources: all_sources }
-        ), notice: I18n.t("settings.recruitment.sources.update_all.successfully_updated")
+        ), notice: t("settings.successfully_saved_notice")
       )
     in Failure[:candidate_source_not_found, _e] | Failure[:deletion_failed, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
        Failure[:invalid_sources, _e]
       render_error _e.message, status: :unprocessable_entity
     in Failure[:linkedin_source_cannot_be_changed]
-      render_error I18n.t("settings.recruitment.sources.update_all.linkedin_error"),
+      render_error t(".linkedin_error"),
                    status: :unprocessable_entity
     end
   end
