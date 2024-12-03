@@ -1,0 +1,10 @@
+/# locals: (active_tab:)
+
+#settings.card
+  .row.g-0
+    = render "settings/shared/tabs", active_tab:
+    .col-12.col-md-9.d-flex.flex-column
+      .row
+        .col-12.col-md-6.flex-column
+          .card-body.d-flex.flex-column.gap-3
+            = yield

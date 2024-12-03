@@ -430,12 +430,19 @@ class ATS::CandidatesController < AuthorizedController
     case Candidates::UploadFile.new(
       candidate: @candidate,
       actor_account: current_account,
-      file: candidate_params[:file]
+      file: candidate_params[:file],
+      namespace: :ats
     ).call
     in Success()
       redirect_to tab_ats_candidate_path(@candidate, :files)
     in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
+    in Failure(:file_already_present)
+      render_turbo_stream(
+        turbo_stream.replace("turbo-file-upload-button", partial: "file_upload_button",
+                                                         locals: { candidate: @candidate }),
+        warning: t("candidates.file_already_present_warning")
+      )
     end
   end
 
@@ -444,12 +451,19 @@ class ATS::CandidatesController < AuthorizedController
       candidate: @candidate,
       actor_account: current_account,
       file: candidate_params[:file],
-      cv: true
+      cv: true,
+      namespace: :ats
     ).call
     in Success()
       redirect_to tab_ats_candidate_path(@candidate, :info)
     in Failure[:file_invalid, e]
       render_error e, status: :unprocessable_entity
+    in Failure(:file_already_present)
+      render_turbo_stream(
+        turbo_stream.replace("candidate-info-cv-file", partial: "info_cv_file",
+                                                       locals: { candidate: @candidate }),
+        warning: t("candidates.file_already_present_warning")
+      )
     end
   end
 

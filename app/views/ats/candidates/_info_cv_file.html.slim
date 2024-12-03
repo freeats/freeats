@@ -1,0 +1,79 @@
+/# locals: (candidate:)
+
+#candidate-info-cv-file
+  ruby:
+    delete_modal_data =
+      {
+        toggle: "ats-confirmation",
+        title: "Delete CV?",
+        btn_cancel_label: "Cancel",
+        btn_ok_label: "Delete",
+        btn_ok_class: "btn btn-danger btn-small"
+      }
+  - if candidate.cv.present?
+    / On mobile devices this text is located at the top of the buttons.
+    .d-md-none.mt-2
+      = link_to candidate.cv.blob.filename, url_for(candidate.cv), target: "_blank"
+      .mt-2 data-bs-toggle="tooltip" title=candidate.cv.added_event.performed_at.to_fs(:datetime_full)
+        = t("core.uploaded_on", time: short_time_ago_in_words(candidate.cv.added_event.performed_at))
+  .d-flex.justify-content-between
+    .hstack.gap-2.mt-4
+      - if candidate.cv.present?
+        = render ButtonLinkComponent.new(download_cv_file_ats_candidate_path(candidate), target: :_blank)
+          | Download CV
+      - if allowed_to?(:upload_cv_file?)
+        = form_with model: candidate, url: upload_cv_file_ats_candidate_path, local: true,
+                    multipart: true, method: :post do |form|
+          / On PC this button doesn't have a dropdown.
+          = render ButtonComponent.new(type: :button,
+                                        hidden: true,
+                                        class: "file-upload-button d-md-inline-flex",
+                                        data: { bs_toggle: "tooltip", title: drag_and_drop_tooltip, \
+                                                controller: "handle-upload-button" })
+            span data-handle-upload-button-target="text"
+              | Upload CV
+            = form.file_field :file,
+                              accept: ".pdf,.doc,.docx,.odt,.rtf",
+                              class: "upload turbo-instant-submit",
+                              required: true,
+                              "data-handle-upload-button-target": "input"
+
+        / On mobile devices this button has a dropdown.
+        .dropdown.d-md-none
+          = render ButtonComponent.new(variant: :secondary,
+                                        data: { bs_toggle: "dropdown" }) do |c|
+            - c.with_icon(:chevron_down)
+            | Upload CV
+          ul.dropdown-menu
+            li = form_with model: candidate, url: upload_cv_file_ats_candidate_path, local: true,
+                            multipart: true, method: :post, data: { controller: "handle-upload-button" } do |form|
+              .file-upload-button.dropdown-item
+                span data-handle-upload-button-target="text"
+                  | Upload CV
+                = form.file_field :file,
+                  accept: ".pdf,.doc,.docx,.odt,.rtf",
+                  class: "upload turbo-instant-submit ms-2",
+                  required: true,
+                  "data-handle-upload-button-target": "input"
+            - if candidate.cv.present? && allowed_to?(:delete_cv_file?)
+              li = button_to "Remove CV",
+                              delete_cv_file_ats_candidate_path( \
+                                candidate, candidate: { file_id_to_remove: candidate.cv.id } \
+                              ),
+                              method: :delete, class: "dropdown-item",
+                              data: delete_modal_data
+      - if candidate.cv.present? && allowed_to?(:delete_cv_file?)
+        / On PC this text is located to the right of buttons.
+        .d-none.d-md-block [data-bs-toggle="tooltip"
+            title=candidate.cv.added_event.performed_at.to_fs(:datetime_full)]
+          = t("core.uploaded_on", time: short_time_ago_in_words(candidate.cv.added_event.performed_at))
+    .d-none.d-md-flex.flex-row.align-items-center.mt-4
+      - if candidate.cv.present? && allowed_to?(:delete_cv_file?)
+        = button_to "Remove CV",
+                    delete_cv_file_ats_candidate_path( \
+                      candidate, candidate: { file_id_to_remove: candidate.cv.id } \
+                    ),
+                    method: :delete, class: "btn btn-outline-primary btn-small ms-2",
+                    data: delete_modal_data
+  .mt-4.d-none.d-md-block
+    = render "display_inline", file: candidate.cv

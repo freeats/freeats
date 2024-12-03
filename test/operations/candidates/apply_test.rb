@@ -5,19 +5,19 @@ require "test_helper"
 class Candidates::ApplyTest < ActionDispatch::IntegrationTest
   include Dry::Monads[:result]
 
+  setup do
+    @file = ActionDispatch::Http::UploadedFile.new(
+      filename: "empty.pdf",
+      type: "application/pdf",
+      tempfile: Rails.root.join("test/fixtures/files/empty.pdf")
+    )
+  end
+
   test "apply should create candidate, placement and task and assign recruiter" do
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     position = positions(:ruby_position)
 
-    file = ActionDispatch::Http::UploadedFile.new(
-      {
-        filename: "empty.pdf",
-        type: "application/pdf",
-        tempfile: Rails.root.join("test/fixtures/files/empty.pdf")
-      }
-    )
-
-    candidate_params = { full_name: "John Smith", email: "KdQ5j@example.com", file: }
+    candidate_params = { full_name: "John Smith", email: "KdQ5j@example.com", file: @file }
 
     assert_difference "Event.where(type: 'active_storage_attachment_added').count", 1 do
       assert_difference "Event.where(type: 'candidate_changed', changed_field: 'cv').count", 1 do
@@ -59,17 +59,8 @@ class Candidates::ApplyTest < ActionDispatch::IntegrationTest
   test "apply should not create candidate, placement and task when file is not uploaded" do
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     position = positions(:ruby_position)
-    tempfile = fixture_file_upload("empty.pdf", "application/pdf")
-    file =
-      ActionDispatch::Http::UploadedFile.new(
-        {
-          filename: "empty.pdf",
-          type: "application/pdf",
-          tempfile:
-        }
-      )
 
-    candidate_params = { full_name: "John Smith", email: "KdQ5j@example.com", file: }
+    candidate_params = { full_name: "John Smith", email: "KdQ5j@example.com", file: @file }
 
     upload_file_mock = Minitest::Mock.new
     upload_file_mock.expect(:call, Failure[:file_invalid, "File is invalid"])
@@ -85,7 +76,8 @@ class Candidates::ApplyTest < ActionDispatch::IntegrationTest
         result = Candidates::Apply.new(
           params: candidate_params,
           position_id: position.id,
-          actor_account: nil
+          actor_account: nil,
+          namespace: :career_site
         ).call
 
         assert_equal result, Failure[:file_invalid, "File is invalid"]
@@ -99,17 +91,8 @@ class Candidates::ApplyTest < ActionDispatch::IntegrationTest
        "if email address is invalid" do
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     position = positions(:ruby_position)
-    tempfile = fixture_file_upload("empty.pdf", "application/pdf")
-    file =
-      ActionDispatch::Http::UploadedFile.new(
-        {
-          filename: "empty.pdf",
-          type: "application/pdf",
-          tempfile:
-        }
-      )
 
-    candidate_params = { full_name: "John Smith", email: "invalidaddress.com", file: }
+    candidate_params = { full_name: "John Smith", email: "invalidaddress.com", file: @file }
 
     assert_no_difference "Event.where(type: 'active_storage_attachment_added').count" do
       assert_no_difference "Event.where(type: 'candidate_changed', changed_field: 'cv').count" do
@@ -139,17 +122,8 @@ class Candidates::ApplyTest < ActionDispatch::IntegrationTest
        "if position recruter is blank or inactive" do
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     position = positions(:golang_position)
-    tempfile = fixture_file_upload("empty.pdf", "application/pdf")
-    file =
-      ActionDispatch::Http::UploadedFile.new(
-        {
-          filename: "empty.pdf",
-          type: "application/pdf",
-          tempfile:
-        }
-      )
 
-    candidate_params = { full_name: "John Smith", email: "KdQ5j@example.com", file: }
+    candidate_params = { full_name: "John Smith", email: "KdQ5j@example.com", file: @file }
 
     assert_no_difference "Event.where(type: 'active_storage_attachment_added').count" do
       assert_no_difference "Event.where(type: 'candidate_changed', changed_field: 'cv').count" do

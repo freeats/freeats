@@ -53,7 +53,7 @@ class ButtonComponent < ApplicationComponent
   option :disabled, Types::Strict::Bool, default: -> { false }
   option :hidden, Types::Strict::Bool, default: -> { false }
   option :type, Types::Symbol.enum(:button, :submit, :reset), default: -> { :submit }
-  option :tooltip_title, Types::Strict::String, optional: true
+  option :tooltip_title, Types::Strict::String.optional, optional: true
 
   # Needed to place content inside the button horizontally.
   # Responsive classes just pass them to a `:class` additional option.

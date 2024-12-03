@@ -135,7 +135,15 @@ en:
       reason_not_found: Disqualification reason has not been found.
     disqualify: Disqualify
     download_file: download file
+    email_compose:
+      button_tooltip:
+        no_emails: Candidate doesn't have emails
+        compose_form_opened: Please make sure you send the previous email before opening a new one
+      email_sent_success_notice: Your email to %{email_addresses} has been sent.
+      email_sent_fail_alert: There was an issue sending your email to %{email_addresses}.
+      unsaved_changes_warning: You have unsaved changes. If you leave this page, you will lose those changes.
     emails: Emails
+    file_already_present_warning: The file has not been uploaded, since another one with the same content already exists.
     full_name: Full name
     headline: Headline
     include_blacklisted: Include blacklisted
@@ -243,6 +251,43 @@ en:
   scorecard_templates:
     add: Add scorecard template
 
+  settings:
+    company:
+      career_site: Career site
+      company: Company
+      general:
+        show:
+          full_name_input_label: Company name
+          name_placeholder: Enter company name
+          tab_title: Settings - Company - General
+        title: General
+        update:
+          successfully_updated: All changes have been saved.
+    person:
+      profile:
+        full_name_input_label: Full name
+        personal: Personal
+        remove_avatar:
+          successfully_removed: Account avatar successfully removed.
+        show:
+          change_password_link_text: Change password
+          email_input_label: Email
+          email_linked: Linked
+          email_not_linked: Link email
+          name_placeholder: Enter full name
+          save_form_button: Save
+          tab_title: Settings - Personal - Profile
+          title: Profile
+        update_account:
+          successfully_updated: Account successfully updated.
+        update_avatar:
+          successfully_updated: Account avatar successfully updated.
+    recruitment:
+      disqualify_reasons: Disqualify reasons
+      email_templates: Email templates
+      recruitment: Recruitment
+      sources: Sources
+
   tasks:
     add_task_button: Add task
     assignee_not_found: Assignee has not been found.
@@ -282,21 +327,6 @@ en:
     not_found: Account not found
     reinvite: Reinvite
     reactivate: Reactivate
-    settings:
-      show:
-        change_password_link_text: Change password
-        email_input_label: Email
-        email_linked: Linked
-        email_not_linked: Link email
-        save_form_button: Save
-        title: Settings
-      full_name_input_label: Full name
-      update_account:
-        successfully_updated: Account successfully updated.
-      update_avatar:
-        successfully_updated: Account avatar successfully updated.
-      remove_avatar:
-        successfully_removed: Account avatar successfully removed.
     status: Account status
     successfully_updated: "%{name} status was successfully changed to %{new_access_level}."
     successfully_deactivated: "%{name} status was successfully changed to inactive."

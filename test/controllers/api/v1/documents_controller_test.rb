@@ -21,7 +21,8 @@ class API::V1::DocumentsControllerTest < ActionDispatch::IntegrationTest
     assert_equal candidate.source, "LinkedIn"
   end
 
-  test "should not update candidate's source if it is already set and update if not" do
+  test "should not update candidate's source if it is already set and update if not, " \
+       "and should not upload the same pdf file twice" do
     sign_in accounts(:admin_account)
 
     candidate = candidates(:sam)
@@ -45,7 +46,7 @@ class API::V1::DocumentsControllerTest < ActionDispatch::IntegrationTest
 
     candidate.reload
 
-    assert_equal candidate.files.size, 2
+    assert_equal candidate.files.size, 1
     assert_equal candidate.source, "LinkedIn"
   end
 end
