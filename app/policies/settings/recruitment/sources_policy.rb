@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
 class Settings::Recruitment::SourcesPolicy < ApplicationPolicy
-  def show?
-    available_for_admin?
-  end
+  alias_rule :show?, :update_all?, to: :available_for_admin?
 end
