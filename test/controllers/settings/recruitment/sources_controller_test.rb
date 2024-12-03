@@ -46,9 +46,9 @@ class Settings::Recruitment::SourcesControllerTest < ActionDispatch::Integration
 
   test "should show modal if remove source" do
     old_sources = CandidateSource.all.to_a
-    new_source = old_sources.filter { _1.name == "LinkedIn" }
+    new_sources = old_sources.filter { _1.name == "LinkedIn" }
     current_sources_params =
-      new_source.map.with_index do |source, idx|
+      new_sources.map.with_index do |source, idx|
         [(idx + 1).to_s, { "id" => source.id, "name" => source.name }]
       end
     params = {
@@ -77,7 +77,9 @@ class Settings::Recruitment::SourcesControllerTest < ActionDispatch::Integration
       end
     params = {
       modal_shown: "true",
-      "candidate_sources_attributes" => current_sources_params.to_h.to_json
+      "tenant" => {
+        "candidate_sources_attributes" => current_sources_params.to_h
+      }
     }
 
     assert_difference "CandidateSource.count", -1 do
