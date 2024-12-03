@@ -7,9 +7,9 @@ class Settings::Recruitment::SourcesController < AuthorizedController
 
   before_action { authorize! :sources }
   before_action :active_tab
-  before_action :all_sources, only: :show
+  before_action :all_sources, only: :index
 
-  def show; end
+  def index; end
 
   def update_all
     unless params[:modal_shown] == "true"

@@ -153,8 +153,8 @@ Rails.application.routes.draw do
     end
     namespace :recruitment do
       resource :disqualify_reasons, only: %i[show]
-      resource :sources, only: %i[show] do
-        post :update_all
+      resources :sources, only: %i[index] do
+        post "update_all", on: :collection
       end
     end
   end
