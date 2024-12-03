@@ -32,4 +32,25 @@ namespace :events do
 
     Log.info("Done.")
   end
+
+  task update_position_description_events: :environment do
+    Log.info("Updating position_changed description events...")
+
+    replace_lambda = ->(content) {
+      content.gsub("class=\"trix-content\"", "class=\"trix-content-custom\"")
+    }
+
+    Event
+      .where(type: :position_changed)
+      .where(changed_field: :description)
+      .find_each do |event|
+        Log.info("updating event #{event.id}")
+        event.update!(
+          changed_from: replace_lambda.call(event.changed_from),
+          changed_to: replace_lambda.call(event.changed_to)
+        )
+      end
+
+    Log.info("Done.")
+  end
 end
