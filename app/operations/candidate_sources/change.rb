@@ -41,9 +41,9 @@ class CandidateSources::Change < ApplicationOperation
   def prepare_sources(candidate_sources_params)
     old_sources = CandidateSource.all
 
-    new_sources = candidate_sources_params.map do |source|
-      name = source["name"]
-      id = source["id"]
+    new_sources = candidate_sources_params.map do |new_source|
+      name = new_source["name"]
+      id = new_source["id"]
 
       if id.blank?
         CandidateSource.new(name:)
