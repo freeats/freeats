@@ -52,7 +52,7 @@ class Settings::Recruitment::SourcesController < AuthorizedController
         turbo_stream.update(
           :rercruitment_sources,
           partial: "sources_edit",
-          locals: { tenant: current_tenant, all_sources: all_sources }
+          locals: { tenant: current_tenant, all_sources: }
         ), notice: t("settings.successfully_saved_notice")
       )
     in Failure[:candidate_source_not_found, _e] | Failure[:deletion_failed, _e] | # rubocop:disable Lint/UnderscorePrefixedVariableName
