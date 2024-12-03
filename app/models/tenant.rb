@@ -5,7 +5,6 @@ class Tenant < ApplicationRecord
   friendly_id :name, use: :slugged, routes: nil
 
   has_many :candidate_sources,
-           class_name: "CandidateSource",
            dependent: :destroy
   accepts_nested_attributes_for :candidate_sources, allow_destroy: true
 

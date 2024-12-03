@@ -28,7 +28,7 @@ class Settings::Recruitment::Sources::Change < ApplicationOperation
       Candidate.where(candidate_source_id: sources_for_deleting.map(&:id))
     candidates.each do |candidate|
       Candidates::Change.new(
-        candidate:, actor_account:, params: { source: nil }
+        candidate:, actor_account:, params: { source: "" }
       ).call
     end
 
