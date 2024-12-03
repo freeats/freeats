@@ -1,0 +1,90 @@
+/# locals: (candidate_email_addresses:, members_email_addresses:)
+
+ruby:
+  to_options = candidate_email_addresses.map { { text: _1, value: _1 } }
+  cc_bcc_options = members_email_addresses.map { { text: _1, value: _1 } }
+  data = {
+    "controller" => "compose",
+    "compose-button-utils-outlet" => ".compose-button",
+    "compose-unsaved-changes-warning-value" => t("candidates.email_compose.unsaved_changes_warning"),
+    "compose-tooltip-on-opened-compose-form-value" => t("candidates.email_compose.button_tooltip.compose_form_opened")
+  }
+
+#turbo_email_compose_form data=data
+  = form_with scope: :email_message,
+              url: ats_compose_index_path,
+              class: "card mt-3 compose-form",
+              html: { autocomplete: "off" },
+              data: { controller: "enter-turbo-submit",
+                      action: "turbo:submit-end->compose#closeForm",
+                      compose_target: "newThreadForm",
+                      ignore_interrupt_warning: true } do |form|
+    .card-header.d-flex.justify-content-between
+      span.mb-0 New Message
+      = render IconButtonComponent.new( \
+                 :x,
+                 variant: :ghost,
+                 aria_label: "Close",
+                 data: { action: "click->compose#closeForm" } \
+               )
+    .compose-body
+      .input-group
+        .input-group-prepend
+          = form.label :to, "To:", class: "input-group-text"
+        .w-100.selectize-without-border-and-chevron
+          = render PillSelectComponent.new( \
+                     form,
+                     method: :to,
+                     required: true,
+                     allow_create_new_option: true,
+                     local: { options: to_options } \
+                   )
+        .input-group-append.d-flex.justify-content-end
+          button.rounded.btn.btn-sm.input-group-append-button [type="button"
+                data-action="click->compose#toggleAddressField" data-target-name="formCcInput"]
+            | Cc
+          button.rounded.btn.btn-sm.input-group-append-button.ms-1 [type="button"
+                data-action="click->compose#toggleAddressField" data-target-name="formBccInput"]
+            | Bcc
+      .input-group data-compose-target="formCcInput" class="d-none"
+        .input-group-prepend
+          = form.label :cc, "Cc:", class: "input-group-text"
+        .w-100.selectize-without-border-and-chevron
+          = render PillSelectComponent.new( \
+                     form,
+                     method: :cc,
+                     allow_create_new_option: true,
+                     local: { options: cc_bcc_options } \
+                   )
+      .input-group data-compose-target="formBccInput" class="d-none"
+        .input-group-prepend
+          = form.label :bcc, "Bcc:", class: "input-group-text shadow-none"
+        .w-100.selectize-without-border-and-chevron
+          = render PillSelectComponent.new( \
+                     form,
+                     method: :bcc,
+                     allow_create_new_option: true,
+                     local: { options: cc_bcc_options } \
+                   )
+      .input-group.row.mx-0
+        .col-8.ps-0
+          = render TextInputComponent.new(form, method: :subject,
+                                          class: "compose-form-subject shadow-none border-0",
+                                          placeholder: "Subject", required: true,
+                                          data: { compose_target: "formSubject" })
+      .py-2.px-3
+        = trix_editor form,
+                      :html_body,
+                      placeholder: "Message",
+                      data: { \
+                        compose_target: "formBody",
+                        controller: "input-utils" \
+                      }
+
+    .card-footer.bg-transparent.px-3
+      = render ButtonComponent.new( \
+                 size: :tiny,
+                 tooltip_options: { bs_title: "Ctrl + Enter" },
+                 data: { enter_turbo_submit_target: "shortcut" } \
+               )
+        | Send

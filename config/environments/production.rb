@@ -106,7 +106,8 @@ Rails.application.configure do
     port: ENV.fetch("MAILER_SMTP_PORT", "").to_i,
     domain: ENV.fetch("MAILER_SMTP_DOMAIN", ""),
     authentication: ENV.fetch("MAILER_SMTP_AUTHENTICATION", ""),
-    enable_starttls_auto: ENV.fetch("MAILER_SMTP_ENABLE_STARTTLS_AUTO", "true") == "true"
+    enable_starttls_auto: ENV.fetch("MAILER_SMTP_ENABLE_STARTTLS_AUTO", "true") == "true",
+    return_response: true
   }
 
   # Enable DNS rebinding protection and other `Host` header attacks.
