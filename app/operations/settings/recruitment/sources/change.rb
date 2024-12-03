@@ -5,7 +5,12 @@ class Settings::Recruitment::Sources::Change < ApplicationOperation
 
   option :actor_account, Types::Instance(Account).optional
   option :candidate_sources_params,
-         Types::Strict::Array.of(Types::Strict::Hash)
+         Types::Strict::Array.of(
+           Types::Strict::Hash.schema(
+             id?: Types::Strict::String,
+             name: Types::Strict::String
+           )
+         )
 
   def call
     new_sources, sources_for_deleting =
@@ -42,8 +47,8 @@ class Settings::Recruitment::Sources::Change < ApplicationOperation
     old_sources = CandidateSource.all
 
     new_sources = candidate_sources_params.map do |new_source|
-      name = new_source["name"]
-      id = new_source["id"]
+      name = new_source[:name]
+      id = new_source[:id]
 
       if id.blank?
         CandidateSource.new(name:)

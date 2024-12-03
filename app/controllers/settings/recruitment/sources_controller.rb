@@ -19,8 +19,8 @@ class Settings::Recruitment::SourcesController < AuthorizedController
       if sources_for_deleting.present?
         hidden_fields = { modal_shown: true }
         candidate_sources_params.each_with_index do |value, index|
-          hidden_fields["tenant[candidate_sources_attributes][#{index}][id]"] = value&.[]("id")
-          hidden_fields["tenant[candidate_sources_attributes][#{index}][name]"] = value["name"]
+          hidden_fields["tenant[candidate_sources_attributes][#{index}][id]"] = value&.[](:id)
+          hidden_fields["tenant[candidate_sources_attributes][#{index}][name]"] = value[:name]
         end
 
         partial = "sources_delete_modal"
@@ -79,7 +79,7 @@ class Settings::Recruitment::SourcesController < AuthorizedController
   end
 
   def new_sources_ids
-    @new_sources_ids ||= candidate_sources_params.map { _1["id"].to_i }
+    @new_sources_ids ||= candidate_sources_params.map { _1[:id].to_i }
   end
 
   def candidate_sources_params
@@ -90,5 +90,6 @@ class Settings::Recruitment::SourcesController < AuthorizedController
       .to_h
       .values
       .filter { |value| !(value["id"].blank? && value["name"].blank?) }
+      .map(&:symbolize_keys)
   end
 end

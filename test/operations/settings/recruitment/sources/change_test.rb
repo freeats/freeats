@@ -7,7 +7,18 @@ class Settings::Recruitment::Sources::ChangeTest < ActionDispatch::IntegrationTe
 
   test "should return linkedin_source_cannot_be_changed" do
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
-    candidate_sources_params = [{}]
+    other_source = candidate_sources(:headhunter)
+    linkedin_source = candidate_sources(:linkedin)
+
+    assert_equal ActsAsTenant.current_tenant.candidate_sources.sort,
+                 [linkedin_source, other_source].sort
+    new_candidate_sources =
+      [other_source]
+
+    candidate_sources_params =
+      new_candidate_sources.map do |source|
+        { name: source.name, id: source.id.to_s }
+      end
     result = Settings::Recruitment::Sources::Change.new(
       candidate_sources_params:,
       actor_account: nil
@@ -25,7 +36,7 @@ class Settings::Recruitment::Sources::ChangeTest < ActionDispatch::IntegrationTe
 
     candidate_sources_params =
       current_tenant_candidate_sources.map do |source|
-        { "name" => source.name, "id" => source.id.to_s }
+        { name: source.name, id: source.id.to_s }
       end
     source_for_removing.destroy!
 
