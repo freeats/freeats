@@ -1,6 +1,7 @@
-/# locals: (email_template:, locales:)
+/# locals: (email_template:)
 
 ruby:
+  locales = t("settings.recruitment.email_templates.edit")
   submit_path =
     if email_template.new_record?
       settings_recruitment_email_templates_path
@@ -8,7 +9,7 @@ ruby:
       settings_recruitment_email_template_path(email_template)
     end
 
-= form_for email_template, url: submit_path do |form|
+= form_with model: email_template, url: submit_path, id: :settings_form do |form|
   h1.mb-4 = locales[:title]
 
   = render LabeledComponent.new( \
@@ -44,7 +45,6 @@ ruby:
       = trix_editor form, :body, input: :body, placeholder: locales[:message_placeholder]
 
   = render LabeledComponent.new( \
-              class: "mb-3",
               left_layout_class: "col-12 form-label placeholders-label",
               right_layout_class: "col-12") do |c|
     - c.with_label safe_join( \
@@ -57,3 +57,6 @@ ruby:
     ul
       - locales[:placeholders_variables].each do |variable, description|
         li = "{{#{variable}}} - #{description}"
+
+  = render ButtonComponent.new
+    = t("core.save_button")

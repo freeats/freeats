@@ -252,6 +252,7 @@ en:
     add: Add scorecard template
 
   settings:
+    successfully_saved_notice: All changes have been saved.
     company:
       career_site: Career site
       company: Company
@@ -261,8 +262,6 @@ en:
           name_placeholder: Enter company name
           tab_title: Settings - Company - General
         title: General
-        update:
-          successfully_updated: All changes have been saved.
     person:
       profile:
         full_name_input_label: Full name

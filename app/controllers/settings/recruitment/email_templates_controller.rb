@@ -20,9 +20,34 @@ class Settings::Recruitment::EmailTemplatesController < AuthorizedController
     @email_template = EmailTemplate.new
   end
 
+  def create
+  end
+
+  def update
+    @email_template = EmailTemplate.find(params[:id])
+
+    if @email_template.update(template_params)
+      render_turbo_stream(
+        turbo_stream.replace(
+          :settings_form,
+          partial: "form",
+          locals: { email_template: @email_template }
+        ),
+        notice: t("settings.successfully_saved_notice")
+      )
+      return
+    end
+
+    render_error @email_template.errors.full_messages
+  end
+
   private
 
   def active_tab
     @active_tab ||= :email_templates
+  end
+
+  def template_params
+    params.require(:email_template).permit(:subject, :name, :body)
   end
 end
