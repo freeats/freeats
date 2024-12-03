@@ -1,17 +1,13 @@
 import { Controller } from "@hotwired/stimulus";
-import { requestSubmitPolyfilled } from "../src/shared/input_utils";
+import { requestSubmitPolyfilled, eventFromRichText } from "../src/shared/input_utils";
 
 export default class extends Controller {
   static targets = ["shortcut"];
 
   connect() {
     this.element.addEventListener("keydown", (event) => {
-      // Don't prevent default 'enter' behaviour for trix-editor/textarea elements.
-      const isRichText = /(trix-editor|textarea)/.test(
-        event.target.tagName.toLowerCase(),
-      );
-
-      if (event.code === "Enter" && !isRichText) {
+      // Don't prevent default 'enter' behaviour for rich text areas.
+      if (event.code === "Enter" && !eventFromRichText(event)) {
         event.preventDefault();
       }
 

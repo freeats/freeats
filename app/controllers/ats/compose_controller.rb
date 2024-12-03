@@ -9,7 +9,7 @@ class ATS::ComposeController < AuthorizedController
   def new
     candidate = Candidate.find(params[:candidate_id])
     candidate_email_addresses = candidate.all_emails
-    members_email_addresses = Member.email_addresses(except: current_member)
+    members_email_addresses = Member.email_addresses(except: current_member).sort
 
     render_turbo_stream(
       turbo_stream.replace(
