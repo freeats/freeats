@@ -34,10 +34,9 @@ class Settings::Recruitment::SourcesControllerTest < ActionDispatch::Integration
       post update_all_settings_recruitment_sources_path(params)
     end
 
-    assert_response :redirect
-    assert_redirected_to settings_recruitment_sources_path
+    assert_response :success
 
-    new_sources = CandidateSource.all
+    new_sources = CandidateSource.where(tenant: tenants(:toughbyte_tenant)).to_a
 
     assert_includes new_sources, CandidateSource.find_by(name: new_source_name)
     old_sources.each do |source|
@@ -85,8 +84,7 @@ class Settings::Recruitment::SourcesControllerTest < ActionDispatch::Integration
       post update_all_settings_recruitment_sources_path(params)
     end
 
-    assert_response :redirect
-    assert_redirected_to settings_recruitment_sources_path
+    assert_response :success
 
     assert candidates_with_removed_source.all? { _1.reload.candidate_source_id.nil? }
   end

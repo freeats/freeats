@@ -293,6 +293,7 @@ en:
           title: Sources
         update_all:
           successfully_updated: All changes have been saved.
+          linkedin_error: LinkedIn source cannot be changed.
 
   tasks:
     add_task_button: Add task
