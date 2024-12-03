@@ -45,7 +45,7 @@ class CandidateSources::Change < ApplicationOperation
       name = source["name"]
       id = source["id"]
 
-      if id.nil?
+      if id.blank?
         CandidateSource.new(name:)
       else
         source = CandidateSource.find(id)

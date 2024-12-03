@@ -17,11 +17,16 @@ class Settings::Recruitment::SourcesController < AuthorizedController
         CandidateSource.all.filter { !_1.id.in?(new_sources_ids) }
 
       if sources_for_deleting.present?
+        hidden_fields = { modal_shown: true }
+        candidate_sources_params.each_with_index do |value, index|
+          hidden_fields["tenant[candidate_sources_attributes][#{index}][id]"] = value&.[]("id")
+          hidden_fields["tenant[candidate_sources_attributes][#{index}][name]"] = value["name"]
+        end
+
         partial = "sources_delete_modal"
         render(
           partial:,
           layout: "modal",
-
           locals: {
             sources: sources_for_deleting,
             modal_id: partial.dasherize,
@@ -31,19 +36,12 @@ class Settings::Recruitment::SourcesController < AuthorizedController
               data: { turbo_frame: "_top" }
 
             },
-            hidden_fields: params[:tenant].merge(modal_shown: true)
+            hidden_fields:
           }
         )
         return
       end
     end
-
-    candidate_sources_params =
-      if params[:modal_shown].nil?
-        candidate_sources_params_without_modal
-      else
-        candidate_sources_params_from_modal
-      end
 
     case CandidateSources::Change.new(
       actor_account: current_account,
@@ -81,28 +79,12 @@ class Settings::Recruitment::SourcesController < AuthorizedController
   end
 
   def new_sources_ids
-    @new_sources_ids ||=
+    @new_sources_ids ||= candidate_sources_params.map { _1["id"].to_i }
+  end
+
+  def candidate_sources_params
+    @candidate_sources_params ||=
       params
-      .require(:tenant)
-      .permit(candidate_sources_attributes: %i[id name])[:candidate_sources_attributes]
-      .to_h
-      .map do |_, value|
-        value["id"].to_i
-      end
-  end
-
-  def candidate_sources_params_from_modal
-    JSON
-      .parse(params[:candidate_sources_attributes].gsub("=>", ":"))
-      .filter { |_, value| !((value["id"] == "0" || value["id"].blank?) && value["name"].blank?) }
-      .map do |_, value|
-      { "id" => (value["id"].to_i if value["id"].present?),
-        "name" => value["name"] }
-    end
-  end
-
-  def candidate_sources_params_without_modal
-    params
       .require(:tenant)
       .permit(candidate_sources_attributes: %i[id name])[:candidate_sources_attributes]
       .to_h
