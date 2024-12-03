@@ -78,7 +78,29 @@ class ATS::CandidatesController < AuthorizedController
                  .per(DEFAULT_TAB_PAGINATION_LIMIT)
           end
         when "emails"
-          # emails
+          candidate_emails = @candidate.all_emails
+          @hashed_avatars = {}
+          @single_message = params[:email_message_id].present?
+          @ordered_candidate_email_threads =
+            if @single_message
+              EmailMessage.with_addresses.where(id: params[:email_message_id])
+            else
+              result = BaseQueries.last_messages_of_each_thread(
+                email_thread_ids:
+                  EmailThread.get_threads_with_addresses(
+                    email_address: candidate_emails
+                  ).ids,
+                includes: %i[events email_thread],
+                per_page: DEFAULT_TAB_PAGINATION_LIMIT,
+                page: params[:page]
+              )
+              Kaminari
+                .paginate_array(result[:records], total_count: result[:total_count])
+                .page(params[:page])
+                .per(DEFAULT_TAB_PAGINATION_LIMIT)
+            end
+          @specified_mail_to = params[:mail_to]
+          @mail_to_address = @candidate.all_emails(status: :current, type: :personal).first
         when "scorecards"
           # Do not use `includes` for position `stages`, it breaks their order by list_index.
           @placements_with_scorecard_templates =

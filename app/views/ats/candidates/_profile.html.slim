@@ -34,6 +34,9 @@
     = render partial: "ats/tasks/tab_counter", locals: { pending_tasks_count: @pending_tab_tasks_count }
   - tab_labels[:emails] = capture
     | Emails
+    - if @email_count.positive?
+      | &nbsp;
+      span.badge = @email_count
 
   - tab_labels[:scorecards] = capture
     | Scorecards

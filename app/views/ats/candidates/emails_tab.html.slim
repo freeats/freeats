@@ -19,3 +19,20 @@ ruby:
                   )
             | Compose
       .col-12#turbo_email_compose_form
+
+    / EMAILS
+    .row
+      .col#turbo_thread_list
+        = render partial: "ats/email_threads/email_thread",
+                 collection: @ordered_candidate_email_threads,
+                 as: :email_thread,
+                 locals: { hashed_avatars: @hashed_avatars,
+                           candidate_ids: @candidate.id,
+                           single_message: @single_message,
+                           controller_name: }
+    .row.mt-3
+      .col
+      - if @single_message
+        = link_to "View all emails", tab_ats_candidate_path(@candidate, :emails)
+      - else
+        = paginate(@ordered_candidate_email_threads, theme: "ats")
