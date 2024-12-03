@@ -2,13 +2,13 @@
 
 require "test_helper"
 
-class CandidateSources::ChangeTest < ActionDispatch::IntegrationTest
+class Settings::Recruitment::Sources::ChangeTest < ActionDispatch::IntegrationTest
   include Dry::Monads[:result]
 
   test "should return linkedin_source_cannot_be_changed" do
     ActsAsTenant.current_tenant = tenants(:toughbyte_tenant)
     candidate_sources_params = [{}]
-    result = CandidateSources::Change.new(
+    result = Settings::Recruitment::Sources::Change.new(
       candidate_sources_params:,
       actor_account: nil
     ).call.failure
@@ -29,7 +29,7 @@ class CandidateSources::ChangeTest < ActionDispatch::IntegrationTest
       end
     source_for_removing.destroy!
 
-    result = CandidateSources::Change.new(
+    result = Settings::Recruitment::Sources::Change.new(
       candidate_sources_params:,
       actor_account: nil
     ).call.failure

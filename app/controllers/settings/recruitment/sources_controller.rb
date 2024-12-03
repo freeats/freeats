@@ -43,7 +43,7 @@ class Settings::Recruitment::SourcesController < AuthorizedController
       end
     end
 
-    case CandidateSources::Change.new(
+    case Settings::Recruitment::Sources::Change.new(
       actor_account: current_account,
       candidate_sources_params:
     ).call

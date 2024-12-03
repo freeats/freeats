@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CandidateSources::Change < ApplicationOperation
+class Settings::Recruitment::Sources::Change < ApplicationOperation
   include Dry::Monads[:result, :do]
 
   option :actor_account, Types::Instance(Account).optional
