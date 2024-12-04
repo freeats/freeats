@@ -1,6 +1,6 @@
 - ats_title(t("settings.person.profile.show.tab_title"))
 
-= render "settings/shared/settings_card", active_tab: @active_tab do
+= render "settings/shared/settings_card", active_side_tab: @active_side_tab do
   h1.mb-2 = t("settings.person.profile.show.title")
   = render "account_avatar", account: current_account
   = render "account_info", account: current_account

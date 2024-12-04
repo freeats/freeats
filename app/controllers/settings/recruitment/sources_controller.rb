@@ -6,7 +6,7 @@ class Settings::Recruitment::SourcesController < AuthorizedController
   layout "ats/application"
 
   before_action { authorize! :sources }
-  before_action :active_tab
+  before_action :active_side_tab
   before_action :all_sources, only: :index
 
   def index; end
@@ -66,8 +66,8 @@ class Settings::Recruitment::SourcesController < AuthorizedController
 
   private
 
-  def active_tab
-    @active_tab ||= :sources
+  def active_side_tab
+    @active_side_tab ||= :sources
   end
 
   def all_sources
