@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { eventFromRichText } from "../src/shared/input_utils";
 
 const deferredKeysPrefix = "deferredSelectize";
 const dataNameforDeferredKeys = "deferredKeysToRestore";
@@ -140,7 +141,8 @@ export default class SelectComponentController extends Controller {
   // It may happen when we type something irrelevant and press enter.
   #restrictEnterKeyIfNoneSelected(target) {
     target.form.onkeydown = (e) => {
-      if (e.key === "Enter" && target.selectize.items.length === 0) {
+      // Don't prevent default 'enter' behaviour for rich text areas.
+      if (e.key === "Enter" && target.selectize.items.length === 0 && !eventFromRichText(e)) {
         e.preventDefault();
         return false;
       }

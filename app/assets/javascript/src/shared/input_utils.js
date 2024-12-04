@@ -52,4 +52,14 @@ function arraysEqual(a, b) {
   return a.length === b.length && a.every((element, index) => element === b[index]);
 }
 
-export { activateInstanceSubmit, activateKeybindShortcuts, arraysEqual, requestSubmitPolyfilled };
+function eventFromRichText(event) {
+  return /(trix-editor|textarea)/.test(event.target.tagName.toLowerCase());
+}
+
+export {
+  activateInstanceSubmit,
+  activateKeybindShortcuts,
+  arraysEqual,
+  requestSubmitPolyfilled,
+  eventFromRichText,
+};

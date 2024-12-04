@@ -1,40 +1,33 @@
 #email-threads {
-  .card-header {
-    padding: 0.875rem 1rem;
-  }
-
   .card-footer {
     border-top-color: var(--tblr-border-color);
   }
 
   .compose-form {
+    .compose-form-message {
+      padding: 16px 20px;
+
+      // Color for placeholder text.
+      trix-editor:before {
+        color: var(--tblr-gray-400);
+      }
+    }
+
     .input-group {
       border-bottom: 1px solid var(--tblr-border-color);
       border-radius: 0;
       flex-wrap: nowrap;
       align-items: center;
-      max-height: max-content;
-      min-height: 41px;
-
-      .input-group-text {
-        @extend .font-medium;
-        border: 0;
-        background: transparent;
-        padding: 10px 0 10px 15px;
-        width: 45px;
-      }
-
-      .input-group-append {
-        padding: 6px 16px;
-      }
+      height: 44px;
+      padding: 8px 20px;
 
       .input-group-append-button {
         @extend .font-small;
-        padding: 5px;
+        padding: 4px 8px;
       }
 
       .compose-form-subject {
-        padding-left: 15px !important;
+        padding: 0;
       }
 
       .selectize-without-border-and-chevron {

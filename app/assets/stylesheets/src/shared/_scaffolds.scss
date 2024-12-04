@@ -58,14 +58,15 @@ body {
   line-height: 1.5rem;
 }
 
-main.container-fluid,
-footer .container-fluid {
+main.container-fluid {
   padding-top: 24px;
-  padding-bottom: 32px;
+  padding-bottom: 48px;
 }
 
 footer .container-fluid {
   color: var(--tblr-gray-500);
+  padding-top: 24px;
+  padding-bottom: 32px;
 }
 
 [class*="container"] {

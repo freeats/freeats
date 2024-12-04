@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EmailTemplate < ApplicationRecord
+  acts_as_tenant(:tenant)
+
   has_rich_text :body
 
   strip_attributes only: :name, collapse_spaces: true

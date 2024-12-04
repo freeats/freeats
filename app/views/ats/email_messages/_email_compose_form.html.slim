@@ -20,7 +20,7 @@ ruby:
                       compose_target: "newThreadForm",
                       ignore_interrupt_warning: true } do |form|
     .card-header.d-flex.justify-content-between
-      span.mb-0 New Message
+      span.mb-0.card-title New Message
       = render IconButtonComponent.new( \
                  :x,
                  variant: :ghost,
@@ -29,8 +29,7 @@ ruby:
                )
     .compose-body
       .input-group
-        .input-group-prepend
-          = form.label :to, "To:", class: "input-group-text"
+        = form.label :to, "To:"
         .w-100.selectize-without-border-and-chevron
           = render PillSelectComponent.new( \
                      form,
@@ -39,7 +38,7 @@ ruby:
                      allow_create_new_option: true,
                      local: { options: to_options } \
                    )
-        .input-group-append.d-flex.justify-content-end
+        .d-flex.justify-content-end
           button.rounded.btn.btn-sm.input-group-append-button [type="button"
                 data-action="click->compose#toggleAddressField" data-target-name="formCcInput"]
             | Cc
@@ -47,8 +46,7 @@ ruby:
                 data-action="click->compose#toggleAddressField" data-target-name="formBccInput"]
             | Bcc
       .input-group data-compose-target="formCcInput" class="d-none"
-        .input-group-prepend
-          = form.label :cc, "Cc:", class: "input-group-text"
+        = form.label :cc, "Cc:"
         .w-100.selectize-without-border-and-chevron
           = render PillSelectComponent.new( \
                      form,
@@ -57,8 +55,7 @@ ruby:
                      local: { options: cc_bcc_options } \
                    )
       .input-group data-compose-target="formBccInput" class="d-none"
-        .input-group-prepend
-          = form.label :bcc, "Bcc:", class: "input-group-text shadow-none"
+        = form.label :bcc, "Bcc:", class: "shadow-none"
         .w-100.selectize-without-border-and-chevron
           = render PillSelectComponent.new( \
                      form,
@@ -66,13 +63,12 @@ ruby:
                      allow_create_new_option: true,
                      local: { options: cc_bcc_options } \
                    )
-      .input-group.row.mx-0
-        .col-8.ps-0
-          = render TextInputComponent.new(form, method: :subject,
-                                          class: "compose-form-subject shadow-none border-0",
-                                          placeholder: "Subject", required: true,
-                                          data: { compose_target: "formSubject" })
-      .py-2.px-3
+      .input-group
+        = render TextInputComponent.new(form, method: :subject,
+                                        class: "compose-form-subject shadow-none border-0",
+                                        placeholder: "Subject", required: true,
+                                        data: { compose_target: "formSubject" })
+      .compose-form-message
         = trix_editor form,
                       :html_body,
                       placeholder: "Message",
@@ -83,7 +79,6 @@ ruby:
 
     .card-footer.bg-transparent.px-3
       = render ButtonComponent.new( \
-                 size: :tiny,
                  tooltip_options: { bs_title: "Ctrl + Enter" },
                  data: { enter_turbo_submit_target: "shortcut" } \
                )
