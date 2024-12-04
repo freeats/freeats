@@ -1255,7 +1255,7 @@ ALTER SEQUENCE public.email_messages_id_seq OWNED BY public.email_messages.id;
 CREATE TABLE public.email_templates (
     id bigint NOT NULL,
     name character varying NOT NULL,
-    subject character varying NOT NULL,
+    subject character varying DEFAULT ''::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     tenant_id bigint NOT NULL
@@ -4668,6 +4668,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241204071813'),
 ('20241204053019'),
 ('20241202095447'),
 ('20241129084054'),
