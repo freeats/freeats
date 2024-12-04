@@ -1257,7 +1257,8 @@ CREATE TABLE public.email_templates (
     name character varying NOT NULL,
     subject character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tenant_id bigint NOT NULL
 );
 
 
@@ -3538,6 +3539,13 @@ CREATE UNIQUE INDEX index_email_templates_on_name ON public.email_templates USIN
 
 
 --
+-- Name: index_email_templates_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_templates_on_tenant_id ON public.email_templates USING btree (tenant_id);
+
+
+--
 -- Name: index_email_threads_on_external_source_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4667,6 +4675,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241202095447'),
 ('20241129084054'),
 ('20241107081744'),
 ('20241105130512'),
