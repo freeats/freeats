@@ -7,11 +7,7 @@ class Settings::Recruitment::EmailTemplatesController < AuthorizedController
   before_action :active_tab
 
   def index
-    @email_templates_grid = Settings::Recruitment::EmailTemplatesGrid.new(
-      helpers.add_default_sorting(params[:settings_recruitment_email_templates_grid],
-                                  :updated,
-                                  :asc)
-    ) do |scope|
+    @email_templates_grid = Settings::Recruitment::EmailTemplatesGrid.new do |scope|
       scope.page(params[:page])
     end
   end

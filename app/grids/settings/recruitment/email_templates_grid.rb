@@ -4,7 +4,7 @@ class Settings::Recruitment::EmailTemplatesGrid
   include Datagrid
 
   scope do
-    EmailTemplate
+    EmailTemplate.order(updated_at: :desc)
   end
 
   column(:name, html: true, order: false, class: "w-100") do |model|
@@ -15,7 +15,7 @@ class Settings::Recruitment::EmailTemplatesGrid
     display_date(model.created_at)
   end
 
-  column(:updated, order: "email_templates.updated_at DESC") do |model|
+  column(:updated) do |model|
     display_date(model.updated_at)
   end
 
