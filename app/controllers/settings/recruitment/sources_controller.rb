@@ -49,8 +49,8 @@ class Settings::Recruitment::SourcesController < AuthorizedController
     ).call
     in Success()
       render_turbo_stream(
-        turbo_stream.update(
-          :rercruitment_sources,
+        turbo_stream.replace(
+          :settings_form,
           partial: "sources_edit",
           locals: { tenant: current_tenant, all_sources: }
         ), notice: t("settings.successfully_saved_notice")
