@@ -1,9 +1,14 @@
-ruby_dev_intro:
+ruby_dev_intro_toughbyte:
   name: Ruby dev introduction
   subject: New opportunity
   tenant: toughbyte_tenant
 
-golang_dev_intro:
+golang_dev_intro_toughbyte:
   name: Golang dev introduction
   subject: New opportunity
   tenant: toughbyte_tenant
+
+ruby_dev_intro_acme:
+  name: Ruby dev introduction
+  subject: New opportunity
+  tenant: acme_tenant

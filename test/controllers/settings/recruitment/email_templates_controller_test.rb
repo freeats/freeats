@@ -22,7 +22,7 @@ class Settings::Recruitment::EmailTemplatesControllerTest < ActionDispatch::Inte
   test "should open existing email template" do
     sign_in accounts(:admin_account)
 
-    get settings_recruitment_email_template_path(email_templates(:ruby_dev_intro))
+    get settings_recruitment_email_template_path(email_templates(:ruby_dev_intro_toughbyte))
 
     assert_response :success
   end

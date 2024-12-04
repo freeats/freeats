@@ -3532,17 +3532,10 @@ CREATE INDEX index_email_messages_on_tenant_id ON public.email_messages USING bt
 
 
 --
--- Name: index_email_templates_on_name; Type: INDEX; Schema: public; Owner: -
+-- Name: index_email_templates_on_tenant_id_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_email_templates_on_name ON public.email_templates USING btree (name);
-
-
---
--- Name: index_email_templates_on_tenant_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_email_templates_on_tenant_id ON public.email_templates USING btree (tenant_id);
+CREATE UNIQUE INDEX index_email_templates_on_tenant_id_and_name ON public.email_templates USING btree (tenant_id, name);
 
 
 --
@@ -4675,6 +4668,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241204053019'),
 ('20241202095447'),
 ('20241129084054'),
 ('20241107081744'),
