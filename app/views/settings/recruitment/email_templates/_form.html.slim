@@ -9,7 +9,7 @@ ruby:
     end
 
 = form_for email_template, url: submit_path do |form|
-  h1.mb-3 = locales[:title]
+  h1.mb-4 = locales[:title]
 
   = render LabeledComponent.new( \
               class: "mb-3",
@@ -45,7 +45,7 @@ ruby:
 
   = render LabeledComponent.new( \
               class: "mb-3",
-              left_layout_class: "col-12 form-label",
+              left_layout_class: "col-12 form-label mb-0",
               right_layout_class: "col-12") do |c|
     - c.with_label safe_join( \
                      [locales[:placeholders_label],

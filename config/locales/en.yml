@@ -294,7 +294,7 @@ en:
           placeholders_tooltip: Placeholders are used to add specific information to your emails without the need for manual input.
           placeholders_variables:
             first_name: first name of the recipient
-            full_name: full name name of the recipient
+            full_name: full name of the recipient
             sender_first_name: first name of the person sending the email
             sender_full_name: full name of the person sending the email
             company: your company name
