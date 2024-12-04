@@ -19,7 +19,7 @@ class Settings::Recruitment::SourcesController < AuthorizedController
       if sources_for_deleting.present?
         hidden_fields = { modal_shown: true }
         candidate_sources_params.each_with_index do |value, index|
-          hidden_fields["tenant[candidate_sources_attributes][#{index}][id]"] = value&.[](:id)
+          hidden_fields["tenant[candidate_sources_attributes][#{index}][id]"] = value[:id]
           hidden_fields["tenant[candidate_sources_attributes][#{index}][name]"] = value[:name]
         end
 
