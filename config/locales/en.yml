@@ -307,7 +307,13 @@ en:
           title: Email templates
         name_already_taken_alert: Email template with this name already exists.
       recruitment: Recruitment
-      sources: Sources
+      sources:
+        show:
+          name_placeholder: Source
+          tab_title: Settings - Recruitment - Sources
+          title: Sources
+        update_all:
+          linkedin_error: LinkedIn source cannot be changed.
     successfully_saved_notice: All changes have been saved.
 
   tasks:

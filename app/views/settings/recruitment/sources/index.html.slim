@@ -1,0 +1,11 @@
+- ats_title(t("settings.recruitment.sources.show.tab_title"))
+
+#settings.card
+  .row.g-0
+    = render "settings/shared/tabs", active_tab: @active_tab
+    .col-12.col-md-9.d-flex.flex-column
+      .row
+        .col-12.col-md-6.flex-column
+          .card-body.d-flex.flex-column.gap-3
+            h1.mb-2 = t("settings.recruitment.sources.show.title")
+            = render "sources_edit", tenant: current_account.tenant, all_sources: @all_sources

@@ -8,5 +8,5 @@ class CandidateSource < ApplicationRecord
   strip_attributes collapse_spaces: true, allow_empty: true, only: :name
 
   validates :name, presence: true
-  # validates :name, uniqueness: true
+  validates :name, uniqueness: { scope: :tenant }
 end

@@ -1,0 +1,68 @@
+/# locals: (tenant:, all_sources:)
+
+ruby:
+  order_field_collection =
+    all_sources + [CandidateSource.new]
+
+= form_with model: tenant,
+            url: update_all_settings_recruitment_sources_path,
+            id: :settings_form,
+            method: :post do |form|
+  = tag.div id: "tenant-sources",
+            class: "sortable-container",
+            data: { controller: "array-fields",
+                    array_fields_class_name_value: "tenant",
+                    array_fields_field_name_value: "source",
+                    array_fields_sortable_value: false }
+    = form.fields_for(:candidate_sources, order_field_collection) do |sources_form|
+      - index = sources_form.index
+      .array-unit [id="tenant_sources#{index}" data-update-requirement-attribute-for-select-field-target="form"
+        data-controller="update-requirement-attribute-for-select-field"]
+        .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-3
+          .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1 class="#{ \
+              'full-width-without-trashbox' if sources_form.object&.name == "LinkedIn" }"
+            = render TextInputComponent.new(sources_form, method: :name,
+                                            readonly: (sources_form.object&.name == "LinkedIn"),
+                                            placeholder: t("settings.recruitment.sources.show.name_placeholder"),
+                                            value: sources_form.object&.name,
+                                            "data-update-requirement-attribute-for-select-field-target": "mainField")
+            - if sources_form.object.id.present?
+              = sources_form.hidden_field(:id)
+          - unless sources_form.object&.name == "LinkedIn"
+            = render IconButtonComponent.new( \
+                      :trash,
+                      variant: :ghost,
+                      type: :button,
+                      class: "tenant-delete-source-button",
+                      id: "tenant_delete_source_button#{index}",
+                      data: { action: "array-fields#deleteField",
+                              array_fields_block_id_param: "tenant_sources#{index}" },
+                    )
+    .array-unit [id="tenant_sources_hidden" hidden="true"
+      data-update-requirement-attribute-for-select-field-target="form"
+      data-controller="update-requirement-attribute-for-select-field"]
+      = form.fields_for(:candidate_sources, CandidateSource.new, child_index: "id") do |sources_form|
+        .d-flex.gap-2.align-items-sm-center.align-items-baseline.justify-content-around.sortable-body.mb-3
+          .d-flex.gap-2.align-items-center.flex-sm-row.flex-column.flex-grow-1
+            = render TextInputComponent.new(sources_form, method: :name,
+                                            placeholder: t("settings.recruitment.sources.show.name_placeholder"),
+                                            "data-update-requirement-attribute-for-select-field-target": "mainField")
+          = render IconButtonComponent.new( \
+                    :trash,
+                    variant: :ghost,
+                    type: :button,
+                    class: "tenant-delete-source-button",
+                    id: "tenant_delete_source_button",
+                    data: { action: "array-fields#deleteField",
+                            array_fields_block_id_param: "tenant_sources" },
+                  )
+    = render ButtonComponent.new(variant: :cancel,
+                                size: :tiny,
+                                type: :button,
+                                id: "tenant_add_source_button",
+                                data: { action: "click->array-fields#addField" })
+      | Add
+
+  .mt-4
+    = render ButtonComponent.new(form: :settings_form, data: { turbo_frame: :turbo_modal_window })
+      = t("core.save_button")

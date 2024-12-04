@@ -5,3 +5,7 @@ linkedin:
 headhunter:
   name: HeadHunter
   tenant: toughbyte_tenant
+
+headhunter_acme:
+  name: HeadHunter Acme
+  tenant: acme_tenant
