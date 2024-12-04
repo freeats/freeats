@@ -4,7 +4,7 @@ class Settings::Recruitment::EmailTemplatesController < AuthorizedController
   layout "ats/application"
 
   before_action { authorize! :email_templates }
-  before_action :active_side_tab
+  before_action :active_tab
 
   def index
     @email_templates_grid = Settings::Recruitment::EmailTemplatesGrid.new do |scope|
@@ -22,7 +22,7 @@ class Settings::Recruitment::EmailTemplatesController < AuthorizedController
 
   private
 
-  def active_side_tab
-    @active_side_tab ||= :email_templates
+  def active_tab
+    @active_tab ||= :email_templates
   end
 end

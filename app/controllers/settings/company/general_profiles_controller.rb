@@ -4,7 +4,7 @@ class Settings::Company::GeneralProfilesController < AuthorizedController
   layout "ats/application"
 
   before_action { authorize! :general_profile }
-  before_action :active_side_tab
+  before_action :active_tab
 
   def show; end
 
@@ -25,7 +25,7 @@ class Settings::Company::GeneralProfilesController < AuthorizedController
 
   private
 
-  def active_side_tab
-    @active_side_tab ||= :general
+  def active_tab
+    @active_tab ||= :general
   end
 end
