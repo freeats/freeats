@@ -6,12 +6,12 @@ class Candidates::Add < ApplicationOperation
   option :actor_account, Types::Instance(Account).optional
   option :method, Types::String.enum("api", "applied", "manual")
   option :params, Types::Strict::Hash.schema(
-    avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
     alternative_names?: Types::Strict::Array.of(
       Types::Strict::Hash.schema(
         name: Types::Strict::String
       ).optional
     ),
+    avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
     blacklisted?: Types::Strict::String,
     company?: Types::Strict::String,
     cover_letter?: Types::Strict::String,
