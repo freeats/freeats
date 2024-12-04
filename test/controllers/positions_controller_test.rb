@@ -147,6 +147,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     john = candidates(:john)
     position_recruiter = members(:admin_member)
 
+    assert_equal position.placements_to_requalify_on_reopening.count, 3
     assert_equal position.recruiter, position_recruiter
     assert_predicate position_recruiter, :active?
     assert_equal position.placements.pluck(:candidate_id).uniq.sort, [sam.id, john.id].sort
