@@ -11,6 +11,7 @@ class Candidates::Add < ApplicationOperation
         name: Types::Strict::String
       ).optional
     ),
+    avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
     blacklisted?: Types::Strict::String,
     company?: Types::Strict::String,
     cover_letter?: Types::Strict::String,

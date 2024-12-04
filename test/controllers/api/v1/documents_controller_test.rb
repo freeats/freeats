@@ -9,9 +9,10 @@ class API::V1::DocumentsControllerTest < ActionDispatch::IntegrationTest
     url = "https://www.linkedin.com/in/username/"
     full_name = "Sam Smith"
     cv = fixture_file_upload("empty.pdf", "application/pdf")
+    avatar = fixture_file_upload("icon.jpg", "image/jpeg")
 
     assert_difference "Candidate.count" do
-      post api_v1_candidates_url, params: { url:, full_name:, cv: }
+      post api_v1_candidates_url, params: { url:, full_name:, cv:, avatar: }
     end
 
     candidate = Candidate.last
@@ -19,6 +20,7 @@ class API::V1::DocumentsControllerTest < ActionDispatch::IntegrationTest
     assert_equal candidate.full_name, full_name
     assert_equal candidate.links, [url]
     assert_equal candidate.source, "LinkedIn"
+    assert_equal candidate.avatar.attached?, true
   end
 
   test "should not update candidate's source if it is already set and update if not, " \
