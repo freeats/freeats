@@ -20,6 +20,7 @@ ruby:
     = render TextInputComponent.new( \
                 form,
                 method: :name,
+                required: true,
                 value: email_template.name,
                 placeholder: locales[:name_placeholder] \
               )
@@ -40,9 +41,9 @@ ruby:
               class: "mb-3",
               left_layout_class: "col-12 form-label",
               right_layout_class: "col-12") do |c|
-    - c.with_label locales[:message_label], for_field: :email_template_body
+    - c.with_label locales[:message_label], for_field: :email_template_message
     .card.card-body
-      = trix_editor form, :body, input: :body, placeholder: locales[:message_placeholder]
+      = trix_editor form, :message, placeholder: locales[:message_placeholder]
 
   = render LabeledComponent.new( \
               left_layout_class: "col-12 form-label placeholders-label",

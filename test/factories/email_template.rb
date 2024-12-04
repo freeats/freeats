@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :email_template do
     name { Faker::Lorem.sentence }
     subject { Faker::Lorem.sentence }
-    body { Faker::Lorem.paragraph }
+    message { Faker::Lorem.paragraph }
     tenant { Tenant.find_by(name: "Toughbyte") }
   end
 end

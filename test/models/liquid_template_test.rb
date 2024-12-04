@@ -5,7 +5,7 @@ require "test_helper"
 class LiquidTemplateTest < ActiveSupport::TestCase
   test "warnings should work" do
     valid_template = LiquidTemplate.new(
-      email_templates(:ruby_dev_intro_toughbyte).body.to_s, type: :email_template
+      email_templates(:ruby_dev_intro_toughbyte).message.to_s, type: :email_template
     )
 
     assert_empty valid_template.warnings
@@ -39,7 +39,7 @@ class LiquidTemplateTest < ActiveSupport::TestCase
     current_member = members(:employee_member)
     position = positions(:ruby_position)
 
-    liquid_template = LiquidTemplate.new(email_templates(:ruby_dev_intro_toughbyte).body.to_s)
+    liquid_template = LiquidTemplate.new(email_templates(:ruby_dev_intro_toughbyte).message.to_s)
 
     render_attributes = LiquidTemplate.extract_attributes_from(candidate:, current_member:, position:)
     rendered = liquid_template.render(render_attributes)

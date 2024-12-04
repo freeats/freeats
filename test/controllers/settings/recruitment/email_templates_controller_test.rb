@@ -70,8 +70,21 @@ class Settings::Recruitment::EmailTemplatesControllerTest < ActionDispatch::Inte
     assert_turbo_stream action: :replace, target: "alerts", status: :unprocessable_entity do
       assert_select(
         "template",
-        text: I18n.t("settings.recruitment.email_templates.update.name_already_taken_alert")
+        text: I18n.t("settings.recruitment.email_templates.name_already_taken_alert")
       )
+    end
+  end
+
+  test "should create new email template" do
+    sign_in accounts(:admin_account)
+
+    assert_difference "EmailTemplate.count" do
+      post settings_recruitment_email_templates_path,
+           params: { email_template: { name: "New template", message: "New message" } }
+    end
+
+    assert_turbo_stream action: :replace, target: "alerts", status: :success do
+      assert_select("template", text: I18n.t("settings.successfully_saved_notice"))
     end
   end
 end
