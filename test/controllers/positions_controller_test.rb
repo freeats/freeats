@@ -338,7 +338,7 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
 
     position.reload
     event = Event.last
-    html_description = "<div class=\"trix-content\">\n  #{new_description}\n</div>\n"
+    html_description = "<div class=\"trix-content-custom\">\n  #{new_description}\n</div>\n"
 
     assert_equal position.description.to_s, html_description
     assert_equal event.type, "position_changed"

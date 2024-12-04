@@ -62,7 +62,7 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
                  [scorecard_template_question.question]).uniq,
                  ["What is your favorite color?"]
     assert_equal scorecard.scorecard_questions.map { _1.answer.to_s },
-                 ["<div class=\"trix-content\">\n  Yes\n</div>\n"]
+                 ["<div class=\"trix-content-custom\">\n  Yes\n</div>\n"]
   end
 
   test "should not create the scorecard without required params" do
@@ -131,7 +131,8 @@ class ATS::ScorecardssControllerTest < ActionDispatch::IntegrationTest
     assert_equal scorecard.interviewer_id, params[:interviewer_id]
     assert_equal scorecard.score, params[:score]
     assert_equal scorecard_question.answer.to_s,
-                 "<div class=\"trix-content\">\n  #{params[:scorecard_questions_attributes]['0'][:answer]}\n</div>\n"
+                 "<div class=\"trix-content-custom\">\n  " \
+                 "#{params[:scorecard_questions_attributes]['0'][:answer]}\n</div>\n"
   end
 
   test "should update scorecard without question" do
