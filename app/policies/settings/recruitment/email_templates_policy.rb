@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class Settings::Recruitment::EmailTemplatesPolicy < ApplicationPolicy
-  # TODO: Functionality in the process of implementation.
-  def show?
-    Rails.env.development? && available_for_admin?
+  alias_rule :index?, :show?, :new?, to: :available_for_admin_on_local?
+
+  def available_for_admin_on_local?
+    available_for_admin? && Rails.env.local?
   end
 end

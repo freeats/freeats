@@ -6,3 +6,12 @@ ruby_dev_intro_email_template_body:
     My name is {{sender_first_name}}. Found your profile on and was blown away at your CV.
     I'm looking for {{position}}, and you look like a perfect candidate.
     Tell me if you're interested, and I'll gladly answer all your questions.
+
+golang_dev_intro_email_template_body:
+  record: golang_dev_intro (EmailTemplate)
+  name: body
+  body: |
+    Hi, {{first_name}}!
+    My name is {{sender_first_name}}. Found your profile on and was blown away at your CV.
+    I'm looking for {{position}}, and you look like a perfect candidate.
+    Tell me if you're interested, and I'll gladly answer all your questions.

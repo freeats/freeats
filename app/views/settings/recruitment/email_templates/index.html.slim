@@ -1,0 +1,18 @@
+- locales = t("settings.recruitment.email_templates.index")
+- ats_title(locales[:tab_title])
+
+#settings.card
+  .row.g-0
+    = render "settings/shared/tabs", active_tab: @active_tab
+    .col-12.col-md-9.flex-column.card-body
+      .row
+        .col-12
+          .d-md-flex.mb-4
+            .col-12.col-md.me-md-3
+              h1.mb-md-0 = locales[:title]
+            .col-auto
+              = render ButtonLinkComponent.new(new_settings_recruitment_email_template_path)
+                = locales[:add_template]
+        .col-12
+          = datagrid_table(@email_templates_grid)
+          = paginate(@email_templates_grid.assets, theme: "ats")

@@ -1,0 +1,8 @@
+- locales = t("settings.recruitment.email_templates.edit")
+- ats_title(locales[:tab_title])
+
+#settings.card
+  .row.g-0
+    = render "settings/shared/tabs", active_tab: @active_tab
+    .col-12.col-md-9.flex-column.card-body
+      = render "form", email_template: @email_template, locales:

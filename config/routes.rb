@@ -153,6 +153,7 @@ Rails.application.routes.draw do
     end
     namespace :recruitment do
       resource :disqualify_reasons, only: %i[show]
+      resources :email_templates, only: %i[new create index show update]
       resources :sources, only: %i[index] do
         post "update_all", on: :collection
       end

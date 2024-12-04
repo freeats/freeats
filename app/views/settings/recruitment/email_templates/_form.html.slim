@@ -1,0 +1,59 @@
+/# locals: (email_template:, locales:)
+
+ruby:
+  submit_path =
+    if email_template.new_record?
+      settings_recruitment_email_templates_path
+    else
+      settings_recruitment_email_template_path(email_template)
+    end
+
+= form_for email_template, url: submit_path do |form|
+  h1.mb-4 = locales[:title]
+
+  = render LabeledComponent.new( \
+              class: "mb-3",
+              left_layout_class: "col-12 form-label",
+              right_layout_class: "col-12") do |c|
+    - c.with_label locales[:name_label], for_field: :email_template_name
+    = render TextInputComponent.new( \
+                form,
+                method: :name,
+                value: email_template.name,
+                placeholder: locales[:name_placeholder] \
+              )
+
+  = render LabeledComponent.new( \
+              class: "mb-3",
+              left_layout_class: "col-12 form-label",
+              right_layout_class: "col-12") do |c|
+    - c.with_label locales[:subject_label], for_field: :email_template_subject
+    = render TextInputComponent.new( \
+                form,
+                method: :subject,
+                value: email_template.subject,
+                placeholder: locales[:subject_placeholder] \
+              )
+
+  = render LabeledComponent.new( \
+              class: "mb-3",
+              left_layout_class: "col-12 form-label",
+              right_layout_class: "col-12") do |c|
+    - c.with_label locales[:message_label], for_field: :email_template_body
+    .card.card-body
+      = trix_editor form, :body, input: :body, placeholder: locales[:message_placeholder]
+
+  = render LabeledComponent.new( \
+              class: "mb-3",
+              left_layout_class: "col-12 form-label placeholders-label",
+              right_layout_class: "col-12") do |c|
+    - c.with_label safe_join( \
+                     [locales[:placeholders_label],
+                      render(IconButtonComponent.new( \
+                        :help_circle,
+                        variant: :ghost,
+                        data: { bs_toggle: :tooltip, bs_title: locales[:placeholders_tooltip] }))] \
+                   )
+    ul
+      - locales[:placeholders_variables].each do |variable, description|
+        li = "{{#{variable}}} - #{description}"
