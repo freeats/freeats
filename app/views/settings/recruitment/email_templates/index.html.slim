@@ -15,3 +15,4 @@
                 = locales[:add_template]
         .col-12
           = datagrid_table(@email_templates_grid)
+          = paginate(@email_templates_grid.assets, theme: "ats")
