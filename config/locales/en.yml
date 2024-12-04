@@ -306,6 +306,8 @@ en:
           add_template: Add email template
           tab_title: Settings - Recruitment - Email templates
           title: Email templates
+        update:
+          name_already_taken_alert: Email template with this name already exists.
       recruitment: Recruitment
       sources: Sources
 

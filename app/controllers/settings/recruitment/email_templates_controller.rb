@@ -39,6 +39,10 @@ class Settings::Recruitment::EmailTemplatesController < AuthorizedController
     end
 
     render_error @email_template.errors.full_messages
+  rescue ActiveRecord::RecordNotUnique => e
+    raise unless e.message.include?("index_email_templates_on_tenant_id_and_name")
+
+    render_turbo_stream([], error: t(".name_already_taken_alert"), status: :unprocessable_entity)
   end
 
   private
