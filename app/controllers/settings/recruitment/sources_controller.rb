@@ -5,6 +5,7 @@ class Settings::Recruitment::SourcesController < AuthorizedController
 
   layout "ats/application"
 
+  before_action { @nav_item = :settings }
   before_action { authorize! :sources }
   before_action :active_tab
   before_action :all_sources, only: :index
