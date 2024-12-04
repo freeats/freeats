@@ -39,7 +39,7 @@ class Scorecards::ChangeTest < ActiveSupport::TestCase
     assert_equal scorecard.reload.score, new_score
     assert_equal scorecard.interviewer_id, new_interviewer.id
     # Summary is wrapped in trix tags.
-    assert_equal scorecard.summary.body.to_s, "<div class=\"trix-content\">\n  Test summary\n</div>\n"
+    assert_equal scorecard.summary.body.to_s, "<div class=\"trix-content-custom\">\n  Test summary\n</div>\n"
     assert_equal scorecard.summary.body.to_plain_text, "Test summary"
   end
 
@@ -73,7 +73,7 @@ class Scorecards::ChangeTest < ActiveSupport::TestCase
     assert_equal scorecard.reload.score, score
     assert_equal scorecard.interviewer_id, interviewer.id
     # Summary is wrapped in trix tags.
-    assert_equal scorecard.summary.body.to_s, "<div class=\"trix-content\">\n  \n</div>\n"
+    assert_equal scorecard.summary.body.to_s, "<div class=\"trix-content-custom\">\n  \n</div>\n"
     assert_equal scorecard.summary.body.to_plain_text, ""
   end
 end
