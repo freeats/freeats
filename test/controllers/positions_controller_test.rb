@@ -78,20 +78,22 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should change status to closed, open and on_hold and create event" do
+  test "should change status to closed, disqualify not hired placements and create events" do
     comment = "Status change explanation"
     position = positions(:ruby_position)
     new_status_reason = "other"
-
     new_status = "closed"
 
-    assert_difference "Event.count" do
-      patch change_status_ats_position_path(position), params: {
-        change_status_modal: "1",
-        new_status:,
-        new_change_status_reason: new_status_reason,
-        comment:
-      }
+    assert_equal position.placements_to_disqualify_on_closing.count, 3
+    assert_difference "Event.where(type: 'position_changed').count" do
+      assert_difference "Event.where(type: 'placement_changed').count", 3 do
+        patch change_status_ats_position_path(position), params: {
+          change_status_modal: "1",
+          new_status:,
+          new_change_status_reason: new_status_reason,
+          comment:
+        }
+      end
     end
     assert_response :success
     position.reload
@@ -106,14 +108,59 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
       assert_equal event.properties["change_status_reason"], new_status_reason
     end
 
-    new_status = "on_hold"
-    assert_difference "Event.count" do
-      patch change_status_ats_position_path(position), params: {
-        change_status_modal: "1",
-        new_status:,
-        new_change_status_reason: new_status_reason,
-        comment:
-      }
+    disqualification_events = Event.where(type: :placement_changed).last(3).sort_by(&:eventable_id)
+
+    assert_equal disqualification_events.first.eventable, placements(:sam_ruby_replied)
+    assert_equal disqualification_events.first.changed_to, "disqualified"
+    assert_equal disqualification_events.first.changed_from, "qualified"
+    assert_equal disqualification_events.first.changed_field, "status"
+    assert_equal disqualification_events.first.properties["reason"], "Position closed"
+
+    assert_equal disqualification_events.second.eventable, placements(:sam_ruby_contacted)
+    assert_equal disqualification_events.second.changed_to, "disqualified"
+    assert_equal disqualification_events.second.changed_from, "qualified"
+    assert_equal disqualification_events.second.changed_field, "status"
+    assert_equal disqualification_events.second.properties["reason"], "Position closed"
+
+    assert_equal disqualification_events.third.eventable, placements(:john_ruby_replied)
+    assert_equal disqualification_events.third.changed_to, "disqualified"
+    assert_equal disqualification_events.third.changed_from, "qualified"
+    assert_equal disqualification_events.third.changed_field, "status"
+    assert_equal disqualification_events.third.properties["reason"], "Position closed"
+  end
+
+  test "should change status to open; requalify not hired placements; assign position recruiter " \
+       "to the candidate if he is active and candidate has no recruiter; create events" do
+    position = positions(:ruby_position)
+    patch change_status_ats_position_path(position), params: {
+      change_status_modal: "1",
+      new_status: "closed",
+      new_change_status_reason: "other",
+      comment: "Awesome comment"
+    }
+
+    comment = "Change to open explanation"
+    new_status_reason = "new_position"
+    new_status = "open"
+    sam = candidates(:sam)
+    sam.update!(recruiter: nil)
+    john = candidates(:john)
+    position_recruiter = members(:admin_member)
+
+    assert_equal position.recruiter, position_recruiter
+    assert_predicate position_recruiter, :active?
+    assert_equal position.placements.pluck(:candidate_id).uniq.sort, [sam.id, john.id].sort
+    assert john.recruiter_id
+    assert_difference ["Event.where(type: 'position_changed').count",
+                       "Event.where(type: 'candidate_recruiter_assigned').count"] do
+      assert_difference "Event.where(type: 'placement_changed').count", 3 do
+        patch change_status_ats_position_path(position), params: {
+          change_status_modal: "1",
+          new_status:,
+          new_change_status_reason: new_status_reason,
+          comment:
+        }
+      end
     end
     assert_response :success
     position.reload
@@ -129,7 +176,37 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
       assert_equal event.properties["change_status_reason"], new_status_reason
     end
 
-    new_status = "open"
+    requalification_events = Event.where(type: :placement_changed).last(3).sort_by(&:eventable_id)
+
+    assert_equal requalification_events.first.eventable, placements(:sam_ruby_replied)
+    assert_equal requalification_events.first.changed_to, "qualified"
+    assert_equal requalification_events.first.changed_from, "disqualified"
+    assert_equal requalification_events.first.changed_field, "status"
+    assert_empty requalification_events.first.properties
+
+    assert_equal requalification_events.second.eventable, placements(:sam_ruby_contacted)
+    assert_equal requalification_events.second.changed_to, "qualified"
+    assert_equal requalification_events.second.changed_from, "disqualified"
+    assert_equal requalification_events.second.changed_field, "status"
+    assert_empty requalification_events.second.properties
+
+    assert_equal requalification_events.third.eventable, placements(:john_ruby_replied)
+    assert_equal requalification_events.third.changed_to, "qualified"
+    assert_equal requalification_events.third.changed_from, "disqualified"
+    assert_equal requalification_events.third.changed_field, "status"
+    assert_empty requalification_events.third.properties
+
+    recruiter_assigned_event = Event.where(type: "candidate_recruiter_assigned").last
+
+    assert_equal recruiter_assigned_event.eventable, sam
+    assert_equal recruiter_assigned_event.changed_to, position_recruiter.id
+  end
+
+  test "should change status to on_hold and create events" do
+    comment = "Change to on_hold explanation"
+    position = positions(:ruby_position)
+    new_status_reason = "other"
+    new_status = "on_hold"
     assert_difference "Event.count" do
       patch change_status_ats_position_path(position), params: {
         change_status_modal: "1",
@@ -146,32 +223,6 @@ class PositionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal position.change_status_reason, "other"
 
     assert_equal Event.last.type, "position_changed"
-  end
-
-  test "should change status to close with reason and comment and create event" do
-    position = positions(:ruby_position)
-    close_reason = Position::CHANGE_STATUS_REASON_LABELS.keys.sample.to_s
-
-    assert_difference -> { Event.where(type: :position_changed).count } do
-      patch change_status_ats_position_path(position), params: {
-        change_status_modal: "1",
-        new_status: "closed",
-        new_change_status_reason: close_reason,
-        comment: "explanation"
-      }
-    end
-    assert_response :success
-    position.reload
-
-    assert_equal position.status, "closed"
-    assert_equal position.change_status_reason, close_reason
-
-    Event.where(type: :position_changed).last.tap do |event|
-      assert_equal event.eventable_id, position.id
-      assert_equal event.changed_to, "closed"
-      assert_equal event.properties["change_status_reason"], close_reason
-      assert_equal event.properties["comment"], "explanation"
-    end
   end
 
   test "should update collaborators and create event" do
