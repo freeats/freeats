@@ -180,6 +180,21 @@ class Position < ApplicationRecord
     false
   end
 
+  def placements_to_disqualify_on_closing
+    placements
+      .joins(:position_stage)
+      .where.not(status: "disqualified")
+      .where.not(position_stage: { name: "Hired" })
+  end
+
+  def placements_to_requalify_on_reopening
+    placements
+      .joins(:position_stage)
+      .where(status: "disqualified")
+      .where.not(position_stage: { name: "Hired" })
+      .includes(:candidate)
+  end
+
   private
 
   def active_recruiter_must_be_assigned_if_career_site_is_enabled
