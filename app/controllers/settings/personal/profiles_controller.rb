@@ -21,7 +21,7 @@ class Settings::Personal::ProfilesController < AuthorizedController
           partial: "account_info",
           locals: { account: current_account }
         ),
-        notice: t("settings.person.profile.update_account.successfully_updated")
+        notice: t("settings.successfully_saved_notice")
       )
       return
     end
