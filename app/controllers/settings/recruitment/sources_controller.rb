@@ -89,7 +89,8 @@ class Settings::Recruitment::SourcesController < AuthorizedController
       .permit(candidate_sources_attributes: %i[id name])[:candidate_sources_attributes]
       .to_h
       .values
-      .filter { |value| !(value["id"].blank? && value["name"].blank?) }
-      .map(&:symbolize_keys)
+      .filter_map do |value|
+        value.symbolize_keys if value["id"].present? || value["name"].present?
+      end
   end
 end
