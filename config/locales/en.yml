@@ -252,7 +252,6 @@ en:
     add: Add scorecard template
 
   settings:
-    successfully_saved_notice: All changes have been saved.
     company:
       career_site: Career site
       company: Company
@@ -309,6 +308,7 @@ en:
         name_already_taken_alert: Email template with this name already exists.
       recruitment: Recruitment
       sources: Sources
+    successfully_saved_notice: All changes have been saved.
 
   tasks:
     add_task_button: Add task
