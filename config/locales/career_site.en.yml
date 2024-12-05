@@ -18,3 +18,5 @@ en:
       view_all: View all positions
     privacy_link: Privacy Policy
     tos_link: Terms of Service
+  errors:
+    locale_not_available: The requested language %{language} is not available, using the default language instead.

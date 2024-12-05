@@ -6,6 +6,6 @@
   .list-group.gap-3 id="position-list" role="list"
     - @positions.each do |position|
       .list-group-item.custom-list-item.px-1 id="position_#{position.id}"
-        = link_to career_site_position_path(tenant_slug: @current_tenant.slug, id: position.slug) do
+        = link_to career_site_position_path(tenant_slug: @current_tenant.slug, id: position.slug, locale: @locale) do
           .position_name.text-break.mb-1 = position.name
           .position_location.mb-0 = position&.location&.short_name

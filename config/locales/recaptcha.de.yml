@@ -1,0 +1,7 @@
+de:
+  recaptcha:
+    error: ReCaptcha-Verifizierung fehlgeschlagen. Bitte versuchen Sie es erneut.
+    privacy_message_html:
+      Diese Website wird durch reCAPTCHA geschützt und es gelten die <a href='https://policies.google.com/privacy'
+      target='_blank'>Datenschutzrichtlinie</a> und die <a href='https://policies.google.com/terms'
+      target='_blank'>Nutzungsbedingungen</a> von Google.

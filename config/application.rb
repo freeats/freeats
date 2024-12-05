@@ -32,6 +32,8 @@ module ATS
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.i18n.available_locales = %i[en de]
+    config.i18n.default_locale = :en
 
     config.view_component.default_preview_layout = "component_preview"
     config.eager_load_paths << Rails.root.join("test/components/previews")

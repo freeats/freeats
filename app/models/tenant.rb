@@ -9,7 +9,7 @@ class Tenant < ApplicationRecord
   accepts_nested_attributes_for :candidate_sources, allow_destroy: true
 
   validates :name, presence: true
-  validates :slug, presence: { message: I18n.t("tenants.slug_should_by_present_error") },
+  validates :slug, presence: { message: -> { I18n.t("tenants.slug_should_by_present_error") } },
                    if: -> { career_site_enabled }
 
   validate :all_active_positions_have_recruiter_when_career_site_enabled

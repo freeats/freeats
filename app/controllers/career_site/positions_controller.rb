@@ -8,6 +8,7 @@ class CareerSite::PositionsController < ApplicationController
 
   before_action :set_cors_headers
   before_action :set_gon_variables
+  before_action :set_locale
   protect_from_forgery with: :null_session, prepend: true
 
   def index
@@ -17,7 +18,7 @@ class CareerSite::PositionsController < ApplicationController
     end
 
     if current_tenant.slug != params[:tenant_slug]
-      redirect_to career_site_positions_path(tenant_slug: current_tenant.slug)
+      redirect_to career_site_positions_path(tenant_slug: current_tenant.slug, locale: @locale)
       return
     end
     set_current_tenant(current_tenant)
@@ -47,7 +48,7 @@ class CareerSite::PositionsController < ApplicationController
         # If such position exists, redirect to proper route.
         if @position.present?
           redirect_to career_site_position_path(
-            tenant_slug: current_tenant.slug, id: @position.slug
+            tenant_slug: current_tenant.slug, id: @position.slug, locale: @locale
           ), status: :moved_permanently
           return
         end
@@ -58,8 +59,9 @@ class CareerSite::PositionsController < ApplicationController
     end
 
     if params[:id] != @position.slug || current_tenant.slug != params[:tenant_slug]
-      redirect_to career_site_position_path(tenant_slug: current_tenant.slug, id: @position.slug),
-                  status: :moved_permanently
+      redirect_to career_site_position_path(
+        tenant_slug: current_tenant.slug, id: @position.slug, locale: @locale
+      ), status: :moved_permanently
       return
     end
 
@@ -118,9 +120,10 @@ class CareerSite::PositionsController < ApplicationController
       actor_account: nil
     ).call
     in Success
-      redirect_to career_site_position_path(tenant_slug: current_tenant.slug, id: position.slug),
-                  notice: t("career_site.positions.successfully_applied",
-                            position_name: position.name)
+      redirect_to career_site_position_path(
+        tenant_slug: current_tenant.slug, id: position.slug, locale: @locale
+      ), notice: t("career_site.positions.successfully_applied",
+                   position_name: position.name)
     in Failure[:candidate_invalid, candidate_or_message]
       error_message =
         if candidate_or_message.is_a?(Candidate)
@@ -165,5 +168,18 @@ class CareerSite::PositionsController < ApplicationController
       "Origin, Content-Type, Accept"
     response.headers["Access-Control-Expose-Headers"] = "X-CSRF-Token"
     response.headers["Content-Security-Policy"] = "frame-ancestors *"
+  end
+
+  def set_locale
+    locale = params[:locale]
+    if locale && I18n.available_locales.include?(locale.to_sym)
+      I18n.locale = locale
+      @locale = locale
+    elsif locale.present?
+      I18n.locale = I18n.default_locale
+      flash[:alert] = I18n.t("errors.locale_not_available", language: locale)
+    else
+      I18n.locale = I18n.default_locale
+    end
   end
 end

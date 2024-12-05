@@ -3,7 +3,7 @@
 
 .row
   span#back_on_all_positions
-    = link_to career_site_positions_path do
+    = link_to career_site_positions_path(locale: @locale) do
       = render IconComponent.new(:chevron_left, size: :medium, class: "me-1")
       = t("career_site.positions.all_positions", company_name: @current_tenant.name)
 .row#position_heading.mt-3.gap-3.justify-content-between
@@ -38,7 +38,8 @@
     h2.mb-3 = t("career_site.positions.apply_position")
     = form_with url: apply_career_site_position_path( \
                        tenant_slug: @current_tenant.slug,
-                       position_id: @position.id),
+                       position_id: @position.id,
+                       locale: @locale),
                        id: "form-with-recaptcha",
                        data: { controller: "recaptcha-v3" },
                        class: "d-flex flex-column gap-2 needs-validation" do |form|

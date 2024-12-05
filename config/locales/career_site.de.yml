@@ -1,0 +1,22 @@
+de:
+  career_site:
+    footer_text: Karriere-Website von FreeATS
+    positions:
+      all_positions: Alle Positionen bei %{company_name}
+      apply_button: Bewerben
+      apply_position: Für diese Position bewerben
+      closed_alert: Diese Position ist nicht mehr aktiv.
+      description: Beschreibung
+      open_positions_header: Offene Positionen bei %{company_name}
+      invalid_email_error: Keine gültige E-Mail-Adresse.
+      invalid_file_error: Die Datei darf nicht leer sein.
+      invalid_full_name_error: Der vollständige Name darf nicht leer sein.
+      position_title: "%{position_name} bei %{company_name}"
+      positions_title: Positionen bei %{company_name}
+      submit_application: Bewerbung einreichen
+      successfully_applied: Vielen Dank für Ihre Bewerbung auf die Position %{position_name}. Wir werden uns so schnell wie möglich bei Ihnen melden.
+      view_all: Alle Positionen anzeigen
+    privacy_link: Datenschutz
+    tos_link: Nutzungsbedingungen
+  errors:
+    locale_not_available: Die angeforderte Sprache %{language} ist nicht verfügbar. Es wird die Standardsprache verwendet.
