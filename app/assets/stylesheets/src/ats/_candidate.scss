@@ -1,8 +1,4 @@
 #email-threads {
-  .card-footer {
-    border-top-color: var(--tblr-border-color);
-  }
-
   .compose-form {
     .compose-form-message {
       padding: 16px 20px;
@@ -11,6 +7,11 @@
       trix-editor:before {
         color: var(--tblr-gray-400);
       }
+    }
+
+    .card-footer {
+      border-top-color: var(--tblr-border-color);
+      padding: 16px 20px;
     }
 
     .input-group {
@@ -22,7 +23,6 @@
       padding: 8px 20px;
 
       .input-group-append-button {
-        @extend .font-small;
         padding: 4px 8px;
       }
 
