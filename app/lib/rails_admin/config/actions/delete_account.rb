@@ -18,12 +18,11 @@ class RailsAdmin::Config::Actions::DeleteAccount < RailsAdmin::Config::Actions::
   end
   register_instance_option :controller do
     proc do
-
       account_name = @object.name
       if @object.cascade_destroy
-        flash[:notice] = "Account #{account_name} deactivated"
+        flash[:notice] = "Account #{account_name} deleted"
       else
-        flash[:alert] = sanitize("Couldn't deactivate account #{@object.name}. " \
+        flash[:alert] = sanitize("Couldn't delete account #{@object.name}. " \
                                  "#{@object.errors.full_messages.to_sentence}")
       end
       redirect_to back_or_index
