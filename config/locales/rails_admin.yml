@@ -2,6 +2,6 @@ en:
   admin:
     actions:
       delete_account:
-        menu: Asd
+        menu: Delete
         title: Delete Account...
         breadcrumb: Deletion
