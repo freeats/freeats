@@ -71,7 +71,7 @@ class Positions::ChangeStatus < ApplicationOperation
   end
 
   def requalify_not_hired_placements(position:, actor_account:)
-    placements_to_requalify = position.placements_to_requalify_on_reopening
+    placements_to_requalify = position.placements_to_requalify_on_reopening.includes(:candidate)
 
     return Success() if placements_to_requalify.blank?
 

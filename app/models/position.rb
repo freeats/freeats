@@ -192,7 +192,6 @@ class Position < ApplicationRecord
       .joins(:position_stage)
       .where(status: "disqualified")
       .where.not(position_stage: { name: "Hired" })
-      .includes(:candidate)
   end
 
   private
