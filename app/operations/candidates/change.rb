@@ -4,7 +4,7 @@ class Candidates::Change < ApplicationOperation
   include Dry::Monads[:result, :do]
 
   option :candidate, Types::Instance(Candidate)
-  option :actor_account, Types::Instance(Account).optional
+  option :actor_account, Types::Instance(Account).optional, optional: true
   option :namespace, Types::Strict::Symbol, optional: true, default: -> { :ats }
   option :params, Types::Strict::Hash.schema(
     avatar?: Types::Instance(ActionDispatch::Http::UploadedFile),
