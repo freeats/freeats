@@ -26,7 +26,7 @@ class Member < ApplicationRecord
   has_many :positions,
            inverse_of: :recruiter,
            foreign_key: :recruiter_id,
-           dependent: :nullify
+           dependent: :restrict_with_exception
   has_many :notes, dependent: :destroy
   has_many :assigned_events,
            lambda { where(type: %i[position_recruiter_assigned candidate_recruiter_assigned]) },
