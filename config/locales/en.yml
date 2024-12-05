@@ -276,8 +276,6 @@ en:
           save_form_button: Save
           tab_title: Settings - Personal - Profile
           title: Profile
-        update_account:
-          successfully_updated: Account successfully updated.
         update_avatar:
           successfully_updated: Account avatar successfully updated.
     recruitment:

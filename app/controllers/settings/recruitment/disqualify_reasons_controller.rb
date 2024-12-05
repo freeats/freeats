@@ -3,6 +3,7 @@
 class Settings::Recruitment::DisqualifyReasonsController < AuthorizedController
   layout "ats/application"
 
+  before_action { @nav_item = :settings }
   before_action { authorize! :disqualify_reasons }
   before_action :active_tab
 

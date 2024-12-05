@@ -3,6 +3,7 @@
 class Settings::Company::GeneralProfilesController < AuthorizedController
   layout "ats/application"
 
+  before_action { @nav_item = :settings }
   before_action { authorize! :general_profile }
   before_action :active_tab
 

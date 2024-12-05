@@ -5,6 +5,7 @@ class Settings::Personal::ProfilesController < AuthorizedController
 
   include Dry::Monads[:result]
 
+  before_action { @nav_item = :settings }
   before_action { authorize! :profile }
   before_action :set_partial_variables, only: :show
   before_action :set_gon_variables, only: :show
@@ -20,7 +21,7 @@ class Settings::Personal::ProfilesController < AuthorizedController
           partial: "account_info",
           locals: { account: current_account }
         ),
-        notice: t("settings.person.profile.update_account.successfully_updated")
+        notice: t("settings.successfully_saved_notice")
       )
       return
     end
