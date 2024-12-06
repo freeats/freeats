@@ -18,7 +18,7 @@ Rails.application.configure do
   # this is usually not necessary, and can slow down your test suite. However, it's
   # recommended that you enable it in continuous integration systems to ensure eager
   # loading is working properly before deploying your code.
-  config.eager_load = false
+  config.eager_load = ENV["CI"].present?
 
   # Enable preloading with Spring.
   config.cache_classes = false
