@@ -48,7 +48,9 @@ class Account < ApplicationRecord
 
     Event
       .where(actor_account_id: id)
-      .find_each(&:destroy!)
+      .find_each do |event|
+        event.update!(actor_account: nil)
+      end
 
     destroy!
 
