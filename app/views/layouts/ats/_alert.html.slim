@@ -16,5 +16,6 @@
         text = Array(alert[:text]).map { _1.ends_with?(".") ? _1 : "#{_1}." }.join("<br>")
 
       .alert.alert-dismissible class=class_name role="alert"
-        = sanitize text, attributes: %w[href rel target]
+        div
+          = sanitize text, attributes: %w[href rel target]
         a.btn-close data-bs-dismiss="alert" aria-label="close"
