@@ -33,6 +33,8 @@ class Positions::ChangeStatus < ApplicationOperation
 
     ActiveRecord::Base.transaction do
       yield save_position(position)
+      disqualify_not_hired_placements(position) if new_status == "closed"
+      requalify_not_hired_placements(position) if old_status == "closed"
       Event.create!(position_changed_params)
     end
 
@@ -47,5 +49,52 @@ class Positions::ChangeStatus < ApplicationOperation
     Success()
   rescue ActiveRecord::RecordInvalid => e
     Failure[:position_invalid, position.errors.full_messages.presence || e.to_s]
+  end
+
+  def disqualify_not_hired_placements(position)
+    placements_to_disqualify = position.placements_to_disqualify_on_closing
+
+    return Success() if placements_to_disqualify.blank?
+
+    position_closed_reason = DisqualifyReason.find_by(title: "Position closed")
+
+    placements_to_disqualify.each do |placement|
+      yield Placements::ChangeStatus.new(
+        new_status: "disqualified",
+        disqualify_reason_id: position_closed_reason.id,
+        placement:
+      ).call
+    end
+
+    Success()
+  end
+
+  def requalify_not_hired_placements(position)
+    placements_to_requalify = position.placements_to_requalify_on_reopening.includes(:candidate)
+
+    return Success() if placements_to_requalify.blank?
+
+    position_recruiter = position.recruiter
+    position_recruiter_is_active =
+      position_recruiter.present? && position_recruiter.access_level != "inactive"
+
+    placements_to_requalify.each do |placement|
+      yield Placements::ChangeStatus.new(
+        new_status: "qualified",
+        placement:
+      ).call
+
+      candidate = placement.candidate
+      next if !position_recruiter_is_active || candidate.recruiter_id.present?
+
+      yield Candidates::Change.new(
+        candidate:,
+        params: {
+          recruiter_id: position_recruiter.id
+        }
+      ).call
+    end
+
+    Success()
   end
 end
