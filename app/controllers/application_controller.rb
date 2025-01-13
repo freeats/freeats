@@ -3,7 +3,6 @@
 class ApplicationController < ActionController::Base
   include ErrorHandler
 
-  CLARITY_KEY = ENV.fetch("CLARITY_KEY", nil)
   PRIVACY_LINK = ENV.fetch("PRIVACY_LINK", nil)
   TOS_LINK = ENV.fetch("TOS_LINK", nil)
 
