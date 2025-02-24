@@ -1,4 +1,4 @@
-/# locals: (candidate_email_addresses:, members_email_addresses:)
+/# locals: (candidate_email_addresses:, members_email_addresses:, templates:, candidate_id:)
 
 ruby:
   to_options = candidate_email_addresses.map { { text: _1, value: _1 } }
@@ -6,6 +6,8 @@ ruby:
   data = {
     "controller" => "compose",
     "compose-button-utils-outlet" => ".compose-button",
+    "compose-template-url-value" => "/api/v1/email_templates/",
+    "compose-candidate-id-value" => candidate_id,
     "compose-unsaved-changes-warning-value" => t("candidates.email_compose.unsaved_changes_warning"),
     "compose-tooltip-on-opened-compose-form-value" => t("candidates.email_compose.button_tooltip.compose_form_opened")
   }
@@ -64,10 +66,18 @@ ruby:
                      local: { options: cc_bcc_options } \
                    )
       .input-group
-        = render TextInputComponent.new(form, method: :subject,
-                                        class: "compose-form-subject shadow-none border-0",
-                                        placeholder: "Subject", required: true,
-                                        data: { compose_target: "formSubject" })
+        .col-8.ps-0
+          = render TextInputComponent.new(form, method: :subject,
+                                          class: "compose-form-subject shadow-none border-0",
+                                          placeholder: "Subject", required: true,
+                                          data: { compose_target: "formSubject" })
+        .col-4.pe-0
+          = render HtmlSelectComponent.new( \
+                     form,
+                     method: :template_id,
+                     local: { options: ats_compose_email_template_options(templates:) },
+                     data: { deferred_selectize_compose_target: "templateSelect" } \
+                   )
       .compose-form-message
         = trix_editor form,
                       :html_body,

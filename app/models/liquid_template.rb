@@ -4,14 +4,18 @@ class LiquidTemplate
   EMAIL_TEMPLATE_VARIABLE_NAMES =
     %w[first_name full_name sender_first_name sender_full_name company position].freeze
 
-  def self.extract_attributes_from(current_member:, candidate:, position:)
+  def self.extract_attributes_from(current_member:, candidate:)
     {
       "first_name" => candidate.full_name.split.first,
       "full_name" => candidate.full_name,
       "sender_first_name" => current_member.name.split.first,
       "sender_full_name" => current_member.name,
       "company" => current_member.tenant.name,
-      "position" => position.name
+      "position" =>
+        candidate
+          .placements
+          .where(status: :qualified)
+          .last&.position&.name || "POSITION"
     }
   end
 

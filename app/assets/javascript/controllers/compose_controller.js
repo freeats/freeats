@@ -7,13 +7,19 @@ export default class extends Controller {
     "formSubject",
     "formBody",
     "newThreadForm",
+    "templateSelect",
   ];
 
   static outlets = [
     "button-utils",
   ];
 
-  static values = { unsavedChangesWarning: String, tooltipOnOpenedComposeForm: String };
+  static values = {
+    unsavedChangesWarning: String,
+    tooltipOnOpenedComposeForm: String,
+    templateUrl: String,
+    candidateId: String,
+  };
 
   newThreadFormTargetConnected() {
     this.#setupComposeInterruptHandler();
@@ -21,6 +27,31 @@ export default class extends Controller {
     this.buttonUtilsOutlets.forEach((btn) =>
       btn.disableWithTooltip(this.tooltipOnOpenedComposeFormValue),
     );
+  }
+
+  templateSelectTargetConnected() {
+    this.templateSelectTarget.selectize.on("change", () => this.#applyTemplate());
+  }
+
+  #applyTemplate() {
+    const value = this.templateSelectTarget.value;
+
+    if (!value) return;
+
+    const url = `${this.templateUrlValue}${value}?candidate_id=${this.candidateIdValue}`;
+
+    fetch(url)
+      .then((response) => response.text())
+      .then((json) => {
+        const { subject, message } = JSON.parse(json);
+        if (this.formSubjectTarget.value === "") {
+          this.formSubjectTarget.value = subject;
+        }
+        this.formBodyTarget.editor.insertHTML(message);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   closeForm(event) {

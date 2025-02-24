@@ -22,9 +22,8 @@ class LiquidTemplateTest < ActiveSupport::TestCase
   test "extract_attributes_from method should work" do
     candidate = candidates(:john)
     current_member = members(:employee_member)
-    position = positions(:ruby_position)
 
-    result = LiquidTemplate.extract_attributes_from(candidate:, current_member:, position:)
+    result = LiquidTemplate.extract_attributes_from(candidate:, current_member:)
 
     assert_equal result["full_name"], "John Doe"
     assert_equal result["first_name"], "John"
@@ -37,11 +36,10 @@ class LiquidTemplateTest < ActiveSupport::TestCase
   test "render should work" do
     candidate = candidates(:john)
     current_member = members(:employee_member)
-    position = positions(:ruby_position)
 
     liquid_template = LiquidTemplate.new(email_templates(:ruby_dev_intro_toughbyte).message.to_s)
 
-    render_attributes = LiquidTemplate.extract_attributes_from(candidate:, current_member:, position:)
+    render_attributes = LiquidTemplate.extract_attributes_from(candidate:, current_member:)
     rendered = liquid_template.render(render_attributes)
 
     assert_includes rendered, "Hi, John!"

@@ -114,6 +114,8 @@ Rails.application.routes.draw do
         get :fetch_locations
       end
 
+      resources :email_templates, only: %i[show]
+
       post "candidates", to: "documents#create"
     end
   end

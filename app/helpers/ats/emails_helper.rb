@@ -15,4 +15,15 @@ module ATS::EmailsHelper
     link_to(t("core.created_time", time: short_time_ago_in_words(email_message.date)),
             profile_activities_path, data: { turbo: false })
   end
+
+  def ats_compose_email_template_options(templates:)
+    templates.map do |template|
+      tag.option(value: template.id, label: template.name) do
+        controller.render_to_string(
+          partial: "ats/email_messages/email_template_element",
+          locals: { template: }
+        )
+      end
+    end.join
+  end
 end

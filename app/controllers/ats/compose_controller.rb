@@ -10,12 +10,18 @@ class ATS::ComposeController < AuthorizedController
     candidate = Candidate.find(params[:candidate_id])
     candidate_email_addresses = candidate.all_emails
     members_email_addresses = Member.email_addresses(except: current_member).sort
+    templates = EmailTemplate.order(:name).all
 
     render_turbo_stream(
       turbo_stream.replace(
         "turbo_email_compose_form",
         partial: "ats/email_messages/email_compose_form",
-        locals: { candidate_email_addresses:, members_email_addresses: }
+        locals: {
+          candidate_email_addresses:,
+          members_email_addresses:,
+          templates:,
+          candidate_id: candidate.id
+        }
       )
     )
   end
