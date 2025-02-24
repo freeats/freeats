@@ -2,7 +2,7 @@
 
 - unless placement.qualified?
   = form_with url: change_status_ats_placement_path(placement, position_pipeline_card:),
-              data: { bs_toggle: :tooltip, bs_title: "Requalify", bs_placement: :bottom }
+              data: { bs_toggle: :tooltip, bs_title: "Requalify", bs_placement: :bottom } do
     = render IconButtonComponent.new( \
                :reload,
                size: (position_pipeline_card ? :small : :tiny),
@@ -34,28 +34,20 @@
                data: { bs_toggle: :tooltip, bs_title: "Disqualify", bs_placement: "bottom" },
              )
   ul.dropdown-menu.dropdown-menu-end
-    - DisqualifyReason.find_each do |reason|
+    - tooltip_data = { bs_toggle: "tooltip", bs_placement: "left" }
+    - default_btn_attr = { class: "dropdown-item", name: "status", value: "disqualified" }
+
+    - DisqualifyReason.not_deleted.each do |reason|
       li
         = form_with url: change_status_ats_placement_path(placement, position_pipeline_card:) do |form|
-          ruby:
-            tooltip_hash, button_attr =
-              if reason.title == "Position closed" && !placement.position.closed?
-                [
-                  {
-                    data: { bs_toggle: "tooltip", bs_placement: "left" },
-                    title: "The position is open"
-                 },
-                 {
-                   disabled: true
-                 }
-                ]
-              else
-                {
-                  data: { bs_toggle: "tooltip", bs_placement: "left" },
-                  title: reason.description
-                }
-              end
-          = tag.div(**(tooltip_hash || {})) do
+          - if reason.title == "Position closed" && !placement.position.closed?
+            - tooltip_hash = tooltip_data.merge(title: "The position is open")
+            - button_attr = { disabled: true }
+          - else
+            - tooltip_hash = tooltip_data.merge(title: reason.description)
+            - button_attr = {}
+          = tag.div(**tooltip_hash) do
             = form.hidden_field :disqualify_reason_id, value: reason.id
-            = form.button({ class: "dropdown-item", name: "status", value: "disqualified" }.merge(button_attr || {})) do
+            - btn_params = { **default_btn_attr, **button_attr }
+            = form.button(btn_params) do
               = reason.title

@@ -1147,7 +1147,9 @@ CREATE TABLE public.disqualify_reasons (
     description character varying DEFAULT ''::character varying NOT NULL,
     tenant_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    list_index integer NOT NULL,
+    deleted boolean DEFAULT false NOT NULL
 );
 
 
@@ -3483,10 +3485,17 @@ CREATE INDEX index_candidates_on_tenant_id ON public.candidates USING btree (ten
 
 
 --
+-- Name: index_disqualify_reasons_on_tenant_id_and_list_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_disqualify_reasons_on_tenant_id_and_list_index ON public.disqualify_reasons USING btree (tenant_id, list_index) WHERE (deleted = false);
+
+
+--
 -- Name: index_disqualify_reasons_on_tenant_id_and_title; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_disqualify_reasons_on_tenant_id_and_title ON public.disqualify_reasons USING btree (tenant_id, title);
+CREATE UNIQUE INDEX index_disqualify_reasons_on_tenant_id_and_title ON public.disqualify_reasons USING btree (tenant_id, title) WHERE (deleted = false);
 
 
 --
@@ -4675,6 +4684,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250221083833'),
 ('20241204071813'),
 ('20241204053019'),
 ('20241203142925'),

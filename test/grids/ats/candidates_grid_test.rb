@@ -106,7 +106,7 @@ class ATS::CandidatesGridTest < ActiveSupport::TestCase
     candidate_with_both_placements = candidates(:sam)
     golang_position = positions(:golang_position)
     ruby_position = positions(:ruby_position)
-    disqualify_reason = disqualify_reasons(:no_reply_toughbyte)
+    disqualify_reason = disqualify_reasons(:availability_toughbyte)
 
     grid_assets = ATS::CandidatesGrid.new.assets.to_a
 

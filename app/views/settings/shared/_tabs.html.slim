@@ -3,7 +3,7 @@
 ruby:
   tab_labels = {
     career_site: t("settings.company.career_site"),
-    disqualify_reasons: t("settings.recruitment.disqualify_reasons"),
+    disqualify_reasons: t("settings.recruitment.disqualify_reasons.index.title"),
     email_templates: t("settings.recruitment.email_templates.index.title"),
     general: t("settings.company.general.title"),
     profile: t("settings.person.profile.show.title"),
@@ -43,7 +43,7 @@ ruby:
                     class: "dropdown-item #{'active' if active_tab == :career_site}"
     - if allowed_to?(:show?, with: Settings::Recruitment::SourcesPolicy) || \
           allowed_to?(:show?, with: Settings::Recruitment::EmailTemplatesPolicy) || \
-          allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
+          allowed_to?(:index?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
       h6.dropdown-header
         = render IconComponent.new(:search, size: :tiny, class: "me-2")
         = t("settings.recruitment.recruitment")
@@ -55,7 +55,7 @@ ruby:
         li
           = link_to tab_labels[:sources], settings_recruitment_sources_path,
                     class: "dropdown-item #{'active' if active_tab == :sources}"
-      - if allowed_to?(:show?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
+      - if allowed_to?(:index?, with: Settings::Recruitment::DisqualifyReasonsPolicy)
         li
           = link_to tab_labels[:disqualify_reasons], settings_recruitment_disqualify_reasons_path,
                     class: "dropdown-item #{'active' if active_tab == :disqualify_reasons}"

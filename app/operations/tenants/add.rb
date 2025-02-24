@@ -26,11 +26,12 @@ class Tenants::Add < ApplicationOperation
   end
 
   def create_mandatory_disqualify_reasons(tenant)
-    %w[no_reply position_closed].each do |title|
+    %w[no_reply position_closed].each_with_index do |title, index|
       DisqualifyReason.create!(
         tenant_id: tenant.id,
         title: title.humanize,
-        description: I18n.t("candidates.disqualification.disqualify_statuses.#{title}")
+        description: I18n.t("candidates.disqualification.disqualify_statuses.#{title}"),
+        list_index: index + 1
       )
     end
   end

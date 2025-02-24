@@ -66,7 +66,7 @@ class TenantTest < ActiveSupport::TestCase
   test "cascade_destroy should destroy tenant and all associated models" do
     tenant = tenants(:toughbyte_tenant)
 
-    assert_raises(ActiveRecord::InvalidForeignKey) do
+    assert_raises(ActiveRecord::InvalidForeignKey, ActiveRecord::DeleteRestrictionError) do
       tenant.destroy!
     end
 
