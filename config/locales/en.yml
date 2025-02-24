@@ -279,7 +279,6 @@ en:
         update_avatar:
           successfully_updated: Account avatar successfully updated.
     recruitment:
-      disqualify_reasons: Disqualify reasons
       email_templates:
         edit:
           message_label: Message
@@ -312,6 +311,12 @@ en:
           title: Sources
         update_all:
           linkedin_error: LinkedIn source cannot be changed.
+      disqualify_reasons:
+        index:
+          title: Disqualify reasons
+          description_placeholder: Description
+          title_placeholder: Disqualify reason
+          tab_title: Settings - Recruitment - Disqualify reasons
     successfully_saved_notice: All changes have been saved.
 
   tasks:

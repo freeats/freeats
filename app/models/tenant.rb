@@ -6,7 +6,10 @@ class Tenant < ApplicationRecord
 
   has_many :candidate_sources,
            dependent: :destroy
+  has_many :disqualify_reasons,
+           dependent: :destroy
   accepts_nested_attributes_for :candidate_sources, allow_destroy: true
+  accepts_nested_attributes_for :disqualify_reasons, allow_destroy: true
 
   validates :name, presence: true
   validates :slug, presence: { message: -> { I18n.t("tenants.slug_should_by_present_error") } },
@@ -32,9 +35,10 @@ class Tenant < ApplicationRecord
   def cascade_destroy
     sorted_tables = Tenant.tables_with_tenant_id.sort_by do |table|
       [
+        table == "placements" ? 0 : 1, # placements should be destroyed before disqualify reasons
         table == "positions" ? 0 : 1,  # positions should be destroyed before members
         table == "scorecards" ? 0 : 1, # scorecards should be destroyed before members
-        table == "events" ? 0 : 1      # events should be destroyed before accounts
+        table == "events" ? 0 : 1 # events should be destroyed before accounts
       ]
     end
     models = sorted_tables.map { Object.const_get(_1.classify) }

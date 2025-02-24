@@ -1,0 +1,13 @@
+- content_for :title
+  | Delete #{"reason".pluralize(disqualify_reasons.size)}?
+
+- content_for :body
+  | You won’t be able to select
+  |< #{"reason".pluralize(disqualify_reasons.size)} #{disqualify_reasons.map(&:title).join(", ")}
+  | , but it will still appear for previously disqualified candidates.
+
+- content_for :footer
+  = render ButtonComponent.new(variant: :cancel, type: :button, data: { bs_dismiss: "modal" })
+    | Cancel
+  = render ButtonComponent.new
+    | Delete

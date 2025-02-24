@@ -20,4 +20,5 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym("CV")
   inflect.acronym("PDF")
   inflect.irregular("is", "are")
+  inflect.irregular("this", "these")
 end

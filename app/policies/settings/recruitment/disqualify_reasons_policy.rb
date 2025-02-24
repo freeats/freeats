@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class Settings::Recruitment::DisqualifyReasonsPolicy < ApplicationPolicy
-  # TODO: Functionality in the process of implementation.
-  def show?
-    Rails.env.development? && available_for_admin?
+  def index?
+    available_for_admin?
+  end
+
+  def bulk_update?
+    index?
   end
 end

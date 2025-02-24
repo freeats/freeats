@@ -29,7 +29,7 @@ class PositionStage < ApplicationRecord
 
   validate :name_must_be_unique_across_not_deleted_stages
 
-  scope :not_deleted, -> { where(deleted: false) }
+  scope :not_deleted, -> { where(deleted: false).order(:list_index) }
 
   def stages
     @stages ||= position.stages.pluck(:name)

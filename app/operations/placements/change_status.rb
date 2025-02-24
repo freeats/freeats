@@ -23,7 +23,7 @@ class Placements::ChangeStatus < ApplicationOperation
     }
 
     if new_status == "disqualified"
-      disqualify_reason = DisqualifyReason.find_by(id: disqualify_reason_id)
+      disqualify_reason = DisqualifyReason.not_deleted.find_by(id: disqualify_reason_id)
       if disqualify_reason.blank?
         return Failure[:disqualify_reason_invalid,
                        I18n.t("candidates.disqualification.reason_not_found")]

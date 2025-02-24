@@ -88,7 +88,18 @@ class ATS::CandidatesGrid
     :status,
     :enum,
     select: lambda {
-      Placement.statuses.map { |k, v| [k.humanize, v] } + DisqualifyReason.pluck(:title, :id)
+      Placement.statuses.map { |k, v| [k.humanize, v] } +
+        DisqualifyReason.not_deleted.pluck(:title, :id) +
+        DisqualifyReason
+          .deleted
+          .where(<<~SQL.squish)
+            EXISTS (
+              SELECT 1
+              FROM placements
+              WHERE placements.disqualify_reason_id = disqualify_reasons.id
+            )
+          SQL
+          .pluck(:title, :id)
     },
     include_blank: I18n.t("core.status"),
     placeholder: I18n.t("core.status")
