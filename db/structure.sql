@@ -193,7 +193,8 @@ CREATE TYPE public.event_type AS ENUM (
     'task_changed',
     'task_status_changed',
     'task_watcher_added',
-    'task_watcher_removed'
+    'task_watcher_removed',
+    'transactional_email_sent'
 );
 
 
@@ -4684,6 +4685,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250225065941'),
 ('20250221083833'),
 ('20241204071813'),
 ('20241204053019'),

@@ -88,6 +88,16 @@ module CandidatesHelper
             message.plain_body&.truncate(180)}</blockquote>
           TEXT
         ]
+      when "transactional_email_sent"
+        message = event.properties
+        [
+          actor_account_name,
+          <<~TEXT
+            sent the email <b>#{message['subject']}</b> via FreeATS <blockquote class='activity-quote
+            text-truncate'>#{
+            message['html_body']&.truncate(180)}</blockquote>
+          TEXT
+        ]
       when "active_storage_attachment_added"
         [actor_account_name, "added file <b>#{event.properties['name']}</b>"]
       when "active_storage_attachment_removed"

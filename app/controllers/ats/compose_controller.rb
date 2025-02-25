@@ -10,12 +10,18 @@ class ATS::ComposeController < AuthorizedController
     candidate = Candidate.find(params[:candidate_id])
     candidate_email_addresses = candidate.all_emails
     members_email_addresses = Member.email_addresses(except: current_member).sort
+    templates = EmailTemplate.order(:name).all
 
     render_turbo_stream(
       turbo_stream.replace(
         "turbo_email_compose_form",
         partial: "ats/email_messages/email_compose_form",
-        locals: { candidate_email_addresses:, members_email_addresses: }
+        locals: {
+          candidate_email_addresses:,
+          members_email_addresses:,
+          templates:,
+          candidate_id: candidate.id
+        }
       )
     )
   end
@@ -37,6 +43,14 @@ class ATS::ComposeController < AuthorizedController
         [],
         notice: t("candidates.email_compose.email_sent_success_notice", email_addresses:)
       )
+      if params[:candidate_id].present?
+        Event.create!(
+          eventable: Candidate.find(params[:candidate_id]),
+          actor_account: current_account,
+          type: "transactional_email_sent",
+          properties: email_message_params
+        )
+      end
     else
       Log.tagged("ATS::ComposeController#create") do |logger|
         logger.external_log("email message was not sent", email_message_params:,
