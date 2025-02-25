@@ -15,7 +15,7 @@ class LiquidTemplate
         candidate
           .placements
           .where(status: :qualified)
-          .last&.position&.name || "POSITION"
+          .last&.position&.name || "{{position}}"
     }
   end
 

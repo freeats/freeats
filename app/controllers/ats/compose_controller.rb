@@ -43,6 +43,14 @@ class ATS::ComposeController < AuthorizedController
         [],
         notice: t("candidates.email_compose.email_sent_success_notice", email_addresses:)
       )
+      if params[:candidate_id].present?
+        Event.create!(
+          eventable: Candidate.find(params[:candidate_id]),
+          actor_account: current_account,
+          type: "transactional_email_sent",
+          properties: email_message_params
+        )
+      end
     else
       Log.tagged("ATS::ComposeController#create") do |logger|
         logger.external_log("email message was not sent", email_message_params:,

@@ -31,6 +31,7 @@ ruby:
                )
     .compose-body
       .input-group
+        = hidden_field_tag :candidate_id, candidate_id
         = form.label :to, "To:"
         .w-100.selectize-without-border-and-chevron
           = render PillSelectComponent.new( \

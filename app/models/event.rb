@@ -82,6 +82,7 @@ class Event < ApplicationRecord
     task_status_changed
     task_watcher_added
     task_watcher_removed
+    transactional_email_sent
   ].index_with(&:to_s)
 
   self.inheritance_column = nil
