@@ -9,15 +9,6 @@ class ATS::DashboardPositionsGrid
 
   scope do
     Position
-      .select("distinct on (id) positions.*")
-      .joins(
-        <<~SQL
-          LEFT JOIN placements
-          ON placements.position_id = positions.id AND placements.status = 'qualified'
-          LEFT JOIN candidates
-          ON placements.candidate_id = candidates.id AND candidates.merged_to IS NULL
-        SQL
-      )
       .where(status: %i[draft open on_hold])
   end
 
