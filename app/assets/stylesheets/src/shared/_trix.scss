@@ -19,6 +19,11 @@
   }
 }
 
+// Placeholder color
+trix-editor:empty:not(:focus)::before {
+  color: $gray-400;
+}
+
 // TODO: move it into block above
 //       when rich_text_area in cover letter modal replaced by trix_editor.
 trix-toolbar {

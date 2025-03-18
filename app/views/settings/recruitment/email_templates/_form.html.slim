@@ -48,7 +48,8 @@ ruby:
   = render LabeledComponent.new( \
               class: "email-template-placeholders mb-4",
               left_layout_class: "col-12 form-label",
-              right_layout_class: "col-12") do |c|
+              right_layout_class: "col-12",
+              color_class: "text-gray-900") do |c|
     - c.with_label safe_join( \
                      [locales[:placeholders_label],
                       render(IconButtonComponent.new( \
