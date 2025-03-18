@@ -4,7 +4,7 @@
     li.nav-item
       = button_to t("rodauth.logout_button"), rodauth.logout_path, method: :post, class: "nav-link"
 
-nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.column-gap-3
+nav.navbar.navbar-expand-md.align-items-center.fixed-top.header.column-gap-3
   - if rodauth.logged_in? && current_account.member?
     / Mobile burger menu button
     button.navbar-toggler.px-1.order-2 [aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
@@ -12,14 +12,14 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.column-gap-3
       span.navbar-toggler-icon
 
     / Navbar links
-    #navbarNav.collapse.navbar-collapse.gap-lg-2.order-5.order-lg-1
-      ul.navbar-nav.text-nowrap.gap-1.gap-lg-0.mb-1.mb-lg-0
+    #navbarNav.collapse.navbar-collapse.gap-md-2.order-5.order-md-1
+      ul.navbar-nav.text-nowrap.gap-1.gap-md-0.mb-1.mb-md-0
         - if allowed_to?(:index?, with: ATS::DashboardPolicy)
-          li.nav-links.py-2.pe-3.d-none.d-lg-flex.align-items-center
+          li.nav-links.py-2.pe-3.d-none.d-md-flex.align-items-center
             = link_to root_path do
               = inline_svg_tag "ats-icon.svg"
           li.nav-item class=("active" if @nav_item == :dashboard)
-            = link_to t("core.dashboard"), root_path, class: "nav-link d-lg-none"
+            = link_to t("core.dashboard"), root_path, class: "nav-link d-md-none"
         - if allowed_to?(:index?, with: ATS::TaskPolicy)
           li.nav-item class=("active" if @nav_item == :tasks)
             = link_to ats_tasks_path, class: "nav-link gap-1 justify-content-between"
@@ -39,7 +39,7 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.column-gap-3
       .flex-fill
 
       / Mobile
-      .mt-1.d-lg-none
+      .mt-1.d-md-none
         ul.navbar-nav.gap-1
           hr.my-2 role="separator"
           = account_icon_dropdown_elements
@@ -57,9 +57,9 @@ nav.navbar.navbar-expand-lg.align-items-center.fixed-top.header.column-gap-3
     / Account icon
     .dropdown.order-4
       = picture_avatar_icon current_account.avatar,
-                            class: "d-inline-flex d-lg-none",
+                            class: "d-inline-flex d-md-none",
                             alt: t("user_accounts.your_photo")
-      span.d-none.d-lg-block [aria-expanded="false" aria-haspopup="true"
+      span.d-none.d-md-block [aria-expanded="false" aria-haspopup="true"
                               data-bs-toggle="dropdown" role="button" type="button"]
         = picture_avatar_icon current_account.avatar, alt: t("user_accounts.your_photo")
       ul.dropdown-menu.dropdown-menu-end.account-icon-dropdown
