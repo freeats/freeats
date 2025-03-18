@@ -162,4 +162,31 @@ class PositionTest < ActiveSupport::TestCase
     assert_not position.valid?
     assert_includes position.errors[:base], I18n.t("positions.active_recruiter_must_be_assigned_error")
   end
+
+  test "remove should delete position and placement_removed events for this position" do
+    position = create(:position)
+    candidate = candidates(:john)
+
+    event = Event.create!(
+      type: :placement_removed,
+      eventable: candidate,
+      properties: { position_id: position.id }
+    )
+
+    event2 = Event.create!(
+      type: :placement_removed,
+      eventable: candidate,
+      properties: { position_id: positions(:ruby_position).id }
+    )
+
+    assert_difference "Event.count", -1 do
+      assert_difference "Position.count", -1 do
+        position.remove
+      end
+    end
+
+    assert_not Position.exists?(position.id)
+    assert_not Event.exists?(event.id)
+    assert Event.exists?(event2.id)
+  end
 end

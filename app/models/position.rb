@@ -174,7 +174,13 @@ class Position < ApplicationRecord
   end
 
   def remove
-    destroy!
+    transaction do
+      Event
+        .where(type: :placement_removed)
+        .where("properties->>'position_id' = '?'", id)
+        .map(&:destroy!)
+      destroy!
+    end
   rescue ActiveRecord::RecordNotDestroyed => e
     errors.add(:base, e.message.to_s)
     false
