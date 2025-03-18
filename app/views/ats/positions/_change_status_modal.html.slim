@@ -4,8 +4,8 @@
   | Change status to #{new_status.humanize}?
 - content_for :body
   = render LabeledComponent.new(class: "mb-2",
-                                left_layout_class: "col-2",
-                                right_layout_class: "col-10") do |c|
+                                left_layout_class: "col-12 col-md-3",
+                                right_layout_class: "col") do |c|
     - c.with_label("Reason", for_field: :new_change_status_reason)
     #position-status-select
       = render SingleSelectComponent.new( \
@@ -15,8 +15,8 @@
           local: { options: options_for_select } \
         )
 
-  = render LabeledComponent.new(left_layout_class: "col-2",
-                                right_layout_class: "col-10") do |c|
+  = render LabeledComponent.new(left_layout_class: "col-12 col-md-3",
+                                right_layout_class: "col") do |c|
     - c.with_label("Comment", for_field: "position-status-comment")
     textarea.form-control#position-status-comment placeholder="Comment" rows="5" name="comment" required=true
 - content_for :footer
