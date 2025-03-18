@@ -30,6 +30,13 @@ a.table-sort {
   width: 140px;
 }
 
+// fix avatar collapsing in candidates' grid
+.card-table {
+  .avatar-sm {
+    min-width: var(--tblr-avatar-size);
+  }
+}
+
 .page-paginator {
   &:not(&:first-child) {
     margin-top: 16px;
