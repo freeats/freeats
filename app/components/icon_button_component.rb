@@ -9,7 +9,8 @@ class IconButtonComponent < IconComponent
   SIZE_CLASSES = {
     tiny: "icon-tiny",
     small: "icon-small",
-    medium: "icon-medium"
+    medium: "icon-medium",
+    large: "icon-large"
   }.freeze
 
   option :href,

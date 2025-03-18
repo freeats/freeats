@@ -1,6 +1,6 @@
 ruby:
-  # names_query = "\"#{@candidate.full_name}\""
-  # duplicates_count = @candidate.possible_duplicates_count
+  names_query = @candidate.names.map { "\"#{_1}\"" }.join(" OR ")
+  duplicates_count = @candidate.possible_duplicates_count
   red_name = @candidate.blacklisted?
 
 - candidate_name = capture
@@ -8,19 +8,21 @@ ruby:
       - if red_name
         = render IconComponent.new(:ban, size: :medium)
       = @candidate.full_name
-      / - if duplicates_count.positive?
+      - if duplicates_count.positive?
         = render IconButtonComponent.new( \
-                   :users,
+                   :cards,
+                   size: :large,
+                   icon_type: :filled,
                    variant: :ghost,
+                   class: "mx-2 p-0",
                    href: { url: ats_candidates_path(ats_candidates_grid: { \
                                                       candidate: names_query,
-                                                      include_handsoff: true,
+                                                      include_blacklisted: true,
                                                     }) },
-                   data: { turbo_frame: :_top,
+                   data: { turbo_frame: "_top",
                            bs_toggle: :tooltip,
                            bs_title: "#{pluralize(duplicates_count, 'other candidate profile')} with this name found",
                            bs_placement: :right })
-                 )
 
 = turbo_frame_tag :turbo_header_section
   .row.gx-3
