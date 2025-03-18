@@ -122,6 +122,7 @@ en:
     cv: CV
     cv_file_extension_alert: CV has <b>%{extension}</b> extension and cannot be displayed.
       Please %{download_link} to view its content.
+    cv_not_found: CV not found.
     delete_avatar: Delete avatar?
     delete_button: Delete candidate
     delete_file: Delete file?

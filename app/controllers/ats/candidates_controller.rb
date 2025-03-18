@@ -510,6 +510,11 @@ class ATS::CandidatesController < AuthorizedController
   end
 
   def download_cv_file
+    if @candidate.cv.blank?
+      render_error t("candidates.cv_not_found"), status: :not_found
+      return
+    end
+
     send_data @candidate.cv.download,
               filename: "#{@candidate.full_name} - #{@candidate.cv.blob.filename}",
               disposition: :attachment
