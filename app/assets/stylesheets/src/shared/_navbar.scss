@@ -6,7 +6,7 @@ body {
   padding-top: $navbar-min-height;
 }
 
-@include media-breakpoint-down(lg) {
+@include media-breakpoint-down(md) {
   nav.header {
     #navbarNav.show {
       max-height: calc(100vh - $navbar-min-height);
@@ -27,7 +27,7 @@ body {
     transform: none;
   }
 
-  @include media-breakpoint-down(lg) {
+  @include media-breakpoint-down(md) {
     .nav-item.active {
       .nav-link {
         color: var(--tblr-primary);

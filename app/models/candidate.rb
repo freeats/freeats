@@ -194,6 +194,12 @@ class Candidate < ApplicationRecord
     names.map { "\"#{URI.encode_www_form_component(_1)}\"" }
   end
 
+  def possible_duplicates_count
+    query = names.map { "\"#{_1}\"" }.join(" OR ")
+
+    self.class.search_by_names_or_emails(query).where.not(id:).count
+  end
+
   def github_search_url
     search_string = names.map { "fullname:\"#{_1}\"" }.join(" ")
     "https://github.com/search?utf8=%E2%9C%93&q=#{CGI.escape(search_string)}" \
