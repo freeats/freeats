@@ -4,9 +4,9 @@ ruby:
   red_name = @candidate.blacklisted?
 
 - candidate_name = capture
-    h1.mb-0.text-break class=("text-danger hstack gap-2" if red_name)
+    h1.mb-0.text-break.gap-2.hstack class=("text-danger" if red_name)
       - if red_name
-        = render IconComponent.new(:ban, size: :medium)
+        = render IconComponent.new(:ban, size: :large)
       = @candidate.full_name
       - if duplicates_count.positive?
         = render IconButtonComponent.new( \
@@ -14,7 +14,7 @@ ruby:
                    size: :large,
                    icon_type: :filled,
                    variant: :ghost,
-                   class: "mx-2 p-0",
+                   class: "p-0",
                    href: { url: ats_candidates_path(ats_candidates_grid: { \
                                                       candidate: names_query,
                                                       include_blacklisted: true,
