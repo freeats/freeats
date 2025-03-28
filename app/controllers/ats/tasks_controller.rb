@@ -17,6 +17,8 @@ class ATS::TasksController < AuthorizedController
   end
 
   def show
+    return show_modal if turbo_frame_request?
+
     case @task.taskable
     when Candidate then redirect_to task_ats_candidate_path(@task.taskable, @task)
     when Position then redirect_to task_ats_position_path(@task.taskable, @task)
@@ -28,6 +30,8 @@ class ATS::TasksController < AuthorizedController
   end
 
   def new
+    return new_modal if turbo_frame_request?
+
     set_tasks_grid
     @lazy_load_form_url = new_modal_ats_tasks_path
     render :index

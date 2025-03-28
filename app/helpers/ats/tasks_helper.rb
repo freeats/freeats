@@ -46,12 +46,17 @@ module ATS::TasksHelper
       else
         { params: { taskable_id: taskable.id, taskable_type: taskable.class.name } }
       end
-    form_with(
-      url: new_modal_ats_tasks_path(**url_opts),
-      data: { action: "turbo:submit-end->tasks#changePath", turbo_frame: :turbo_modal_window }
-    ) do
-      render ButtonComponent.new.with_content(t("tasks.add_task_button"))
-    end
+    # form_with(
+    #   url: new_modal_ats_tasks_path(**url_opts),
+    #   data: { action: "turbo:submit-end->tasks#changePath", turbo_frame: :turbo_modal_window }
+    # ) do
+    #   render ButtonComponent.new.with_content(t("tasks.add_task_button"))
+    # end
+
+    render ButtonLinkComponent.new(
+             new_ats_task_path(**url_opts),
+             data: { turbo_action: :advance, turbo_frame: :turbo_modal_window }
+           ).with_content(t("tasks.add_task_button"))
   end
 
   def ats_task_display_activity(event, oneline: true)
