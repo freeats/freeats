@@ -72,8 +72,8 @@ group :development, :test do
   gem "pry-byebug"
   gem "pry-inline"
   gem "pry-rails"
-  gem "rubocop", require: false
-  gem "rubocop-minitest", require: false
+  gem "rubocop"
+  gem "rubocop-minitest"
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
   gem "slim_lint", require: false
