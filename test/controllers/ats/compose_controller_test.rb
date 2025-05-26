@@ -33,7 +33,7 @@ class ATS::ComposeControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should send new email" do
-    skip "Compose is disabled for free accounts"
+    skip "Compose is disabled for free accounts."
 
     params = {
       email_message: {
