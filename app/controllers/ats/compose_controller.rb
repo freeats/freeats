@@ -27,41 +27,48 @@ class ATS::ComposeController < AuthorizedController
   end
 
   def create
-    email_message_params = compose_email_message_params
-    validation = EmailMessageSchema.new.call(email_message_params.compact)
-    if validation.errors.present?
-      render_error schema_errors_to_string(validation.errors), status: :unprocessable_entity
-      return
-    end
+    render_turbo_stream(
+      [],
+      error: t("candidates.email_compose.enabled_only_for_pro"),
+      status: :forbidden
+    )
+    nil
 
-    email_addresses = email_message_params[:to].join(", ")
-    result = EmailMessageMailer.with(email_message_params).send_email.deliver_now!
+    # email_message_params = compose_email_message_params
+    # validation = EmailMessageSchema.new.call(email_message_params.compact)
+    # if validation.errors.present?
+    #   render_error schema_errors_to_string(validation.errors), status: :unprocessable_entity
+    #   return
+    # end
 
-    if (result.is_a?(Net::SMTP::Response) && result.status == "250") ||
-       (result.is_a?(Mail::Message) && !Rails.env.production?)
-      render_turbo_stream(
-        [],
-        notice: t("candidates.email_compose.email_sent_success_notice", email_addresses:)
-      )
-      if params[:candidate_id].present?
-        Event.create!(
-          eventable: Candidate.find(params[:candidate_id]),
-          actor_account: current_account,
-          type: "transactional_email_sent",
-          properties: email_message_params
-        )
-      end
-    else
-      Log.tagged("ATS::ComposeController#create") do |logger|
-        logger.external_log("email message was not sent", email_message_params:,
-                                                          result: result.inspect)
-      end
-      render_turbo_stream(
-        [],
-        error: t("candidates.email_compose.email_sent_fail_alert", email_addresses:),
-        status: :unprocessable_entity
-      )
-    end
+    # email_addresses = email_message_params[:to].join(", ")
+    # result = EmailMessageMailer.with(email_message_params).send_email.deliver_now!
+
+    # if (result.is_a?(Net::SMTP::Response) && result.status == "250") ||
+    #    (result.is_a?(Mail::Message) && !Rails.env.production?)
+    #   render_turbo_stream(
+    #     [],
+    #     notice: t("candidates.email_compose.email_sent_success_notice", email_addresses:)
+    #   )
+    #   if params[:candidate_id].present?
+    #     Event.create!(
+    #       eventable: Candidate.find(params[:candidate_id]),
+    #       actor_account: current_account,
+    #       type: "transactional_email_sent",
+    #       properties: email_message_params
+    #     )
+    #   end
+    # else
+    #   Log.tagged("ATS::ComposeController#create") do |logger|
+    #     logger.external_log("email message was not sent", email_message_params:,
+    #                                                       result: result.inspect)
+    #   end
+    #   render_turbo_stream(
+    #     [],
+    #     error: t("candidates.email_compose.email_sent_fail_alert", email_addresses:),
+    #     status: :unprocessable_entity
+    #   )
+    # end
   end
 
   private
