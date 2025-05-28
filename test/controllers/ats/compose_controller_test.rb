@@ -14,27 +14,7 @@ class ATS::ComposeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should return error forbidden when compose is disabled" do
-    params = {
-      email_message: {
-        subject: "Test email",
-        html_body: "<p>Email test body</p>",
-        to: ["jake@smith.com"],
-        cc: ["recruiter@mail.com"],
-        bcc: ["manager@mail.com"]
-      }
-    }
-    assert_no_emails do
-      post(ats_compose_index_path(params:))
-    end
-
-    assert_equal response.status, 403
-    assert_includes response.body, "Available only on Pro and Enterprise plans"
-  end
-
   test "should send new email" do
-    skip "Compose is disabled for free accounts"
-
     params = {
       email_message: {
         subject: "Test email",
@@ -70,8 +50,6 @@ class ATS::ComposeControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should display validation error" do
-    skip "Compose is disabled for free accounts"
-
     params = {
       email_message: {
         subject: "Test email",
@@ -91,8 +69,6 @@ class ATS::ComposeControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should display alert when email was not sent" do
-    skip "Compose is disabled for free accounts"
-
     params = {
       email_message: {
         subject: "Test email",

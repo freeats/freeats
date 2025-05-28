@@ -1,8 +1,8 @@
 ruby:
-  compose_button_tooltip_text = t("candidates.email_compose.enabled_only_for_pro")
-  # if @candidate.all_emails.blank?
-  #   t("candidates.email_compose.button_tooltip.no_emails")
-  # end
+  compose_button_tooltip_text =
+    if @candidate.all_emails.blank?
+      t("candidates.email_compose.button_tooltip.no_emails")
+    end
 
 = render "ats/candidates/profile"
 
