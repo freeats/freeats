@@ -8,6 +8,8 @@ class Tenant < ApplicationRecord
            dependent: :destroy
   has_many :disqualify_reasons,
            dependent: :destroy
+  has_many :enabled_features,
+           dependent: :destroy
   accepts_nested_attributes_for :candidate_sources, allow_destroy: true
   accepts_nested_attributes_for :disqualify_reasons, allow_destroy: true
 

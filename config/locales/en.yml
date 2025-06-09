@@ -140,6 +140,7 @@ en:
       button_tooltip:
         no_emails: Candidate doesn't have emails
         compose_form_opened: Please make sure you send the previous email before opening a new one
+      enabled_only_for_pro: Available only on Pro and Enterprise plans
       email_sent_success_notice: Your email to %{email_addresses} has been sent.
       email_sent_fail_alert: There was an issue sending your email to %{email_addresses}.
       unsaved_changes_warning: You have unsaved changes. If you leave this page, you will lose those changes.

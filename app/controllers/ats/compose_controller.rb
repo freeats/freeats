@@ -27,6 +27,15 @@ class ATS::ComposeController < AuthorizedController
   end
 
   def create
+    if current_tenant.enabled_features.where(name: :emails).blank?
+      render_turbo_stream(
+        [],
+        error: t("candidates.email_compose.enabled_only_for_pro"),
+        status: :forbidden
+      )
+      return
+    end
+
     email_message_params = compose_email_message_params
     validation = EmailMessageSchema.new.call(email_message_params.compact)
     if validation.errors.present?
