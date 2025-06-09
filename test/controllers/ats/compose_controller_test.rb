@@ -14,6 +14,25 @@ class ATS::ComposeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should return error forbidden when compose is disabled" do
+    params = {
+      email_message: {
+        subject: "Test email",
+        html_body: "<p>Email test body</p>",
+        to: ["jake@smith.com"],
+        cc: ["recruiter@mail.com"],
+        bcc: ["manager@mail.com"]
+      }
+    }
+    EnabledFeature.destroy_all
+    assert_no_emails do
+      post(ats_compose_index_path(params:))
+    end
+
+    assert_equal response.status, 403
+    assert_includes response.body, "Available only on Pro and Enterprise plans"
+  end
+
   test "should send new email" do
     params = {
       email_message: {

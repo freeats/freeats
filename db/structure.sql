@@ -199,6 +199,15 @@ CREATE TYPE public.event_type AS ENUM (
 
 
 --
+-- Name: feature_name; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.feature_name AS ENUM (
+    'emails'
+);
+
+
+--
 -- Name: location_type; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -1314,6 +1323,38 @@ CREATE SEQUENCE public.email_threads_id_seq
 --
 
 ALTER SEQUENCE public.email_threads_id_seq OWNED BY public.email_threads.id;
+
+
+--
+-- Name: enabled_features; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.enabled_features (
+    id bigint NOT NULL,
+    tenant_id bigint NOT NULL,
+    name public.feature_name NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: enabled_features_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.enabled_features_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: enabled_features_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.enabled_features_id_seq OWNED BY public.enabled_features.id;
 
 
 --
@@ -2548,6 +2589,13 @@ ALTER TABLE ONLY public.email_threads ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: enabled_features id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.enabled_features ALTER COLUMN id SET DEFAULT nextval('public.enabled_features_id_seq'::regclass);
+
+
+--
 -- Name: events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2957,6 +3005,14 @@ ALTER TABLE ONLY public.email_templates
 
 ALTER TABLE ONLY public.email_threads
     ADD CONSTRAINT email_threads_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: enabled_features enabled_features_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.enabled_features
+    ADD CONSTRAINT enabled_features_pkey PRIMARY KEY (id);
 
 
 --
@@ -3567,6 +3623,20 @@ CREATE UNIQUE INDEX index_email_threads_on_external_source_id ON public.email_th
 --
 
 CREATE INDEX index_email_threads_on_tenant_id ON public.email_threads USING btree (tenant_id);
+
+
+--
+-- Name: index_enabled_features_on_tenant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_enabled_features_on_tenant_id ON public.enabled_features USING btree (tenant_id);
+
+
+--
+-- Name: index_enabled_features_on_tenant_id_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_enabled_features_on_tenant_id_and_name ON public.enabled_features USING btree (tenant_id, name);
 
 
 --
@@ -4383,6 +4453,14 @@ ALTER TABLE ONLY public.positions_interviewers
 
 
 --
+-- Name: enabled_features fk_rails_466e7cbf02; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.enabled_features
+    ADD CONSTRAINT fk_rails_466e7cbf02 FOREIGN KEY (tenant_id) REFERENCES public.tenants(id);
+
+
+--
 -- Name: notes fk_rails_4a1d11a9b2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4685,6 +4763,7 @@ ALTER TABLE ONLY public.scorecards
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250609103428'),
 ('20250225065941'),
 ('20250221083833'),
 ('20241204071813'),
