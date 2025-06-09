@@ -1,7 +1,7 @@
 ruby:
   compose_button_tooltip_text =
     if current_tenant.enabled_features.where(name: :emails).blank?
-      t("candidates.email_compose.button_tooltip.enabled_only_for_pro")
+      t("candidates.email_compose.enabled_only_for_pro")
     elsif @candidate.all_emails.blank?
       t("candidates.email_compose.button_tooltip.no_emails")
     end
