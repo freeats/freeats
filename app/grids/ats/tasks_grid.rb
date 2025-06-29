@@ -115,12 +115,10 @@ class ATS::TasksGrid
   end
 
   column(:name, html: true) do |model|
-    data = { action: "turbo:submit-end->tasks#changePath", turbo_frame: :turbo_modal_window }
-    button_to(
+    link_to(
       model.name,
-      show_modal_ats_task_path(model),
-      class: "btn btn-link p-0 text-start",
-      form: { data: }
+      ats_task_path(model),
+      data: { turbo_action: :advance, turbo_frame: :turbo_modal_window }
     )
   end
 
