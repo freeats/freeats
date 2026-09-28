@@ -5,4 +5,16 @@ if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
   ./bin/rails db:prepare
 fi
 
+# Coolify has no Procfile, so it runs neither the `release:` step nor the `worker:` process.
+# Both variables are set on Coolify only:
+# RUN_MIGRATIONS=1 (web service) runs the `release:` command before the server starts;
+# PROCESS_TYPE=worker (worker service) runs the `worker:` command instead of the server.
+if [ "${RUN_MIGRATIONS}" == "1" ]; then
+  bin/rake db:migrate
+fi
+
+if [ "${PROCESS_TYPE}" == "worker" ]; then
+  exec bin/jobs
+fi
+
 exec "${@}"
