@@ -19,6 +19,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym("API")
   inflect.acronym("CV")
   inflect.acronym("PDF")
+  inflect.acronym("RuboCop")
   inflect.irregular("is", "are")
   inflect.irregular("this", "these")
 end
