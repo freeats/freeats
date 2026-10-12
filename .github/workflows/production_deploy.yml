@@ -33,9 +33,54 @@ jobs:
         if: "${{ github.event.inputs.commit != '' }}"
         run: git checkout ${{ github.event.inputs.commit }}
       - name: Push to Dokku
+        if: vars.DEPLOY_TARGET != 'coolify'
         uses: dokku/github-action@master
         with:
           branch: main
           git_remote_url: "ssh://dokku@${{ vars.DOKKU_HOST }}:22/ats"
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           git_push_flags: --force
+      # Coolify on the same server builds the web and worker apps from GitHub. Selected by the
+      # repository variable DEPLOY_TARGET=coolify. The web app runs the migrations, so it deploys
+      # first and the worker only after it has finished.
+      - name: Deploy on Coolify
+        if: vars.DEPLOY_TARGET == 'coolify'
+        env:
+          COOLIFY_URL: https://alpha.toughbyte.com
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+          WEB_UUID: ${{ vars.COOLIFY_ATS_UUID }}
+          WORKER_UUID: ${{ vars.COOLIFY_ATS_WORKER_UUID }}
+          ROLLBACK_COMMIT: ${{ github.event.inputs.commit }}
+        run: |
+          if [ -n "$ROLLBACK_COMMIT" ]; then
+            echo "::error::Coolify deploys the branch head; roll back from the app's Deployments tab in Coolify."
+            exit 1
+          fi
+          auth="Authorization: Bearer $COOLIFY_TOKEN"
+          deploy() {
+            response=$(curl -fsS -X POST -H "$auth" -H "Content-Type: application/json" \
+              -d "{\"uuid\": \"$1\"}" "$COOLIFY_URL/api/v1/deploy")
+            deployment=$(echo "$response" | sed -n 's/.*"deployment_uuid":"\([^"]*\)".*/\1/p')
+            if [ -z "$deployment" ]; then
+              echo "::error::Coolify did not start a deployment of $1: $response"
+              return 1
+            fi
+            echo "Coolify deployment $deployment of $1"
+            for _ in $(seq 1 90); do
+              sleep 10
+              status=$(curl -fsS -H "$auth" "$COOLIFY_URL/api/v1/deployments/$deployment" |
+                sed -n 's/.*"status":"\([^"]*\)".*/\1/p')
+              echo "status: $status"
+              case "$status" in
+                finished) return 0 ;;
+                failed | cancelled-by-user)
+                  echo "::error::Coolify deployment of $1 $status"
+                  return 1
+                  ;;
+              esac
+            done
+            echo "::error::Coolify deployment of $1 still not finished after 15 minutes"
+            return 1
+          }
+          deploy "$WEB_UUID"
+          deploy "$WORKER_UUID"
