@@ -26,7 +26,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     && apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential curl node-gyp pkg-config git \
-    libjemalloc2 libpq-dev postgresql-client \
+    libjemalloc2 libpq-dev libyaml-dev postgresql-client \
     $PACKAGES
 
 # Install JavaScript dependencies
